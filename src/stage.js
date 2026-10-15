@@ -1,4 +1,5 @@
 // src/stage.js
+import { getLuckDropEmoji } from "./profiles.js";
 import {
     engineState,
     createEmptyCombo,
@@ -454,11 +455,11 @@ export async function renderFrame(frame, token) {
     let frameDuration = 600;
 
     if (frame.message && dialog) {
-      if (dialog.lastElementChild?.dataset?.frameIndex !== String(frame.index)) {
-        const msgEl = createLogLineElement(frame);
-        dialog.appendChild(msgEl);
-        dialog.scrollTop = dialog.scrollHeight;
-      }
+        if (dialog.lastElementChild?.dataset?.frameIndex !== String(frame.index)) {
+            const msgEl = createLogLineElement(frame);
+            dialog.appendChild(msgEl);
+            dialog.scrollTop = dialog.scrollHeight;
+        }
     }
 
     if (frame.isSummonEvent && frame.summonedActorId) {
@@ -528,26 +529,14 @@ export async function renderFrame(frame, token) {
     if (frame.targetId) {
         const targetEl = sr.getElementById(`actor-${frame.targetId}`);
         if (targetEl) {
-            if (frame.vfx.includes('luck-drop')) {
-                const dropEl = document.createElement('div');
-                dropEl.className = 'luck-drop';
-                dropEl.textContent =
-                    frame.message.includes('卡車') ? '🚚' :
-                    frame.message.includes('釘子') ? '📌' :
-                    frame.message.includes('香蕉皮') ? '🍌' :
-                    frame.message.includes('樂高') ? '🧱' :
-                    frame.message.includes('比特犬') ? '🐕' :
-                    frame.message.includes('飛彈') ? '🚀' :
-                    frame.message.includes('落雷') ? '⚡' :
-                    frame.message.includes('棒球') ? '⚾' :
-                    frame.message.includes('撞到樹') ? '🌳' :
-                    frame.message.includes('箭') ? '🏹' :
-                    frame.message.includes('小刀') ? '🗡️' :
-                    frame.message.includes('隕石') ? '☄️' : '💥';
+            if (frame.vfx.includes("luck-drop")) {
+                const dropEl = document.createElement("div");
+                dropEl.className = "luck-drop";
+                dropEl.textContent = getLuckDropEmoji(frame.message);
                 targetEl.appendChild(dropEl);
                 setTimeout(() => {
                     if (dropEl.isConnected) dropEl.remove();
-                }, 1000);
+                }, 1e3);
             }
             if (frame.vfx.includes('break-stamp')) {
                 const breakEl = document.createElement('div');
