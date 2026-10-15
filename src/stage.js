@@ -1,25 +1,34 @@
-// src/stage.js
-import { getLuckDropEmoji } from "./profiles.js";
+// ==========================================
+// FILE: src/stage.js
+// ==========================================
+import { getLuckDropEmoji } from './profiles.js';
 import {
     engineState,
     createEmptyCombo,
     getEffectiveSpeed,
-    nextPlaybackToken,
-    formatLogMessage
+    nextPlaybackToken
 } from './state.js';
+import { formatLogMessage } from './utils.js';
 import { STAGE_STYLES } from './styles.js';
 import {
-    lookaheadComboState,
     playFatalitySequence,
     playUltimateCutIn,
     renderSpeechBubble,
-    spawnStatusOrDiceBadge,
-    playCombatAnimation,
-    spawnFloatingText
-} from './vfx.js';
+    spawnStatusOrDiceBadge
+} from './cinematics.js';
+import {
+    lookaheadComboState,
+    playCombatAnimation
+} from './choreography.js';
+import { spawnFloatingText } from './floatingText.js';
 import { showMVPPanel } from './mvp.js';
 import { armSpoilerGuard, releaseSpoilerGuard } from './spoilerGuard.js';
 
+/**
+ * Creates a formatted DOM element for a single combat log line in the bottom dialog box.
+ * @param {object} frame - Combat frame containing the message and index.
+ * @returns {HTMLDivElement} Constructed log line element.
+ */
 function createLogLineElement(frame) {
     const msgEl = document.createElement('div');
     const isDialogue = frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE';
@@ -30,6 +39,9 @@ function createLogLineElement(frame) {
     return msgEl;
 }
 
+/**
+ * Mounts the Shadow DOM battle stage, playback controls, ATB timeline, actor cards, and log box.
+ */
 export function createBattleStage() {
     if (engineState.hostElement) engineState.hostElement.remove();
 
@@ -120,7 +132,6 @@ export function createBattleStage() {
         engineState.isPlaying = false;
         engineState.timeScale = 1.0;
         nextPlaybackToken();
-        // Reveal underlying page outcomes when user closes the visualizer
         releaseSpoilerGuard();
         if (engineState.hostElement) {
             engineState.hostElement.remove();
@@ -201,6 +212,12 @@ export function createBattleStage() {
     playbackLoop(token);
 }
 
+/**
+ * Updates actor icon positions along the top ATB/CTB action timeline bar.
+ * @param {number} currentTurn - Active turn number.
+ * @param {boolean} [skipTransition=false] - Whether to snap immediately without CSS transition.
+ * @param {Map<string, boolean>|null} [summonStateMap=null] - Map of currently spawned actors.
+ */
 export function updateATBUI(currentTurn, skipTransition = false, summonStateMap = null) {
     const sr = engineState.shadowRoot;
     if (!sr) return;
@@ -285,6 +302,12 @@ export function updateATBUI(currentTurn, skipTransition = false, summonStateMap 
     });
 }
 
+/**
+ * Instantly synchronizes the entire stage DOM (HP bars, death states, summon visibility,
+ * log history, and ATB icons) to any target frame index during timeline seeking or reset.
+ * @param {number} frameIndex - Target frame index to synchronize to.
+ * @param {boolean} [isInitialReset=false] - True when resetting back to pre-battle state.
+ */
 export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
     const sr = engineState.shadowRoot;
     if (!sr) return;
@@ -412,6 +435,11 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
     updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
 }
 
+/**
+ * Main asynchronous playback loop that steps through frames until paused, cancelled, or finished.
+ * @param {number} token - Playback token bound to this loop invocation.
+ * @returns {Promise<void>}
+ */
 export async function playbackLoop(token) {
     while (
         engineState.currentFrameIndex < engineState.frames.length &&
@@ -438,7 +466,6 @@ export async function playbackLoop(token) {
 
     if (engineState.playbackToken === token && engineState.currentFrameIndex >= engineState.frames.length) {
         engineState.isPlaying = false;
-        // Reveal underlying page outcomes once the last line finishes playing
         releaseSpoilerGuard();
         const sr = engineState.shadowRoot;
         if (sr) {
@@ -450,6 +477,13 @@ export async function playbackLoop(token) {
     }
 }
 
+/**
+ * Renders a single combat frame including log appending, summon spawns, dialogues,
+ * ultimate cut-ins, physical combat choreography, floating numbers, HP bar updates, and K.O. sequences.
+ * @param {object} frame - Frame snapshot to render.
+ * @param {number} token - Active playback token.
+ * @returns {Promise<void>}
+ */
 export async function renderFrame(frame, token) {
     const sr = engineState.shadowRoot;
     if (!sr || engineState.playbackToken !== token) return;
@@ -533,14 +567,14 @@ export async function renderFrame(frame, token) {
     if (frame.targetId) {
         const targetEl = sr.getElementById(`actor-${frame.targetId}`);
         if (targetEl) {
-            if (frame.vfx.includes("luck-drop")) {
-                const dropEl = document.createElement("div");
-                dropEl.className = "luck-drop";
+            if (frame.vfx.includes('luck-drop')) {
+                const dropEl = document.createElement('div');
+                dropEl.className = 'luck-drop';
                 dropEl.textContent = getLuckDropEmoji(frame.message);
                 targetEl.appendChild(dropEl);
                 setTimeout(() => {
                     if (dropEl.isConnected) dropEl.remove();
-                }, 1e3);
+                }, 1000);
             }
             if (frame.vfx.includes('break-stamp')) {
                 const breakEl = document.createElement('div');

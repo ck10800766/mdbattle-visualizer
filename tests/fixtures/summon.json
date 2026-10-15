@@ -1,0 +1,792 @@
+{
+    "participants": {
+        "players": [
+            {
+                "userId": "6ab150baad84d95a03db1ca4",
+                "characterId": "6ac341b3c96fee279c8bbef3",
+                "name": "E14112067",
+                "characterName": "源氏",
+                "imagePath": "/images/characters/genji.webp",
+                "title": "側襲者",
+                "level": 94,
+                "stats": {
+                    "hp": 8470,
+                    "atk": 474,
+                    "def": 181,
+                    "sta": 400,
+                    "agi": 269,
+                    "spd": 471,
+                    "tec": 634,
+                    "int": 291,
+                    "luk": 266
+                },
+                "_id": "6ad0ff3eb695c12f496d453c"
+            }
+        ],
+        "enemies": [
+            {
+                "userId": "6aaf63c0177ff92cc8f066ad",
+                "characterId": "6acf821f971794142ff26334",
+                "name": "芙莉蓮",
+                "characterName": "有紀",
+                "imagePath": "/images/characters/kibayuki-yuuki.webp",
+                "title": "婚紗絕劍",
+                "level": 100,
+                "stats": {
+                    "hp": 10060,
+                    "atk": 605,
+                    "def": 178,
+                    "sta": 264,
+                    "agi": 279,
+                    "spd": 479,
+                    "tec": 572,
+                    "int": 69,
+                    "luk": 304
+                },
+                "_id": "6ad0ff3eb695c12f496d453d"
+            }
+        ]
+    },
+    "_id": "6ad0ff3eb695c12f496d453b",
+    "reportId": 204206,
+    "userIds": [
+        "6ab150baad84d95a03db1ca4",
+        "6aaf63c0177ff92cc8f066ad"
+    ],
+    "battleType": "PVP",
+    "result": "WIN",
+    "outcomes": [],
+    "createdAt": "2026-10-15T16:28:46.566Z",
+    "__v": 0,
+    "logs": [
+        {
+            "type": "BATTLE_START",
+            "message": "戰鬥開始！"
+        },
+        {
+            "type": "LUCK_EVENT",
+            "tier": "PURPLE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "opponentId": "6aaf63c0177ff92cc8f066ad",
+            "value": 50,
+            "actionCancelled": true,
+            "eventId": "purple_1",
+            "message": "源氏 往後退後腦撞到樹受到 50 點傷害。"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_shuriken",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "value": 1793,
+            "actualDamage": 1793,
+            "isCrit": true,
+            "blocked": false,
+            "message": "源氏 甩手射出三枚手裏劍，直取 有紀，會心一擊！對 有紀 造成了 1793 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 300,
+            "actualDamage": 300,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 1 劍，會心一擊！對 源氏 造成了 300 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 300,
+            "actualDamage": 300,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 2 劍，會心一擊！對 源氏 造成了 300 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 292,
+            "actualDamage": 292,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 3 劍，會心一擊！對 源氏 造成了 292 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 67,
+            "actualDamage": 67,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 4 劍，對 源氏 造成了 67 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 70,
+            "actualDamage": 70,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 5 劍，對 源氏 造成了 70 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 61,
+            "actualDamage": 61,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 6 劍，對 源氏 造成了 61 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 74,
+            "actualDamage": 74,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 7 劍，對 源氏 造成了 74 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 287,
+            "actualDamage": 287,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 8 劍，會心一擊！對 源氏 造成了 287 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 66,
+            "actualDamage": 66,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 9 劍，對 源氏 造成了 66 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 68,
+            "actualDamage": 68,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 10 劍，對 源氏 造成了 68 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "message": "源氏 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+            "skillTier": "ultimate",
+            "targetId": "6ab150baad84d95a03db1ca4"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 4468,
+            "actualDamage": 4468,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 11 劍，會心一擊！貫穿十字的正中央，對 源氏 造成 4468 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 72,
+            "actualDamage": 72,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 1 劍，對 源氏 造成了 72 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 63,
+            "actualDamage": 63,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 2 劍，對 源氏 造成了 63 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 61,
+            "actualDamage": 61,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 3 劍，對 源氏 造成了 61 點傷害！"
+        },
+        {
+            "type": "COUNTER",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "basic_counter",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "incomingSkillId": "yuuki_rosario",
+            "value": 1494,
+            "isCrit": true,
+            "message": "第 4 劍，但是遭源氏反擊，會心一擊！受到 1494 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 65,
+            "actualDamage": 65,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 5 劍，對 源氏 造成了 65 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 61,
+            "actualDamage": 61,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 6 劍，對 源氏 造成了 61 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 287,
+            "actualDamage": 287,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 7 劍，會心一擊！對 源氏 造成了 287 點傷害！"
+        },
+        {
+            "type": "COUNTER",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "basic_counter",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "incomingSkillId": "yuuki_rosario",
+            "value": 1288,
+            "isCrit": true,
+            "message": "第 8 劍，但是遭源氏反擊，會心一擊！受到 1288 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 64,
+            "actualDamage": 64,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 9 劍，對 源氏 造成了 64 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 69,
+            "actualDamage": 69,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 10 劍，對 源氏 造成了 69 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "message": "源氏 身上的十字刻下了 8 道劍痕，劍尖對準了正中央——",
+            "skillTier": "ultimate",
+            "targetId": "6ab150baad84d95a03db1ca4"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 1032,
+            "actualDamage": 1032,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 11 劍，貫穿十字的正中央，對 源氏 造成 1032 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "message": "源氏：「我需要治療！」……沒有人回應，他只好自己繞到邊線抓起一個醫療包。"
+        },
+        {
+            "type": "HEAL",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 1694,
+            "message": "源氏 回復了 1694 HP。"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_shuriken",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "value": 1858,
+            "actualDamage": 1858,
+            "isCrit": true,
+            "blocked": false,
+            "message": "源氏 甩手射出三枚手裏劍，直取 有紀，會心一擊！對 有紀 造成了 1858 點傷害！"
+        },
+        {
+            "type": "SUMMON",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "targetId": "summon_1",
+            "skillId": "yuuki_sleeping_knights",
+            "isNormalAttack": false,
+            "message": "有紀 發出公會訊號，沉睡騎士的 詩烏涅 趕來助陣！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "summon_1",
+            "skillId": "yuuki_sleeping_knights",
+            "message": "詩烏涅：「別勉強，傷我來治。」"
+        },
+        {
+            "type": "COUNTER",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "skillId": "basic_counter",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "incomingSkillId": "genji_shuriken",
+            "value": 408,
+            "isCrit": false,
+            "message": "源氏 甩手射出三枚手裏劍，直取 有紀，但是遭有紀反擊，受到 408 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_swift_strike",
+            "skillTier": "standard",
+            "isNormalAttack": false,
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "value": 3250,
+            "actualDamage": 3250,
+            "isCrit": true,
+            "blocked": false,
+            "message": "源氏 使出了 迅影襲，化作一道綠影從 有紀 身邊穿過，會心一擊！對 有紀 造成了 3250 點傷害！"
+        },
+        {
+            "type": "TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "kibayuki_zekken",
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "diceCheck": {
+                "kind": "opposed",
+                "left": {
+                    "min": 1,
+                    "max": 100,
+                    "base": 39,
+                    "modifier": 0,
+                    "baseText": "技巧（572 → 39）",
+                    "roll": 35,
+                    "total": 74
+                },
+                "right": {
+                    "min": 1,
+                    "max": 100,
+                    "base": 44,
+                    "modifier": 0,
+                    "baseText": "技巧（634 → 44）",
+                    "roll": 37,
+                    "total": 81
+                },
+                "winner": "RIGHT"
+            },
+            "message": "絕劍判定：有紀 技巧（572 → 39） + 骰出 35 = 74，源氏 技巧（634 → 44） + 骰出 37 = 81。"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_shuriken",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "targetId": "summon_1",
+            "value": 1844,
+            "actualDamage": 1844,
+            "isCrit": true,
+            "blocked": false,
+            "message": "源氏 甩手射出三枚手裏劍，直取 詩烏涅，會心一擊！對 詩烏涅 造成了 1844 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_shuriken",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "targetId": "summon_1",
+            "value": 1270,
+            "actualDamage": 1270,
+            "isCrit": true,
+            "blocked": false,
+            "message": "手腕一翻，第 2 輪緊跟著射出，會心一擊！對 詩烏涅 造成了 1270 點傷害！"
+        },
+        {
+            "type": "TEXT",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_dragonblade",
+            "skillTier": "ultimate",
+            "message": "源氏 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。"
+        },
+        {
+            "type": "TEXT",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_dragonblade",
+            "skillTier": "ultimate",
+            "message": "源氏 拔出了龍一文字，迅影襲的冷卻也跟著轉好了。"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 283,
+            "actualDamage": 283,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 1 劍，會心一擊！對 源氏 造成了 283 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 62,
+            "actualDamage": 62,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 2 劍，對 源氏 造成了 62 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 68,
+            "actualDamage": 68,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 3 劍，對 源氏 造成了 68 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 67,
+            "actualDamage": 67,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 4 劍，對 源氏 造成了 67 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 309,
+            "actualDamage": 309,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 5 劍，會心一擊！對 源氏 造成了 309 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 66,
+            "actualDamage": 66,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 6 劍，對 源氏 造成了 66 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 64,
+            "actualDamage": 64,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 7 劍，對 源氏 造成了 64 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 72,
+            "actualDamage": 72,
+            "isCrit": false,
+            "blocked": false,
+            "message": "第 8 劍，對 源氏 造成了 72 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 292,
+            "actualDamage": 292,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 9 劍，會心一擊！對 源氏 造成了 292 點傷害！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "skillTier": "ultimate",
+            "isNormalAttack": false,
+            "targetId": "6ab150baad84d95a03db1ca4",
+            "value": 309,
+            "actualDamage": 309,
+            "isCrit": true,
+            "blocked": false,
+            "message": "第 10 劍，會心一擊！對 源氏 造成了 309 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_rosario",
+            "message": "源氏 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+            "skillTier": "ultimate",
+            "targetId": "6ab150baad84d95a03db1ca4"
+        },
+        {
+            "type": "COUNTER",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "basic_counter",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "incomingSkillId": "yuuki_rosario",
+            "value": 376,
+            "isCrit": true,
+            "message": "第 11 劍，但是遭源氏反擊，會心一擊！受到 376 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_lived",
+            "message": "有紀 在倒下前一刻撐住了身體，婚紗的裙襬沾滿了塵土。",
+            "isCounter": true,
+            "counterSource": {
+                "actorId": "6ab150baad84d95a03db1ca4",
+                "targetId": "6aaf63c0177ff92cc8f066ad",
+                "incomingSkillId": "yuuki_rosario"
+            }
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_lived",
+            "message": "有紀：「再一下下……讓我把這一招打完。」",
+            "isCounter": true,
+            "counterSource": {
+                "actorId": "6ab150baad84d95a03db1ca4",
+                "targetId": "6aaf63c0177ff92cc8f066ad",
+                "incomingSkillId": "yuuki_rosario"
+            }
+        },
+        {
+            "type": "HEAL",
+            "actorId": "summon_1",
+            "skillId": "yuuki_siune_heal",
+            "skillTier": "standard",
+            "isNormalAttack": true,
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "value": 544,
+            "message": "詩烏涅 詠唱水妖精的治癒魔法，有紀 恢復了 544 HP！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_swift_strike",
+            "skillTier": "standard",
+            "isNormalAttack": false,
+            "targetId": "summon_1",
+            "value": 3750,
+            "actualDamage": 1916,
+            "isCrit": true,
+            "blocked": false,
+            "message": "源氏 使出了 迅影襲，化作一道綠影從 詩烏涅 身邊穿過，會心一擊！對 詩烏涅 造成了 3750 點傷害！"
+        },
+        {
+            "type": "DEATH",
+            "actorId": "summon_1",
+            "message": "詩烏涅 倒下了！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "message": "迅影襲的冷卻重置了！源氏 腳下一蹬，又衝向了 有紀！"
+        },
+        {
+            "type": "DAMAGE",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "skillId": "genji_swift_strike",
+            "skillTier": "standard",
+            "isNormalAttack": false,
+            "targetId": "6aaf63c0177ff92cc8f066ad",
+            "value": 836,
+            "actualDamage": 545,
+            "isCrit": false,
+            "blocked": false,
+            "message": "源氏 使出了 迅影襲，化作一道綠影從 有紀 身邊穿過，對 有紀 造成了 836 點傷害！"
+        },
+        {
+            "type": "SKILL_TEXT",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "skillId": "yuuki_lived",
+            "message": "有紀：「我……努力活過了。」"
+        },
+        {
+            "type": "DEATH",
+            "actorId": "6aaf63c0177ff92cc8f066ad",
+            "message": "有紀 倒下了！"
+        },
+        {
+            "type": "HP_REMAINING",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "value": 287,
+            "maxHp": 8470,
+            "message": "源氏 剩餘 287 HP"
+        },
+        {
+            "type": "EXP_GAIN",
+            "actorId": "6ab150baad84d95a03db1ca4",
+            "value": 64,
+            "message": "源氏 獲得了 64 點經驗值"
+        }
+    ]
+}
