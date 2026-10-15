@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Local AI context and source maps
+dist/ai-context.txt
+*.map
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbsumbs.db
+Thumbs.db
+
+# Logs
+npm-debug.log*
