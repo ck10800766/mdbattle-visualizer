@@ -3,6 +3,7 @@ node_modules/
 
 # Local AI context and source maps
 dist/ai-context.txt
+repomix-output.xml
 *.map
 
 # IDE and OS files

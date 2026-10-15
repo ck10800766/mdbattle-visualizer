@@ -913,7 +913,7 @@ export function spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetD
         !frame.isEnvironmentalPulse &&
         targetHitCount > 1;
 
-    const isBigHit = targetActor && (displayValue >= targetActor.maxHp * 0.15);
+    const isBigHit = targetActor && !targetActor.hideHp && (displayValue >= targetActor.maxHp * 0.15);
     const isCriticalOrBig = (frame.isCrit && !frame.blocked) || isBigHit;
 
     const arenaRect = arena.getBoundingClientRect();
