@@ -81,7 +81,7 @@
     });
   }
 
-  // src/parser.js
+  // src/profiles.js
   var KNOWN_AOE_SKILLS = /* @__PURE__ */ new Set([
     "genji_fan_of_blades",
     "inspector_blanket",
@@ -92,11 +92,50 @@
     "guerrilla_mortar_shell",
     "guerrilla_mortar_splash"
   ]);
+  var AOE_SKILL_PREFIX_MAP = {
+    "guerrilla_mortar_": "guerrilla_mortar"
+  };
+  var AOE_EXCLUDED_SKILLS = /* @__PURE__ */ new Set([
+    "genji_dragonblade",
+    "genji_dragonblade_sweep"
+  ]);
+  var ENVIRONMENTAL_SKILLS = /* @__PURE__ */ new Set([
+    "originium_altar"
+  ]);
+  var REBIRTH_RULES = {
+    dialogueRegex: /站了起來|進軍|重生|甦醒|恢復|第二階段/,
+    blockKeyword: "\u91CD\u751F"
+  };
+  var LUCK_DROP_EMOJI_RULES = [
+    { keyword: "\u5361\u8ECA", emoji: "\u{1F69A}" },
+    { keyword: "\u91D8\u5B50", emoji: "\u{1F4CC}" },
+    { keyword: "\u9999\u8549\u76AE", emoji: "\u{1F34C}" },
+    { keyword: "\u6A02\u9AD8", emoji: "\u{1F9F1}" },
+    { keyword: "\u6BD4\u7279\u72AC", emoji: "\u{1F415}" },
+    { keyword: "\u98DB\u5F48", emoji: "\u{1F680}" },
+    { keyword: "\u843D\u96F7", emoji: "\u26A1" },
+    { keyword: "\u68D2\u7403", emoji: "\u26BE" },
+    { keyword: "\u649E\u5230\u6A39", emoji: "\u{1F333}" },
+    { keyword: "\u7BAD", emoji: "\u{1F3F9}" },
+    { keyword: "\u5C0F\u5200", emoji: "\u{1F5E1}\uFE0F" },
+    { keyword: "\u9695\u77F3", emoji: "\u2604\uFE0F" }
+  ];
+  var DEFAULT_LUCK_EMOJI = "\u{1F4A5}";
   function normalizeAOESkillGroup(skillId) {
     if (!skillId) return "default";
-    if (skillId.startsWith("guerrilla_mortar_")) return "guerrilla_mortar";
+    for (const [prefix, groupName] of Object.entries(AOE_SKILL_PREFIX_MAP)) {
+      if (skillId.startsWith(prefix)) return groupName;
+    }
     return skillId;
   }
+  function getLuckDropEmoji(message = "") {
+    for (const rule of LUCK_DROP_EMOJI_RULES) {
+      if (message.includes(rule.keyword)) return rule.emoji;
+    }
+    return DEFAULT_LUCK_EMOJI;
+  }
+
+  // src/parser.js
   function markAOEWaves(frames) {
     let i = 0;
     while (i < frames.length) {
@@ -112,7 +151,7 @@
         i++;
         continue;
       }
-      if (rawSkillId === "genji_dragonblade" || rawSkillId === "genji_dragonblade_sweep") {
+      if (AOE_EXCLUDED_SKILLS.has(rawSkillId)) {
         i++;
         continue;
       }
@@ -226,7 +265,7 @@
       let rebirthFrameIndex = -1;
       for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
         const f = frames[i];
-        if (f.actorId === actor.id && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type) && /站了起來|進軍|重生|甦醒|恢復|第二階段/.test(f.message)) {
+        if (f.actorId === actor.id && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type) && REBIRTH_RULES.dialogueRegex.test(f.message)) {
           rebirthFrameIndex = i;
           break;
         }
@@ -234,7 +273,7 @@
       if (rebirthFrameIndex === -1) {
         for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
           const f = frames[i];
-          if (f.targetId === actor.id && f.type === "BLOCK" && f.message.includes("\u91CD\u751F")) {
+          if (f.targetId === actor.id && f.type === "BLOCK" && f.message.includes(REBIRTH_RULES.blockKeyword)) {
             rebirthFrameIndex = i;
             break;
           }
@@ -355,7 +394,7 @@
         }
       }
       const isSelfDamage = log.type === "DAMAGE" && log.actorId && log.actorId === log.targetId;
-      const isEnvironmentalPulse = log.skillId === "originium_altar";
+      const isEnvironmentalPulse = ENVIRONMENTAL_SKILLS.has(log.skillId);
       const frame = {
         index,
         type: log.type,
@@ -2324,7 +2363,7 @@
         if (frame.vfx.includes("luck-drop")) {
           const dropEl = document.createElement("div");
           dropEl.className = "luck-drop";
-          dropEl.textContent = frame.message.includes("\u5361\u8ECA") ? "\u{1F69A}" : frame.message.includes("\u91D8\u5B50") ? "\u{1F4CC}" : frame.message.includes("\u9999\u8549\u76AE") ? "\u{1F34C}" : frame.message.includes("\u6A02\u9AD8") ? "\u{1F9F1}" : frame.message.includes("\u6BD4\u7279\u72AC") ? "\u{1F415}" : frame.message.includes("\u98DB\u5F48") ? "\u{1F680}" : frame.message.includes("\u843D\u96F7") ? "\u26A1" : frame.message.includes("\u68D2\u7403") ? "\u26BE" : frame.message.includes("\u649E\u5230\u6A39") ? "\u{1F333}" : frame.message.includes("\u7BAD") ? "\u{1F3F9}" : frame.message.includes("\u5C0F\u5200") ? "\u{1F5E1}\uFE0F" : frame.message.includes("\u9695\u77F3") ? "\u2604\uFE0F" : "\u{1F4A5}";
+          dropEl.textContent = getLuckDropEmoji(frame.message);
           targetEl.appendChild(dropEl);
           setTimeout(() => {
             if (dropEl.isConnected) dropEl.remove();

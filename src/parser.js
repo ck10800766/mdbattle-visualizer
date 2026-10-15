@@ -1,22 +1,12 @@
 // src/parser.js
 import { engineState } from './state.js';
-
-const KNOWN_AOE_SKILLS = new Set([
-    'genji_fan_of_blades',
-    'inspector_blanket',
-    'sylphy_that_day_wind',
-    'patriot_dust',
-    'patriot_sacrifice',
-    'hoarfrost_stomp',
-    'guerrilla_mortar_shell',
-    'guerrilla_mortar_splash'
-]);
-
-function normalizeAOESkillGroup(skillId) {
-    if (!skillId) return 'default';
-    if (skillId.startsWith('guerrilla_mortar_')) return 'guerrilla_mortar';
-    return skillId;
-}
+import {
+    KNOWN_AOE_SKILLS,
+    AOE_EXCLUDED_SKILLS,
+    ENVIRONMENTAL_SKILLS,
+    REBIRTH_RULES,
+    normalizeAOESkillGroup
+} from "./profiles.js";
 
 function markAOEWaves(frames) {
     let i = 0;
@@ -40,7 +30,7 @@ function markAOEWaves(frames) {
             continue;
         }
 
-        if (rawSkillId === 'genji_dragonblade' || rawSkillId === 'genji_dragonblade_sweep') {
+        if (AOE_EXCLUDED_SKILLS.has(rawSkillId)) {
             i++;
             continue;
         }
@@ -191,11 +181,7 @@ function calibrateHpWithAnchors(frames) {
         let rebirthFrameIndex = -1;
         for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
             const f = frames[i];
-            if (
-                f.actorId === actor.id &&
-                ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(f.type) &&
-                /站了起來|進軍|重生|甦醒|恢復|第二階段/.test(f.message)
-            ) {
+            if (f.actorId === actor.id && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type) && REBIRTH_RULES.dialogueRegex.test(f.message)) {
                 rebirthFrameIndex = i;
                 break;
             }
@@ -205,7 +191,7 @@ function calibrateHpWithAnchors(frames) {
         if (rebirthFrameIndex === -1) {
             for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
                 const f = frames[i];
-                if (f.targetId === actor.id && f.type === 'BLOCK' && f.message.includes('重生')) {
+                if (f.targetId === actor.id && f.type === "BLOCK" && f.message.includes(REBIRTH_RULES.blockKeyword)) {
                     rebirthFrameIndex = i;
                     break;
                 }
@@ -356,7 +342,7 @@ export function buildStateSnapshots(logs) {
             log.type === 'DAMAGE' &&
             log.actorId &&
             log.actorId === log.targetId;
-        const isEnvironmentalPulse = log.skillId === 'originium_altar';
+        const isEnvironmentalPulse = ENVIRONMENTAL_SKILLS.has(log.skillId);
 
         const frame = {
             index,
