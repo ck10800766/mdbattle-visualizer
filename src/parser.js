@@ -1,16 +1,56 @@
-// src/parser.js
+// ==========================================
+// FILE: src/parser.js
+// ==========================================
 import { engineState } from './state.js';
-import {
-    KNOWN_AOE_SKILLS,
-    AOE_EXCLUDED_SKILLS,
-    ENVIRONMENTAL_SKILLS,
-    REBIRTH_RULES,
-    normalizeAOESkillGroup
-} from "./profiles.js";
+import { ENVIRONMENTAL_SKILLS } from './profiles.js';
+import { markAOEWaves, calibrateHpWithAnchors } from './calibrator.js';
+
+const DEFAULT_AVATAR_URL = 'https://via.placeholder.com/150';
+const ASSET_HOST = 'https://mydoujin.online';
 
 /**
- * Infers the display name of a summoned unit by prioritizing structured combat logs
- * (dialogue, death, damage target, actor prefix) before falling back to the SUMMON text.
+ * Factory helper to create a standardized actor state entity.
+ * @param {object} config - Actor configuration parameters.
+ * @returns {object} Standardized actor entity.
+ */
+function createActorEntity({
+    id,
+    name = 'Unknown',
+    side = 'left',
+    maxHp = 1,
+    hideHp = false,
+    avatar = DEFAULT_AVATAR_URL,
+    isSummon = false,
+    ownerId = null,
+    initiallySpawned = true
+}) {
+    return {
+        id,
+        name,
+        side,
+        maxHp,
+        currentHp: maxHp,
+        hideHp,
+        avatar,
+        isSummon,
+        ownerId,
+        initiallySpawned,
+        turnNumbers: [],
+        totalDamageDealt: 0,
+        luckDamageDealt: 0,
+        totalDamageTaken: 0,
+        lastUltimateTurn: null
+    };
+}
+
+/**
+ * Infers the display name of a summoned unit by inspecting structured combat logs
+ * (death, dialogue, actor prefix, damage target) before falling back to tokenizing the SUMMON message.
+ * @param {Array<object>} logs - Raw combat log array.
+ * @param {number} summonIndex - Index of the SUMMON log entry.
+ * @param {string} summonId - Unique entity ID of the summoned unit.
+ * @param {string} ownerName - Display name of the summoner.
+ * @returns {string} Inferred display name for the summon.
  */
 function inferSummonName(logs, summonIndex, summonId, ownerName) {
     const summonLog = logs[summonIndex];
@@ -19,7 +59,7 @@ function inferSummonName(logs, summonIndex, summonId, ownerName) {
     const explicitName = summonLog.targetName || summonLog.summonName || summonLog.characterName || summonLog.name;
     if (explicitName) return String(explicitName).trim();
 
-    // 1. Inspect subsequent structured logs involving this summonId (most reliable)
+    // 1. Inspect subsequent structured logs involving this summonId
     for (let i = summonIndex + 1; i < logs.length; i++) {
         const log = logs[i];
         if (!log || typeof log !== 'object') continue;
@@ -45,12 +85,10 @@ function inferSummonName(logs, summonIndex, summonId, ownerName) {
         }
     }
 
-    // 2. Fallback: parse the SUMMON message itself if the summon never acted or took damage.
-    // Split by whitespace and pick the last standalone name token before the trailing action phrase.
+    // 2. Fallback: tokenize the SUMMON log message itself
     const summonMsg = String(summonLog.message || '').trim();
     const whitespaceTokens = summonMsg.split(/\s+/);
     if (whitespaceTokens.length >= 3) {
-        // In "<Owner> <Flavor text> <SummonName> <Arrival verb>", the summon name is the second-to-last token
         const candidate = whitespaceTokens[whitespaceTokens.length - 2]
             .split(/[，,。！!、的]/).pop();
         if (candidate && candidate !== ownerName) {
@@ -61,233 +99,10 @@ function inferSummonName(logs, summonIndex, summonId, ownerName) {
     return 'Summon';
 }
 
-function markAOEWaves(frames) {
-    let i = 0;
-    while (i < frames.length) {
-        const f = frames[i];
-        if (
-            !['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(f.type) ||
-            f.isSelfDamage ||
-            f.isEnvironmentalPulse
-        ) {
-            i++;
-            continue;
-        }
-
-        const isCounterFrame = f.type === 'COUNTER' || f.isCounter;
-        const casterId = isCounterFrame ? f.targetId : f.actorId;
-        const rawSkillId = isCounterFrame ? f.incomingSkillId : f.skillId;
-
-        if (!casterId || !rawSkillId) {
-            i++;
-            continue;
-        }
-
-        if (AOE_EXCLUDED_SKILLS.has(rawSkillId)) {
-            i++;
-            continue;
-        }
-
-        const baseSkill = normalizeAOESkillGroup(rawSkillId);
-        const waveAnimatedFrames = [];
-        const distinctTargets = new Set();
-        let j = i;
-        let lastWaveFrameIndex = i;
-
-        while (j < frames.length) {
-            const cur = frames[j];
-
-            if (cur.isSelfDamage || cur.isEnvironmentalPulse) break;
-
-            if (['DAMAGE', 'MISS', 'BLOCK'].includes(cur.type) && !cur.isCounter) {
-                if (cur.actorId === casterId && normalizeAOESkillGroup(cur.skillId) === baseSkill) {
-                    waveAnimatedFrames.push(cur);
-                    if (cur.targetId) distinctTargets.add(cur.targetId);
-                    lastWaveFrameIndex = j;
-                    j++;
-                    continue;
-                }
-                break;
-            }
-
-            if (cur.type === 'COUNTER' || cur.isCounter) {
-                if (cur.targetId === casterId && normalizeAOESkillGroup(cur.incomingSkillId) === baseSkill) {
-                    if (!cur.isCounterSetup) {
-                        waveAnimatedFrames.push(cur);
-                    }
-                    if (cur.actorId) distinctTargets.add(cur.actorId);
-                    lastWaveFrameIndex = j;
-                    j++;
-                    continue;
-                }
-                break;
-            }
-
-            if (['HEAL', 'LUCK_EVENT', 'SUMMON'].includes(cur.type)) {
-                break;
-            }
-            if (cur.type === 'SKILL_TEXT' && cur.actorId !== casterId) {
-                break;
-            }
-            if (
-                cur.type === 'SKILL_TEXT' &&
-                cur.actorId === casterId &&
-                cur.skillId &&
-                normalizeAOESkillGroup(cur.skillId) !== baseSkill
-            ) {
-                break;
-            }
-
-            j++;
-        }
-
-        const isKnownAOE = KNOWN_AOE_SKILLS.has(rawSkillId) || KNOWN_AOE_SKILLS.has(baseSkill);
-        const isMultiTargetWave =
-            distinctTargets.size >= 2 &&
-            waveAnimatedFrames.length <= distinctTargets.size * 2;
-
-        if ((isKnownAOE || isMultiTargetWave) && waveAnimatedFrames.length > 0) {
-            waveAnimatedFrames.forEach((wf, idx) => {
-                wf.isAOE = true;
-                wf.aoeCasterId = casterId;
-                wf.isAOEFirst = idx === 0;
-                wf.isAOELast = idx === waveAnimatedFrames.length - 1;
-            });
-            i = lastWaveFrameIndex + 1;
-        } else {
-            i++;
-        }
-    }
-}
-
 /**
- * Calibrates actor HP timelines using final HP_REMAINING / DEATH anchors.
- * Detects hidden Phase 2 HP regeneration (e.g., Patriot kneeling at 1 HP and reviving)
- * even when the boss later dies or ends with HP_REMAINING.
+ * Parses report participants and pre-registers any dynamically summoned units into engineState.actors.
+ * @param {object} reportData - Battle report payload.
  */
-function calibrateHpWithAnchors(frames) {
-    engineState.actors.forEach(actor => {
-        if (actor.hideHp) return;
-        let anchorIndex = -1;
-        let anchorHp = null;
-
-        for (let i = frames.length - 1; i >= 0; i--) {
-            const f = frames[i];
-            if (f.type === 'HP_REMAINING' && f.actorId === actor.id) {
-                anchorIndex = i;
-                anchorHp = f.value;
-                break;
-            }
-            if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(f.type) && f.actorId === actor.id) {
-                anchorIndex = i;
-                anchorHp = 0;
-                break;
-            }
-        }
-
-        if (anchorIndex < 0 || anchorHp == null) return;
-
-        // Find the first frame where forward-calculated HP dropped to <= 1
-        let lowHpStartIndex = -1;
-        for (let i = 0; i <= anchorIndex; i++) {
-            const hp = frames[i].actorsHpState.get(actor.id);
-            if (hp != null && hp <= 1) {
-                lowHpStartIndex = i;
-                break;
-            }
-        }
-
-        if (lowHpStartIndex < 0) {
-            // No low-HP phase occurred; still ensure anchor frame and subsequent frames match anchorHp
-            for (let i = anchorIndex; i < frames.length; i++) {
-                frames[i].actorsHpState.set(actor.id, anchorHp);
-            }
-            return;
-        }
-
-        const hpAtLowStart = frames[lowHpStartIndex].actorsHpState.get(actor.id) ?? 0;
-
-        // Sum all HP deltas after lowHpStartIndex up to anchorIndex (unclamped)
-        let sumDeltasAfterLow = 0;
-        let firstPostRebirthDeltaIndex = -1;
-        for (let i = lowHpStartIndex + 1; i <= anchorIndex; i++) {
-            const delta = frames[i].hpDeltas?.get(actor.id) || 0;
-            sumDeltasAfterLow += delta;
-            if (delta !== 0 && firstPostRebirthDeltaIndex === -1) {
-                firstPostRebirthDeltaIndex = i;
-            }
-        }
-
-        const expectedEndHpWithoutRebirth = hpAtLowStart + sumDeltasAfterLow;
-        const missingHeal = anchorHp - expectedEndHpWithoutRebirth;
-
-        // If there is no hidden phase-transition heal, simply sync anchor frames and return
-        if (Math.abs(missingHeal) <= 1) {
-            for (let i = anchorIndex; i < frames.length; i++) {
-                frames[i].actorsHpState.set(actor.id, anchorHp);
-            }
-            return;
-        }
-
-        const searchLimit = firstPostRebirthDeltaIndex !== -1 ? firstPostRebirthDeltaIndex : anchorIndex;
-
-        // Locate the narrative frame where the Boss stands back up / enters Phase 2
-        let rebirthFrameIndex = -1;
-        for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
-            const f = frames[i];
-            if (f.actorId === actor.id && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type) && REBIRTH_RULES.dialogueRegex.test(f.message)) {
-                rebirthFrameIndex = i;
-                break;
-            }
-        }
-
-        // Fallback 1: first BLOCK frame mentioning "重生"
-        if (rebirthFrameIndex === -1) {
-            for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
-                const f = frames[i];
-                if (f.targetId === actor.id && f.type === "BLOCK" && f.message.includes(REBIRTH_RULES.blockKeyword)) {
-                    rebirthFrameIndex = i;
-                    break;
-                }
-            }
-        }
-
-        // Fallback 2: the frame right before or at the first post-rebirth HP change
-        if (rebirthFrameIndex === -1) {
-            rebirthFrameIndex = searchLimit;
-        }
-
-        // Walk backward from anchorIndex down to rebirthFrameIndex using recorded hpDeltas
-        const backwardHp = new Array(anchorIndex + 1);
-        let b = anchorHp;
-        for (let i = anchorIndex; i >= rebirthFrameIndex; i--) {
-            backwardHp[i] = b;
-            const delta = frames[i].hpDeltas?.get(actor.id) || 0;
-            b = Math.max(0, Math.min(actor.maxHp, b - delta));
-        }
-
-        const prevHp = frames[Math.max(0, rebirthFrameIndex - 1)].actorsHpState.get(actor.id) ?? hpAtLowStart;
-        const healedAmount = Math.round(backwardHp[rebirthFrameIndex] - prevHp);
-
-        if (healedAmount > 0) {
-            const rebirthFrame = frames[rebirthFrameIndex];
-            rebirthFrame.rebirthHeal = true;
-            rebirthFrame.isBeneficial = true;
-            rebirthFrame.value = healedAmount;
-            if (!rebirthFrame.vfx.includes('flash-green')) {
-                rebirthFrame.vfx.push('flash-green');
-            }
-        }
-
-        for (let i = rebirthFrameIndex; i <= anchorIndex; i++) {
-            frames[i].actorsHpState.set(actor.id, backwardHp[i]);
-        }
-        for (let i = anchorIndex + 1; i < frames.length; i++) {
-            frames[i].actorsHpState.set(actor.id, anchorHp);
-        }
-    });
-}
-
 export function parseParticipants(reportData) {
     engineState.actors.clear();
     const p = reportData.participants || {};
@@ -310,23 +125,17 @@ export function parseParticipants(reportData) {
         const maxHp = rawHp > 0 ? rawHp : 1;
         const avatarPath = player.imagePath;
 
-        engineState.actors.set(id, {
+        engineState.actors.set(id, createActorEntity({
             id,
             name,
             side: 'left',
             maxHp,
-            currentHp: maxHp,
             hideHp,
-            avatar: avatarPath ? `https://mydoujin.online${avatarPath}` : 'https://via.placeholder.com/150',
+            avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
             isSummon,
             ownerId: player.summonerId || null,
-            initiallySpawned: !summonedIds.has(id),
-            turnNumbers: [],
-            totalDamageDealt: 0,
-            luckDamageDealt: 0,
-            totalDamageTaken: 0,
-            lastUltimateTurn: null
-        });
+            initiallySpawned: !summonedIds.has(id)
+        }));
     });
 
     (p.enemies || []).forEach(enemy => {
@@ -342,26 +151,20 @@ export function parseParticipants(reportData) {
             avatarPath = fallbackBossImage;
         }
 
-        engineState.actors.set(id, {
+        engineState.actors.set(id, createActorEntity({
             id,
             name,
             side: 'right',
             maxHp,
-            currentHp: maxHp,
             hideHp,
-            avatar: avatarPath ? `https://mydoujin.online${avatarPath}` : 'https://via.placeholder.com/150',
+            avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
             isSummon,
             ownerId: enemy.summonerId || null,
-            initiallySpawned: !summonedIds.has(id),
-            turnNumbers: [],
-            totalDamageDealt: 0,
-            luckDamageDealt: 0,
-            totalDamageTaken: 0,
-            lastUltimateTurn: null
-        });
+            initiallySpawned: !summonedIds.has(id)
+        }));
     });
 
-    // Pre-register dynamic summons so createBattleStage and frame 0 states include them
+    // Pre-register dynamic summons so initial DOM creation and frame 0 snapshots include them
     logs.forEach((log, index) => {
         if (!log || log.type !== 'SUMMON' || !log.targetId) return;
 
@@ -372,27 +175,26 @@ export function parseParticipants(reportData) {
         const summonName = inferSummonName(logs, index, log.targetId, owner?.name || '');
 
         if (!engineState.actors.has(log.targetId)) {
-            engineState.actors.set(log.targetId, {
+            engineState.actors.set(log.targetId, createActorEntity({
                 id: log.targetId,
                 name: summonName,
                 side: owner ? owner.side : 'left',
                 maxHp,
-                currentHp: maxHp,
                 hideHp: !hasExplicitHp,
-                avatar: owner ? owner.avatar : 'https://via.placeholder.com/150',
+                avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
                 isSummon: true,
                 ownerId: log.actorId || null,
-                initiallySpawned: false,
-                turnNumbers: [],
-                totalDamageDealt: 0,
-                luckDamageDealt: 0,
-                totalDamageTaken: 0,
-                lastUltimateTurn: null
-            });
+                initiallySpawned: false
+            }));
         }
     });
 }
 
+/**
+ * Builds deterministic frame-by-frame state snapshots from raw battle logs
+ * and runs post-processing calibration passes.
+ * @param {Array<object>} logs - Raw combat log entries.
+ */
 export function buildStateSnapshots(logs) {
     engineState.frames = [];
     let currentTurn = 0;
@@ -416,12 +218,12 @@ export function buildStateSnapshots(logs) {
         let isCounterSetup = false;
         if (log.type === 'COUNTER') {
             for (let j = index + 1; j < Math.min(logs.length, index + 6); j++) {
-                const x = logs[j];
+                const nextLog = logs[j];
                 if (
-                    x &&
-                    (x.type === 'DAMAGE' || x.type === 'BLOCK') &&
-                    x.isCounter &&
-                    (Number(x.value) === rawValue || x.actorId === log.actorId)
+                    nextLog &&
+                    (nextLog.type === 'DAMAGE' || nextLog.type === 'BLOCK') &&
+                    nextLog.isCounter &&
+                    (Number(nextLog.value) === rawValue || nextLog.actorId === log.actorId)
                 ) {
                     isCounterSetup = true;
                     break;
@@ -513,23 +315,17 @@ export function buildStateSnapshots(logs) {
             const summonName = inferSummonName(logs, index, log.targetId, owner?.name || '');
 
             if (!engineState.actors.has(log.targetId)) {
-                engineState.actors.set(log.targetId, {
+                engineState.actors.set(log.targetId, createActorEntity({
                     id: log.targetId,
                     name: summonName,
                     side: owner ? owner.side : 'left',
                     maxHp,
-                    currentHp: maxHp,
                     hideHp: !hasExplicitHp,
-                    avatar: owner ? owner.avatar : 'https://via.placeholder.com/150',
+                    avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
                     isSummon: true,
                     ownerId: log.actorId,
-                    initiallySpawned: false,
-                    turnNumbers: [],
-                    totalDamageDealt: 0,
-                    luckDamageDealt: 0,
-                    totalDamageTaken: 0,
-                    lastUltimateTurn: null
-                });
+                    initiallySpawned: false
+                }));
             } else {
                 const summonActor = engineState.actors.get(log.targetId);
                 summonActor.currentHp = summonActor.maxHp;
@@ -710,6 +506,10 @@ export function buildStateSnapshots(logs) {
     engineState.totalTurns = currentTurn;
 }
 
+/**
+ * Aggregates player and summon combat statistics to determine the party MVP.
+ * @returns {{ consolidated: Map<string, object>, mvp: object|null, maxTotalDamage: number }}
+ */
 export function getConsolidatedStats() {
     let mvp = null;
     let maxTotalDamage = 0;

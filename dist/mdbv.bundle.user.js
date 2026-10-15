@@ -28,10 +28,14 @@
       deltaY: void 0,
       prevMoveX: 0,
       prevDeltaY: 0,
+      aoeCenterX: void 0,
+      aoeCenterY: void 0,
+      atCenterStage: false,
       lastFrameIndex: -1
     };
   }
   var engineState = {
+    lastReportData: null,
     frames: [],
     currentFrameIndex: 0,
     isPlaying: false,
@@ -52,33 +56,6 @@
   function nextPlaybackToken() {
     engineState.playbackToken += 1;
     return engineState.playbackToken;
-  }
-  function escapeRegExp(str) {
-    return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  }
-  function escapeHtml(str) {
-    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-  }
-  function formatLogMessage(rawMessage, actorsMap) {
-    const safeMsg = escapeHtml(rawMessage);
-    const sortedActors = Array.from(actorsMap.values()).filter((a) => a && a.name).sort((a, b) => b.name.length - a.name.length);
-    if (sortedActors.length === 0) return safeMsg;
-    const sideByEscapedName = /* @__PURE__ */ new Map();
-    const patterns = [];
-    sortedActors.forEach((actor) => {
-      const escapedHtmlName = escapeHtml(actor.name);
-      if (!sideByEscapedName.has(escapedHtmlName)) {
-        sideByEscapedName.set(escapedHtmlName, actor.side);
-        patterns.push(escapeRegExp(escapedHtmlName));
-      }
-    });
-    if (patterns.length === 0) return safeMsg;
-    const regex = new RegExp(`(${patterns.join("|")})`, "g");
-    return safeMsg.replace(regex, (match) => {
-      const side = sideByEscapedName.get(match);
-      const nameClass = side === "left" ? "actor-name-left" : "actor-name-right";
-      return `<span class="${nameClass}">${match}</span>`;
-    });
   }
 
   // src/profiles.js
@@ -135,43 +112,7 @@
     return DEFAULT_LUCK_EMOJI;
   }
 
-  // src/parser.js
-  function inferSummonName(logs, summonIndex, summonId, ownerName) {
-    const summonLog = logs[summonIndex];
-    if (!summonLog) return "Summon";
-    const explicitName = summonLog.targetName || summonLog.summonName || summonLog.characterName || summonLog.name;
-    if (explicitName) return String(explicitName).trim();
-    for (let i = summonIndex + 1; i < logs.length; i++) {
-      const log = logs[i];
-      if (!log || typeof log !== "object") continue;
-      const msg = String(log.message || "");
-      if (log.actorId === summonId) {
-        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
-          const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
-          if (deathMatch) return deathMatch[1];
-        }
-        const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
-        if (dialogueMatch) return dialogueMatch[1];
-        const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
-        if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
-          return actorPrefixMatch[1];
-        }
-      }
-      if (log.targetId === summonId && ["DAMAGE", "BLOCK", "HEAL"].includes(log.type)) {
-        const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
-        if (targetMatch) return targetMatch[1];
-      }
-    }
-    const summonMsg = String(summonLog.message || "").trim();
-    const whitespaceTokens = summonMsg.split(/\s+/);
-    if (whitespaceTokens.length >= 3) {
-      const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、的]/).pop();
-      if (candidate && candidate !== ownerName) {
-        return candidate;
-      }
-    }
-    return "Summon";
-  }
+  // src/calibrator.js
   function markAOEWaves(frames) {
     let i = 0;
     while (i < frames.length) {
@@ -183,11 +124,7 @@
       const isCounterFrame = f.type === "COUNTER" || f.isCounter;
       const casterId = isCounterFrame ? f.targetId : f.actorId;
       const rawSkillId = isCounterFrame ? f.incomingSkillId : f.skillId;
-      if (!casterId || !rawSkillId) {
-        i++;
-        continue;
-      }
-      if (AOE_EXCLUDED_SKILLS.has(rawSkillId)) {
+      if (!casterId || !rawSkillId || AOE_EXCLUDED_SKILLS.has(rawSkillId)) {
         i++;
         continue;
       }
@@ -320,11 +257,11 @@
         rebirthFrameIndex = searchLimit;
       }
       const backwardHp = new Array(anchorIndex + 1);
-      let b = anchorHp;
+      let currentBackHp = anchorHp;
       for (let i = anchorIndex; i >= rebirthFrameIndex; i--) {
-        backwardHp[i] = b;
+        backwardHp[i] = currentBackHp;
         const delta = frames[i].hpDeltas?.get(actor.id) || 0;
-        b = Math.max(0, Math.min(actor.maxHp, b - delta));
+        currentBackHp = Math.max(0, Math.min(actor.maxHp, currentBackHp - delta));
       }
       const prevHp = frames[Math.max(0, rebirthFrameIndex - 1)].actorsHpState.get(actor.id) ?? hpAtLowStart;
       const healedAmount = Math.round(backwardHp[rebirthFrameIndex] - prevHp);
@@ -345,6 +282,75 @@
       }
     });
   }
+
+  // src/parser.js
+  var DEFAULT_AVATAR_URL = "https://via.placeholder.com/150";
+  var ASSET_HOST = "https://mydoujin.online";
+  function createActorEntity({
+    id,
+    name = "Unknown",
+    side = "left",
+    maxHp = 1,
+    hideHp = false,
+    avatar = DEFAULT_AVATAR_URL,
+    isSummon = false,
+    ownerId = null,
+    initiallySpawned = true
+  }) {
+    return {
+      id,
+      name,
+      side,
+      maxHp,
+      currentHp: maxHp,
+      hideHp,
+      avatar,
+      isSummon,
+      ownerId,
+      initiallySpawned,
+      turnNumbers: [],
+      totalDamageDealt: 0,
+      luckDamageDealt: 0,
+      totalDamageTaken: 0,
+      lastUltimateTurn: null
+    };
+  }
+  function inferSummonName(logs, summonIndex, summonId, ownerName) {
+    const summonLog = logs[summonIndex];
+    if (!summonLog) return "Summon";
+    const explicitName = summonLog.targetName || summonLog.summonName || summonLog.characterName || summonLog.name;
+    if (explicitName) return String(explicitName).trim();
+    for (let i = summonIndex + 1; i < logs.length; i++) {
+      const log = logs[i];
+      if (!log || typeof log !== "object") continue;
+      const msg = String(log.message || "");
+      if (log.actorId === summonId) {
+        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
+          const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
+          if (deathMatch) return deathMatch[1];
+        }
+        const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
+        if (dialogueMatch) return dialogueMatch[1];
+        const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
+        if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
+          return actorPrefixMatch[1];
+        }
+      }
+      if (log.targetId === summonId && ["DAMAGE", "BLOCK", "HEAL"].includes(log.type)) {
+        const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
+        if (targetMatch) return targetMatch[1];
+      }
+    }
+    const summonMsg = String(summonLog.message || "").trim();
+    const whitespaceTokens = summonMsg.split(/\s+/);
+    if (whitespaceTokens.length >= 3) {
+      const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、的]/).pop();
+      if (candidate && candidate !== ownerName) {
+        return candidate;
+      }
+    }
+    return "Summon";
+  }
   function parseParticipants(reportData) {
     engineState.actors.clear();
     const p = reportData.participants || {};
@@ -364,23 +370,17 @@
       const hideHp = isSummon && !(rawHp > 1);
       const maxHp = rawHp > 0 ? rawHp : 1;
       const avatarPath = player.imagePath;
-      engineState.actors.set(id, {
+      engineState.actors.set(id, createActorEntity({
         id,
         name,
         side: "left",
         maxHp,
-        currentHp: maxHp,
         hideHp,
-        avatar: avatarPath ? `https://mydoujin.online${avatarPath}` : "https://via.placeholder.com/150",
+        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
         isSummon,
         ownerId: player.summonerId || null,
-        initiallySpawned: !summonedIds.has(id),
-        turnNumbers: [],
-        totalDamageDealt: 0,
-        luckDamageDealt: 0,
-        totalDamageTaken: 0,
-        lastUltimateTurn: null
-      });
+        initiallySpawned: !summonedIds.has(id)
+      }));
     });
     (p.enemies || []).forEach((enemy) => {
       const id = enemy.userId || enemy.entityId || enemy._id;
@@ -393,23 +393,17 @@
       if ((!avatarPath || avatarPath.includes("default-boss.webp")) && fallbackBossImage) {
         avatarPath = fallbackBossImage;
       }
-      engineState.actors.set(id, {
+      engineState.actors.set(id, createActorEntity({
         id,
         name,
         side: "right",
         maxHp,
-        currentHp: maxHp,
         hideHp,
-        avatar: avatarPath ? `https://mydoujin.online${avatarPath}` : "https://via.placeholder.com/150",
+        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
         isSummon,
         ownerId: enemy.summonerId || null,
-        initiallySpawned: !summonedIds.has(id),
-        turnNumbers: [],
-        totalDamageDealt: 0,
-        luckDamageDealt: 0,
-        totalDamageTaken: 0,
-        lastUltimateTurn: null
-      });
+        initiallySpawned: !summonedIds.has(id)
+      }));
     });
     logs.forEach((log, index) => {
       if (!log || log.type !== "SUMMON" || !log.targetId) return;
@@ -419,23 +413,17 @@
       const maxHp = hasExplicitHp ? explicitHp : 1;
       const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
       if (!engineState.actors.has(log.targetId)) {
-        engineState.actors.set(log.targetId, {
+        engineState.actors.set(log.targetId, createActorEntity({
           id: log.targetId,
           name: summonName,
           side: owner ? owner.side : "left",
           maxHp,
-          currentHp: maxHp,
           hideHp: !hasExplicitHp,
-          avatar: owner ? owner.avatar : "https://via.placeholder.com/150",
+          avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
           isSummon: true,
           ownerId: log.actorId || null,
-          initiallySpawned: false,
-          turnNumbers: [],
-          totalDamageDealt: 0,
-          luckDamageDealt: 0,
-          totalDamageTaken: 0,
-          lastUltimateTurn: null
-        });
+          initiallySpawned: false
+        }));
       }
     });
   }
@@ -457,8 +445,8 @@
       let isCounterSetup = false;
       if (log.type === "COUNTER") {
         for (let j = index + 1; j < Math.min(logs.length, index + 6); j++) {
-          const x = logs[j];
-          if (x && (x.type === "DAMAGE" || x.type === "BLOCK") && x.isCounter && (Number(x.value) === rawValue || x.actorId === log.actorId)) {
+          const nextLog = logs[j];
+          if (nextLog && (nextLog.type === "DAMAGE" || nextLog.type === "BLOCK") && nextLog.isCounter && (Number(nextLog.value) === rawValue || nextLog.actorId === log.actorId)) {
             isCounterSetup = true;
             break;
           }
@@ -533,23 +521,17 @@
         const maxHp = hasExplicitHp ? explicitHp : 1;
         const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
         if (!engineState.actors.has(log.targetId)) {
-          engineState.actors.set(log.targetId, {
+          engineState.actors.set(log.targetId, createActorEntity({
             id: log.targetId,
             name: summonName,
             side: owner ? owner.side : "left",
             maxHp,
-            currentHp: maxHp,
             hideHp: !hasExplicitHp,
-            avatar: owner ? owner.avatar : "https://via.placeholder.com/150",
+            avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
             isSummon: true,
             ownerId: log.actorId,
-            initiallySpawned: false,
-            turnNumbers: [],
-            totalDamageDealt: 0,
-            luckDamageDealt: 0,
-            totalDamageTaken: 0,
-            lastUltimateTurn: null
-          });
+            initiallySpawned: false
+          }));
         } else {
           const summonActor = engineState.actors.get(log.targetId);
           summonActor.currentHp = summonActor.maxHp;
@@ -744,12 +726,41 @@
     return { consolidated, mvp, maxTotalDamage };
   }
 
+  // src/utils.js
+  function escapeRegExp(str) {
+    return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function formatLogMessage(rawMessage, actorsMap) {
+    const safeMsg = escapeHtml(rawMessage);
+    const sortedActors = Array.from(actorsMap.values()).filter((a) => a && a.name).sort((a, b) => b.name.length - a.name.length);
+    if (sortedActors.length === 0) return safeMsg;
+    const sideByEscapedName = /* @__PURE__ */ new Map();
+    const patterns = [];
+    sortedActors.forEach((actor) => {
+      const escapedHtmlName = escapeHtml(actor.name);
+      if (!sideByEscapedName.has(escapedHtmlName)) {
+        sideByEscapedName.set(escapedHtmlName, actor.side);
+        patterns.push(escapeRegExp(escapedHtmlName));
+      }
+    });
+    if (patterns.length === 0) return safeMsg;
+    const regex = new RegExp(`(${patterns.join("|")})`, "g");
+    return safeMsg.replace(regex, (match) => {
+      const side = sideByEscapedName.get(match);
+      const nameClass = side === "left" ? "actor-name-left" : "actor-name-right";
+      return `<span class="${nameClass}">${match}</span>`;
+    });
+  }
+
   // src/styles.js
   var STAGE_STYLES = `
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     .stage { width: 100%; height: 100%; display: flex; flex-direction: column; background: radial-gradient(circle at center, #1a202c 0%, #000 100%); }
 
-    /* Controls */
+    /* Playback Controls */
     .controls { display: flex; padding: 10px 20px; background: #171923; border-bottom: 1px solid #2d3748; gap: 15px; align-items: center; justify-content: center; }
     .seek-container { flex: 1; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 13px; font-variant-numeric: tabular-nums; }
     input[type="range"] { flex: 1; accent-color: #4fd1c5; cursor: pointer; }
@@ -758,7 +769,7 @@
     button.danger { background: #9b2c2c; border-color: #fc8181; }
     button.danger:hover { background: #c53030; }
 
-    /* ATB Timeline */
+    /* ATB / CTB Timeline Track */
     .ctb-container { height: 70px; background: rgba(0,0,0,0.8); border-bottom: 2px solid #4a5568; position: relative; padding: 0 80px 0 40px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     .ctb-track { position: relative; width: 100%; height: 4px; background: #4a5568; border-radius: 2px; }
     .ctb-action-point { position: absolute; right: -40px; top: -20px; width: 40px; height: 44px; border-left: 3px solid #f6e05e; display: flex; align-items: center; padding-left: 8px; color: #f6e05e; font-weight: bold; font-size: 12px; font-style: italic; box-shadow: -4px 0 8px -4px rgba(246,224,94,0.8); }
@@ -768,7 +779,7 @@
     .ctb-icon.left { border-color: #63b3ed; }
     .ctb-icon.right { border-color: #fc8181; }
 
-    /* Arena */
+    /* Battle Arena & Actor Cards */
     .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 5vw; position: relative; min-height: 0; overflow: hidden; }
     .team { display: flex; flex-direction: column; gap: 15px; align-items: center; align-content: center; width: 40%; max-height: 100%; }
     .left-team { justify-content: center; flex-wrap: wrap; }
@@ -787,14 +798,14 @@
     .hp-fill.danger { background: #f56565; }
     .hp-text { position: absolute; width: 100%; text-align: center; top: -1px; font-size: 11px; color: #fff; font-weight: bold; text-shadow: 0 1px 2px #000; }
 
-    /* Dice & Status Badges */
+    /* Dice Check & Status Badges */
     .dice-badge { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; z-index: 55; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.6); animation: slideInUp 0.2s ease-out forwards; }
     .dice-pass { background: rgba(47, 133, 90, 0.95); border: 1px solid #68d391; }
     .dice-fail { background: rgba(197, 48, 48, 0.95); border: 1px solid #fc8181; }
     .dice-roll { background: rgba(43, 108, 176, 0.95); border: 1px solid #63b3ed; }
     .dice-warn { background: rgba(183, 121, 31, 0.95); border: 1px solid #f6e05e; }
 
-    /* Dialog and Logs */
+    /* Combat Log Dialog Box */
     .dialog-box { height: 160px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 10px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: 14px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; }
     .log-line.system-log { background: rgba(255, 255, 255, 0.03); }
@@ -802,24 +813,23 @@
     .actor-name-left { font-weight: bold; color: #90cdf4; }
     .actor-name-right { font-weight: bold; color: #feb2b2; }
 
-    /* Speech Bubble */
+    /* Actor Speech Bubbles */
     .speech-bubble { position: absolute; top: -25px; background: rgba(15, 23, 42, 0.95); color: #f8fafc; padding: 12px 18px; border-radius: 12px; font-weight: normal; font-size: 15px; line-height: 1.5; max-width: 350px; width: max-content; word-wrap: break-word; box-shadow: 0 8px 16px rgba(0,0,0,0.6); z-index: 60; pointer-events: none; backdrop-filter: blur(4px); border: 1px solid; }
     .left-bubble { left: 85%; border-bottom-left-radius: 0; border-color: #63b3ed; }
     .left-bubble::after { content: ''; position: absolute; bottom: -10px; left: -1px; border-width: 10px 15px 0 0; border-style: solid; border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent; }
     .right-bubble { right: 85%; border-bottom-right-radius: 0; border-color: #fc8181; }
     .right-bubble::after { content: ''; position: absolute; bottom: -10px; right: -1px; border-width: 10px 0 0 15px; border-style: solid; border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent; }
 
-    /* VFX */
+    /* Floating Combat Text & Stamps */
     .floating-text { position: absolute; top: 30%; left: 50%; transform: translate(-50%, 0); font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 4px 6px rgba(0,0,0,1); animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; z-index: 20; white-space: nowrap; }
     .floating-crit { color: #fc8181; font-size: 46px; font-style: italic; filter: drop-shadow(0 0 8px #c53030); }
     .floating-block { color: #90cdf4; font-size: 26px; font-style: italic; text-shadow: 0 0 10px rgba(66, 153, 225, 0.9), 0 2px 4px #000; letter-spacing: 1px; }
 
     .combo-text { position: absolute; top: 10%; right: -60px; font-size: 40px; font-weight: 900; color: #f6ad55; font-style: italic; text-shadow: 0 4px 10px rgba(221, 107, 32, 0.8); animation: comboPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; pointer-events: none; z-index: 25; white-space: nowrap; }
-    /* Compact BREAK! stamp sized to fit a single 80px avatar without overlapping nearby actors */
     .break-stamp { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg) scale(1); font-size: 24px; font-weight: 900; color: #fc8181; border: 3px solid #e53e3e; padding: 2px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.88); text-shadow: 0 2px 6px rgba(0,0,0,0.9); box-shadow: 0 0 12px rgba(229, 62, 62, 0.6); opacity: 0; animation: stampDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; z-index: 45; white-space: nowrap; }
     .luck-drop { position: absolute; top: -90px; left: 50%; transform: translateX(-50%); font-size: 44px; animation: dropDown 0.45s ease-in forwards; z-index: 40; pointer-events: none; }
 
-    /* Ultimate Cut-in Overlay */
+    /* Ultimate Cut-In Overlay */
     .ultimate-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; overflow: hidden; }
     .ultimate-overlay.active { animation: ult-bg-hold 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .ult-flash { position: absolute; width: 100%; height: 100%; background: #fff; z-index: 2010; animation: ult-flash-bang 2.5s ease-out forwards; }
@@ -833,11 +843,11 @@
     .ult-quote.lang-en { font-size: clamp(24px, 6vh, 60px); text-orientation: mixed; letter-spacing: 4px; }
     .ult-flavor { display: inline-block; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: clamp(14px, 2.5vh, 22px); color: #e2e8f0; text-shadow: -2px 2px 4px #000; text-orientation: upright; letter-spacing: 0.5vh; animation: ult-stamp-delay 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
 
-    /* Low HP Warning Animation */
+    /* Low HP Danger Pulse */
     @keyframes panting-pulse { 0%, 100% { filter: drop-shadow(0 0 4px #e53e3e); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px #c53030); transform: scale(1.03); } }
     .actor.danger-state .avatar { animation: panting-pulse 1.2s infinite ease-in-out; border: 2px solid #e53e3e; }
 
-    /* Cinematic letterbox overlay */
+    /* Fatality Letterbox & Slash Effect */
     .fatality-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); z-index: 1500; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .fatality-overlay::before, .fatality-overlay::after { content: ''; position: absolute; left: 0; width: 100%; height: 12vh; background: #000; transition: transform 0.3s cubic-bezier(0.1, 1, 0.2, 1); }
     .fatality-overlay::before { top: 0; transform: translateY(-100%); }
@@ -845,14 +855,13 @@
     .fatality-overlay.active { opacity: 1; }
     .fatality-overlay.active::before, .fatality-overlay.active::after { transform: translateY(0); }
 
-    /* Slash effect */
     .fatality-slash { position: absolute; top: 50%; left: -20%; width: 140%; height: 3px; background: #fff; box-shadow: 0 0 10px #fff, 0 0 20px #fc8181; transform-origin: center; z-index: 1501; pointer-events: none; }
     @keyframes slash-strike { 0% { transform: rotate(-25deg) scaleX(0); opacity: 1; } 20% { transform: rotate(-25deg) scaleX(1); opacity: 1; } 100% { transform: rotate(-25deg) scaleX(1.2); opacity: 0; filter: blur(4px); } }
 
-    /* K.O. Text */
     .fatality-text { position: absolute; top: 50%; left: 50%; font-size: 64px; font-family: Impact, "Arial Black", sans-serif; font-style: italic; color: #fc8181; -webkit-text-stroke: 1px #fff; text-shadow: 4px 4px 0px rgba(0,0,0,0.8); z-index: 1502; opacity: 0; pointer-events: none; }
     @keyframes text-pop { 0% { transform: translate(-50%, -50%) skewX(-15deg) scale(2); opacity: 0; } 15% { transform: translate(-50%, -50%) skewX(-15deg) scale(1); opacity: 1; } 80% { transform: translate(-50%, -50%) skewX(-15deg) scale(1); opacity: 1; } 100% { transform: translate(-50%, -50%) skewX(-15deg) scale(0.9); opacity: 0; } }
 
+    /* Keyframe Animations */
     @keyframes summonSpawn { 0% { opacity: 0; transform: scale(0.3) translateY(-30px); filter: brightness(3) drop-shadow(0 0 20px #fc8181); } 100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
@@ -871,64 +880,7 @@
     .blink-active { animation: blink 0.3s ease-in-out; }
 `;
 
-  // src/vfx.js
-  function lookaheadComboState(currentIndex, frame) {
-    let isNextFrameSameCombo = false;
-    let isNextTargetDifferent = false;
-    let shouldReturnToOrigin = false;
-    const activeSkillId = frame.source === "DIRECT" && engineState.currentCombo.actorId === frame.actorId ? engineState.currentCombo.skillId : frame.skillId;
-    for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
-      const lookahead = engineState.frames[i];
-      if (lookahead.type === "LUCK_EVENT") {
-        shouldReturnToOrigin = true;
-        if (lookahead.turnNumber !== frame.turnNumber) break;
-        continue;
-      }
-      if (lookahead.turnNumber !== frame.turnNumber) break;
-      if (["HEAL", "SP_RECOVER", "SKILL_TEXT", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type)) {
-        shouldReturnToOrigin = true;
-        continue;
-      }
-      if (lookahead.type === "TEXT" && lookahead.skillTier === "ultimate") {
-        shouldReturnToOrigin = true;
-        continue;
-      }
-      if (lookahead.type === "BUFF_APPLY" && !lookahead.passiveId && lookahead.targetId === lookahead.actorId) {
-        shouldReturnToOrigin = true;
-        continue;
-      }
-      if (["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(lookahead.type)) {
-        if (lookahead.isCounter || lookahead.type === "COUNTER") continue;
-        if (lookahead.isSelfDamage || lookahead.isEnvironmentalPulse) {
-          shouldReturnToOrigin = true;
-          continue;
-        }
-        if (lookahead.actorId === frame.actorId) {
-          isNextFrameSameCombo = true;
-          if (lookahead.targetId !== frame.targetId) {
-            isNextTargetDifferent = true;
-          }
-          const isDirectProc = lookahead.source === "DIRECT";
-          if (!isDirectProc && lookahead.skillId !== activeSkillId) {
-            shouldReturnToOrigin = true;
-          }
-        }
-        break;
-      }
-    }
-    return { isNextFrameSameCombo, isNextTargetDifferent, shouldReturnToOrigin };
-  }
-  function hasMoreHitsOnSameTargetInTurn(currentIndex, turnNumber, actorId, targetId) {
-    for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
-      const lookahead = engineState.frames[i];
-      if (lookahead.turnNumber !== turnNumber) break;
-      if (lookahead.isCounter || lookahead.type === "COUNTER") continue;
-      if (["DAMAGE", "MISS", "BLOCK"].includes(lookahead.type)) {
-        return lookahead.actorId === actorId && lookahead.targetId === targetId;
-      }
-    }
-    return false;
-  }
+  // src/cinematics.js
   async function playFatalitySequence(sr, actorId) {
     const overlay = sr.getElementById("fatality-overlay");
     const actorEl = sr.getElementById(`actor-${actorId}`);
@@ -1119,6 +1071,65 @@
       }, 1200 / getEffectiveSpeed());
     }
   }
+
+  // src/choreography.js
+  function lookaheadComboState(currentIndex, frame) {
+    let isNextFrameSameCombo = false;
+    let isNextTargetDifferent = false;
+    let shouldReturnToOrigin = false;
+    const activeSkillId = frame.source === "DIRECT" && engineState.currentCombo.actorId === frame.actorId ? engineState.currentCombo.skillId : frame.skillId;
+    for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
+      const lookahead = engineState.frames[i];
+      if (lookahead.type === "LUCK_EVENT") {
+        shouldReturnToOrigin = true;
+        if (lookahead.turnNumber !== frame.turnNumber) break;
+        continue;
+      }
+      if (lookahead.turnNumber !== frame.turnNumber) break;
+      if (["HEAL", "SP_RECOVER", "SKILL_TEXT", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type)) {
+        shouldReturnToOrigin = true;
+        continue;
+      }
+      if (lookahead.type === "TEXT" && lookahead.skillTier === "ultimate") {
+        shouldReturnToOrigin = true;
+        continue;
+      }
+      if (lookahead.type === "BUFF_APPLY" && !lookahead.passiveId && lookahead.targetId === lookahead.actorId) {
+        shouldReturnToOrigin = true;
+        continue;
+      }
+      if (["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(lookahead.type)) {
+        if (lookahead.isCounter || lookahead.type === "COUNTER") continue;
+        if (lookahead.isSelfDamage || lookahead.isEnvironmentalPulse) {
+          shouldReturnToOrigin = true;
+          continue;
+        }
+        if (lookahead.actorId === frame.actorId) {
+          isNextFrameSameCombo = true;
+          if (lookahead.targetId !== frame.targetId) {
+            isNextTargetDifferent = true;
+          }
+          const isDirectProc = lookahead.source === "DIRECT";
+          if (!isDirectProc && lookahead.skillId !== activeSkillId) {
+            shouldReturnToOrigin = true;
+          }
+        }
+        break;
+      }
+    }
+    return { isNextFrameSameCombo, isNextTargetDifferent, shouldReturnToOrigin };
+  }
+  function hasMoreHitsOnSameTargetInTurn(currentIndex, turnNumber, actorId, targetId) {
+    for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
+      const lookahead = engineState.frames[i];
+      if (lookahead.turnNumber !== turnNumber) break;
+      if (lookahead.isCounter || lookahead.type === "COUNTER") continue;
+      if (["DAMAGE", "MISS", "BLOCK"].includes(lookahead.type)) {
+        return lookahead.actorId === actorId && lookahead.targetId === targetId;
+      }
+    }
+    return false;
+  }
   function playCombatAnimation(frame, sr, isNextFrameSameCombo, isNextTargetDifferent, shouldReturnToOrigin) {
     if (frame.isCounterSetup) {
       return 350;
@@ -1170,6 +1181,8 @@
             targetChangedThisHit: false,
             moveX: void 0,
             deltaY: void 0,
+            prevMoveX: 0,
+            prevDeltaY: 0,
             aoeCenterX: void 0,
             aoeCenterY: void 0,
             atCenterStage: false,
@@ -1290,7 +1303,7 @@
         const pCenter = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.2)`;
         const pCenterPulse = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.28)`;
         let actorKeyframes2 = [];
-        let actorAnimConfig2 = { duration: 280 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" };
+        const actorAnimConfig2 = { duration: 280 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" };
         if (!engineState.currentCombo.atCenterStage && !frame.isAOELast) {
           frameDuration = 280;
           actorAnimConfig2.duration = 260 / speed;
@@ -1351,7 +1364,8 @@
       }
       if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
       if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
-      let moveX, deltaY;
+      let moveX;
+      let deltaY;
       if (engineState.currentCombo.count > 1 && engineState.currentCombo.moveX !== void 0 && !frame.isCounter && frame.type !== "COUNTER") {
         moveX = engineState.currentCombo.moveX;
         deltaY = engineState.currentCombo.deltaY;
@@ -1583,6 +1597,8 @@
     }
     return frameDuration;
   }
+
+  // src/floatingText.js
   function spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetDifferent) {
     if (frame.isCounterSetup || frame.type === "HP_REMAINING" || frame.type === "EXP_GAIN") return;
     const arena = sr.getElementById("arena");
@@ -2005,7 +2021,7 @@
       scanScheduled = false;
       try {
         if (isGuardArmed) applySpoilerMask();
-      } catch (e) {
+      } catch (_err) {
       }
     });
   }
@@ -2551,8 +2567,7 @@
   function hasValidParticipants(battleData) {
     const p = battleData?.participants;
     if (!p) return false;
-    const hasPlayers = Array.isArray(p.players) && p.players.length > 0 && p.players[0]?.stats?.hp != null;
-    return hasPlayers;
+    return Array.isArray(p.players) && p.players.length > 0 && p.players[0]?.stats?.hp != null;
   }
   async function prepareAndInitVisualizer(rawBattleData) {
     const battleData = findBattlePayload(rawBattleData);

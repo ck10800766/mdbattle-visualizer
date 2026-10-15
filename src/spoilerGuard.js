@@ -1,4 +1,6 @@
-// src/spoilerGuard.js
+// ==========================================
+// FILE: src/spoilerGuard.js
+// ==========================================
 
 const DEATH_BANNER_TEXT = '你的角色死亡了，請進行轉生';
 const PARTY_STATUS_REGEX = /^.+ · Lv\.\d+ · (死亡|存活)$/;
@@ -8,6 +10,9 @@ let guardTimeoutId = null;
 let observerStarted = false;
 let scanScheduled = false;
 
+/**
+ * Injects the global CSS rules used to mask spoiler elements on the host document.
+ */
 function ensureSpoilerStyle() {
     if (document.getElementById('mdbv-spoiler-style')) return;
     const style = document.createElement('style');
@@ -21,28 +26,27 @@ function ensureSpoilerStyle() {
 }
 
 /**
- * Scans the DOM and hides death banners, party survival statuses, and modal outcome badges.
+ * Scans the host DOM and masks death banners, party survival statuses, and battle report outcome badges.
  */
 export function applySpoilerMask() {
     if (!isGuardArmed) return;
     ensureSpoilerStyle();
 
-    // 1. Hide top death banner ("你的角色死亡了，請進行轉生")
+    // 1. Hide top character death notification banner
     document.querySelectorAll('div').forEach(div => {
         if (div.childElementCount === 0 && div.textContent.trim() === DEATH_BANNER_TEXT) {
             div.setAttribute('data-mdbv-gone', '');
         }
     });
 
-    // 2. Hide party member survival/death status ("… · Lv.58 · 存活／死亡")
+    // 2. Hide party member survival/death status lines
     document.querySelectorAll('p').forEach(p => {
         if (p.childElementCount === 0 && PARTY_STATUS_REGEX.test(p.textContent.trim())) {
             p.setAttribute('data-mdbv-hide', '');
         }
     });
 
-    // 3. Hide outcome badges ("勝利／失敗／平手", "死亡") in battle report dialogs,
-    // and temporarily make the native dialog invisible while the visualizer is loading/playing
+    // 3. Hide outcome badges inside battle report dialogs and keep native dialog invisible during playback
     document.querySelectorAll('[role="dialog"]').forEach(dlg => {
         const titleEl = Array.from(dlg.querySelectorAll('h2, h3, p, div')).find(
             el => el.childElementCount === 0 && el.textContent.trim() === '戰報'
@@ -59,7 +63,8 @@ export function applySpoilerMask() {
 }
 
 /**
- * Arms the anti-spoiler guard immediately when a battle POST request is sent or playback starts.
+ * Arms the anti-spoiler guard immediately when a live battle request is initiated or playback starts.
+ * @param {number} [timeoutMs=45000] - Safety auto-release timeout in milliseconds (0 disables timeout).
  */
 export function armSpoilerGuard(timeoutMs = 45000) {
     isGuardArmed = true;
@@ -68,7 +73,7 @@ export function armSpoilerGuard(timeoutMs = 45000) {
     clearTimeout(guardTimeoutId);
     if (timeoutMs > 0) {
         guardTimeoutId = setTimeout(() => {
-            // Safety fallback in case the network request fails and visualizer never opens
+            // Release automatically if the network request fails and the visualizer stage never mounts
             if (!document.getElementById('mdbv-host')) {
                 releaseSpoilerGuard();
             }
@@ -77,7 +82,7 @@ export function armSpoilerGuard(timeoutMs = 45000) {
 }
 
 /**
- * Reveals all hidden outcomes once the visualizer reaches the end or is closed by the user.
+ * Unmasks all hidden host page outcomes once playback finishes or the user closes the visualizer.
  */
 export function releaseSpoilerGuard() {
     isGuardArmed = false;
@@ -88,6 +93,9 @@ export function releaseSpoilerGuard() {
     document.querySelectorAll('[data-mdbv-dialog-pending]').forEach(el => el.removeAttribute('data-mdbv-dialog-pending'));
 }
 
+/**
+ * Batches DOM mutation scans into a microtask to avoid layout thrashing during React renders.
+ */
 function scheduleMaskScan() {
     if (!isGuardArmed || scanScheduled) return;
     scanScheduled = true;
@@ -95,12 +103,15 @@ function scheduleMaskScan() {
         scanScheduled = false;
         try {
             if (isGuardArmed) applySpoilerMask();
-        } catch (e) {
+        } catch (_err) {
             // Ignore transient DOM mutation errors
         }
     });
 }
 
+/**
+ * Initializes the document-wide MutationObserver to catch dynamically rendered spoiler elements.
+ */
 export function initSpoilerObserver() {
     if (observerStarted) return;
     observerStarted = true;
