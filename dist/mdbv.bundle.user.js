@@ -27,7 +27,8 @@
       moveX: void 0,
       deltaY: void 0,
       prevMoveX: 0,
-      prevDeltaY: 0
+      prevDeltaY: 0,
+      lastFrameIndex: -1
     };
   }
   var engineState = {
@@ -1007,39 +1008,43 @@
     }
     const displayDamage = frame.value || frame.actualDamage || 0;
     if (!frame.isCounter && frame.type !== "COUNTER") {
-      if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
-        engineState.currentCombo.count++;
-        engineState.currentCombo.totalDamage = (engineState.currentCombo.totalDamage || 0) + displayDamage;
-        if (!engineState.currentCombo.targetDamages) engineState.currentCombo.targetDamages = {};
-        engineState.currentCombo.targetDamages[frame.targetId] = (engineState.currentCombo.targetDamages[frame.targetId] || 0) + displayDamage;
-        if (!engineState.currentCombo.targetHitCounts) engineState.currentCombo.targetHitCounts = {};
-        engineState.currentCombo.targetHitCounts[frame.targetId] = (engineState.currentCombo.targetHitCounts[frame.targetId] || 0) + 1;
-        if (engineState.currentCombo.targetId !== frame.targetId) {
-          engineState.currentCombo.targetId = frame.targetId;
-          engineState.currentCombo.moveX = void 0;
-          engineState.currentCombo.deltaY = void 0;
-          engineState.currentCombo.targetChangedThisHit = true;
+      if (engineState.currentCombo.lastFrameIndex !== frame.index) {
+        if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
+          engineState.currentCombo.count++;
+          engineState.currentCombo.totalDamage = (engineState.currentCombo.totalDamage || 0) + displayDamage;
+          if (!engineState.currentCombo.targetDamages) engineState.currentCombo.targetDamages = {};
+          engineState.currentCombo.targetDamages[frame.targetId] = (engineState.currentCombo.targetDamages[frame.targetId] || 0) + displayDamage;
+          if (!engineState.currentCombo.targetHitCounts) engineState.currentCombo.targetHitCounts = {};
+          engineState.currentCombo.targetHitCounts[frame.targetId] = (engineState.currentCombo.targetHitCounts[frame.targetId] || 0) + 1;
+          if (engineState.currentCombo.targetId !== frame.targetId) {
+            engineState.currentCombo.targetId = frame.targetId;
+            engineState.currentCombo.moveX = void 0;
+            engineState.currentCombo.deltaY = void 0;
+            engineState.currentCombo.targetChangedThisHit = true;
+          } else {
+            engineState.currentCombo.targetChangedThisHit = false;
+          }
         } else {
-          engineState.currentCombo.targetChangedThisHit = false;
+          engineState.currentCombo = {
+            actorId: frame.actorId,
+            skillId: frame.skillId,
+            targetId: frame.targetId,
+            count: 1,
+            totalDamage: displayDamage,
+            targetDamages: { [frame.targetId]: displayDamage },
+            targetHitCounts: { [frame.targetId]: 1 },
+            knockedBack: false,
+            keepAlive: false,
+            targetChangedThisHit: false,
+            moveX: void 0,
+            deltaY: void 0,
+            aoeCenterX: void 0,
+            aoeCenterY: void 0,
+            atCenterStage: false,
+            lastFrameIndex: frame.index
+          };
         }
-      } else {
-        engineState.currentCombo = {
-          actorId: frame.actorId,
-          skillId: frame.skillId,
-          targetId: frame.targetId,
-          count: 1,
-          totalDamage: displayDamage,
-          targetDamages: { [frame.targetId]: displayDamage },
-          targetHitCounts: { [frame.targetId]: 1 },
-          knockedBack: false,
-          keepAlive: false,
-          targetChangedThisHit: false,
-          moveX: void 0,
-          deltaY: void 0,
-          aoeCenterX: void 0,
-          aoeCenterY: void 0,
-          atCenterStage: false
-        };
+        engineState.currentCombo.lastFrameIndex = frame.index;
       }
       if (engineState.currentCombo.count > 1) {
         const actor = engineState.actors.get(frame.actorId);
@@ -1893,6 +1898,7 @@
     const msgEl = document.createElement("div");
     const isDialogue = frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE";
     msgEl.className = `log-line ${isDialogue ? "dialogue-log" : "system-log"}`;
+    msgEl.dataset.frameIndex = String(frame.index);
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
     msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
     return msgEl;
@@ -2251,9 +2257,11 @@
     const dialog = sr.getElementById("dialog-box");
     let frameDuration = 600;
     if (frame.message && dialog) {
-      const msgEl = createLogLineElement(frame);
-      dialog.appendChild(msgEl);
-      dialog.scrollTop = dialog.scrollHeight;
+      if (dialog.lastElementChild?.dataset?.frameIndex !== String(frame.index)) {
+        const msgEl = createLogLineElement(frame);
+        dialog.appendChild(msgEl);
+        dialog.scrollTop = dialog.scrollHeight;
+      }
     }
     if (frame.isSummonEvent && frame.summonedActorId) {
       const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);

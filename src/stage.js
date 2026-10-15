@@ -23,6 +23,7 @@ function createLogLineElement(frame) {
     const msgEl = document.createElement('div');
     const isDialogue = frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE';
     msgEl.className = `log-line ${isDialogue ? 'dialogue-log' : 'system-log'}`;
+    msgEl.dataset.frameIndex = String(frame.index);
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
     msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
     return msgEl;
@@ -453,9 +454,11 @@ export async function renderFrame(frame, token) {
     let frameDuration = 600;
 
     if (frame.message && dialog) {
+      if (dialog.lastElementChild?.dataset?.frameIndex !== String(frame.index)) {
         const msgEl = createLogLineElement(frame);
         dialog.appendChild(msgEl);
         dialog.scrollTop = dialog.scrollHeight;
+      }
     }
 
     if (frame.isSummonEvent && frame.summonedActorId) {
