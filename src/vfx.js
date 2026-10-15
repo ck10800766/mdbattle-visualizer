@@ -341,44 +341,48 @@ export function playCombatAnimation(
     const displayDamage = frame.value || frame.actualDamage || 0;
 
     if (!frame.isCounter && frame.type !== 'COUNTER') {
-        if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
-            engineState.currentCombo.count++;
-            engineState.currentCombo.totalDamage = (engineState.currentCombo.totalDamage || 0) + displayDamage;
+        if (engineState.currentCombo.lastFrameIndex !== frame.index) {
+            if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
+                engineState.currentCombo.count++;
+                engineState.currentCombo.totalDamage = (engineState.currentCombo.totalDamage || 0) + displayDamage;
 
-            if (!engineState.currentCombo.targetDamages) engineState.currentCombo.targetDamages = {};
-            engineState.currentCombo.targetDamages[frame.targetId] =
-                (engineState.currentCombo.targetDamages[frame.targetId] || 0) + displayDamage;
+                if (!engineState.currentCombo.targetDamages) engineState.currentCombo.targetDamages = {};
+                engineState.currentCombo.targetDamages[frame.targetId] =
+                    (engineState.currentCombo.targetDamages[frame.targetId] || 0) + displayDamage;
 
-            if (!engineState.currentCombo.targetHitCounts) engineState.currentCombo.targetHitCounts = {};
-            engineState.currentCombo.targetHitCounts[frame.targetId] =
-                (engineState.currentCombo.targetHitCounts[frame.targetId] || 0) + 1;
+                if (!engineState.currentCombo.targetHitCounts) engineState.currentCombo.targetHitCounts = {};
+                engineState.currentCombo.targetHitCounts[frame.targetId] =
+                    (engineState.currentCombo.targetHitCounts[frame.targetId] || 0) + 1;
 
-            if (engineState.currentCombo.targetId !== frame.targetId) {
-                engineState.currentCombo.targetId = frame.targetId;
-                engineState.currentCombo.moveX = undefined;
-                engineState.currentCombo.deltaY = undefined;
-                engineState.currentCombo.targetChangedThisHit = true;
+                if (engineState.currentCombo.targetId !== frame.targetId) {
+                    engineState.currentCombo.targetId = frame.targetId;
+                    engineState.currentCombo.moveX = undefined;
+                    engineState.currentCombo.deltaY = undefined;
+                    engineState.currentCombo.targetChangedThisHit = true;
+                } else {
+                    engineState.currentCombo.targetChangedThisHit = false;
+                }
             } else {
-                engineState.currentCombo.targetChangedThisHit = false;
+                engineState.currentCombo = {
+                    actorId: frame.actorId,
+                    skillId: frame.skillId,
+                    targetId: frame.targetId,
+                    count: 1,
+                    totalDamage: displayDamage,
+                    targetDamages: { [frame.targetId]: displayDamage },
+                    targetHitCounts: { [frame.targetId]: 1 },
+                    knockedBack: false,
+                    keepAlive: false,
+                    targetChangedThisHit: false,
+                    moveX: undefined,
+                    deltaY: undefined,
+                    aoeCenterX: undefined,
+                    aoeCenterY: undefined,
+                    atCenterStage: false,
+                    lastFrameIndex: frame.index
+                };
             }
-        } else {
-            engineState.currentCombo = {
-                actorId: frame.actorId,
-                skillId: frame.skillId,
-                targetId: frame.targetId,
-                count: 1,
-                totalDamage: displayDamage,
-                targetDamages: { [frame.targetId]: displayDamage },
-                targetHitCounts: { [frame.targetId]: 1 },
-                knockedBack: false,
-                keepAlive: false,
-                targetChangedThisHit: false,
-                moveX: undefined,
-                deltaY: undefined,
-                aoeCenterX: undefined,
-                aoeCenterY: undefined,
-                atCenterStage: false
-            };
+            engineState.currentCombo.lastFrameIndex = frame.index;
         }
 
         if (engineState.currentCombo.count > 1) {
@@ -896,7 +900,7 @@ export function spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetD
     const isActionOrEffectFrame = [
         'DAMAGE', 'BLOCK', 'COUNTER', 'MISS', 'HEAL', 'SP_RECOVER', 'BUFF_EFFECT', 'LUCK_EVENT'
     ].includes(frame.type) || frame.rebirthHeal;
-    
+
     if (!isActionOrEffectFrame || !affectedEl || frame.vfx.includes('break-stamp')) {
         return;
     }

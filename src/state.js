@@ -15,7 +15,8 @@ export function createEmptyCombo() {
         moveX: undefined,
         deltaY: undefined,
         prevMoveX: 0,
-        prevDeltaY: 0
+        prevDeltaY: 0,
+        lastFrameIndex: -1
     };
 }
 
