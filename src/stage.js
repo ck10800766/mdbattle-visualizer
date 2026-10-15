@@ -158,14 +158,16 @@ export function createBattleStage() {
         const unspawnedClass = actor.initiallySpawned === false ? 'unspawned' : '';
         el.className = `actor ${actor.side} ${unspawnedClass}`.trim();
         el.id = `actor-${actor.id}`;
+        const hpContainerStyle = actor.hideHp ? ' style="display: none;"' : '';
+        const hpTextContent = actor.hideHp ? '' : `${actor.maxHp}/${actor.maxHp}`;
         el.innerHTML = `
             <div class="actor-name">${actor.name}</div>
             <div class="avatar-wrapper">
                 <img class="avatar" src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
             </div>
-            <div class="hp-container">
+            <div class="hp-container"${hpContainerStyle}>
                 <div class="hp-fill" id="hp-fill-${actor.id}"></div>
-                <div class="hp-text" id="hp-text-${actor.id}">${actor.maxHp}/${actor.maxHp}</div>
+                <div class="hp-text" id="hp-text-${actor.id}">${hpTextContent}</div>
             </div>
         `;
         if (actor.side === 'left') leftTeam.appendChild(el);
@@ -339,7 +341,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
             const fillEl = sr.getElementById(`hp-fill-${actor.id}`);
             const textEl = sr.getElementById(`hp-text-${actor.id}`);
             const wrapperEl = sr.getElementById(`actor-${actor.id}`);
-            if (fillEl && textEl) {
+            if (fillEl && textEl && !actor.hideHp) {
                 fillEl.style.transition = 'none';
                 fillEl.style.width = '100%';
                 setTimeout(() => { fillEl.style.transition = ''; }, 50);
@@ -375,22 +377,24 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
             else wrapperEl.classList.remove('unspawned');
         }
 
-        if (fillEl && textEl && actor) {
-            const pct = (currentHp / actor.maxHp) * 100;
-            fillEl.style.transition = 'none';
-            fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-            setTimeout(() => { fillEl.style.transition = ''; }, 50);
+        if (actor) {
+            if (fillEl && textEl && !actor.hideHp) {
+                const pct = (currentHp / actor.maxHp) * 100;
+                fillEl.style.transition = 'none';
+                fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+                setTimeout(() => { fillEl.style.transition = ''; }, 50);
 
-            textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
+                textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
 
-            fillEl.classList.remove('warning', 'danger');
-            if (wrapperEl) wrapperEl.classList.remove('danger-state');
+                fillEl.classList.remove('warning', 'danger');
+                if (wrapperEl) wrapperEl.classList.remove('danger-state');
 
-            if (pct > 0 && pct <= 25) {
-                fillEl.classList.add('danger');
-                if (wrapperEl) wrapperEl.classList.add('danger-state');
-            } else if (pct > 0 && pct <= 50) {
-                fillEl.classList.add('warning');
+                if (pct > 0 && pct <= 25) {
+                    fillEl.classList.add('danger');
+                    if (wrapperEl) wrapperEl.classList.add('danger-state');
+                } else if (pct > 0 && pct <= 50) {
+                    fillEl.classList.add('warning');
+                }
             }
 
             actor.currentHp = currentHp;
@@ -569,21 +573,23 @@ export async function renderFrame(frame, token) {
 
         const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : (currentHp <= 0);
 
-        if (fillEl && textEl && actor) {
-            const pct = (currentHp / actor.maxHp) * 100;
+        if (actor) {
+            if (fillEl && textEl && !actor.hideHp) {
+                const pct = (currentHp / actor.maxHp) * 100;
 
-            fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-            textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
-            fillEl.classList.remove('warning', 'danger');
+                fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+                textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
+                fillEl.classList.remove('warning', 'danger');
 
-            if (currentHp > 0 && pct <= 25) {
-                fillEl.classList.add('danger');
-                if (wrapperEl && !isDead) wrapperEl.classList.add('danger-state');
-            } else if (currentHp > 0 && pct <= 50) {
-                fillEl.classList.add('warning');
-                if (wrapperEl) wrapperEl.classList.remove('danger-state');
-            } else {
-                if (wrapperEl) wrapperEl.classList.remove('danger-state');
+                if (currentHp > 0 && pct <= 25) {
+                    fillEl.classList.add('danger');
+                    if (wrapperEl && !isDead) wrapperEl.classList.add('danger-state');
+                } else if (currentHp > 0 && pct <= 50) {
+                    fillEl.classList.add('warning');
+                    if (wrapperEl) wrapperEl.classList.remove('danger-state');
+                } else {
+                    if (wrapperEl) wrapperEl.classList.remove('danger-state');
+                }
             }
 
             actor.currentHp = currentHp;

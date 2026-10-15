@@ -136,6 +136,42 @@
   }
 
   // src/parser.js
+  function inferSummonName(logs, summonIndex, summonId, ownerName) {
+    const summonLog = logs[summonIndex];
+    if (!summonLog) return "Summon";
+    const explicitName = summonLog.targetName || summonLog.summonName || summonLog.characterName || summonLog.name;
+    if (explicitName) return String(explicitName).trim();
+    for (let i = summonIndex + 1; i < logs.length; i++) {
+      const log = logs[i];
+      if (!log || typeof log !== "object") continue;
+      const msg = String(log.message || "");
+      if (log.actorId === summonId) {
+        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
+          const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
+          if (deathMatch) return deathMatch[1];
+        }
+        const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
+        if (dialogueMatch) return dialogueMatch[1];
+        const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
+        if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
+          return actorPrefixMatch[1];
+        }
+      }
+      if (log.targetId === summonId && ["DAMAGE", "BLOCK", "HEAL"].includes(log.type)) {
+        const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
+        if (targetMatch) return targetMatch[1];
+      }
+    }
+    const summonMsg = String(summonLog.message || "").trim();
+    const whitespaceTokens = summonMsg.split(/\s+/);
+    if (whitespaceTokens.length >= 3) {
+      const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、的]/).pop();
+      if (candidate && candidate !== ownerName) {
+        return candidate;
+      }
+    }
+    return "Summon";
+  }
   function markAOEWaves(frames) {
     let i = 0;
     while (i < frames.length) {
@@ -213,6 +249,7 @@
   }
   function calibrateHpWithAnchors(frames) {
     engineState.actors.forEach((actor) => {
+      if (actor.hideHp) return;
       let anchorIndex = -1;
       let anchorHp = null;
       for (let i = frames.length - 1; i >= 0; i--) {
@@ -311,9 +348,10 @@
   function parseParticipants(reportData) {
     engineState.actors.clear();
     const p = reportData.participants || {};
+    const logs = reportData.logs || [];
     const fallbackBossImage = reportData.boss ? reportData.boss.imagePath : null;
     const summonedIds = /* @__PURE__ */ new Set();
-    (reportData.logs || []).forEach((log) => {
+    logs.forEach((log) => {
       if (log && log.type === "SUMMON" && log.targetId) {
         summonedIds.add(log.targetId);
       }
@@ -321,15 +359,18 @@
     (p.players || []).forEach((player) => {
       const id = player.userId || player.entityId || player._id;
       const name = player.characterName || player.name || "Unknown";
-      const maxHp = Number(player.stats?.hp) || 1;
-      const avatarPath = player.imagePath;
+      const rawHp = Number(player.stats?.hp);
       const isSummon = !!player.summonerId || summonedIds.has(id);
+      const hideHp = isSummon && !(rawHp > 1);
+      const maxHp = rawHp > 0 ? rawHp : 1;
+      const avatarPath = player.imagePath;
       engineState.actors.set(id, {
         id,
         name,
         side: "left",
         maxHp,
         currentHp: maxHp,
+        hideHp,
         avatar: avatarPath ? `https://mydoujin.online${avatarPath}` : "https://via.placeholder.com/150",
         isSummon,
         ownerId: player.summonerId || null,
@@ -344,18 +385,21 @@
     (p.enemies || []).forEach((enemy) => {
       const id = enemy.userId || enemy.entityId || enemy._id;
       const name = enemy.characterName || enemy.name || "Unknown";
-      const maxHp = Number(enemy.stats?.hp) || 1;
+      const rawHp = Number(enemy.stats?.hp);
+      const isSummon = !!enemy.summonerId || summonedIds.has(id);
+      const hideHp = isSummon && !(rawHp > 1);
+      const maxHp = rawHp > 0 ? rawHp : 1;
       let avatarPath = enemy.imagePath;
       if ((!avatarPath || avatarPath.includes("default-boss.webp")) && fallbackBossImage) {
         avatarPath = fallbackBossImage;
       }
-      const isSummon = !!enemy.summonerId || summonedIds.has(id);
       engineState.actors.set(id, {
         id,
         name,
         side: "right",
         maxHp,
         currentHp: maxHp,
+        hideHp,
         avatar: avatarPath ? `https://mydoujin.online${avatarPath}` : "https://via.placeholder.com/150",
         isSummon,
         ownerId: enemy.summonerId || null,
@@ -366,6 +410,33 @@
         totalDamageTaken: 0,
         lastUltimateTurn: null
       });
+    });
+    logs.forEach((log, index) => {
+      if (!log || log.type !== "SUMMON" || !log.targetId) return;
+      const owner = engineState.actors.get(log.actorId);
+      const explicitHp = Number(log.maxHp || log.hp || log.stats?.hp);
+      const hasExplicitHp = explicitHp > 1;
+      const maxHp = hasExplicitHp ? explicitHp : 1;
+      const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
+      if (!engineState.actors.has(log.targetId)) {
+        engineState.actors.set(log.targetId, {
+          id: log.targetId,
+          name: summonName,
+          side: owner ? owner.side : "left",
+          maxHp,
+          currentHp: maxHp,
+          hideHp: !hasExplicitHp,
+          avatar: owner ? owner.avatar : "https://via.placeholder.com/150",
+          isSummon: true,
+          ownerId: log.actorId || null,
+          initiallySpawned: false,
+          turnNumbers: [],
+          totalDamageDealt: 0,
+          luckDamageDealt: 0,
+          totalDamageTaken: 0,
+          lastUltimateTurn: null
+        });
+      }
     });
   }
   function buildStateSnapshots(logs) {
@@ -457,15 +528,18 @@
       }
       if (log.type === "SUMMON" && log.targetId) {
         const owner = engineState.actors.get(log.actorId);
-        const summonNameMatch = String(log.message || "").match(/^\s*(\S+?)\s/);
-        const summonName = summonNameMatch ? summonNameMatch[1] : "Summon";
+        const explicitHp = Number(log.maxHp || log.hp || log.stats?.hp);
+        const hasExplicitHp = explicitHp > 1;
+        const maxHp = hasExplicitHp ? explicitHp : 1;
+        const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
         if (!engineState.actors.has(log.targetId)) {
           engineState.actors.set(log.targetId, {
             id: log.targetId,
             name: summonName,
             side: owner ? owner.side : "left",
-            maxHp: 1,
-            currentHp: 1,
+            maxHp,
+            currentHp: maxHp,
+            hideHp: !hasExplicitHp,
             avatar: owner ? owner.avatar : "https://via.placeholder.com/150",
             isSummon: true,
             ownerId: log.actorId,
@@ -476,6 +550,10 @@
             totalDamageTaken: 0,
             lastUltimateTurn: null
           });
+        } else {
+          const summonActor = engineState.actors.get(log.targetId);
+          summonActor.currentHp = summonActor.maxHp;
+          actorsDeathState.set(log.targetId, false);
         }
         actorsSummonState.set(log.targetId, true);
         frame.isSummonEvent = true;
@@ -496,9 +574,11 @@
           const attacker = engineState.actors.get(log.actorId);
           const realDamage = frame.actualDamage;
           if (target) {
-            target.currentHp = Math.max(0, target.currentHp - realDamage);
+            if (!target.hideHp) {
+              target.currentHp = Math.max(0, target.currentHp - realDamage);
+              addHpDelta(target.id, -realDamage);
+            }
             target.totalDamageTaken += realDamage;
-            addHpDelta(target.id, -realDamage);
             if (frame.isCrit && !frame.blocked) frame.vfx.push("screen-shake", "flash-red");
             if (frame.blocked) frame.vfx.push("shield-block");
           }
@@ -515,16 +595,22 @@
         }
         if (target) {
           target.totalDamageTaken += luckValue;
-          target.currentHp = Math.max(0, target.currentHp - luckValue);
-          addHpDelta(target.id, -luckValue);
+          if (!target.hideHp) {
+            target.currentHp = Math.max(0, target.currentHp - luckValue);
+            addHpDelta(target.id, -luckValue);
+          }
         }
         frame.vfx.push("luck-drop");
         if (frame.actionCancelled) frame.vfx.push("break-stamp");
       } else if (log.type === "HEAL") {
         const target = engineState.actors.get(log.targetId || log.actorId);
         if (target) {
-          target.currentHp = Math.min(target.maxHp, target.currentHp + frame.value);
-          addHpDelta(target.id, frame.value);
+          if (!target.hideHp) {
+            target.currentHp = Math.min(target.maxHp, target.currentHp + frame.value);
+            addHpDelta(target.id, frame.value);
+          } else {
+            target.currentHp = target.maxHp;
+          }
           frame.vfx.push("flash-green");
           frame.isBeneficial = true;
           if (target.currentHp > 0) {
@@ -535,6 +621,7 @@
         const target = engineState.actors.get(log.actorId);
         if (target && log.maxHp) {
           target.maxHp = Number(log.maxHp);
+          target.hideHp = false;
         }
       } else if (log.type === "SP_RECOVER") {
         const target = engineState.actors.get(log.targetId || log.actorId);
@@ -547,17 +634,23 @@
         const target = engineState.actors.get(log.actorId);
         if (target && frame.value) {
           if (log.buffType === "HOT" || /恢復|回復/.test(msg) && !/傷害|失去/.test(msg)) {
-            target.currentHp = Math.min(target.maxHp, target.currentHp + frame.value);
-            addHpDelta(target.id, frame.value);
+            if (!target.hideHp) {
+              target.currentHp = Math.min(target.maxHp, target.currentHp + frame.value);
+              addHpDelta(target.id, frame.value);
+            } else {
+              target.currentHp = target.maxHp;
+            }
             frame.vfx.push("flash-green");
             frame.isBeneficial = true;
             if (target.currentHp > 0) {
               actorsDeathState.set(target.id, false);
             }
           } else {
-            target.currentHp = Math.max(0, target.currentHp - frame.value);
+            if (!target.hideHp) {
+              target.currentHp = Math.max(0, target.currentHp - frame.value);
+              addHpDelta(target.id, -frame.value);
+            }
             target.totalDamageTaken += frame.value;
-            addHpDelta(target.id, -frame.value);
             frame.vfx.push("flash-purple");
             frame.isBeneficial = false;
             let sourceId = null;
@@ -586,7 +679,7 @@
       } else if (/TEXT|BUFF_APPLY/.test(String(log.type))) {
         const msg = String(log.message || "");
         const target = engineState.actors.get(log.actorId);
-        if (target) {
+        if (target && !target.hideHp) {
           const healMatch = msg.match(/(?:恢復|回復)了\s*(\d+)\s*(?:HP|點生命)/);
           if (healMatch) {
             const amount = Number(healMatch[1]);
@@ -1526,7 +1619,7 @@
     }
     const targetHitCount = engineState.currentCombo.targetHitCounts?.[frame.targetId] || 1;
     const isTargetCombo = ["DAMAGE", "BLOCK"].includes(frame.type) && !frame.isCounter && !frame.isSelfDamage && !frame.isEnvironmentalPulse && targetHitCount > 1;
-    const isBigHit = targetActor && displayValue >= targetActor.maxHp * 0.15;
+    const isBigHit = targetActor && !targetActor.hideHp && displayValue >= targetActor.maxHp * 0.15;
     const isCriticalOrBig = frame.isCrit && !frame.blocked || isBigHit;
     const arenaRect = arena.getBoundingClientRect();
     const actorRect = affectedEl.getBoundingClientRect();
@@ -2050,14 +2143,16 @@
       const unspawnedClass = actor.initiallySpawned === false ? "unspawned" : "";
       el.className = `actor ${actor.side} ${unspawnedClass}`.trim();
       el.id = `actor-${actor.id}`;
+      const hpContainerStyle = actor.hideHp ? ' style="display: none;"' : "";
+      const hpTextContent = actor.hideHp ? "" : `${actor.maxHp}/${actor.maxHp}`;
       el.innerHTML = `
             <div class="actor-name">${actor.name}</div>
             <div class="avatar-wrapper">
                 <img class="avatar" src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
             </div>
-            <div class="hp-container">
+            <div class="hp-container"${hpContainerStyle}>
                 <div class="hp-fill" id="hp-fill-${actor.id}"></div>
-                <div class="hp-text" id="hp-text-${actor.id}">${actor.maxHp}/${actor.maxHp}</div>
+                <div class="hp-text" id="hp-text-${actor.id}">${hpTextContent}</div>
             </div>
         `;
       if (actor.side === "left") leftTeam.appendChild(el);
@@ -2202,7 +2297,7 @@
         const fillEl = sr.getElementById(`hp-fill-${actor.id}`);
         const textEl = sr.getElementById(`hp-text-${actor.id}`);
         const wrapperEl = sr.getElementById(`actor-${actor.id}`);
-        if (fillEl && textEl) {
+        if (fillEl && textEl && !actor.hideHp) {
           fillEl.style.transition = "none";
           fillEl.style.width = "100%";
           setTimeout(() => {
@@ -2233,21 +2328,23 @@
         if (!isSpawned) wrapperEl.classList.add("unspawned");
         else wrapperEl.classList.remove("unspawned");
       }
-      if (fillEl && textEl && actor) {
-        const pct = currentHp / actor.maxHp * 100;
-        fillEl.style.transition = "none";
-        fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-        setTimeout(() => {
-          fillEl.style.transition = "";
-        }, 50);
-        textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
-        fillEl.classList.remove("warning", "danger");
-        if (wrapperEl) wrapperEl.classList.remove("danger-state");
-        if (pct > 0 && pct <= 25) {
-          fillEl.classList.add("danger");
-          if (wrapperEl) wrapperEl.classList.add("danger-state");
-        } else if (pct > 0 && pct <= 50) {
-          fillEl.classList.add("warning");
+      if (actor) {
+        if (fillEl && textEl && !actor.hideHp) {
+          const pct = currentHp / actor.maxHp * 100;
+          fillEl.style.transition = "none";
+          fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+          setTimeout(() => {
+            fillEl.style.transition = "";
+          }, 50);
+          textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
+          fillEl.classList.remove("warning", "danger");
+          if (wrapperEl) wrapperEl.classList.remove("danger-state");
+          if (pct > 0 && pct <= 25) {
+            fillEl.classList.add("danger");
+            if (wrapperEl) wrapperEl.classList.add("danger-state");
+          } else if (pct > 0 && pct <= 50) {
+            fillEl.classList.add("warning");
+          }
         }
         actor.currentHp = currentHp;
         const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : currentHp <= 0;
@@ -2394,19 +2491,21 @@
       const textEl = sr.getElementById(`hp-text-${actorId}`);
       const wrapperEl = sr.getElementById(`actor-${actorId}`);
       const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : currentHp <= 0;
-      if (fillEl && textEl && actor) {
-        const pct = currentHp / actor.maxHp * 100;
-        fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-        textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
-        fillEl.classList.remove("warning", "danger");
-        if (currentHp > 0 && pct <= 25) {
-          fillEl.classList.add("danger");
-          if (wrapperEl && !isDead) wrapperEl.classList.add("danger-state");
-        } else if (currentHp > 0 && pct <= 50) {
-          fillEl.classList.add("warning");
-          if (wrapperEl) wrapperEl.classList.remove("danger-state");
-        } else {
-          if (wrapperEl) wrapperEl.classList.remove("danger-state");
+      if (actor) {
+        if (fillEl && textEl && !actor.hideHp) {
+          const pct = currentHp / actor.maxHp * 100;
+          fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+          textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
+          fillEl.classList.remove("warning", "danger");
+          if (currentHp > 0 && pct <= 25) {
+            fillEl.classList.add("danger");
+            if (wrapperEl && !isDead) wrapperEl.classList.add("danger-state");
+          } else if (currentHp > 0 && pct <= 50) {
+            fillEl.classList.add("warning");
+            if (wrapperEl) wrapperEl.classList.remove("danger-state");
+          } else {
+            if (wrapperEl) wrapperEl.classList.remove("danger-state");
+          }
         }
         actor.currentHp = currentHp;
         if (isDead && wrapperEl) {
