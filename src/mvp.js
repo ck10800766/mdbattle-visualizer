@@ -1,7 +1,12 @@
-// src/mvp.js
+// ==========================================
+// FILE: src/mvp.js
+// ==========================================
 import { engineState } from './state.js';
 import { getConsolidatedStats } from './parser.js';
 
+/**
+ * Renders the post-battle JRPG-styled Victory/Defeat summary and MVP contribution overlay.
+ */
 export function showMVPPanel() {
     const sr = engineState.shadowRoot;
     if (!sr || sr.getElementById('mdbv-mvp-panel')) return;
@@ -97,6 +102,9 @@ export function showMVPPanel() {
     `;
     statsContainer.appendChild(headerRow);
 
+    /**
+     * Animates a numeric counter from 0 up to endValue using a cubic ease-out curve.
+     */
     const animateValue = (element, endValue, delay) => {
         let startTimestamp = null;
         const duration = 800;

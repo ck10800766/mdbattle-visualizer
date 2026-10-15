@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "build": "node build.mjs",
-    "watch": "node build.mjs --watch"
+    "watch": "node build.mjs --watch",
+    "test:snap": "node scripts/snapshot-runner.mjs",
+    "test:snap:update": "node scripts/snapshot-runner.mjs --update"
   },
   "devDependencies": {
     "esbuild": "^0.24.0"
-  }
+  },
+  "type": "module"
 }

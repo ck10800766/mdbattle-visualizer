@@ -1,5 +1,11 @@
-// src/state.js
+// ==========================================
+// FILE: src/state.js
+// ==========================================
 
+/**
+ * Creates a clean combo tracking state object with all geometric and hit-tracking fields initialized.
+ * @returns {object} Initialized combo state.
+ */
 export function createEmptyCombo() {
     return {
         actorId: null,
@@ -16,11 +22,18 @@ export function createEmptyCombo() {
         deltaY: undefined,
         prevMoveX: 0,
         prevDeltaY: 0,
+        aoeCenterX: undefined,
+        aoeCenterY: undefined,
+        atCenterStage: false,
         lastFrameIndex: -1
     };
 }
 
+/**
+ * Global mutable state store for the battle visualizer engine.
+ */
 export const engineState = {
+    lastReportData: null,
     frames: [],
     currentFrameIndex: 0,
     isPlaying: false,
@@ -37,67 +50,18 @@ export const engineState = {
 };
 
 /**
- * Returns the effective playback speed combining user speed setting and slow-mo scale.
+ * Calculates the effective playback speed combining user speed multiplier and cinematic slow-motion scale.
+ * @returns {number} Clamped effective playback speed multiplier.
  */
 export function getEffectiveSpeed() {
     return Math.max(0.05, engineState.playbackSpeed * engineState.timeScale);
 }
 
 /**
- * Increments and returns a new playback token to cancel outdated async loops/timers.
+ * Increments and returns a new playback token to invalidate outdated asynchronous loops and timers.
+ * @returns {number} The newly issued playback token.
  */
 export function nextPlaybackToken() {
     engineState.playbackToken += 1;
     return engineState.playbackToken;
-}
-
-/**
- * Escapes special characters in a string for safe use inside a RegExp constructor.
- */
-export function escapeRegExp(str) {
-    return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-/**
- * Escapes HTML special characters to prevent markup corruption before highlighting names.
- */
-export function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-/**
- * Highlights all actor names in a single regex pass without corrupting HTML tags.
- */
-export function formatLogMessage(rawMessage, actorsMap) {
-    const safeMsg = escapeHtml(rawMessage);
-    const sortedActors = Array.from(actorsMap.values())
-        .filter(a => a && a.name)
-        .sort((a, b) => b.name.length - a.name.length);
-
-    if (sortedActors.length === 0) return safeMsg;
-
-    const sideByEscapedName = new Map();
-    const patterns = [];
-
-    sortedActors.forEach(actor => {
-        const escapedHtmlName = escapeHtml(actor.name);
-        if (!sideByEscapedName.has(escapedHtmlName)) {
-            sideByEscapedName.set(escapedHtmlName, actor.side);
-            patterns.push(escapeRegExp(escapedHtmlName));
-        }
-    });
-
-    if (patterns.length === 0) return safeMsg;
-
-    const regex = new RegExp(`(${patterns.join('|')})`, 'g');
-    return safeMsg.replace(regex, (match) => {
-        const side = sideByEscapedName.get(match);
-        const nameClass = side === 'left' ? 'actor-name-left' : 'actor-name-right';
-        return `<span class="${nameClass}">${match}</span>`;
-    });
 }

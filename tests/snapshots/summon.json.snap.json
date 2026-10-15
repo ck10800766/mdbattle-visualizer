@@ -1,0 +1,4134 @@
+{
+  "actors": {
+    "6aaf63c0177ff92cc8f066ad": {
+      "avatar": "https://mydoujin.online/images/characters/kibayuki-yuuki.webp",
+      "currentHp": 0,
+      "hideHp": false,
+      "id": "6aaf63c0177ff92cc8f066ad",
+      "initiallySpawned": true,
+      "isSummon": false,
+      "lastUltimateTurn": null,
+      "luckDamageDealt": 50,
+      "maxHp": 10060,
+      "name": "有紀",
+      "ownerId": null,
+      "side": "right",
+      "totalDamageDealt": 9827,
+      "totalDamageTaken": 10604,
+      "turnNumbers": [
+        2,
+        6,
+        8
+      ]
+    },
+    "6ab150baad84d95a03db1ca4": {
+      "avatar": "https://mydoujin.online/images/characters/genji.webp",
+      "currentHp": 287,
+      "hideHp": false,
+      "id": "6ab150baad84d95a03db1ca4",
+      "initiallySpawned": true,
+      "isSummon": false,
+      "lastUltimateTurn": null,
+      "luckDamageDealt": 0,
+      "maxHp": 8470,
+      "name": "源氏",
+      "ownerId": null,
+      "side": "left",
+      "totalDamageDealt": 15634,
+      "totalDamageTaken": 9877,
+      "turnNumbers": [
+        1,
+        3,
+        5,
+        7
+      ]
+    },
+    "summon_1": {
+      "avatar": "https://mydoujin.online/images/characters/kibayuki-yuuki.webp",
+      "currentHp": 0,
+      "hideHp": true,
+      "id": "summon_1",
+      "initiallySpawned": false,
+      "isSummon": true,
+      "lastUltimateTurn": null,
+      "luckDamageDealt": 0,
+      "maxHp": 1,
+      "name": "詩烏涅",
+      "ownerId": "6aaf63c0177ff92cc8f066ad",
+      "side": "right",
+      "totalDamageDealt": 0,
+      "totalDamageTaken": 5030,
+      "turnNumbers": [
+        4
+      ]
+    }
+  },
+  "battleResult": "WIN",
+  "frames": [
+    {
+      "actionCancelled": false,
+      "actorId": "__UNDEFINED__",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 10060,
+        "6ab150baad84d95a03db1ca4": 8470,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 0,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "戰鬥開始！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 0,
+      "type": "BATTLE_START",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": true,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 10060,
+        "6ab150baad84d95a03db1ca4": 8420,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 50,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -50
+      },
+      "incomingSkillId": null,
+      "index": 1,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 往後退後腦撞到樹受到 50 點傷害。",
+      "opponentId": "6aaf63c0177ff92cc8f066ad",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 0,
+      "type": "LUCK_EVENT",
+      "value": 50,
+      "vfx": [
+        "luck-drop",
+        "break-stamp"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 8420,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 1793,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": -1793
+      },
+      "incomingSkillId": null,
+      "index": 2,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 有紀，會心一擊！對 有紀 造成了 1793 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 1,
+      "type": "DAMAGE",
+      "value": 1793,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 8420,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 3,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 2,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 8120,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 300,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -300
+      },
+      "incomingSkillId": null,
+      "index": 4,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 1 劍，會心一擊！對 源氏 造成了 300 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 300,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 7820,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 300,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -300
+      },
+      "incomingSkillId": null,
+      "index": 5,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 2 劍，會心一擊！對 源氏 造成了 300 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 300,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 7528,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 292,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -292
+      },
+      "incomingSkillId": null,
+      "index": 6,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 3 劍，會心一擊！對 源氏 造成了 292 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 292,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 7461,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 67,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -67
+      },
+      "incomingSkillId": null,
+      "index": 7,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 4 劍，對 源氏 造成了 67 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 67,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 7391,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 70,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -70
+      },
+      "incomingSkillId": null,
+      "index": 8,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 5 劍，對 源氏 造成了 70 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 70,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 7330,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 61,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -61
+      },
+      "incomingSkillId": null,
+      "index": 9,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 6 劍，對 源氏 造成了 61 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 61,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 7256,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 74,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -74
+      },
+      "incomingSkillId": null,
+      "index": 10,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 7 劍，對 源氏 造成了 74 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 74,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 6969,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 287,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -287
+      },
+      "incomingSkillId": null,
+      "index": 11,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 8 劍，會心一擊！對 源氏 造成了 287 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 287,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 6903,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 66,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -66
+      },
+      "incomingSkillId": null,
+      "index": 12,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 9 劍，對 源氏 造成了 66 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 66,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 6835,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 68,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -68
+      },
+      "incomingSkillId": null,
+      "index": 13,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 10 劍，對 源氏 造成了 68 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 68,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 6835,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 14,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 2367,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 4468,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -4468
+      },
+      "incomingSkillId": null,
+      "index": 15,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 11 劍，會心一擊！貫穿十字的正中央，對 源氏 造成 4468 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 4468,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 2367,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 16,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 2,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 2295,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 72,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -72
+      },
+      "incomingSkillId": null,
+      "index": 17,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 1 劍，對 源氏 造成了 72 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 72,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 2232,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 63,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -63
+      },
+      "incomingSkillId": null,
+      "index": 18,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 2 劍，對 源氏 造成了 63 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 63,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 8267,
+        "6ab150baad84d95a03db1ca4": 2171,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 61,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -61
+      },
+      "incomingSkillId": null,
+      "index": 19,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 3 劍，對 源氏 造成了 61 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 61,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 6773,
+        "6ab150baad84d95a03db1ca4": 2171,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 1494,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": -1494
+      },
+      "incomingSkillId": "yuuki_rosario",
+      "index": 20,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 4 劍，但是遭源氏反擊，會心一擊！受到 1494 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 2,
+      "type": "COUNTER",
+      "value": 1494,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 6773,
+        "6ab150baad84d95a03db1ca4": 2106,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 65,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -65
+      },
+      "incomingSkillId": null,
+      "index": 21,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 5 劍，對 源氏 造成了 65 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 65,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 6773,
+        "6ab150baad84d95a03db1ca4": 2045,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 61,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -61
+      },
+      "incomingSkillId": null,
+      "index": 22,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 6 劍，對 源氏 造成了 61 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 61,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 6773,
+        "6ab150baad84d95a03db1ca4": 1758,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 287,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -287
+      },
+      "incomingSkillId": null,
+      "index": 23,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 7 劍，會心一擊！對 源氏 造成了 287 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 287,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 5485,
+        "6ab150baad84d95a03db1ca4": 1758,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 1288,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": -1288
+      },
+      "incomingSkillId": "yuuki_rosario",
+      "index": 24,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 8 劍，但是遭源氏反擊，會心一擊！受到 1288 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 2,
+      "type": "COUNTER",
+      "value": 1288,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 5485,
+        "6ab150baad84d95a03db1ca4": 1694,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 64,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -64
+      },
+      "incomingSkillId": null,
+      "index": 25,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 9 劍，對 源氏 造成了 64 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 64,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 5485,
+        "6ab150baad84d95a03db1ca4": 1625,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 69,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -69
+      },
+      "incomingSkillId": null,
+      "index": 26,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 10 劍，對 源氏 造成了 69 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 69,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 5485,
+        "6ab150baad84d95a03db1ca4": 1625,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 27,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 身上的十字刻下了 8 道劍痕，劍尖對準了正中央——",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 5485,
+        "6ab150baad84d95a03db1ca4": 593,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 1032,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -1032
+      },
+      "incomingSkillId": null,
+      "index": 28,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 11 劍，貫穿十字的正中央，對 源氏 造成 1032 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 2,
+      "type": "DAMAGE",
+      "value": 1032,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {},
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 5485,
+        "6ab150baad84d95a03db1ca4": 593,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 29,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏：「我需要治療！」……沒有人回應，他只好自己繞到邊線抓起一個醫療包。",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 3,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 5485,
+        "6ab150baad84d95a03db1ca4": 2287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 1694,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": 1694
+      },
+      "incomingSkillId": null,
+      "index": 30,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": true,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 回復了 1694 HP。",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 3,
+      "type": "HEAL",
+      "value": 1694,
+      "vfx": [
+        "flash-green"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 3627,
+        "6ab150baad84d95a03db1ca4": 2287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": false
+      },
+      "actualDamage": 1858,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": -1858
+      },
+      "incomingSkillId": null,
+      "index": 31,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 有紀，會心一擊！對 有紀 造成了 1858 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 3,
+      "type": "DAMAGE",
+      "value": 1858,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 3627,
+        "6ab150baad84d95a03db1ca4": 2287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 32,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": true,
+      "message": "有紀 發出公會訊號，沉睡騎士的 詩烏涅 趕來助陣！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_sleeping_knights",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": "summon_1",
+      "targetId": "summon_1",
+      "turnNumber": 3,
+      "type": "SUMMON",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "summon_1",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 3627,
+        "6ab150baad84d95a03db1ca4": 2287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 33,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "詩烏涅：「別勉強，傷我來治。」",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_sleeping_knights",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 4,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 3627,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 408,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -408
+      },
+      "incomingSkillId": "genji_shuriken",
+      "index": 34,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 有紀，但是遭有紀反擊，受到 408 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 4,
+      "type": "COUNTER",
+      "value": 408,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 3250,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": -3250
+      },
+      "incomingSkillId": null,
+      "index": 35,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 使出了 迅影襲，化作一道綠影從 有紀 身邊穿過，會心一擊！對 有紀 造成了 3250 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_swift_strike",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 5,
+      "type": "DAMAGE",
+      "value": 3250,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "base": 39,
+          "baseText": "技巧（572 → 39）",
+          "max": 100,
+          "min": 1,
+          "modifier": 0,
+          "roll": 35,
+          "total": 74
+        },
+        "right": {
+          "base": 44,
+          "baseText": "技巧（634 → 44）",
+          "max": 100,
+          "min": 1,
+          "modifier": 0,
+          "roll": 37,
+          "total": 81
+        },
+        "winner": "RIGHT"
+      },
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 36,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "絕劍判定：有紀 技巧（572 → 39） + 骰出 35 = 74，源氏 技巧（634 → 44） + 骰出 37 = 81。",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "kibayuki_zekken",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 5,
+      "type": "TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 1844,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 37,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 詩烏涅，會心一擊！對 詩烏涅 造成了 1844 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "summon_1",
+      "turnNumber": 5,
+      "type": "DAMAGE",
+      "value": 1844,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 1270,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 38,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "手腕一翻，第 2 輪緊跟著射出，會心一擊！對 詩烏涅 造成了 1270 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "summon_1",
+      "turnNumber": 5,
+      "type": "DAMAGE",
+      "value": 1270,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 39,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 5,
+      "type": "TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 40,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 拔出了龍一文字，迅影襲的冷卻也跟著轉好了。",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 5,
+      "type": "TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1879,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 41,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 6,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1596,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 283,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -283
+      },
+      "incomingSkillId": null,
+      "index": 42,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 1 劍，會心一擊！對 源氏 造成了 283 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 283,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1534,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 62,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -62
+      },
+      "incomingSkillId": null,
+      "index": 43,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 2 劍，對 源氏 造成了 62 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 62,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1466,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 68,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -68
+      },
+      "incomingSkillId": null,
+      "index": 44,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 3 劍，對 源氏 造成了 68 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 68,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1399,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 67,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -67
+      },
+      "incomingSkillId": null,
+      "index": 45,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 4 劍，對 源氏 造成了 67 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 67,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1090,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 309,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -309
+      },
+      "incomingSkillId": null,
+      "index": 46,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 5 劍，會心一擊！對 源氏 造成了 309 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 309,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 1024,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 66,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -66
+      },
+      "incomingSkillId": null,
+      "index": 47,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 6 劍，對 源氏 造成了 66 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 66,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 960,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 64,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -64
+      },
+      "incomingSkillId": null,
+      "index": 48,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 7 劍，對 源氏 造成了 64 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 64,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 888,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 72,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -72
+      },
+      "incomingSkillId": null,
+      "index": 49,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 8 劍，對 源氏 造成了 72 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 72,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 596,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 292,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -292
+      },
+      "incomingSkillId": null,
+      "index": 50,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 9 劍，會心一擊！對 源氏 造成了 292 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 292,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 309,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6ab150baad84d95a03db1ca4": -309
+      },
+      "incomingSkillId": null,
+      "index": 51,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 10 劍，會心一擊！對 源氏 造成了 309 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "DAMAGE",
+      "value": 309,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 377,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 52,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "turnNumber": 6,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 1,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 376,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": -376
+      },
+      "incomingSkillId": "yuuki_rosario",
+      "index": 53,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "第 11 劍，但是遭源氏反擊，會心一擊！受到 376 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 6,
+      "type": "COUNTER",
+      "value": 376,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 1,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": "yuuki_rosario",
+      "index": 54,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": true,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "有紀 在倒下前一刻撐住了身體，婚紗的裙襬沾滿了塵土。",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_lived",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 6,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 1,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": "yuuki_rosario",
+      "index": 55,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": true,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "有紀：「再一下下……讓我把這一招打完。」",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_lived",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 6,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "summon_1",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 545,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 544,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": 544
+      },
+      "incomingSkillId": null,
+      "index": 56,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": true,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": true,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "詩烏涅 詠唱水妖精的治癒魔法，有紀 恢復了 544 HP！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_siune_heal",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 6,
+      "type": "HEAL",
+      "value": 544,
+      "vfx": [
+        "flash-green"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": false
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 545,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 1
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 1916,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 57,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": true,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 使出了 迅影襲，化作一道綠影從 詩烏涅 身邊穿過，會心一擊！對 詩烏涅 造成了 3750 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_swift_strike",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "summon_1",
+      "turnNumber": 7,
+      "type": "DAMAGE",
+      "value": 3750,
+      "vfx": [
+        "screen-shake",
+        "flash-red"
+      ]
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "summon_1",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": true
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 545,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 0
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": "summon_1",
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 58,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": true,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "詩烏涅 倒下了！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 7,
+      "type": "DEATH",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": true
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 545,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 0
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 59,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "迅影襲的冷卻重置了！源氏 腳下一蹬，又衝向了 有紀！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 7,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": true
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 0,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 0
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 545,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {
+        "6aaf63c0177ff92cc8f066ad": -545
+      },
+      "incomingSkillId": null,
+      "index": 60,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 使出了 迅影襲，化作一道綠影從 有紀 身邊穿過，對 有紀 造成了 836 點傷害！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "genji_swift_strike",
+      "skillTier": "standard",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "6aaf63c0177ff92cc8f066ad",
+      "turnNumber": 7,
+      "type": "DAMAGE",
+      "value": 836,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": true
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 0,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 0
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 61,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "有紀：「我……努力活過了。」",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "yuuki_lived",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 8,
+      "type": "SKILL_TEXT",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6aaf63c0177ff92cc8f066ad",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": true
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 0,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 0
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 0,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": "6aaf63c0177ff92cc8f066ad",
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 62,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": true,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "有紀 倒下了！",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 8,
+      "type": "DEATH",
+      "value": 0,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": true
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 0,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 0
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 287,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 63,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 剩餘 287 HP",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 8,
+      "type": "HP_REMAINING",
+      "value": 287,
+      "vfx": []
+    },
+    {
+      "actionCancelled": false,
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "actorsDeathState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": false,
+        "summon_1": true
+      },
+      "actorsHpState": {
+        "6aaf63c0177ff92cc8f066ad": 0,
+        "6ab150baad84d95a03db1ca4": 287,
+        "summon_1": 0
+      },
+      "actorsSummonState": {
+        "6aaf63c0177ff92cc8f066ad": true,
+        "6ab150baad84d95a03db1ca4": true,
+        "summon_1": true
+      },
+      "actualDamage": 64,
+      "aoeCasterId": null,
+      "blocked": false,
+      "deadActorId": null,
+      "diceCheck": null,
+      "hpDeltas": {},
+      "incomingSkillId": null,
+      "index": 64,
+      "isAOE": false,
+      "isAOEFirst": false,
+      "isAOELast": false,
+      "isBeneficial": false,
+      "isCounter": false,
+      "isCounterSetup": false,
+      "isCrit": false,
+      "isDeathEvent": false,
+      "isEnvironmentalPulse": false,
+      "isNormalAttack": false,
+      "isSelfDamage": false,
+      "isSummonEvent": false,
+      "message": "源氏 獲得了 64 點經驗值",
+      "opponentId": "__UNDEFINED__",
+      "passiveId": null,
+      "rebirthHeal": false,
+      "skillId": "default",
+      "skillTier": "normal",
+      "source": null,
+      "stage": null,
+      "summonedActorId": null,
+      "targetId": "__UNDEFINED__",
+      "turnNumber": 8,
+      "type": "EXP_GAIN",
+      "value": 64,
+      "vfx": []
+    }
+  ],
+  "mvpSummary": {
+    "consolidated": [
+      {
+        "actorId": "6ab150baad84d95a03db1ca4",
+        "actorName": "源氏",
+        "totalOutput": 15634,
+        "totalTaken": 9877
+      }
+    ],
+    "maxTotalDamage": 15634,
+    "mvpId": "6ab150baad84d95a03db1ca4",
+    "mvpName": "源氏"
+  },
+  "runtimeTrace": [
+    {
+      "formattedHtml": "戰鬥開始！",
+      "index": 0,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 往後退後腦撞到樹受到 50 點傷害。",
+      "index": 1,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 甩手射出三枚手裏劍，直取 <span class=\"actor-name-right\">有紀</span>，會心一擊！對 <span class=\"actor-name-right\">有紀</span> 造成了 1793 點傷害！",
+      "index": 2,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "index": 3,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 1 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 300 點傷害！",
+      "index": 4,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 2 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 300 點傷害！",
+      "index": 5,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 3 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 292 點傷害！",
+      "index": 6,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 4 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 67 點傷害！",
+      "index": 7,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 5 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 70 點傷害！",
+      "index": 8,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 6 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 61 點傷害！",
+      "index": 9,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 7 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 74 點傷害！",
+      "index": 10,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 8 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 287 點傷害！",
+      "index": 11,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 9 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 66 點傷害！",
+      "index": 12,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 10 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 68 點傷害！",
+      "index": 13,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "index": 14,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 11 劍，會心一擊！貫穿十字的正中央，對 <span class=\"actor-name-left\">源氏</span> 造成 4468 點傷害！",
+      "index": 15,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "index": 16,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 1 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 72 點傷害！",
+      "index": 17,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 2 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 63 點傷害！",
+      "index": 18,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 3 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 61 點傷害！",
+      "index": 19,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 4 劍，但是遭<span class=\"actor-name-left\">源氏</span>反擊，會心一擊！受到 1494 點傷害！",
+      "index": 20,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 5 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 65 點傷害！",
+      "index": 21,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 6 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 61 點傷害！",
+      "index": 22,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 7 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 287 點傷害！",
+      "index": 23,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 8 劍，但是遭<span class=\"actor-name-left\">源氏</span>反擊，會心一擊！受到 1288 點傷害！",
+      "index": 24,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 9 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 64 點傷害！",
+      "index": 25,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 10 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 69 點傷害！",
+      "index": 26,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 身上的十字刻下了 8 道劍痕，劍尖對準了正中央——",
+      "index": 27,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 11 劍，貫穿十字的正中央，對 <span class=\"actor-name-left\">源氏</span> 造成 1032 點傷害！",
+      "index": 28,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span>：「我需要治療！」……沒有人回應，他只好自己繞到邊線抓起一個醫療包。",
+      "index": 29,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 回復了 1694 HP。",
+      "index": 30,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 甩手射出三枚手裏劍，直取 <span class=\"actor-name-right\">有紀</span>，會心一擊！對 <span class=\"actor-name-right\">有紀</span> 造成了 1858 點傷害！",
+      "index": 31,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 發出公會訊號，沉睡騎士的 <span class=\"actor-name-right\">詩烏涅</span> 趕來助陣！",
+      "index": 32,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">詩烏涅</span>：「別勉強，傷我來治。」",
+      "index": 33,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 甩手射出三枚手裏劍，直取 <span class=\"actor-name-right\">有紀</span>，但是遭<span class=\"actor-name-right\">有紀</span>反擊，受到 408 點傷害！",
+      "index": 34,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 使出了 迅影襲，化作一道綠影從 <span class=\"actor-name-right\">有紀</span> 身邊穿過，會心一擊！對 <span class=\"actor-name-right\">有紀</span> 造成了 3250 點傷害！",
+      "index": 35,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "絕劍判定：<span class=\"actor-name-right\">有紀</span> 技巧（572 → 39） + 骰出 35 = 74，<span class=\"actor-name-left\">源氏</span> 技巧（634 → 44） + 骰出 37 = 81。",
+      "index": 36,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 甩手射出三枚手裏劍，直取 <span class=\"actor-name-right\">詩烏涅</span>，會心一擊！對 <span class=\"actor-name-right\">詩烏涅</span> 造成了 1844 點傷害！",
+      "index": 37,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "手腕一翻，第 2 輪緊跟著射出，會心一擊！對 <span class=\"actor-name-right\">詩烏涅</span> 造成了 1270 點傷害！",
+      "index": 38,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。",
+      "index": 39,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 拔出了龍一文字，迅影襲的冷卻也跟著轉好了。",
+      "index": 40,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "index": 41,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 1 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 283 點傷害！",
+      "index": 42,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 2 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 62 點傷害！",
+      "index": 43,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 3 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 68 點傷害！",
+      "index": 44,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 4 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 67 點傷害！",
+      "index": 45,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 5 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 309 點傷害！",
+      "index": 46,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 6 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 66 點傷害！",
+      "index": 47,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 7 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 64 點傷害！",
+      "index": 48,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 8 劍，對 <span class=\"actor-name-left\">源氏</span> 造成了 72 點傷害！",
+      "index": 49,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 9 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 292 點傷害！",
+      "index": 50,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "第 10 劍，會心一擊！對 <span class=\"actor-name-left\">源氏</span> 造成了 309 點傷害！",
+      "index": 51,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "index": 52,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "第 11 劍，但是遭<span class=\"actor-name-left\">源氏</span>反擊，會心一擊！受到 376 點傷害！",
+      "index": 53,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 在倒下前一刻撐住了身體，婚紗的裙襬沾滿了塵土。",
+      "index": 54,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span>：「再一下下……讓我把這一招打完。」",
+      "index": 55,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">詩烏涅</span> 詠唱水妖精的治癒魔法，<span class=\"actor-name-right\">有紀</span> 恢復了 544 HP！",
+      "index": 56,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 使出了 迅影襲，化作一道綠影從 <span class=\"actor-name-right\">詩烏涅</span> 身邊穿過，會心一擊！對 <span class=\"actor-name-right\">詩烏涅</span> 造成了 3750 點傷害！",
+      "index": 57,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">詩烏涅</span> 倒下了！",
+      "index": 58,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "迅影襲的冷卻重置了！<span class=\"actor-name-left\">源氏</span> 腳下一蹬，又衝向了 <span class=\"actor-name-right\">有紀</span>！",
+      "index": 59,
+      "lookahead": {
+        "isNextFrameSameCombo": true,
+        "isNextTargetDifferent": true,
+        "shouldReturnToOrigin": true
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 使出了 迅影襲，化作一道綠影從 <span class=\"actor-name-right\">有紀</span> 身邊穿過，對 <span class=\"actor-name-right\">有紀</span> 造成了 836 點傷害！",
+      "index": 60,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span>：「我……努力活過了。」",
+      "index": 61,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 倒下了！",
+      "index": 62,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 剩餘 287 HP",
+      "index": 63,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    },
+    {
+      "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 獲得了 64 點經驗值",
+      "index": 64,
+      "lookahead": {
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
+      }
+    }
+  ],
+  "totalTurns": 8
+}

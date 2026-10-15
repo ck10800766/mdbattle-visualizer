@@ -1,4 +1,6 @@
-// src/index.js
+// ==========================================
+// FILE: src/index.js
+// ==========================================
 import { engineState, createEmptyCombo, nextPlaybackToken } from './state.js';
 import { parseParticipants, buildStateSnapshots } from './parser.js';
 import { createBattleStage } from './stage.js';
@@ -9,7 +11,10 @@ const originalFetch = window.fetch.bind(window);
 let lastAutoLaunchedReportId = null;
 
 /**
- * Recursively searches a response object (up to depth 3) for a valid battle report payload containing logs[].
+ * Recursively searches a JSON response object (up to depth 3) for a valid battle report payload containing logs[].
+ * @param {object} obj - Candidate response object.
+ * @param {number} [depth=0] - Current recursion depth.
+ * @returns {object|null} Extracted battle payload or null if not found.
  */
 function findBattlePayload(obj, depth = 0) {
     if (!obj || typeof obj !== 'object' || depth > 3) return null;
@@ -27,17 +32,21 @@ function findBattlePayload(obj, depth = 0) {
 }
 
 /**
- * Checks whether the battle payload has valid participant HP stats required for the visualizer.
+ * Verifies whether the battle payload includes valid participant HP statistics required by the stage.
+ * @param {object} battleData - Battle report payload.
+ * @returns {boolean} True if player participant stats are present.
  */
 function hasValidParticipants(battleData) {
     const p = battleData?.participants;
     if (!p) return false;
-    const hasPlayers = Array.isArray(p.players) && p.players.length > 0 && p.players[0]?.stats?.hp != null;
-    return hasPlayers;
+    return Array.isArray(p.players) && p.players.length > 0 && p.players[0]?.stats?.hp != null;
 }
 
 /**
- * Ensures full report data (including participants and boss info) is present before launching the stage.
+ * Ensures full report metadata (including participant maxHp and boss avatars) is present
+ * before initializing the battle visualizer stage.
+ * @param {object} rawBattleData - Intercepted battle response payload.
+ * @returns {Promise<void>}
  */
 async function prepareAndInitVisualizer(rawBattleData) {
     const battleData = findBattlePayload(rawBattleData);
@@ -45,7 +54,7 @@ async function prepareAndInitVisualizer(rawBattleData) {
 
     const reportId = battleData.reportId != null ? String(battleData.reportId) : null;
 
-    // Avoid launching twice if both POST challenge and GET battle-reports fire for the same reportId
+    // Prevent duplicate stage initialization if both POST challenge and GET battle-reports fire for the same reportId
     if (reportId && reportId === lastAutoLaunchedReportId && engineState.hostElement) {
         return;
     }
@@ -83,13 +92,17 @@ async function prepareAndInitVisualizer(rawBattleData) {
     initVisualizer(finalReportData);
 }
 
+/**
+ * Resets engine state, parses participants and frame snapshots, and mounts the battle stage.
+ * @param {object} reportData - Complete battle report data.
+ */
 export function initVisualizer(reportData) {
     engineState.lastReportData = reportData;
     engineState.isPlaying = false;
     engineState.timeScale = 1.0;
     nextPlaybackToken();
 
-    // Keep outcome spoilers hidden on the underlying page while the visualizer is active
+    // Keep outcome spoilers masked on the underlying page while the visualizer is active
     armSpoilerGuard(0);
 
     engineState.currentFrameIndex = 0;
@@ -108,6 +121,9 @@ export function initVisualizer(reportData) {
     createBattleStage();
 }
 
+/**
+ * Injects the floating bottom-right manual launch button into the host page.
+ */
 function createToggleButton() {
     if (!document.body || document.getElementById('mdbv-toggle-btn')) return;
 
@@ -144,7 +160,7 @@ function createToggleButton() {
                 btn.textContent = '啟動視覺化演出';
             }
         } else if (engineState.lastReportData) {
-            // Allow re-opening the most recent live battle on /boss or /players/:id
+            // Re-open the most recent live battle on /boss or /players/:id
             initVisualizer(engineState.lastReportData);
         } else {
             alert('請先進行一場戰鬥或在戰報頁面使用此功能');
@@ -154,6 +170,9 @@ function createToggleButton() {
     document.body.appendChild(btn);
 }
 
+/**
+ * Monkey-patches window.fetch to intercept live battle initiation requests and battle report loads.
+ */
 function installFetchInterceptor() {
     window.fetch = async function (...args) {
         const input = args[0];
@@ -161,7 +180,7 @@ function installFetchInterceptor() {
         const url = typeof input === 'string' ? input : (input?.url || '');
         const method = String(init?.method || input?.method || 'GET').toUpperCase();
 
-        // Detect live battle initiation (Boss challenge or Player duel/chad)
+        // Detect live battle initiation (Dungeon Boss challenge or Player duel/action)
         const isLiveBattlePost =
             method === 'POST' &&
             (/\/api\/dungeon\/challenge(?:[?#]|$)/.test(url) ||
@@ -171,7 +190,7 @@ function installFetchInterceptor() {
             method === 'GET' &&
             /\/api\/battle-reports\/\d+(?:[?#]|$)/.test(url);
 
-        // Immediately arm spoiler guard before the POST request even resolves
+        // Immediately arm spoiler guard before the POST request resolves
         if (isLiveBattlePost) {
             lastAutoLaunchedReportId = null;
             armSpoilerGuard(45000);
