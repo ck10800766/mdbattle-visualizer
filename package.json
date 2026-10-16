@@ -10,6 +10,7 @@
     "test": "node scripts/snapshot-runner.mjs",
     "test:snap": "node scripts/snapshot-runner.mjs",
     "test:snap:update": "node scripts/snapshot-runner.mjs --update",
+    "check": "node scripts/check.mjs",
     "repomix": "npx repomix --config repomix.config.json"
   },
   "devDependencies": {

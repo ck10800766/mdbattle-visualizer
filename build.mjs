@@ -52,6 +52,33 @@ function generateAIContextFile() {
 }
 
 const isWatch = process.argv.includes('--watch');
+let startTime = 0;
+
+const buildReporterPlugin = {
+    name: 'build-reporter-plugin',
+    setup(build) {
+        build.onStart(() => {
+            startTime = Date.now();
+        });
+        build.onEnd(result => {
+            const elapsed = Date.now() - startTime;
+            const now = new Date().toLocaleTimeString();
+            if (result.errors && result.errors.length > 0) {
+                console.error(`[${now}] Build failed with ${result.errors.length} error(s):`);
+                result.errors.forEach(err => console.error(err));
+                return;
+            }
+            try {
+                generateAIContextFile();
+            } catch (err) {
+                console.warn(`[${now}] Warning: Failed to update ai-context.txt:`, err.message);
+            }
+            if (isWatch) {
+                console.log(`[${now}] Rebuild complete in ${elapsed}ms -> dist/mdbv.bundle.user.js (v${VERSION})`);
+            }
+        });
+    }
+};
 
 const buildOptions = {
     entryPoints: ['src/index.js'],
@@ -62,22 +89,14 @@ const buildOptions = {
         js: USERSCRIPT_BANNER
     },
     sourcemap: isWatch ? 'inline' : false,
-    plugins: [
-        {
-            name: 'ai-context-generator',
-            setup(build) {
-                build.onEnd(() => {
-                    generateAIContextFile();
-                });
-            }
-        }
-    ]
+    plugins: [buildReporterPlugin]
 };
 
 if (isWatch) {
     const ctx = await esbuild.context(buildOptions);
     await ctx.watch();
-    console.log('Watching src/ for changes (and updating dist/ai-context.txt)...');
+    const now = new Date().toLocaleTimeString();
+    console.log(`[${now}] Watching src/ for changes... (Press Ctrl+C to stop)`);
 } else {
     await esbuild.build(buildOptions);
     console.log(`Production build complete (v${VERSION}): dist/mdbv.bundle.user.js & dist/ai-context.txt`);
