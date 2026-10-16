@@ -15,11 +15,17 @@ export const STAGE_STYLES = `
     .stage { width: 100%; height: 100%; display: flex; flex-direction: column; background: radial-gradient(circle at center, #1a202c 0%, #000 100%); }
 
     /* Playback Controls */
-    .controls { display: flex; padding: 10px 20px; background: #171923; border-bottom: 1px solid #2d3748; gap: 15px; align-items: center; justify-content: center; }
-    .seek-container { flex: 1; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 13px; font-variant-numeric: tabular-nums; }
+    .controls { display: flex; padding: 10px 18px; background: #171923; border-bottom: 1px solid #2d3748; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .control-group { display: flex; align-items: center; gap: 6px; }
+    .seek-container { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 13px; font-variant-numeric: tabular-nums; margin: 0 6px; }
     input[type="range"] { flex: 1; accent-color: #4fd1c5; cursor: pointer; }
-    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; white-space: nowrap; }
+    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s, transform 0.1s; white-space: nowrap; font-size: 13px; }
     button:hover { background: #319795; }
+    button:active { transform: scale(0.97); }
+    button.btn-nav { background: #2d3748; border-color: #4a5568; padding: 6px 10px; color: #e2e8f0; }
+    button.btn-nav:hover { background: #4a5568; border-color: #718096; }
+    button.btn-skip { background: #975a16; border-color: #f6e05e; color: #fefcbf; }
+    button.btn-skip:hover { background: #b7791f; }
     button.danger { background: #9b2c2c; border-color: #fc8181; }
     button.danger:hover { background: #c53030; }
 
@@ -177,4 +183,21 @@ export const STAGE_STYLES = `
     @keyframes rosario-slash-in { from { transform: rotate(var(--slash-angle, 38deg)) scaleX(0); opacity: 0; } to { transform: rotate(var(--slash-angle, 38deg)) scaleX(1); opacity: 1; } }
     @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }
     @keyframes rosario-shatter { 0% { transform: scale(1); filter: brightness(2); opacity: 1; } 100% { transform: scale(2.1); filter: brightness(3) blur(4px); opacity: 0; } }
-`;
+
+    /* Seek / Step Situation HUD Banner & Active Combat Highlights */
+    .log-line.current-frame-log { background: rgba(79, 209, 197, 0.2); border-left: 3px solid #f6e05e; color: #fff; box-shadow: inset 0 0 12px rgba(246, 224, 94, 0.15); }
+    .seek-situation-banner { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 75; background: rgba(15, 23, 42, 0.94); border: 1px solid #4fd1c5; border-top: 3px solid #f6e05e; border-radius: 10px; padding: 8px 16px; color: #f8fafc; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.78), 0 0 15px rgba(79, 209, 197, 0.25); backdrop-filter: blur(6px); display: flex; flex-direction: column; gap: 4px; max-width: min(720px, 88vw); min-width: 280px; pointer-events: none; animation: slideInUp 0.15s ease-out forwards; }
+    .seek-banner-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; font-weight: 800; color: #a0aec0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 4px; }
+    .seek-turn-pill { background: #f6e05e; color: #1a202c; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: 0.5px; }
+    .seek-skill-pill { background: rgba(79, 209, 197, 0.2); color: #81e6d9; border: 1px solid #4fd1c5; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .seek-skill-context { font-size: 12px; color: #fbd38d; font-style: italic; opacity: 0.95; }
+    .seek-banner-body { font-size: 14px; line-height: 1.45; color: #edf2f7; font-weight: 600; }
+    .actor.seek-acting .avatar { border-color: #f6e05e; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5); }
+    .actor.seek-targeted .avatar { border-color: #fc8181; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6); }
+
+    /* True AOE Fan Shockwave & Multi-Projectile Barrage VFX */
+    .aoe-fan-wave { position: absolute; width: 160px; height: 340px; pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
+    .aoe-fan-wave.wave-right { border-right: 14px solid var(--wave-color, #fc8181); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 0 180px 180px 0; box-shadow: 18px 0 28px -4px var(--wave-color, #fc8181), inset -14px 0 22px -6px #ffffff; }
+    .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
+    .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
+`;

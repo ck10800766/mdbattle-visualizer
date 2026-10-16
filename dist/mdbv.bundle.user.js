@@ -17,9 +17,22 @@
   var DEFAULT_AVATAR_URL = "https://via.placeholder.com/150";
   var DEFAULT_MVP_AVATAR_URL = "https://via.placeholder.com/600";
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
-  var PLAYBACK_SPEEDS = Object.freeze([1, 2, 4, 8]);
+  var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
+  var SPEED_STORAGE_KEY = "mdbv_playback_speed";
 
   // src/state.js
+  function loadSavedPlaybackSpeed() {
+    try {
+      if (typeof localStorage !== "undefined") {
+        const raw = Number(localStorage.getItem(SPEED_STORAGE_KEY));
+        if (PLAYBACK_SPEEDS.includes(raw)) {
+          return raw;
+        }
+      }
+    } catch {
+    }
+    return 1;
+  }
   function createEmptyCombo() {
     return {
       actorId: null,
@@ -48,7 +61,7 @@
     frames: [],
     currentFrameIndex: 0,
     isPlaying: false,
-    playbackSpeed: 1,
+    playbackSpeed: loadSavedPlaybackSpeed(),
     timeScale: 1,
     playbackToken: 0,
     currentCombo: createEmptyCombo(),
@@ -59,6 +72,17 @@
     totalTurns: 0,
     battleResult: "WIN"
   };
+  function setPlaybackSpeed(speed) {
+    const validSpeed = PLAYBACK_SPEEDS.includes(speed) ? speed : 1;
+    engineState.playbackSpeed = validSpeed;
+    try {
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem(SPEED_STORAGE_KEY, String(validSpeed));
+      }
+    } catch {
+    }
+    return validSpeed;
+  }
   function getEffectiveSpeed() {
     return Math.max(0.05, engineState.playbackSpeed * engineState.timeScale);
   }
@@ -1093,11 +1117,17 @@
     .stage { width: 100%; height: 100%; display: flex; flex-direction: column; background: radial-gradient(circle at center, #1a202c 0%, #000 100%); }
 
     /* Playback Controls */
-    .controls { display: flex; padding: 10px 20px; background: #171923; border-bottom: 1px solid #2d3748; gap: 15px; align-items: center; justify-content: center; }
-    .seek-container { flex: 1; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 13px; font-variant-numeric: tabular-nums; }
+    .controls { display: flex; padding: 10px 18px; background: #171923; border-bottom: 1px solid #2d3748; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .control-group { display: flex; align-items: center; gap: 6px; }
+    .seek-container { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 13px; font-variant-numeric: tabular-nums; margin: 0 6px; }
     input[type="range"] { flex: 1; accent-color: #4fd1c5; cursor: pointer; }
-    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; white-space: nowrap; }
+    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s, transform 0.1s; white-space: nowrap; font-size: 13px; }
     button:hover { background: #319795; }
+    button:active { transform: scale(0.97); }
+    button.btn-nav { background: #2d3748; border-color: #4a5568; padding: 6px 10px; color: #e2e8f0; }
+    button.btn-nav:hover { background: #4a5568; border-color: #718096; }
+    button.btn-skip { background: #975a16; border-color: #f6e05e; color: #fefcbf; }
+    button.btn-skip:hover { background: #b7791f; }
     button.danger { background: #9b2c2c; border-color: #fc8181; }
     button.danger:hover { background: #c53030; }
 
@@ -1255,6 +1285,23 @@
     @keyframes rosario-slash-in { from { transform: rotate(var(--slash-angle, 38deg)) scaleX(0); opacity: 0; } to { transform: rotate(var(--slash-angle, 38deg)) scaleX(1); opacity: 1; } }
     @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }
     @keyframes rosario-shatter { 0% { transform: scale(1); filter: brightness(2); opacity: 1; } 100% { transform: scale(2.1); filter: brightness(3) blur(4px); opacity: 0; } }
+
+    /* Seek / Step Situation HUD Banner & Active Combat Highlights */
+    .log-line.current-frame-log { background: rgba(79, 209, 197, 0.2); border-left: 3px solid #f6e05e; color: #fff; box-shadow: inset 0 0 12px rgba(246, 224, 94, 0.15); }
+    .seek-situation-banner { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 75; background: rgba(15, 23, 42, 0.94); border: 1px solid #4fd1c5; border-top: 3px solid #f6e05e; border-radius: 10px; padding: 8px 16px; color: #f8fafc; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.78), 0 0 15px rgba(79, 209, 197, 0.25); backdrop-filter: blur(6px); display: flex; flex-direction: column; gap: 4px; max-width: min(720px, 88vw); min-width: 280px; pointer-events: none; animation: slideInUp 0.15s ease-out forwards; }
+    .seek-banner-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; font-weight: 800; color: #a0aec0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 4px; }
+    .seek-turn-pill { background: #f6e05e; color: #1a202c; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: 0.5px; }
+    .seek-skill-pill { background: rgba(79, 209, 197, 0.2); color: #81e6d9; border: 1px solid #4fd1c5; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .seek-skill-context { font-size: 12px; color: #fbd38d; font-style: italic; opacity: 0.95; }
+    .seek-banner-body { font-size: 14px; line-height: 1.45; color: #edf2f7; font-weight: 600; }
+    .actor.seek-acting .avatar { border-color: #f6e05e; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5); }
+    .actor.seek-targeted .avatar { border-color: #fc8181; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6); }
+
+    /* True AOE Fan Shockwave & Multi-Projectile Barrage VFX */
+    .aoe-fan-wave { position: absolute; width: 160px; height: 340px; pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
+    .aoe-fan-wave.wave-right { border-right: 14px solid var(--wave-color, #fc8181); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 0 180px 180px 0; box-shadow: 18px 0 28px -4px var(--wave-color, #fc8181), inset -14px 0 22px -6px #ffffff; }
+    .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
+    .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
 `;
 
   // src/cinematics.js
@@ -1764,6 +1811,154 @@
       sparkAnim.onfinish = () => sparkEl.remove();
     }, delay / speed);
   }
+  function spawnAOEFanWave(arena, startX, startY, targetSide, color = "#fc8181", speed = 1) {
+    if (!arena || !arena.isConnected) return;
+    const waveEl = document.createElement("div");
+    const dirClass = targetSide === "right" ? "wave-right" : "wave-left";
+    waveEl.className = `aoe-fan-wave ${dirClass}`;
+    waveEl.style.setProperty("--wave-color", color);
+    waveEl.style.left = `${startX}px`;
+    waveEl.style.top = `${startY}px`;
+    arena.appendChild(waveEl);
+    const arenaRect = arena.getBoundingClientRect();
+    const sweepDist = (targetSide === "right" ? 1 : -1) * Math.max(220, arenaRect.width * 0.34);
+    const anim = waveEl.animate([
+      { transform: "translate(-50%, -50%) scale(0.3, 0.45)", opacity: 0.95 },
+      { transform: `translate(calc(-50% + ${sweepDist * 0.55}px), -50%) scale(1.25, 1.15)`, opacity: 1, offset: 0.45 },
+      { transform: `translate(calc(-50% + ${sweepDist}px), -50%) scale(1.75, 1.45)`, opacity: 0, offset: 1 }
+    ], {
+      duration: 420 / speed,
+      easing: "cubic-bezier(0.16, 1, 0.3, 1)"
+    });
+    anim.onfinish = () => waveEl.remove();
+  }
+  function spawnAOEProjectile(arena, startX, startY, targetEl, color = "#fc8181", delayMs = 0, flightMs = 150, speed = 1) {
+    setTimeout(() => {
+      if (!arena.isConnected || !targetEl || !targetEl.isConnected) return;
+      const aRect = arena.getBoundingClientRect();
+      const tRect = targetEl.getBoundingClientRect();
+      const endX = tRect.left - aRect.left + tRect.width / 2;
+      const endY = tRect.top - aRect.top + tRect.height / 2;
+      const angleDeg = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI);
+      const projEl = document.createElement("div");
+      projEl.className = "aoe-projectile";
+      projEl.style.setProperty("--proj-color", color);
+      projEl.style.left = "0px";
+      projEl.style.top = "0px";
+      arena.appendChild(projEl);
+      const anim = projEl.animate([
+        {
+          transform: `translate(calc(${startX}px - 50%), calc(${startY}px - 50%)) rotate(${angleDeg}deg) scaleX(0.4)`,
+          opacity: 0.9
+        },
+        {
+          transform: `translate(calc(${(startX + endX) / 2}px - 50%), calc(${(startY + endY) / 2}px - 50%)) rotate(${angleDeg}deg) scaleX(1.35)`,
+          opacity: 1,
+          offset: 0.5
+        },
+        {
+          transform: `translate(calc(${endX}px - 50%), calc(${endY}px - 50%)) rotate(${angleDeg}deg) scaleX(0.7)`,
+          opacity: 0,
+          offset: 1
+        }
+      ], {
+        duration: flightMs / speed,
+        easing: "cubic-bezier(0.2, 0.8, 0.4, 1)"
+      });
+      anim.onfinish = () => projEl.remove();
+    }, delayMs / speed);
+  }
+  function triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed) {
+    if (!targetEl || !targetEl.isConnected) return;
+    if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
+    const dodgeDir = targetSide === "left" ? -24 : 24;
+    if (frame.type === "MISS") {
+      targetEl.animate([
+        { transform: "translate(0,0) scale(1)", filter: "blur(0px)" },
+        { transform: `translate(${dodgeDir}px, 0) scale(0.88)`, filter: "blur(2px) brightness(1.5)", offset: 0.35 },
+        { transform: "translate(0,0) scale(1)", filter: "blur(0px)", offset: 1 }
+      ], { duration: 320 / speed, easing: "ease-out" });
+    } else if (frame.type === "BLOCK" || frame.blocked) {
+      targetEl.animate([
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
+        { transform: `translate(${dodgeDir * 0.3}px, 2px) scale(0.96)`, filter: "brightness(1.4) drop-shadow(0 0 10px #63b3ed)", offset: 0.35 },
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
+      ], { duration: 240 / speed, easing: "ease-out" });
+      spawnClashSpark(arena, targetEl, 20, "#63b3ed", speed);
+    } else {
+      targetEl.animate([
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
+        { transform: `translate(${dodgeDir * 0.55}px, 0) scale(0.92)`, filter: "brightness(1.85) contrast(1.3)", offset: 0.3 },
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
+      ], { duration: 260 / speed, easing: "ease-out" });
+      spawnClashSpark(arena, targetEl, 20, shadowColor, speed);
+    }
+  }
+  function playAOEWaveBatchChoreography(waveFrames, sr) {
+    const firstFrame = waveFrames[0];
+    const lastFrame = waveFrames[waveFrames.length - 1];
+    const speed = getEffectiveSpeed();
+    const arena = sr.getElementById("arena");
+    const casterId = firstFrame.aoeCasterId || firstFrame.actorId;
+    const actorEl = sr.getElementById(`actor-${casterId}`);
+    const side = engineState.actors.get(casterId)?.side || "left";
+    const firstTargetSide = engineState.actors.get(firstFrame.targetId)?.side || (side === "left" ? "right" : "left");
+    const shadowColor = side === "left" ? "#63b3ed" : "#fc8181";
+    const staggerMs = 65;
+    const impactDelayMs = 135;
+    const waveSweepMs = impactDelayMs + Math.max(0, waveFrames.length - 1) * staggerMs + 280;
+    if (!arena || !actorEl) {
+      return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
+    }
+    if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
+    const arenaRect = arena.getBoundingClientRect();
+    if (engineState.currentCombo.aoeCenterX === void 0 || firstFrame.isAOEFirst) {
+      const cleanActorRect = actorEl.getBoundingClientRect();
+      engineState.currentCombo.aoeCenterX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
+      engineState.currentCombo.aoeCenterY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+    }
+    const cMoveX = engineState.currentCombo.aoeCenterX || 0;
+    const cDeltaY = engineState.currentCombo.aoeCenterY || 0;
+    const p0 = "translate(0px, 0px) scale(1)";
+    const pCenter = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.22)`;
+    const pCenterPulse = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.32)`;
+    const startTransform = engineState.currentCombo.atCenterStage ? pCenter : p0;
+    if (lastFrame.isAOELast) {
+      actorEl.animate([
+        { transform: startTransform, zIndex: 10 },
+        { transform: pCenterPulse, filter: `brightness(1.3) drop-shadow(0 0 18px ${shadowColor})`, zIndex: 10, offset: 0.22 },
+        { transform: pCenter, filter: `drop-shadow(0 0 14px ${shadowColor})`, zIndex: 10, offset: 0.72 },
+        { transform: p0, filter: "none", zIndex: 1, offset: 1 }
+      ], {
+        duration: waveSweepMs / speed,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        fill: "none"
+      });
+      engineState.currentCombo.atCenterStage = false;
+      engineState.currentCombo.knockedBack = true;
+    } else {
+      actorEl.animate([
+        { transform: startTransform, zIndex: 10 },
+        { transform: pCenterPulse, filter: `brightness(1.3) drop-shadow(0 0 18px ${shadowColor})`, zIndex: 10, offset: 0.3 },
+        { transform: pCenter, filter: `drop-shadow(0 0 14px ${shadowColor})`, zIndex: 10, offset: 1 }
+      ], {
+        duration: waveSweepMs / speed,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        fill: "forwards"
+      });
+      engineState.currentCombo.atCenterStage = true;
+    }
+    const centerStageX = arenaRect.width / 2;
+    const centerStageY = arenaRect.height / 2;
+    spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
+    waveFrames.forEach((wf, idx) => {
+      const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+      if (targetEl) {
+        spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, idx * staggerMs, impactDelayMs, speed);
+      }
+    });
+    return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
+  }
   function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed) {
     if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
     if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
@@ -1850,28 +2045,13 @@
       engineState.currentCombo.knockedBack = true;
     }
     actorEl.animate(actorKeyframes, actorAnimConfig);
-    const dodgeDir = targetSide === "left" ? -24 : 24;
-    if (frame.type === "MISS") {
-      targetEl.animate([
-        { transform: "translate(0,0) scale(1)", filter: "blur(0px)" },
-        { transform: `translate(${dodgeDir}px, 0) scale(0.88)`, filter: "blur(2px) brightness(1.5)", offset: 0.35 },
-        { transform: "translate(0,0) scale(1)", filter: "blur(0px)", offset: 1 }
-      ], { duration: 320 / speed, easing: "ease-out" });
-    } else if (frame.type === "BLOCK" || frame.blocked) {
-      targetEl.animate([
-        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
-        { transform: `translate(${dodgeDir * 0.3}px, 2px) scale(0.96)`, filter: "brightness(1.4) drop-shadow(0 0 10px #63b3ed)", offset: 0.35 },
-        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
-      ], { duration: 240 / speed, easing: "ease-out" });
-      spawnClashSpark(arena, targetEl, 40, "#63b3ed", speed);
-    } else {
-      targetEl.animate([
-        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
-        { transform: `translate(${dodgeDir * 0.5}px, 0) scale(0.94)`, filter: "brightness(1.8) contrast(1.3)", offset: 0.3 },
-        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
-      ], { duration: 240 / speed, easing: "ease-out" });
-      spawnClashSpark(arena, targetEl, 40, shadowColor, speed);
+    const centerStageX = arenaRect.width / 2;
+    const centerStageY = arenaRect.height / 2;
+    if (frame.isAOEFirst) {
+      spawnAOEFanWave(arena, centerStageX, centerStageY, targetSide, shadowColor, speed);
     }
+    spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, 0, 120, speed);
+    triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
     return frameDuration;
   }
   function playSingleTargetChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed, isNextFrameSameCombo, isNextTargetDifferent, shouldReturnToOrigin) {
@@ -2912,7 +3092,8 @@
       }
       actor.currentHp = currentHp;
       if (isDead && wrapperEl) {
-        if (deferDeadClassForActorId !== actorId) {
+        const shouldDefer = deferDeadClassForActorId instanceof Set ? deferDeadClassForActorId.has(actorId) : deferDeadClassForActorId === actorId;
+        if (!shouldDefer) {
           wrapperEl.classList.add("dead");
         }
         wrapperEl.classList.remove("danger-state");
@@ -2921,7 +3102,128 @@
       }
     });
   }
-  function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
+  function renderSeekPreviewState(sr, frameIndex) {
+    const arena = sr.getElementById("arena");
+    const frame = engineState.frames[frameIndex];
+    if (!arena || !frame) return;
+    const speed = getEffectiveSpeed();
+    engineState.currentCombo = createEmptyCombo();
+    let turnStartIdx = frameIndex;
+    while (turnStartIdx > 0 && engineState.frames[turnStartIdx - 1]?.turnNumber === frame.turnNumber) {
+      turnStartIdx--;
+    }
+    for (let i = turnStartIdx; i <= frameIndex; i++) {
+      const f = engineState.frames[i];
+      if (f.actorId && ["DAMAGE", "MISS", "COUNTER", "BLOCK"].includes(f.type) && !f.isCounterSetup) {
+        const lookahead = lookaheadComboState(i, f);
+        advanceComboState(f, lookahead.isNextFrameSameCombo);
+      }
+    }
+    if (engineState.currentCombo.count > 1 && ["DAMAGE", "MISS", "BLOCK"].includes(frame.type) && !frame.isCounter) {
+      renderComboBanner(arena, frame, speed);
+    }
+    const activeCasterId = frame.aoeCasterId || frame.actorId;
+    let skillContextFrame = null;
+    if (frame.type !== "SKILL_TEXT") {
+      for (let i = frameIndex - 1; i >= Math.max(0, turnStartIdx - 1); i--) {
+        const prev = engineState.frames[i];
+        if (prev.turnNumber !== frame.turnNumber) break;
+        if (prev.type === "SKILL_TEXT" && (!activeCasterId || prev.actorId === activeCasterId)) {
+          skillContextFrame = prev;
+          break;
+        }
+      }
+    }
+    let actionLabel = "\u{1F4DC} \u6230\u6CC1\u7D00\u9304";
+    if (frame.isAOE) actionLabel = "\u{1F4A5} \u7BC4\u570D\u653B\u64CA (AOE)";
+    else if (frame.isCoverEvent) actionLabel = "\u{1F6E1}\uFE0F \u8B77\u885B\u4EE3\u511F (COVER)";
+    else if (frame.type === "COUNTER" || frame.isCounter) actionLabel = "\u26A1 \u53CD\u64CA\u4EA4\u92D2 (COUNTER)";
+    else if (frame.skillTier === "ultimate") actionLabel = "\u2728 \u5967\u7FA9\u767C\u52D5 (ULTIMATE)";
+    else if (frame.type === "HEAL" || frame.isBeneficial) actionLabel = "\u{1F49A} \u6062\u5FA9 / \u589E\u76CA";
+    else if (frame.type === "SUMMON" || frame.isSummonEvent) actionLabel = "\u{1F300} \u53EC\u559A\u767B\u5834";
+    else if (frame.type === "SKILL_TEXT") actionLabel = "\u{1F52E} \u6280\u80FD\u65BD\u5C55";
+    else if (["DAMAGE", "BLOCK", "MISS"].includes(frame.type)) actionLabel = "\u2694\uFE0F \u6230\u9B25\u4EA4\u92D2";
+    const actorObj = activeCasterId ? engineState.actors.get(activeCasterId) : null;
+    const targetObj = frame.targetId ? engineState.actors.get(frame.targetId) : null;
+    let engagementHtml = "";
+    if (actorObj && frame.isAOE) {
+      engagementHtml = `<span>${escapeHtml(actorObj.name)} \u2794 \u5168\u9AD4\u7BC4\u570D\u76EE\u6A19</span>`;
+    } else if (actorObj && targetObj && actorObj.id !== targetObj.id) {
+      engagementHtml = `<span>${escapeHtml(actorObj.name)} \u2794 ${escapeHtml(targetObj.name)}</span>`;
+    } else if (actorObj) {
+      engagementHtml = `<span>${escapeHtml(actorObj.name)}</span>`;
+    }
+    const bannerEl = document.createElement("div");
+    bannerEl.className = "seek-situation-banner";
+    const contextHtml = skillContextFrame?.message ? `<div class="seek-skill-context">\u25B8 ${formatLogMessage(skillContextFrame.message, engineState.actors)}</div>` : "";
+    const bodyHtml = frame.message ? `<div class="seek-banner-body">${formatLogMessage(frame.message, engineState.actors)}</div>` : "";
+    bannerEl.innerHTML = `
+        <div class="seek-banner-header">
+            <span class="seek-turn-pill">TURN ${frame.turnNumber}</span>
+            <span class="seek-skill-pill">${actionLabel}</span>
+            ${engagementHtml}
+        </div>
+        ${contextHtml}
+        ${bodyHtml}
+    `;
+    arena.appendChild(bannerEl);
+    const arenaRect = arena.getBoundingClientRect();
+    const actorEl = activeCasterId ? sr.getElementById(`actor-${activeCasterId}`) : null;
+    const targetEl = frame.targetId ? sr.getElementById(`actor-${frame.targetId}`) : null;
+    if (actorEl) actorEl.classList.add("seek-acting");
+    if (targetEl && targetEl !== actorEl) targetEl.classList.add("seek-targeted");
+    if (frame.isAOE && actorEl && arenaRect.width > 0) {
+      const aRect = actorEl.getBoundingClientRect();
+      const cMoveX = arenaRect.left + arenaRect.width / 2 - (aRect.left + aRect.width / 2);
+      const cDeltaY = arenaRect.top + arenaRect.height / 2 - (aRect.top + aRect.height / 2);
+      const side = actorObj?.side || "left";
+      const targetSide = targetObj?.side || (side === "left" ? "right" : "left");
+      const shadowColor = side === "left" ? "#63b3ed" : "#fc8181";
+      actorEl.style.zIndex = "10";
+      actorEl.style.transform = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.2)`;
+      actorEl.style.filter = `drop-shadow(0 0 14px ${shadowColor})`;
+      const centerStageX = arenaRect.width / 2;
+      const centerStageY = arenaRect.height / 2;
+      spawnAOEFanWave(arena, centerStageX, centerStageY, targetSide, shadowColor, speed);
+      if (targetEl) {
+        spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, 0, 140, speed);
+        triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
+      }
+    } else if (frame.isCoverEvent && actorEl) {
+      const protectedEl = frame.coverProtectedId ? sr.getElementById(`actor-${frame.coverProtectedId}`) : null;
+      if (protectedEl) {
+        const gRect = actorEl.getBoundingClientRect();
+        const pRect = protectedEl.getBoundingClientRect();
+        const gSide = actorObj?.side || "left";
+        const guardOffsetX = pRect.left - gRect.left + (gSide === "left" ? 55 : -55);
+        const guardOffsetY = pRect.top - gRect.top;
+        actorEl.style.zIndex = "15";
+        actorEl.style.transform = `translate(${guardOffsetX}px, ${guardOffsetY}px) scale(1.12)`;
+        actorEl.style.filter = "drop-shadow(0 0 16px #f687b3)";
+      }
+    } else if (actorEl && targetEl && actorEl !== targetEl && ["DAMAGE", "MISS", "COUNTER", "BLOCK"].includes(frame.type) && !frame.isSelfDamage && !frame.isEnvironmentalPulse) {
+      const aRect = actorEl.getBoundingClientRect();
+      const tRect = targetEl.getBoundingClientRect();
+      const side = actorObj?.side || "left";
+      const targetSide = targetObj?.side || (side === "left" ? "right" : "left");
+      const shadowColor = side === "left" ? "#63b3ed" : "#fc8181";
+      const moveX = tRect.left - aRect.left + (side === "left" ? -60 : 60);
+      const deltaY = tRect.top - aRect.top;
+      actorEl.style.zIndex = "10";
+      actorEl.style.transform = `translate(${moveX}px, ${deltaY}px) scale(1.1)`;
+      actorEl.style.filter = `drop-shadow(0 0 12px ${shadowColor})`;
+      triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
+    }
+    const isSpokenSkillQuote = frame.type === "SKILL_TEXT" && /^[^：「\s]+：「.+」$/.test(frame.message.trim());
+    if (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE" || isSpokenSkillQuote) {
+      renderSpeechBubble(frame, sr, engineState.playbackToken);
+    }
+    if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED", "SKILL_TEXT", "TEXT"].includes(frame.type)) {
+      spawnStatusOrDiceBadge(frame, sr);
+    }
+    spawnFloatingText(frame, sr, false, false);
+  }
+  function syncStageToAbsoluteState(frameIndex, isInitialReset = false, showActivePreview = false) {
     const sr = engineState.shadowRoot;
     if (!sr) return;
     engineState.timeScale = 1;
@@ -2932,7 +3234,7 @@
     const fatalityOverlay = sr.getElementById("fatality-overlay");
     if (fatalityOverlay) fatalityOverlay.classList.remove("active");
     sr.querySelectorAll(
-      ".ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text"
+      ".ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile"
     ).forEach((el) => el.remove());
     engineState.actors.forEach((actor) => {
       actor.lastUltimateTurn = null;
@@ -2941,15 +3243,17 @@
         if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
         el.style.filter = "";
         el.style.transform = "";
-        el.classList.remove("blink-active", "spawning", "despawning");
+        el.style.zIndex = "";
+        el.classList.remove("blink-active", "spawning", "despawning", "seek-acting", "seek-targeted");
       }
     });
+    const stateFrameIndex = Math.max(0, Math.min(frameIndex, engineState.frames.length - 1));
     const dialog = sr.getElementById("dialog-box");
     if (dialog) {
       dialog.innerHTML = "";
-      if (!isInitialReset && frameIndex > 0) {
+      if (!isInitialReset && engineState.frames.length > 0) {
         const fragment = document.createDocumentFragment();
-        const limit = Math.min(frameIndex, engineState.frames.length);
+        const limit = showActivePreview ? Math.min(stateFrameIndex + 1, engineState.frames.length) : Math.min(frameIndex, engineState.frames.length);
         for (let i = 0; i < limit; i++) {
           const f = engineState.frames[i];
           if (isPrimaryUltimateTriggerFrame(f)) {
@@ -2957,7 +3261,11 @@
             if (a) a.lastUltimateTurn = f.turnNumber;
           }
           if (f.message) {
-            fragment.appendChild(createLogLineElement(f));
+            const lineEl = createLogLineElement(f);
+            if (showActivePreview && i === stateFrameIndex) {
+              lineEl.classList.add("current-frame-log");
+            }
+            fragment.appendChild(lineEl);
           }
         }
         dialog.appendChild(fragment);
@@ -2980,7 +3288,7 @@
           fillEl.classList.remove("warning", "danger");
         }
         if (wrapperEl) {
-          wrapperEl.classList.remove("dead", "danger-state", "spawning", "despawning");
+          wrapperEl.classList.remove("dead", "danger-state", "spawning", "despawning", "seek-acting", "seek-targeted");
           if (actor.initiallySpawned === false) wrapperEl.classList.add("unspawned");
           else wrapperEl.classList.remove("unspawned");
         }
@@ -2989,7 +3297,6 @@
       updateATBUI(0, true);
       return;
     }
-    const stateFrameIndex = Math.max(0, Math.min(frameIndex, engineState.frames.length - 1));
     const frame = engineState.frames[stateFrameIndex];
     if (!frame) return;
     syncActorHpAndDeathDOM(sr, frame, {
@@ -2998,9 +3305,19 @@
     });
     syncActorBondVisuals(sr, frame.actorsBondState);
     updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
+    if (showActivePreview) {
+      renderSeekPreviewState(sr, stateFrameIndex);
+    }
   }
 
   // src/stage.js
+  function formatSeekLabelText(frameIndex) {
+    const total = engineState.frames.length;
+    if (total === 0) return "T0 \uFF5C 0 / 0";
+    const clamped = Math.max(0, Math.min(frameIndex, total - 1));
+    const turn = engineState.frames[clamped]?.turnNumber ?? 0;
+    return `T${turn} \uFF5C ${Math.min(frameIndex, total)} / ${total}`;
+  }
   function createBattleStage() {
     if (engineState.hostElement) engineState.hostElement.remove();
     const host = document.createElement("div");
@@ -3016,15 +3333,72 @@
     stage.className = "stage";
     const controls = document.createElement("div");
     controls.className = "controls";
+    const navGroup = document.createElement("div");
+    navGroup.className = "control-group";
     const playBtn = document.createElement("button");
     playBtn.id = "btn-play";
     playBtn.textContent = "\u66AB\u505C";
+    const seekContainer = document.createElement("div");
+    seekContainer.className = "seek-container";
+    const seekLabel = document.createElement("span");
+    seekLabel.id = "seek-label";
+    seekLabel.textContent = formatSeekLabelText(0);
+    const seekRange = document.createElement("input");
+    seekRange.type = "range";
+    seekRange.id = "seek-range";
+    seekRange.min = 0;
+    seekRange.max = Math.max(0, engineState.frames.length - 1);
+    seekRange.value = 0;
+    const jumpToFrame = (targetIdx) => {
+      if (engineState.frames.length === 0) return;
+      const clamped = Math.max(0, Math.min(targetIdx, engineState.frames.length - 1));
+      engineState.isPlaying = false;
+      nextPlaybackToken();
+      engineState.currentFrameIndex = clamped;
+      playBtn.textContent = "\u64AD\u653E";
+      seekRange.value = clamped;
+      seekLabel.textContent = formatSeekLabelText(clamped);
+      syncStageToAbsoluteState(clamped, false, true);
+    };
+    const prevTurnBtn = document.createElement("button");
+    prevTurnBtn.className = "btn-nav";
+    prevTurnBtn.title = "\u8DF3\u81F3\u4E0A\u4E00\u56DE\u5408";
+    prevTurnBtn.textContent = "\u23EE \u56DE\u5408";
+    prevTurnBtn.onclick = () => {
+      if (engineState.frames.length === 0) return;
+      const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
+      const curTurn = engineState.frames[curIdx]?.turnNumber ?? 1;
+      let firstOfCurrentTurn = curIdx;
+      while (firstOfCurrentTurn > 0 && engineState.frames[firstOfCurrentTurn - 1]?.turnNumber === curTurn) {
+        firstOfCurrentTurn--;
+      }
+      if (curIdx > firstOfCurrentTurn) {
+        jumpToFrame(firstOfCurrentTurn);
+        return;
+      }
+      const prevIdx = Math.max(0, firstOfCurrentTurn - 1);
+      const prevTurn = engineState.frames[prevIdx]?.turnNumber ?? 0;
+      let firstOfPrevTurn = prevIdx;
+      while (firstOfPrevTurn > 0 && engineState.frames[firstOfPrevTurn - 1]?.turnNumber === prevTurn) {
+        firstOfPrevTurn--;
+      }
+      jumpToFrame(firstOfPrevTurn);
+    };
+    const prevFrameBtn = document.createElement("button");
+    prevFrameBtn.className = "btn-nav";
+    prevFrameBtn.title = "\u55AE\u6B65\u5F8C\u9000\u4E00\u5E40";
+    prevFrameBtn.textContent = "\u23EA \u55AE\u6B65";
+    prevFrameBtn.onclick = () => {
+      jumpToFrame(engineState.currentFrameIndex - 1);
+    };
     playBtn.onclick = () => {
       if (!engineState.isPlaying) {
         if (engineState.currentFrameIndex === 0 || engineState.currentFrameIndex >= engineState.frames.length) {
           engineState.currentFrameIndex = 0;
           armSpoilerGuard(0);
-          syncStageToAbsoluteState(0, true);
+          syncStageToAbsoluteState(0, true, false);
+        } else {
+          syncStageToAbsoluteState(engineState.currentFrameIndex, false, false);
         }
         engineState.isPlaying = true;
         playBtn.textContent = "\u66AB\u505C";
@@ -3034,42 +3408,81 @@
         engineState.isPlaying = false;
         nextPlaybackToken();
         playBtn.textContent = "\u64AD\u653E";
+        syncStageToAbsoluteState(engineState.currentFrameIndex, false, true);
       }
     };
+    const nextFrameBtn = document.createElement("button");
+    nextFrameBtn.className = "btn-nav";
+    nextFrameBtn.title = "\u55AE\u6B65\u524D\u9032\u4E00\u5E40";
+    nextFrameBtn.textContent = "\u55AE\u6B65 \u23E9";
+    nextFrameBtn.onclick = () => {
+      jumpToFrame(engineState.currentFrameIndex + 1);
+    };
+    const nextTurnBtn = document.createElement("button");
+    nextTurnBtn.className = "btn-nav";
+    nextTurnBtn.title = "\u8DF3\u81F3\u4E0B\u4E00\u56DE\u5408";
+    nextTurnBtn.textContent = "\u56DE\u5408 \u23ED";
+    nextTurnBtn.onclick = () => {
+      if (engineState.frames.length === 0) return;
+      const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
+      const curTurn = engineState.frames[curIdx]?.turnNumber ?? 0;
+      let nextIdx = curIdx + 1;
+      while (nextIdx < engineState.frames.length && engineState.frames[nextIdx]?.turnNumber <= curTurn) {
+        nextIdx++;
+      }
+      jumpToFrame(Math.min(nextIdx, engineState.frames.length - 1));
+    };
+    navGroup.appendChild(prevTurnBtn);
+    navGroup.appendChild(prevFrameBtn);
+    navGroup.appendChild(playBtn);
+    navGroup.appendChild(nextFrameBtn);
+    navGroup.appendChild(nextTurnBtn);
     const speedBtn = document.createElement("button");
+    speedBtn.id = "btn-speed";
+    speedBtn.title = "\u5207\u63DB\u64AD\u653E\u500D\u901F (\u81EA\u52D5\u8A18\u61B6\u65BC\u700F\u89BD\u5668)";
     speedBtn.textContent = `\u901F\u5EA6: ${engineState.playbackSpeed}x`;
     speedBtn.onclick = () => {
       const currentIdx = PLAYBACK_SPEEDS.indexOf(engineState.playbackSpeed);
       const nextIndex = (currentIdx === -1 ? 0 : currentIdx + 1) % PLAYBACK_SPEEDS.length;
-      engineState.playbackSpeed = PLAYBACK_SPEEDS[nextIndex];
-      speedBtn.textContent = `\u901F\u5EA6: ${engineState.playbackSpeed}x`;
+      const nextSpeed = setPlaybackSpeed(PLAYBACK_SPEEDS[nextIndex]);
+      speedBtn.textContent = `\u901F\u5EA6: ${nextSpeed}x`;
     };
-    const seekContainer = document.createElement("div");
-    seekContainer.className = "seek-container";
-    const seekLabel = document.createElement("span");
-    seekLabel.id = "seek-label";
-    seekLabel.textContent = `0 / ${engineState.frames.length}`;
-    const seekRange = document.createElement("input");
-    seekRange.type = "range";
-    seekRange.id = "seek-range";
-    seekRange.min = 0;
-    seekRange.max = Math.max(0, engineState.frames.length - 1);
-    seekRange.value = 0;
     seekRange.oninput = (e) => {
       const targetFrame = Number(e.target.value);
       engineState.currentFrameIndex = targetFrame;
-      seekLabel.textContent = `${targetFrame} / ${engineState.frames.length}`;
+      seekLabel.textContent = formatSeekLabelText(targetFrame);
       engineState.currentCombo = createEmptyCombo();
       const token2 = nextPlaybackToken();
-      syncStageToAbsoluteState(targetFrame, false);
       if (engineState.isPlaying) {
+        syncStageToAbsoluteState(targetFrame, false, false);
         playbackLoop(token2);
-      } else if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
-        playBtn.textContent = "\u64AD\u653E";
+      } else {
+        if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
+          playBtn.textContent = "\u64AD\u653E";
+        }
+        syncStageToAbsoluteState(targetFrame, false, true);
       }
     };
     seekContainer.appendChild(seekRange);
     seekContainer.appendChild(seekLabel);
+    const skipBtn = document.createElement("button");
+    skipBtn.id = "btn-skip";
+    skipBtn.className = "btn-skip";
+    skipBtn.title = "\u8DF3\u904E\u6230\u9B25\u904E\u7A0B\uFF0C\u76F4\u63A5\u524D\u5F80\u6700\u7D42\u72C0\u614B\u8207 MVP \u7D50\u7B97\u9762\u677F";
+    skipBtn.textContent = "\u23ED \u8DF3\u81F3\u7D50\u7B97";
+    skipBtn.onclick = () => {
+      engineState.isPlaying = false;
+      engineState.timeScale = 1;
+      nextPlaybackToken();
+      const finalIdx = Math.max(0, engineState.frames.length - 1);
+      engineState.currentFrameIndex = engineState.frames.length;
+      seekRange.value = finalIdx;
+      seekLabel.textContent = formatSeekLabelText(engineState.frames.length);
+      syncStageToAbsoluteState(finalIdx, false, false);
+      releaseSpoilerGuard();
+      playBtn.textContent = "\u91CD\u65B0\u64AD\u653E";
+      showMVPPanel();
+    };
     const closeBtn = document.createElement("button");
     closeBtn.className = "danger";
     closeBtn.textContent = "\u95DC\u9589\u6F14\u51FA";
@@ -3087,9 +3500,10 @@
         el.removeAttribute("data-mdbv-hidden-host");
       });
     };
-    controls.appendChild(playBtn);
+    controls.appendChild(navGroup);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
+    controls.appendChild(skipBtn);
     controls.appendChild(closeBtn);
     const ctbBox = document.createElement("div");
     ctbBox.className = "ctb-container";
@@ -3149,20 +3563,131 @@
     const token = nextPlaybackToken();
     playbackLoop(token);
   }
+  function collectAOEWaveBatch(startIndex) {
+    const first = engineState.frames[startIndex];
+    if (!first || !first.isAOE || first.isCounter || first.type === "COUNTER" || !["DAMAGE", "MISS", "BLOCK"].includes(first.type)) {
+      return [];
+    }
+    const casterId = first.aoeCasterId || first.actorId;
+    const batch = [first];
+    let idx = startIndex + 1;
+    while (idx < engineState.frames.length) {
+      const cur = engineState.frames[idx];
+      if (cur && cur.isAOE && !cur.isCounter && cur.type !== "COUNTER" && ["DAMAGE", "MISS", "BLOCK"].includes(cur.type) && (cur.aoeCasterId || cur.actorId) === casterId) {
+        batch.push(cur);
+        if (cur.isAOELast) break;
+        idx++;
+      } else {
+        break;
+      }
+    }
+    return batch;
+  }
+  async function renderAOEWaveBatch(waveFrames, token) {
+    const sr = engineState.shadowRoot;
+    if (!sr || engineState.playbackToken !== token || waveFrames.length === 0) return;
+    const arena = sr.getElementById("arena");
+    const dialog = sr.getElementById("dialog-box");
+    const firstFrame = waveFrames[0];
+    if (isPrimaryUltimateTriggerFrame(firstFrame)) {
+      const actor = engineState.actors.get(firstFrame.actorId);
+      const isMultiHitSubFrame = ULTIMATE_SUBFRAME_REGEX.test(firstFrame.message.trim()) || firstFrame.rosarioEvent === "INSCRIBE_CROSS";
+      if (actor && actor.lastUltimateTurn !== firstFrame.turnNumber && !isMultiHitSubFrame) {
+        actor.lastUltimateTurn = firstFrame.turnNumber;
+        await playUltimateCutIn(firstFrame, sr, token);
+        if (engineState.playbackToken !== token) return;
+      } else if (actor && isMultiHitSubFrame) {
+        actor.lastUltimateTurn = firstFrame.turnNumber;
+      }
+    }
+    updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
+    syncActorBondVisuals(sr, firstFrame.actorsBondState);
+    const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
+    const hasCritShake = waveFrames.some((wf) => wf.vfx.includes("screen-shake"));
+    if (hasCritShake && arena) {
+      setTimeout(() => {
+        if (engineState.playbackToken === token && arena.isConnected) {
+          arena.classList.remove("shake-active");
+          void arena.offsetWidth;
+          arena.classList.add("shake-active");
+        }
+      }, impactDelayMs / getEffectiveSpeed());
+    }
+    const waveDeadActorIds = new Set(
+      waveFrames.filter((wf) => wf.isDeathEvent && wf.deadActorId).map((wf) => wf.deadActorId)
+    );
+    waveFrames.forEach((wf, idx) => {
+      const hitDelay = (impactDelayMs + idx * staggerMs) / getEffectiveSpeed();
+      setTimeout(() => {
+        if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
+        if (wf.message && dialog) {
+          if (dialog.lastElementChild?.dataset?.frameIndex !== String(wf.index)) {
+            const msgEl = createLogLineElement(wf);
+            dialog.appendChild(msgEl);
+            dialog.scrollTop = dialog.scrollHeight;
+          }
+        }
+        const speed = getEffectiveSpeed();
+        const lookahead = lookaheadComboState(wf.index, wf);
+        advanceComboState(wf, lookahead.isNextFrameSameCombo);
+        renderComboBanner(arena, wf, speed);
+        const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+        const targetSide = engineState.actors.get(wf.targetId)?.side || "right";
+        if (targetEl && arena) {
+          triggerAOETargetImpact(wf, arena, targetEl, targetSide, shadowColor, speed);
+          if (wf.vfx.includes("dodge-blink")) {
+            targetEl.classList.add("blink-active");
+            setTimeout(() => {
+              if (engineState.playbackToken === token && targetEl.isConnected) {
+                targetEl.classList.remove("blink-active");
+              }
+            }, 300 / speed);
+          }
+        }
+        spawnFloatingText(wf, sr, lookahead.isNextFrameSameCombo, lookahead.isNextTargetDifferent);
+        syncActorHpAndDeathDOM(sr, wf, {
+          skipHpTransition: false,
+          syncSummonVisibility: false,
+          deferDeadClassForActorId: waveDeadActorIds
+        });
+      }, hitDelay);
+    });
+    await new Promise((resolve) => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
+    if (engineState.playbackToken !== token) return;
+    for (const wf of waveFrames) {
+      if (wf.isDeathEvent && wf.deadActorId) {
+        await playFatalitySequence(sr, wf.deadActorId, token);
+        if (engineState.playbackToken !== token) return;
+        const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
+        if (deadWrapper) {
+          deadWrapper.classList.add("dead");
+        }
+      }
+    }
+  }
   async function playbackLoop(token) {
     while (engineState.currentFrameIndex < engineState.frames.length && engineState.isPlaying && engineState.playbackToken === token) {
-      const frame = engineState.frames[engineState.currentFrameIndex];
-      await renderFrame(frame, token);
-      if (engineState.playbackToken !== token || !engineState.isPlaying) {
-        return;
+      const aoeBatch = collectAOEWaveBatch(engineState.currentFrameIndex);
+      if (aoeBatch.length >= 2) {
+        await renderAOEWaveBatch(aoeBatch, token);
+        if (engineState.playbackToken !== token || !engineState.isPlaying) {
+          return;
+        }
+        engineState.currentFrameIndex += aoeBatch.length;
+      } else {
+        const frame = engineState.frames[engineState.currentFrameIndex];
+        await renderFrame(frame, token);
+        if (engineState.playbackToken !== token || !engineState.isPlaying) {
+          return;
+        }
+        engineState.currentFrameIndex++;
       }
-      engineState.currentFrameIndex++;
       const sr = engineState.shadowRoot;
       if (sr) {
         const seekRange = sr.getElementById("seek-range");
         const seekLabel = sr.getElementById("seek-label");
         if (seekRange) seekRange.value = Math.min(engineState.currentFrameIndex, engineState.frames.length - 1);
-        if (seekLabel) seekLabel.textContent = `${engineState.currentFrameIndex} / ${engineState.frames.length}`;
+        if (seekLabel) seekLabel.textContent = formatSeekLabelText(engineState.currentFrameIndex);
       }
     }
     if (engineState.playbackToken === token && engineState.currentFrameIndex >= engineState.frames.length) {

@@ -19,6 +19,7 @@ import {
     engineState,
     createEmptyCombo,
     getEffectiveSpeed,
+    setPlaybackSpeed,
     nextPlaybackToken
 } from './state.js';
 import { escapeHtml } from './utils.js';
@@ -33,8 +34,14 @@ import {
 } from './cinematics.js';
 import {
     lookaheadComboState,
+    advanceComboState,
+    renderComboBanner
+} from './combo.js';
+import {
     playCombatAnimation,
-    playCoverAnimation
+    playCoverAnimation,
+    playAOEWaveBatchChoreography,
+    triggerAOETargetImpact
 } from './choreography.js';
 import { spawnFloatingText } from './floatingText.js';
 import { showMVPPanel } from './mvp.js';
@@ -49,6 +56,19 @@ import {
 } from './timeline.js';
 
 export { updateATBUI, syncStageToAbsoluteState };
+
+/**
+ * Formats the timeline seek counter label with both current Turn and Frame index.
+ * @param {number} frameIndex - Current frame index.
+ * @returns {string} Formatted label string.
+ */
+function formatSeekLabelText(frameIndex) {
+    const total = engineState.frames.length;
+    if (total === 0) return 'T0 ｜ 0 / 0';
+    const clamped = Math.max(0, Math.min(frameIndex, total - 1));
+    const turn = engineState.frames[clamped]?.turnNumber ?? 0;
+    return `T${turn} ｜ ${ Math.min(frameIndex, total) } / ${total}`;
+}
 
 /**
  * Mounts the Shadow DOM battle stage, playback controls, ATB timeline, actor cards, and log box.
@@ -75,15 +95,84 @@ export function createBattleStage() {
     const controls = document.createElement('div');
     controls.className = 'controls';
 
+    const navGroup = document.createElement('div');
+    navGroup.className = 'control-group';
+
     const playBtn = document.createElement('button');
     playBtn.id = 'btn-play';
     playBtn.textContent = '暫停';
+
+    const seekContainer = document.createElement('div');
+    seekContainer.className = 'seek-container';
+    const seekLabel = document.createElement('span');
+    seekLabel.id = 'seek-label';
+    seekLabel.textContent = formatSeekLabelText(0);
+    const seekRange = document.createElement('input');
+    seekRange.type = 'range';
+    seekRange.id = 'seek-range';
+    seekRange.min = 0;
+    seekRange.max = Math.max(0, engineState.frames.length - 1);
+    seekRange.value = 0;
+
+    /**
+     * Jumps to a specific frame index in paused inspection mode and renders its active combat situation.
+     * @param {number} targetIdx - Target frame index.
+     */
+    const jumpToFrame = (targetIdx) => {
+        if (engineState.frames.length === 0) return;
+        const clamped = Math.max(0, Math.min(targetIdx, engineState.frames.length - 1));
+        engineState.isPlaying = false;
+        nextPlaybackToken();
+        engineState.currentFrameIndex = clamped;
+        playBtn.textContent = '播放';
+        seekRange.value = clamped;
+        seekLabel.textContent = formatSeekLabelText(clamped);
+        syncStageToAbsoluteState(clamped, false, true);
+    };
+
+    const prevTurnBtn = document.createElement('button');
+    prevTurnBtn.className = 'btn-nav';
+    prevTurnBtn.title = '跳至上一回合';
+    prevTurnBtn.textContent = '⏮ 回合';
+    prevTurnBtn.onclick = () => {
+        if (engineState.frames.length === 0) return;
+        const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
+        const curTurn = engineState.frames[curIdx]?.turnNumber ?? 1;
+        let firstOfCurrentTurn = curIdx;
+        while (firstOfCurrentTurn > 0 && engineState.frames[firstOfCurrentTurn - 1]?.turnNumber === curTurn) {
+            firstOfCurrentTurn--;
+        }
+        // If we are mid-turn, jump to the start of the current turn; otherwise jump to the start of the previous turn
+        if (curIdx > firstOfCurrentTurn) {
+            jumpToFrame(firstOfCurrentTurn);
+            return;
+        }
+        const prevIdx = Math.max(0, firstOfCurrentTurn - 1);
+        const prevTurn = engineState.frames[prevIdx]?.turnNumber ?? 0;
+        let firstOfPrevTurn = prevIdx;
+        while (firstOfPrevTurn > 0 && engineState.frames[firstOfPrevTurn - 1]?.turnNumber === prevTurn) {
+            firstOfPrevTurn--;
+        }
+        jumpToFrame(firstOfPrevTurn);
+    };
+
+    const prevFrameBtn = document.createElement('button');
+    prevFrameBtn.className = 'btn-nav';
+    prevFrameBtn.title = '單步後退一幀';
+    prevFrameBtn.textContent = '⏪ 單步';
+    prevFrameBtn.onclick = () => {
+        jumpToFrame(engineState.currentFrameIndex - 1);
+    };
+
     playBtn.onclick = () => {
         if (!engineState.isPlaying) {
             if (engineState.currentFrameIndex === 0 || engineState.currentFrameIndex >= engineState.frames.length) {
                 engineState.currentFrameIndex = 0;
                 armSpoilerGuard(0);
-                syncStageToAbsoluteState(0, true);
+                syncStageToAbsoluteState(0, true, false);
+            } else {
+                // Clear static seek preview before resuming live playback from currentFrameIndex
+                syncStageToAbsoluteState(engineState.currentFrameIndex, false, false);
             }
             engineState.isPlaying = true;
             playBtn.textContent = '暫停';
@@ -93,48 +182,90 @@ export function createBattleStage() {
             engineState.isPlaying = false;
             nextPlaybackToken();
             playBtn.textContent = '播放';
+            syncStageToAbsoluteState(engineState.currentFrameIndex, false, true);
         }
     };
 
+    const nextFrameBtn = document.createElement('button');
+    nextFrameBtn.className = 'btn-nav';
+    nextFrameBtn.title = '單步前進一幀';
+    nextFrameBtn.textContent = '單步 ⏩';
+    nextFrameBtn.onclick = () => {
+        jumpToFrame(engineState.currentFrameIndex + 1);
+    };
+
+    const nextTurnBtn = document.createElement('button');
+    nextTurnBtn.className = 'btn-nav';
+    nextTurnBtn.title = '跳至下一回合';
+    nextTurnBtn.textContent = '回合 ⏭';
+    nextTurnBtn.onclick = () => {
+        if (engineState.frames.length === 0) return;
+        const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
+        const curTurn = engineState.frames[curIdx]?.turnNumber ?? 0;
+        let nextIdx = curIdx + 1;
+        while (nextIdx < engineState.frames.length && engineState.frames[nextIdx]?.turnNumber <= curTurn) {
+            nextIdx++;
+        }
+        jumpToFrame(Math.min(nextIdx, engineState.frames.length - 1));
+    };
+
+    navGroup.appendChild(prevTurnBtn);
+    navGroup.appendChild(prevFrameBtn);
+    navGroup.appendChild(playBtn);
+    navGroup.appendChild(nextFrameBtn);
+    navGroup.appendChild(nextTurnBtn);
+
     const speedBtn = document.createElement('button');
+    speedBtn.id = 'btn-speed';
+    speedBtn.title = '切換播放倍速 (自動記憶於瀏覽器)';
     speedBtn.textContent = `速度: ${engineState.playbackSpeed}x`;
     speedBtn.onclick = () => {
         const currentIdx = PLAYBACK_SPEEDS.indexOf(engineState.playbackSpeed);
         const nextIndex = (currentIdx === -1 ? 0 : currentIdx + 1) % PLAYBACK_SPEEDS.length;
-        engineState.playbackSpeed = PLAYBACK_SPEEDS[nextIndex];
-        speedBtn.textContent = `速度: ${engineState.playbackSpeed}x`;
+        const nextSpeed = setPlaybackSpeed(PLAYBACK_SPEEDS[nextIndex]);
+        speedBtn.textContent = `速度: ${nextSpeed}x`;
     };
-
-    const seekContainer = document.createElement('div');
-    seekContainer.className = 'seek-container';
-    const seekLabel = document.createElement('span');
-    seekLabel.id = 'seek-label';
-    seekLabel.textContent = `0 / ${engineState.frames.length}`;
-    const seekRange = document.createElement('input');
-    seekRange.type = 'range';
-    seekRange.id = 'seek-range';
-    seekRange.min = 0;
-    seekRange.max = Math.max(0, engineState.frames.length - 1);
-    seekRange.value = 0;
 
     seekRange.oninput = (e) => {
         const targetFrame = Number(e.target.value);
         engineState.currentFrameIndex = targetFrame;
-        seekLabel.textContent = `${targetFrame} / ${engineState.frames.length}`;
+        seekLabel.textContent = formatSeekLabelText(targetFrame);
         engineState.currentCombo = createEmptyCombo();
 
         const token = nextPlaybackToken();
-        syncStageToAbsoluteState(targetFrame, false);
 
         if (engineState.isPlaying) {
+            syncStageToAbsoluteState(targetFrame, false, false);
             playbackLoop(token);
-        } else if (playBtn.textContent === '重新播放') {
-            playBtn.textContent = '播放';
+        } else {
+            if (playBtn.textContent === '重新播放') {
+                playBtn.textContent = '播放';
+            }
+            syncStageToAbsoluteState(targetFrame, false, true);
         }
     };
 
     seekContainer.appendChild(seekRange);
     seekContainer.appendChild(seekLabel);
+
+    const skipBtn = document.createElement('button');
+    skipBtn.id = 'btn-skip';
+    skipBtn.className = 'btn-skip';
+    skipBtn.title = '跳過戰鬥過程，直接前往最終狀態與 MVP 結算面板';
+    skipBtn.textContent = '⏭ 跳至結算';
+    skipBtn.onclick = () => {
+        engineState.isPlaying = false;
+        engineState.timeScale = 1.0;
+        nextPlaybackToken();
+        const finalIdx = Math.max(0, engineState.frames.length - 1);
+        engineState.currentFrameIndex = engineState.frames.length;
+        seekRange.value = finalIdx;
+        seekLabel.textContent = formatSeekLabelText(engineState.frames.length);
+        syncStageToAbsoluteState(finalIdx, false, false);
+        releaseSpoilerGuard();
+        playBtn.textContent = '重新播放';
+        showMVPPanel();
+    };
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'danger';
@@ -154,9 +285,10 @@ export function createBattleStage() {
         });
     };
 
-    controls.appendChild(playBtn);
+    controls.appendChild(navGroup);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
+    controls.appendChild(skipBtn);
     controls.appendChild(closeBtn);
 
     const ctbBox = document.createElement('div');
@@ -229,7 +361,166 @@ export function createBattleStage() {
 }
 
 /**
+ * Collects consecutive non-counter AOE wave frames starting at `startIndex` that share the same caster,
+ * allowing `playbackLoop` to execute them as a single fluid multi-target AOE wave barrage instead of
+ * slow sequential single-target hits.
+ *
+ * @param {number} startIndex - Starting frame index.
+ * @returns {Array<object>} Batch of consecutive AOE frames (length >= 1, or empty if not an AOE hit).
+ */
+function collectAOEWaveBatch(startIndex) {
+    const first = engineState.frames[startIndex];
+    if (
+        !first ||
+        !first.isAOE ||
+        first.isCounter ||
+        first.type === 'COUNTER' ||
+        !['DAMAGE', 'MISS', 'BLOCK'].includes(first.type)
+    ) {
+        return [];
+    }
+
+    const casterId = first.aoeCasterId || first.actorId;
+    const batch = [first];
+    let idx = startIndex + 1;
+
+    while (idx < engineState.frames.length) {
+        const cur = engineState.frames[idx];
+        if (
+            cur &&
+            cur.isAOE &&
+            !cur.isCounter &&
+            cur.type !== 'COUNTER' &&
+            ['DAMAGE', 'MISS', 'BLOCK'].includes(cur.type) &&
+            (cur.aoeCasterId || cur.actorId) === casterId
+        ) {
+            batch.push(cur);
+            if (cur.isAOELast) break;
+            idx++;
+        } else {
+            break;
+        }
+    }
+
+    return batch;
+}
+
+/**
+ * Renders a multi-target AOE wave batch as a unified sweeping shockwave and projectile barrage
+ * with rapid staggered target impacts (65ms ripple), floating numbers, and HP bar updates.
+ *
+ * @param {Array<object>} waveFrames - Batch of consecutive AOE combat frames.
+ * @param {number} token - Active playback token.
+ * @returns {Promise<void>}
+ */
+async function renderAOEWaveBatch(waveFrames, token) {
+    const sr = engineState.shadowRoot;
+    if (!sr || engineState.playbackToken !== token || waveFrames.length === 0) return;
+
+    const arena = sr.getElementById('arena');
+    const dialog = sr.getElementById('dialog-box');
+    const firstFrame = waveFrames[0];
+
+    // 1. Check and play Ultimate Cut-In on the first frame of the AOE wave if applicable
+    if (isPrimaryUltimateTriggerFrame(firstFrame)) {
+        const actor = engineState.actors.get(firstFrame.actorId);
+        const isMultiHitSubFrame =
+            ULTIMATE_SUBFRAME_REGEX.test(firstFrame.message.trim()) ||
+            firstFrame.rosarioEvent === 'INSCRIBE_CROSS';
+
+        if (actor && actor.lastUltimateTurn !== firstFrame.turnNumber && !isMultiHitSubFrame) {
+            actor.lastUltimateTurn = firstFrame.turnNumber;
+            await playUltimateCutIn(firstFrame, sr, token);
+            if (engineState.playbackToken !== token) return;
+        } else if (actor && isMultiHitSubFrame) {
+            actor.lastUltimateTurn = firstFrame.turnNumber;
+        }
+    }
+
+    // 2. Update ATB timeline and bond state
+    updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
+    syncActorBondVisuals(sr, firstFrame.actorsBondState);
+
+    // 3. Launch center-stage AOE caster animation, crescent shockwave, and projectile barrage
+    const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
+
+    const hasCritShake = waveFrames.some(wf => wf.vfx.includes('screen-shake'));
+    if (hasCritShake && arena) {
+        setTimeout(() => {
+            if (engineState.playbackToken === token && arena.isConnected) {
+                arena.classList.remove('shake-active');
+                void arena.offsetWidth;
+                arena.classList.add('shake-active');
+            }
+        }, impactDelayMs / getEffectiveSpeed());
+    }
+
+    const waveDeadActorIds = new Set(
+        waveFrames.filter(wf => wf.isDeathEvent && wf.deadActorId).map(wf => wf.deadActorId)
+    );
+
+    // 4. Schedule rapid staggered impacts (65ms ripple) across all wave targets
+    waveFrames.forEach((wf, idx) => {
+        const hitDelay = (impactDelayMs + idx * staggerMs) / getEffectiveSpeed();
+        setTimeout(() => {
+            if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
+
+            if (wf.message && dialog) {
+                if (dialog.lastElementChild?.dataset?.frameIndex !== String(wf.index)) {
+                    const msgEl = createLogLineElement(wf);
+                    dialog.appendChild(msgEl);
+                    dialog.scrollTop = dialog.scrollHeight;
+                }
+            }
+
+            const speed = getEffectiveSpeed();
+            const lookahead = lookaheadComboState(wf.index, wf);
+            advanceComboState(wf, lookahead.isNextFrameSameCombo);
+            renderComboBanner(arena, wf, speed);
+
+            const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+            const targetSide = engineState.actors.get(wf.targetId)?.side || 'right';
+            if (targetEl && arena) {
+                triggerAOETargetImpact(wf, arena, targetEl, targetSide, shadowColor, speed);
+                if (wf.vfx.includes('dodge-blink')) {
+                    targetEl.classList.add('blink-active');
+                    setTimeout(() => {
+                        if (engineState.playbackToken === token && targetEl.isConnected) {
+                            targetEl.classList.remove('blink-active');
+                        }
+                    }, 300 / speed);
+                }
+            }
+
+            spawnFloatingText(wf, sr, lookahead.isNextFrameSameCombo, lookahead.isNextTargetDifferent);
+
+            syncActorHpAndDeathDOM(sr, wf, {
+                skipHpTransition: false,
+                syncSummonVisibility: false,
+                deferDeadClassForActorId: waveDeadActorIds
+            });
+        }, hitDelay);
+    });
+
+    await new Promise(resolve => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
+    if (engineState.playbackToken !== token) return;
+
+    // 5. Play K.O. fatality sequence for any target(s) defeated during this AOE wave
+    for (const wf of waveFrames) {
+        if (wf.isDeathEvent && wf.deadActorId) {
+            await playFatalitySequence(sr, wf.deadActorId, token);
+            if (engineState.playbackToken !== token) return;
+            const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
+            if (deadWrapper) {
+                deadWrapper.classList.add('dead');
+            }
+        }
+    }
+}
+
+/**
  * Main asynchronous playback loop that steps through frames until paused, cancelled, or finished.
+ * Automatically batches multi-target AOE wave frames into a fluid sweeping barrage.
  * Once the final frame finishes, releases the spoiler guard and displays the post-battle MVP overlay.
  *
  * @param {number} token - Playback token bound to this loop invocation.
@@ -241,21 +532,28 @@ export async function playbackLoop(token) {
         engineState.isPlaying &&
         engineState.playbackToken === token
     ) {
-        const frame = engineState.frames[engineState.currentFrameIndex];
-        await renderFrame(frame, token);
-
-        if (engineState.playbackToken !== token || !engineState.isPlaying) {
-            return;
+        const aoeBatch = collectAOEWaveBatch(engineState.currentFrameIndex);
+        if (aoeBatch.length >= 2) {
+            await renderAOEWaveBatch(aoeBatch, token);
+            if (engineState.playbackToken !== token || !engineState.isPlaying) {
+                return;
+            }
+            engineState.currentFrameIndex += aoeBatch.length;
+        } else {
+            const frame = engineState.frames[engineState.currentFrameIndex];
+            await renderFrame(frame, token);
+            if (engineState.playbackToken !== token || !engineState.isPlaying) {
+                return;
+            }
+            engineState.currentFrameIndex++;
         }
-
-        engineState.currentFrameIndex++;
 
         const sr = engineState.shadowRoot;
         if (sr) {
             const seekRange = sr.getElementById('seek-range');
             const seekLabel = sr.getElementById('seek-label');
             if (seekRange) seekRange.value = Math.min(engineState.currentFrameIndex, engineState.frames.length - 1);
-            if (seekLabel) seekLabel.textContent = `${engineState.currentFrameIndex} / ${engineState.frames.length}`;
+            if (seekLabel) seekLabel.textContent = formatSeekLabelText(engineState.currentFrameIndex);
         }
     }
 
