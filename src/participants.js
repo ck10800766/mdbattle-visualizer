@@ -136,6 +136,12 @@ export function parseParticipants(reportData) {
         }
     });
 
+    const resolveAvatarUrl = (avatarPath) => {
+        if (!avatarPath) return DEFAULT_AVATAR_URL;
+        if (/^https?:\/\//i.test(avatarPath)) return avatarPath;
+        return `${ASSET_HOST}${avatarPath}`;
+    };
+
     // Register left-side player party members
     (p.players || []).forEach(player => {
         const id = player.userId || player.entityId || player._id;
@@ -152,7 +158,7 @@ export function parseParticipants(reportData) {
             side: 'left',
             maxHp,
             hideHp,
-            avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
+            avatar: resolveAvatarUrl(avatarPath),
             isSummon,
             ownerId: player.summonerId || null,
             initiallySpawned: !isSummon
@@ -179,7 +185,7 @@ export function parseParticipants(reportData) {
             side: 'right',
             maxHp,
             hideHp,
-            avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
+            avatar: resolveAvatarUrl(avatarPath),
             isSummon,
             ownerId: enemy.summonerId || null,
             initiallySpawned: !isSummon

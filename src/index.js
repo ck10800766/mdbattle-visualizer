@@ -13,6 +13,7 @@ import { engineState, createEmptyCombo, nextPlaybackToken } from './state.js';
 import { parseParticipants, buildStateSnapshots } from './parser.js';
 import { createBattleStage } from './stage.js';
 import { armSpoilerGuard, releaseSpoilerGuard, initSpoilerObserver } from './spoilerGuard.js';
+import { extractBattlePayload, promptImportBattleReport, exportCurrentBattleReport } from './reportIO.js';
 
 const originalFetch = window.fetch.bind(window);
 let lastAutoLaunchedReportId = null;
@@ -24,18 +25,7 @@ let lastAutoLaunchedReportId = null;
  * @returns {object|null} Extracted battle payload or null if not found.
  */
 function findBattlePayload(obj, depth = 0) {
-    if (!obj || typeof obj !== 'object' || depth > 3) return null;
-    if (Array.isArray(obj.logs) && obj.logs.some(l => l && typeof l === 'object')) {
-        return obj;
-    }
-    for (const key of Object.keys(obj)) {
-        const val = obj[key];
-        if (val && typeof val === 'object' && !Array.isArray(val)) {
-            const found = findBattlePayload(val, depth + 1);
-            if (found) return found;
-        }
-    }
-    return null;
+    return extractBattlePayload(obj, depth);
 }
 
 /**
@@ -130,22 +120,156 @@ export function initVisualizer(reportData) {
     createBattleStage();
 }
 
+// Register global callback so the stage UI can load imported/dropped JSON reports without circular imports
+engineState.onImportReport = (payload) => {
+    prepareAndInitVisualizer(payload, { force: true });
+};
+
 /**
- * Injects the floating bottom-right manual launch button into the host page.
+ * Injects the floating launch button with seamless hover submenu (Import/Export) into the host page.
+ * Keeps the original button appearance and normal cursor while supporting draggable repositioning
+ * and allowing the mouse to glide seamlessly into the popup options.
  */
 function createToggleButton() {
-    if (!document.body || document.getElementById('mdbv-toggle-btn')) return;
+    if (!document.body || document.getElementById('mdbv-floating-dock')) return;
 
-    const btn = document.createElement('button');
-    btn.id = 'mdbv-toggle-btn';
-    btn.textContent = '啟動視覺化演出';
-    btn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #2c7a7b; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);';
+    if (!document.getElementById('mdbv-dock-styles')) {
+        const style = document.createElement('style');
+        style.id = 'mdbv-dock-styles';
+        style.textContent = `
+            #mdbv-floating-dock {
+                position: fixed;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column-reverse;
+                align-items: flex-end;
+                gap: 6px;
+                padding: 4px;
+                user-select: none;
+                touch-action: none;
+            }
+            #mdbv-toggle-btn {
+                background: #2c7a7b;
+                color: white;
+                border: 1px solid #4fd1c5;
+                padding: 10px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+                font-size: 13px;
+                white-space: nowrap;
+                transition: background 0.15s, transform 0.1s;
+            }
+            #mdbv-toggle-btn:hover {
+                background: #319795;
+            }
+            #mdbv-toggle-btn:active {
+                transform: scale(0.98);
+            }
+            .mdbv-dock-menu {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(6px);
+                transition: opacity 0.18s ease, transform 0.18s ease;
+                position: relative;
+            }
+            /* Seamless hover bridge: ensures cursor never leaves dock when moving between button and menu */
+            .mdbv-dock-menu::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 100%;
+                height: 10px;
+                pointer-events: auto;
+            }
+            #mdbv-floating-dock:hover .mdbv-dock-menu,
+            #mdbv-floating-dock.menu-open .mdbv-dock-menu {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+            .mdbv-menu-item-btn {
+                background: #2b6cb0;
+                color: white;
+                border: 1px solid #63b3ed;
+                padding: 8px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+                font-size: 13px;
+                white-space: nowrap;
+                transition: background 0.15s, transform 0.1s;
+                text-align: left;
+            }
+            .mdbv-menu-item-btn:hover {
+                background: #3182ce;
+                transform: translateX(-2px);
+            }
+            .mdbv-menu-item-btn:active {
+                transform: scale(0.98);
+            }
+        `;
+        document.head.appendChild(style);
+    }
 
-    btn.onclick = async () => {
+    const dock = document.createElement('div');
+    dock.id = 'mdbv-floating-dock';
+
+    const menu = document.createElement('div');
+    menu.className = 'mdbv-dock-menu';
+
+    const importBtn = document.createElement('button');
+    importBtn.id = 'mdbv-import-btn';
+    importBtn.className = 'mdbv-menu-item-btn';
+    importBtn.textContent = '載入戰報';
+    importBtn.title = '從電腦載入已保存的 .json 戰報檔案進行離線重播';
+    importBtn.onclick = (e) => {
+        e.stopPropagation();
+        dock.classList.remove('menu-open');
+        promptImportBattleReport((payload) => {
+            prepareAndInitVisualizer(payload, { force: true });
+        });
+    };
+
+    const exportBtn = document.createElement('button');
+    exportBtn.id = 'mdbv-export-btn';
+    exportBtn.className = 'mdbv-menu-item-btn';
+    exportBtn.textContent = '匯出戰報';
+    exportBtn.title = '將當前戰報打包為 .json 檔案永久保存至本機';
+    exportBtn.onclick = (e) => {
+        e.stopPropagation();
+        dock.classList.remove('menu-open');
+        if (!engineState.lastReportData) {
+            alert('目前尚無可匯出的戰報資料！請先進入戰報頁面或進行一場戰鬥。');
+            return;
+        }
+        exportCurrentBattleReport();
+    };
+
+    menu.appendChild(importBtn);
+    menu.appendChild(exportBtn);
+
+    const mainBtn = document.createElement('button');
+    mainBtn.id = 'mdbv-toggle-btn';
+    mainBtn.textContent = '啟動視覺化演出';
+    mainBtn.title = '點擊啟動視覺化戰況回放 (按住可拖曳調整位置)';
+
+    mainBtn.onclick = async (e) => {
+        if (didDrag) {
+            e.stopPropagation();
+            didDrag = false;
+            return;
+        }
         const match = location.pathname.match(/\/reports\/(\d+)/);
         if (match) {
             const reportId = match[1];
-            btn.textContent = '載入中...';
+            mainBtn.textContent = '載入中...';
             try {
                 const token = localStorage.getItem('token');
                 const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
@@ -162,21 +286,136 @@ function createToggleButton() {
                 } else {
                     alert(`讀取戰報失敗 (錯誤碼: ${response.status})`);
                 }
-            } catch (e) {
-                console.error('Visualizer error:', e);
+            } catch (err) {
+                console.error('Visualizer error:', err);
                 alert('連線錯誤：已被瀏覽器或伺服器阻擋，請查看 F12 主控台');
             } finally {
-                btn.textContent = '啟動視覺化演出';
+                mainBtn.textContent = '啟動視覺化演出';
             }
         } else if (engineState.lastReportData) {
-            // Re-open the most recent live battle on /boss or /players/:id
             initVisualizer(engineState.lastReportData);
         } else {
-            alert('請先進行一場戰鬥或在戰報頁面使用此功能');
+            alert('請先進行一場戰鬥、在戰報頁面使用，或點擊「載入戰報」讀取已保存的 JSON 戰報檔！');
         }
     };
 
-    document.body.appendChild(btn);
+    dock.appendChild(mainBtn);
+    dock.appendChild(menu);
+    document.body.appendChild(dock);
+
+    const updateMenuOrientation = () => {
+        const rect = dock.getBoundingClientRect();
+        const isTopHalf = rect.top < 160;
+        const isLeftHalf = rect.left < window.innerWidth / 2;
+
+        dock.style.flexDirection = isTopHalf ? 'column' : 'column-reverse';
+        dock.style.alignItems = isLeftHalf ? 'flex-start' : 'flex-end';
+    };
+
+    // Load persisted dock position or default to bottom-right
+    const savedPos = (() => {
+        try {
+            const raw = localStorage.getItem('mdbv_dock_pos');
+            if (raw) return JSON.parse(raw);
+        } catch {}
+        return null;
+    })();
+
+    if (savedPos && typeof savedPos.left === 'number' && typeof savedPos.top === 'number') {
+        const maxLeft = Math.max(8, window.innerWidth - 180);
+        const maxTop = Math.max(8, window.innerHeight - 60);
+        dock.style.left = `${Math.max(8, Math.min(maxLeft, savedPos.left))}px`;
+        dock.style.top = `${Math.max(8, Math.min(maxTop, savedPos.top))}px`;
+        dock.style.right = 'auto';
+        dock.style.bottom = 'auto';
+    } else {
+        dock.style.right = '20px';
+        dock.style.bottom = '20px';
+    }
+    updateMenuOrientation();
+
+    // Draggable interaction logic
+    let isDragging = false;
+    let didDrag = false;
+    let startX = 0;
+    let startY = 0;
+    let startLeft = 0;
+    let startTop = 0;
+
+    const onPointerMove = (e) => {
+        const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+        const clientY = e.clientY ?? e.touches?.[0]?.clientY;
+        if (clientX == null || clientY == null) return;
+
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+
+        if (!isDragging && Math.hypot(dx, dy) > 5) {
+            isDragging = true;
+            didDrag = true;
+            dock.classList.remove('menu-open');
+        }
+
+        if (isDragging) {
+            const maxLeft = Math.max(8, window.innerWidth - dock.offsetWidth - 8);
+            const maxTop = Math.max(8, window.innerHeight - dock.offsetHeight - 8);
+            const nextLeft = Math.max(8, Math.min(maxLeft, startLeft + dx));
+            const nextTop = Math.max(8, Math.min(maxTop, startTop + dy));
+
+            dock.style.left = `${nextLeft}px`;
+            dock.style.top = `${nextTop}px`;
+            dock.style.right = 'auto';
+            dock.style.bottom = 'auto';
+            updateMenuOrientation();
+        }
+    };
+
+    const onPointerUp = () => {
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+
+        if (isDragging) {
+            isDragging = false;
+            try {
+                localStorage.setItem('mdbv_dock_pos', JSON.stringify({
+                    left: parseInt(dock.style.left, 10),
+                    top: parseInt(dock.style.top, 10)
+                }));
+            } catch {}
+        }
+    };
+
+    mainBtn.addEventListener('pointerdown', (e) => {
+        if (e.button != null && e.button !== 0) return;
+        const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+        const clientY = e.clientY ?? e.touches?.[0]?.clientY;
+        if (clientX == null || clientY == null) return;
+
+        isDragging = false;
+        didDrag = false;
+        startX = clientX;
+        startY = clientY;
+
+        const rect = dock.getBoundingClientRect();
+        startLeft = rect.left;
+        startTop = rect.top;
+
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerup', onPointerUp);
+    });
+
+    window.addEventListener('resize', () => {
+        const rect = dock.getBoundingClientRect();
+        const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+        const maxTop = Math.max(8, window.innerHeight - rect.height - 8);
+        const nextLeft = Math.max(8, Math.min(maxLeft, rect.left));
+        const nextTop = Math.max(8, Math.min(maxTop, rect.top));
+        dock.style.left = `${nextLeft}px`;
+        dock.style.top = `${nextTop}px`;
+        dock.style.right = 'auto';
+        dock.style.bottom = 'auto';
+        updateMenuOrientation();
+    });
 }
 
 /**

@@ -15,22 +15,24 @@ export const STAGE_STYLES = `
     .stage { width: 100%; height: 100%; display: flex; flex-direction: column; background: radial-gradient(circle at center, #1a202c 0%, #000 100%); }
 
     /* Playback Controls */
-    .controls { display: flex; padding: 10px 18px; background: #171923; border-bottom: 1px solid #2d3748; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
-    .control-group { display: flex; align-items: center; gap: 6px; }
-    .seek-container { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 13px; font-variant-numeric: tabular-nums; margin: 0 6px; }
+    .controls { display: flex; padding: 10px 20px; background: #171923; border-bottom: 1px solid #2d3748; gap: 15px; align-items: center; position: relative; z-index: 2500; }
+    .seek-container { flex: 1; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 14px; font-variant-numeric: tabular-nums; }
+    #seek-label { min-width: 68px; text-align: right; white-space: nowrap; }
     input[type="range"] { flex: 1; accent-color: #4fd1c5; cursor: pointer; }
-    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s, transform 0.1s; white-space: nowrap; font-size: 13px; }
+    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s, transform 0.1s; white-space: nowrap; font-size: 14px; }
     button:hover { background: #319795; }
     button:active { transform: scale(0.97); }
-    button.btn-nav { background: #2d3748; border-color: #4a5568; padding: 6px 10px; color: #e2e8f0; }
-    button.btn-nav:hover { background: #4a5568; border-color: #718096; }
-    button.btn-skip { background: #975a16; border-color: #f6e05e; color: #fefcbf; }
-    button.btn-skip:hover { background: #b7791f; }
-    button.danger { background: #9b2c2c; border-color: #fc8181; }
-    button.danger:hover { background: #c53030; }
+    button.btn-skip, button.danger { background: #9b2c2c; border-color: #fc8181; color: #fff; }
+    button.btn-skip:hover, button.danger:hover { background: #c53030; }
+    @media (max-width: 640px) {
+        .controls { padding: 8px 10px; gap: 6px; }
+        .seek-container { gap: 6px; font-size: 12px; }
+        #seek-label { min-width: 52px; }
+        button { padding: 5px 9px; font-size: 12px; }
+    }
 
     /* ATB / CTB Timeline Track */
-    .ctb-container { height: 70px; background: rgba(0,0,0,0.8); border-bottom: 2px solid #4a5568; position: relative; padding: 0 80px 0 40px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .ctb-container { height: 70px; background: rgba(0,0,0,0.8); border-bottom: 2px solid #4a5568; position: relative; z-index: 10; padding: 0 80px 0 40px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     .ctb-track { position: relative; width: 100%; height: 4px; background: #4a5568; border-radius: 2px; }
     .ctb-action-point { position: absolute; right: -40px; top: -20px; width: 40px; height: 44px; border-left: 3px solid #f6e05e; display: flex; align-items: center; padding-left: 8px; color: #f6e05e; font-weight: bold; font-size: 12px; font-style: italic; box-shadow: -4px 0 8px -4px rgba(246,224,94,0.8); }
     .ctb-icon { position: absolute; top: -18px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #a0aec0; background: #1a202c; transform: translateX(-50%); transition: left 0.4s linear, opacity 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
@@ -200,4 +202,44 @@ export const STAGE_STYLES = `
     .aoe-fan-wave.wave-right { border-right: 14px solid var(--wave-color, #fc8181); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 0 180px 180px 0; box-shadow: 18px 0 28px -4px var(--wave-color, #fc8181), inset -14px 0 22px -6px #ffffff; }
     .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
     .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
-`;
+
+    /* Timeline Milestone Event Pins & Tooltips */
+    .seek-track-wrapper { position: relative; flex: 1; display: flex; align-items: center; height: 32px; }
+    .seek-track-wrapper input[type="range"] { width: 100%; margin: 0; position: relative; z-index: 2; }
+    .seek-markers-layer { position: absolute; left: 7px; right: 7px; top: 0; height: 100%; pointer-events: none; z-index: 3; }
+    .seek-pin { position: absolute; top: 1px; transform: translateX(-50%) scale(0.6); width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #fff; cursor: pointer; pointer-events: none; opacity: 0; padding: 0; transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease; z-index: 4; }
+    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
+    .seek-container:hover .seek-pin:hover, .seek-track-wrapper:hover .seek-pin:hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
+    .seek-pin.pin-ultimate { background: #f6e05e; box-shadow: 0 0 8px #f6e05e; }
+    .seek-pin.pin-death { background: #fc8181; box-shadow: 0 0 8px #e53e3e; }
+    .seek-pin.pin-rebirth { background: #48bb78; box-shadow: 0 0 10px #48bb78; }
+    .seek-pin.pin-contract { background: #f687b3; box-shadow: 0 0 8px #f687b3; }
+    .seek-pin.pin-summon { background: #63b3ed; box-shadow: 0 0 8px #63b3ed; }
+    .seek-pin-tooltip { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-4px); background: rgba(15, 23, 42, 0.98); color: #f8fafc; border: 1px solid #4fd1c5; border-radius: 6px; padding: 6px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s ease, transform 0.15s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9); z-index: 9999; text-align: left; }
+    .seek-pin-tooltip.tooltip-align-left { left: 0; transform: translateY(-4px); }
+    .seek-pin-tooltip.tooltip-align-right { left: auto; right: 0; transform: translateY(-4px); }
+    .seek-pin:hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .seek-pin:hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
+    .seek-pin:hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
+    .seek-pin-tooltip-title { color: #f6e05e; font-weight: 800; margin-bottom: 2px; display: block; }
+    .seek-pin-tooltip-detail { color: #cbd5e1; font-size: 11px; font-weight: 500; display: block; max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Report Export/Import Buttons, Hotkey Popover & Drag-Drop Overlay */
+    button.btn-io { background: #2b6cb0; border-color: #63b3ed; padding: 6px 10px; color: #ebf8ff; }
+    button.btn-io:hover { background: #3182ce; }
+    .hotkey-wrapper { position: relative; display: inline-flex; align-items: center; }
+    button.btn-hotkey { background: #1a202c; border-color: #4a5568; padding: 6px 9px; color: #a0aec0; font-size: 12px; }
+    button.btn-hotkey:hover { color: #fff; border-color: #4fd1c5; }
+    .hotkey-popover { position: absolute; top: calc(100% + 8px); right: 0; background: rgba(15, 23, 42, 0.97); border: 1px solid #4fd1c5; border-radius: 8px; padding: 10px 14px; color: #e2e8f0; font-size: 12px; line-height: 1.7; white-space: nowrap; box-shadow: 0 12px 28px rgba(0,0,0,0.85); z-index: 2600; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease; min-width: 250px; }
+    .hotkey-wrapper:hover .hotkey-popover { opacity: 1; visibility: visible; }
+    .hotkey-title { font-weight: 800; color: #4fd1c5; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 3px; margin-bottom: 4px; font-size: 12px; }
+    .hotkey-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .hotkey-popover kbd, .hotkey-kbd { background: #2d3748; border: 1px solid #718096; border-radius: 4px; padding: 0px 6px; font-family: monospace; font-size: 11px; color: #f6e05e; }
+    .drag-drop-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.88); border: 4px dashed #4fd1c5; z-index: 4000; display: none; align-items: center; justify-content: center; color: #f6e05e; pointer-events: none; backdrop-filter: blur(4px); }
+    .drag-drop-overlay.active { display: flex; }
+    .drag-drop-box { text-align: center; padding: 28px 40px; border-radius: 16px; background: rgba(26, 32, 44, 0.9); border: 1px solid rgba(79, 209, 197, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    .drag-drop-title { font-size: 26px; font-weight: 900; color: #f6e05e; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .drag-drop-sub { font-size: 14px; color: #cbd5e1; font-weight: 600; }
+`;
+
+

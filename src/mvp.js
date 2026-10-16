@@ -10,6 +10,7 @@ import { DEFAULT_MVP_AVATAR_URL } from './constants.js';
 import { engineState } from './state.js';
 import { getConsolidatedStats } from './parser.js';
 import { escapeHtml } from './utils.js';
+import { closeBattleStage } from './stage.js';
 
 /**
  * Renders the post-battle JRPG-styled Victory/Defeat summary and MVP contribution overlay.
@@ -57,7 +58,7 @@ export function showMVPPanel() {
         .stat-numbers { width: 140px; text-align: right; transform: skewX(10deg); }
         .stat-dmg { font-size: 24px; color: ${theme.main}; }
         .stat-taken { font-size: 14px; color: #a0aec0; }
-        .close-btn { align-self: flex-start; margin-top: 30px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 15px 40px; font-size: 20px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .close-btn { align-self: flex-start; margin-top: 30px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 15px 40px; font-size: 24px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .close-btn:hover { transform: skewX(-10deg) translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
         .close-btn:active { transform: skewX(-10deg) translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
         .mvp-label { position: absolute; left: 12%; top: 40px; background: ${theme.main}; color: ${theme.dark}; padding: 10px 30px; font-size: 28px; font-weight: 900; transform: skewX(-15deg); box-shadow: 5px 5px 0 rgba(0,0,0,0.5); z-index: 10; letter-spacing: 4px; }
@@ -172,7 +173,7 @@ export function showMVPPanel() {
     closeBtn.className = 'close-btn';
     closeBtn.textContent = 'NEXT // 結束演出';
     closeBtn.style.animationDelay = `${delayCounter + 0.2}s`;
-    closeBtn.onclick = () => overlay.remove();
+    closeBtn.onclick = () => closeBattleStage();
 
     uiContainer.appendChild(statsContainer);
     uiContainer.appendChild(closeBtn);

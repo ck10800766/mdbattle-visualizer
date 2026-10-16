@@ -4780,5 +4780,55 @@
       }
     }
   ],
+  "timelineMarkers": [
+    {
+      "category": "ultimate",
+      "detail": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "frameIndex": 3,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：有紀",
+      "turnNumber": 2
+    },
+    {
+      "category": "summon",
+      "detail": "有紀 發出公會訊號，沉睡騎士的 詩烏涅 趕來助陣！",
+      "frameIndex": 32,
+      "icon": "🌀",
+      "title": "🌀 召喚登場：詩烏涅",
+      "turnNumber": 3
+    },
+    {
+      "category": "ultimate",
+      "detail": "源氏 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。",
+      "frameIndex": 39,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：源氏",
+      "turnNumber": 5
+    },
+    {
+      "category": "ultimate",
+      "detail": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
+      "frameIndex": 41,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：有紀",
+      "turnNumber": 6
+    },
+    {
+      "category": "death",
+      "detail": "詩烏涅 倒下了！",
+      "frameIndex": 58,
+      "icon": "💀",
+      "title": "💀 陣亡：詩烏涅",
+      "turnNumber": 7
+    },
+    {
+      "category": "death",
+      "detail": "有紀 倒下了！",
+      "frameIndex": 62,
+      "icon": "💀",
+      "title": "💀 陣亡：有紀",
+      "turnNumber": 8
+    }
+  ],
   "totalTurns": 8
 }

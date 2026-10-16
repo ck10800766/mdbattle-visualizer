@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         MDBattle-Visualizer (Ultimate Edition V7.4)
+// @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.4.0
+// @version      7.5.0
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -70,7 +70,9 @@
     hostElement: null,
     actors: /* @__PURE__ */ new Map(),
     totalTurns: 0,
-    battleResult: "WIN"
+    battleResult: "WIN",
+    onImportReport: null,
+    activeKeydownHandler: null
   };
   function setPlaybackSpeed(speed) {
     const validSpeed = PLAYBACK_SPEEDS.includes(speed) ? speed : 1;
@@ -168,6 +170,11 @@
         summonedIds.add(log.targetId);
       }
     });
+    const resolveAvatarUrl = (avatarPath) => {
+      if (!avatarPath) return DEFAULT_AVATAR_URL;
+      if (/^https?:\/\//i.test(avatarPath)) return avatarPath;
+      return `${ASSET_HOST}${avatarPath}`;
+    };
     (p.players || []).forEach((player) => {
       const id = player.userId || player.entityId || player._id;
       const name = player.characterName || player.name || "Unknown";
@@ -182,7 +189,7 @@
         side: "left",
         maxHp,
         hideHp,
-        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
+        avatar: resolveAvatarUrl(avatarPath),
         isSummon,
         ownerId: player.summonerId || null,
         initiallySpawned: !isSummon
@@ -205,7 +212,7 @@
         side: "right",
         maxHp,
         hideHp,
-        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
+        avatar: resolveAvatarUrl(avatarPath),
         isSummon,
         ownerId: enemy.summonerId || null,
         initiallySpawned: !isSummon
@@ -1117,22 +1124,24 @@
     .stage { width: 100%; height: 100%; display: flex; flex-direction: column; background: radial-gradient(circle at center, #1a202c 0%, #000 100%); }
 
     /* Playback Controls */
-    .controls { display: flex; padding: 10px 18px; background: #171923; border-bottom: 1px solid #2d3748; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
-    .control-group { display: flex; align-items: center; gap: 6px; }
-    .seek-container { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 13px; font-variant-numeric: tabular-nums; margin: 0 6px; }
+    .controls { display: flex; padding: 10px 20px; background: #171923; border-bottom: 1px solid #2d3748; gap: 15px; align-items: center; position: relative; z-index: 2500; }
+    .seek-container { flex: 1; display: flex; align-items: center; gap: 10px; color: #a0aec0; font-size: 14px; font-variant-numeric: tabular-nums; }
+    #seek-label { min-width: 68px; text-align: right; white-space: nowrap; }
     input[type="range"] { flex: 1; accent-color: #4fd1c5; cursor: pointer; }
-    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s, transform 0.1s; white-space: nowrap; font-size: 13px; }
+    button { background: #2c7a7b; color: #fff; border: 1px solid #4fd1c5; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s, transform 0.1s; white-space: nowrap; font-size: 14px; }
     button:hover { background: #319795; }
     button:active { transform: scale(0.97); }
-    button.btn-nav { background: #2d3748; border-color: #4a5568; padding: 6px 10px; color: #e2e8f0; }
-    button.btn-nav:hover { background: #4a5568; border-color: #718096; }
-    button.btn-skip { background: #975a16; border-color: #f6e05e; color: #fefcbf; }
-    button.btn-skip:hover { background: #b7791f; }
-    button.danger { background: #9b2c2c; border-color: #fc8181; }
-    button.danger:hover { background: #c53030; }
+    button.btn-skip, button.danger { background: #9b2c2c; border-color: #fc8181; color: #fff; }
+    button.btn-skip:hover, button.danger:hover { background: #c53030; }
+    @media (max-width: 640px) {
+        .controls { padding: 8px 10px; gap: 6px; }
+        .seek-container { gap: 6px; font-size: 12px; }
+        #seek-label { min-width: 52px; }
+        button { padding: 5px 9px; font-size: 12px; }
+    }
 
     /* ATB / CTB Timeline Track */
-    .ctb-container { height: 70px; background: rgba(0,0,0,0.8); border-bottom: 2px solid #4a5568; position: relative; padding: 0 80px 0 40px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .ctb-container { height: 70px; background: rgba(0,0,0,0.8); border-bottom: 2px solid #4a5568; position: relative; z-index: 10; padding: 0 80px 0 40px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     .ctb-track { position: relative; width: 100%; height: 4px; background: #4a5568; border-radius: 2px; }
     .ctb-action-point { position: absolute; right: -40px; top: -20px; width: 40px; height: 44px; border-left: 3px solid #f6e05e; display: flex; align-items: center; padding-left: 8px; color: #f6e05e; font-weight: bold; font-size: 12px; font-style: italic; box-shadow: -4px 0 8px -4px rgba(246,224,94,0.8); }
     .ctb-icon { position: absolute; top: -18px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #a0aec0; background: #1a202c; transform: translateX(-50%); transition: left 0.4s linear, opacity 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
@@ -1302,6 +1311,44 @@
     .aoe-fan-wave.wave-right { border-right: 14px solid var(--wave-color, #fc8181); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 0 180px 180px 0; box-shadow: 18px 0 28px -4px var(--wave-color, #fc8181), inset -14px 0 22px -6px #ffffff; }
     .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
     .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
+
+    /* Timeline Milestone Event Pins & Tooltips */
+    .seek-track-wrapper { position: relative; flex: 1; display: flex; align-items: center; height: 32px; }
+    .seek-track-wrapper input[type="range"] { width: 100%; margin: 0; position: relative; z-index: 2; }
+    .seek-markers-layer { position: absolute; left: 7px; right: 7px; top: 0; height: 100%; pointer-events: none; z-index: 3; }
+    .seek-pin { position: absolute; top: 1px; transform: translateX(-50%) scale(0.6); width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #fff; cursor: pointer; pointer-events: none; opacity: 0; padding: 0; transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease; z-index: 4; }
+    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
+    .seek-container:hover .seek-pin:hover, .seek-track-wrapper:hover .seek-pin:hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
+    .seek-pin.pin-ultimate { background: #f6e05e; box-shadow: 0 0 8px #f6e05e; }
+    .seek-pin.pin-death { background: #fc8181; box-shadow: 0 0 8px #e53e3e; }
+    .seek-pin.pin-rebirth { background: #48bb78; box-shadow: 0 0 10px #48bb78; }
+    .seek-pin.pin-contract { background: #f687b3; box-shadow: 0 0 8px #f687b3; }
+    .seek-pin.pin-summon { background: #63b3ed; box-shadow: 0 0 8px #63b3ed; }
+    .seek-pin-tooltip { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-4px); background: rgba(15, 23, 42, 0.98); color: #f8fafc; border: 1px solid #4fd1c5; border-radius: 6px; padding: 6px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s ease, transform 0.15s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9); z-index: 9999; text-align: left; }
+    .seek-pin-tooltip.tooltip-align-left { left: 0; transform: translateY(-4px); }
+    .seek-pin-tooltip.tooltip-align-right { left: auto; right: 0; transform: translateY(-4px); }
+    .seek-pin:hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .seek-pin:hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
+    .seek-pin:hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
+    .seek-pin-tooltip-title { color: #f6e05e; font-weight: 800; margin-bottom: 2px; display: block; }
+    .seek-pin-tooltip-detail { color: #cbd5e1; font-size: 11px; font-weight: 500; display: block; max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Report Export/Import Buttons, Hotkey Popover & Drag-Drop Overlay */
+    button.btn-io { background: #2b6cb0; border-color: #63b3ed; padding: 6px 10px; color: #ebf8ff; }
+    button.btn-io:hover { background: #3182ce; }
+    .hotkey-wrapper { position: relative; display: inline-flex; align-items: center; }
+    button.btn-hotkey { background: #1a202c; border-color: #4a5568; padding: 6px 9px; color: #a0aec0; font-size: 12px; }
+    button.btn-hotkey:hover { color: #fff; border-color: #4fd1c5; }
+    .hotkey-popover { position: absolute; top: calc(100% + 8px); right: 0; background: rgba(15, 23, 42, 0.97); border: 1px solid #4fd1c5; border-radius: 8px; padding: 10px 14px; color: #e2e8f0; font-size: 12px; line-height: 1.7; white-space: nowrap; box-shadow: 0 12px 28px rgba(0,0,0,0.85); z-index: 2600; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease; min-width: 250px; }
+    .hotkey-wrapper:hover .hotkey-popover { opacity: 1; visibility: visible; }
+    .hotkey-title { font-weight: 800; color: #4fd1c5; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 3px; margin-bottom: 4px; font-size: 12px; }
+    .hotkey-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .hotkey-popover kbd, .hotkey-kbd { background: #2d3748; border: 1px solid #718096; border-radius: 4px; padding: 0px 6px; font-family: monospace; font-size: 11px; color: #f6e05e; }
+    .drag-drop-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.88); border: 4px dashed #4fd1c5; z-index: 4000; display: none; align-items: center; justify-content: center; color: #f6e05e; pointer-events: none; backdrop-filter: blur(4px); }
+    .drag-drop-overlay.active { display: flex; }
+    .drag-drop-box { text-align: center; padding: 28px 40px; border-radius: 16px; background: rgba(26, 32, 44, 0.9); border: 1px solid rgba(79, 209, 197, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    .drag-drop-title { font-size: 26px; font-weight: 900; color: #f6e05e; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .drag-drop-sub { font-size: 14px; color: #cbd5e1; font-weight: 600; }
 `;
 
   // src/cinematics.js
@@ -2747,7 +2794,7 @@
         .stat-numbers { width: 140px; text-align: right; transform: skewX(10deg); }
         .stat-dmg { font-size: 24px; color: ${theme.main}; }
         .stat-taken { font-size: 14px; color: #a0aec0; }
-        .close-btn { align-self: flex-start; margin-top: 30px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 15px 40px; font-size: 20px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .close-btn { align-self: flex-start; margin-top: 30px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 15px 40px; font-size: 24px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .close-btn:hover { transform: skewX(-10deg) translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
         .close-btn:active { transform: skewX(-10deg) translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
         .mvp-label { position: absolute; left: 12%; top: 40px; background: ${theme.main}; color: ${theme.dark}; padding: 10px 30px; font-size: 28px; font-weight: 900; transform: skewX(-15deg); box-shadow: 5px 5px 0 rgba(0,0,0,0.5); z-index: 10; letter-spacing: 4px; }
@@ -2840,7 +2887,7 @@
     closeBtn.className = "close-btn";
     closeBtn.textContent = "NEXT // \u7D50\u675F\u6F14\u51FA";
     closeBtn.style.animationDelay = `${delayCounter + 0.2}s`;
-    closeBtn.onclick = () => overlay.remove();
+    closeBtn.onclick = () => closeBattleStage();
     uiContainer.appendChild(statsContainer);
     uiContainer.appendChild(closeBtn);
     overlay.appendChild(uiContainer);
@@ -2948,6 +2995,84 @@
       return false;
     }
     return true;
+  }
+  function extractTimelineMarkers(frames) {
+    if (!Array.isArray(frames) || frames.length === 0) return [];
+    const markers = [];
+    const lastUltTurnByActor = /* @__PURE__ */ new Map();
+    frames.forEach((f, idx) => {
+      const events = [];
+      if (f.rebirthHeal) {
+        const targetId = f.targetId || f.actorId;
+        const actorName = engineState.actors.get(targetId)?.name || "Boss";
+        events.push({
+          priority: 5,
+          category: "rebirth",
+          icon: "\u{1F525}",
+          title: `\u{1F525} \u4E8C\u968E\u6BB5\u7526\u9192\uFF1A${actorName}`
+        });
+      }
+      if (f.isDeathEvent && f.deadActorId) {
+        const deadName = engineState.actors.get(f.deadActorId)?.name || f.deadActorId;
+        events.push({
+          priority: 4,
+          category: "death",
+          icon: "\u{1F480}",
+          title: `\u{1F480} \u9663\u4EA1\uFF1A${deadName}`
+        });
+      }
+      if (isPrimaryUltimateTriggerFrame(f)) {
+        const msg = String(f.message || "").trim();
+        const isSubFrame = ULTIMATE_SUBFRAME_REGEX.test(msg) || f.rosarioEvent === "INSCRIBE_CROSS";
+        if (!isSubFrame && lastUltTurnByActor.get(f.actorId) !== f.turnNumber) {
+          lastUltTurnByActor.set(f.actorId, f.turnNumber);
+          const actorName = engineState.actors.get(f.actorId)?.name || f.actorId;
+          events.push({
+            priority: 3,
+            category: "ultimate",
+            icon: "\u{1F31F}",
+            title: `\u{1F31F} \u5967\u7FA9\u767C\u52D5\uFF1A${actorName}`
+          });
+        } else if (isSubFrame) {
+          lastUltTurnByActor.set(f.actorId, f.turnNumber);
+        }
+      }
+      if (f.contractEvent === "ACCEPT") {
+        const actorName = engineState.actors.get(f.actorId)?.name || f.actorId;
+        const partnerName = f.targetId ? engineState.actors.get(f.targetId)?.name : null;
+        events.push({
+          priority: 2,
+          category: "contract",
+          icon: "\u{1F48D}",
+          title: `\u{1F48D} \u5951\u7D04\u7DE0\u7D50\uFF1A${actorName}${partnerName ? ` & ${partnerName}` : ""}`
+        });
+      }
+      if (f.isSummonEvent && f.summonedActorId) {
+        const summonName = engineState.actors.get(f.summonedActorId)?.name || f.summonedActorId;
+        events.push({
+          priority: 1,
+          category: "summon",
+          icon: "\u{1F300}",
+          title: `\u{1F300} \u53EC\u559A\u767B\u5834\uFF1A${summonName}`
+        });
+      }
+      if (events.length > 0) {
+        events.sort((a, b) => b.priority - a.priority);
+        const top = events[0];
+        const combinedTitle = events.map((e) => e.title).join(" \uFF5C ");
+        const rawMsg = String(f.message || "").replace(/\s+/g, " ").trim();
+        const detail = rawMsg.length > 46 ? `${rawMsg.slice(0, 46)}\u2026` : rawMsg;
+        markers.push({
+          frameIndex: idx,
+          turnNumber: f.turnNumber,
+          category: top.category,
+          icon: top.icon,
+          title: combinedTitle,
+          detail
+        });
+      }
+    });
+    return markers;
   }
   function createLogLineElement(frame) {
     const msgEl = document.createElement("div");
@@ -3310,15 +3435,162 @@
     }
   }
 
+  // src/reportIO.js
+  function extractBattlePayload(obj, depth = 0) {
+    if (!obj || typeof obj !== "object" || depth > 3) return null;
+    if (Array.isArray(obj.logs) && obj.logs.some((l) => l && typeof l === "object")) {
+      return obj;
+    }
+    for (const key of Object.keys(obj)) {
+      const val = obj[key];
+      if (val && typeof val === "object" && !Array.isArray(val)) {
+        const found = extractBattlePayload(val, depth + 1);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+  function sanitizeFilenameSegment(name) {
+    return String(name || "unknown").replace(/[\\/:*?"<>|\s]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 24) || "unit";
+  }
+  function toSerializableImagePath(avatarUrl) {
+    if (!avatarUrl || typeof avatarUrl !== "string") return null;
+    if (avatarUrl.startsWith(ASSET_HOST)) {
+      return avatarUrl.slice(ASSET_HOST.length);
+    }
+    return avatarUrl;
+  }
+  function buildExportableReportPayload() {
+    if (!engineState.lastReportData || !Array.isArray(engineState.lastReportData.logs)) {
+      return null;
+    }
+    const raw = engineState.lastReportData;
+    const hasPlayers = Array.isArray(raw.participants?.players) && raw.participants.players.length > 0;
+    const hasEnemies = Array.isArray(raw.participants?.enemies) && raw.participants.enemies.length > 0;
+    let participants = raw.participants ? structuredClone(raw.participants) : { players: [], enemies: [] };
+    if (!hasPlayers && !hasEnemies && engineState.actors.size > 0) {
+      const players = [];
+      const enemies = [];
+      engineState.actors.forEach((actor) => {
+        const entry = {
+          userId: actor.id,
+          characterName: actor.name,
+          summonerId: actor.ownerId || void 0,
+          imagePath: toSerializableImagePath(actor.avatar),
+          stats: {
+            hp: actor.hideHp ? 1 : actor.maxHp
+          }
+        };
+        if (actor.side === "left") players.push(entry);
+        else enemies.push(entry);
+      });
+      participants = { players, enemies };
+    }
+    return {
+      ...raw,
+      result: raw.result || engineState.battleResult || "WIN",
+      participants,
+      _mdbvMeta: {
+        exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
+        totalTurns: engineState.totalTurns,
+        frameCount: engineState.frames.length
+      }
+    };
+  }
+  function exportCurrentBattleReport() {
+    const payload = buildExportableReportPayload();
+    if (!payload) {
+      alert("\u76EE\u524D\u6C92\u6709\u53EF\u532F\u51FA\u7684\u6230\u5831\u8CC7\u6599\uFF01");
+      return false;
+    }
+    let leftRep = "Player";
+    let rightRep = "Enemy";
+    for (const actor of engineState.actors.values()) {
+      if (!actor.isSummon && actor.side === "left" && leftRep === "Player") {
+        leftRep = actor.name;
+      } else if (!actor.isSummon && actor.side === "right" && rightRep === "Enemy") {
+        rightRep = actor.name;
+      }
+    }
+    const now = /* @__PURE__ */ new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+    const filename = `mdbattle-${sanitizeFilenameSegment(leftRep)}-vs-${sanitizeFilenameSegment(rightRep)}-${timestamp}.json`;
+    const jsonString = JSON.stringify(payload, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 2e3);
+    return true;
+  }
+  function parseImportedReportText(rawText) {
+    let parsed;
+    try {
+      parsed = JSON.parse(rawText);
+    } catch {
+      throw new Error("\u6A94\u6848\u4E0D\u662F\u6709\u6548\u7684 JSON \u683C\u5F0F\u3002");
+    }
+    const battlePayload = extractBattlePayload(parsed);
+    if (!battlePayload) {
+      throw new Error("\u627E\u4E0D\u5230\u6709\u6548\u7684\u6230\u9B25\u7D00\u9304 (\u7F3A\u5C11 logs \u9663\u5217)\u3002");
+    }
+    return battlePayload;
+  }
+  function promptImportBattleReport(onReportLoaded) {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json,application/json";
+    input.style.display = "none";
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      input.remove();
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const payload = parseImportedReportText(text);
+        onReportLoaded(payload);
+      } catch (err) {
+        alert(`\u8F09\u5165\u6230\u5831\u5931\u6557\uFF1A${err.message || "\u672A\u77E5\u932F\u8AA4"}`);
+      }
+    };
+    document.body.appendChild(input);
+    input.click();
+  }
+
   // src/stage.js
   function formatSeekLabelText(frameIndex) {
     const total = engineState.frames.length;
-    if (total === 0) return "T0 \uFF5C 0 / 0";
-    const clamped = Math.max(0, Math.min(frameIndex, total - 1));
-    const turn = engineState.frames[clamped]?.turnNumber ?? 0;
-    return `T${turn} \uFF5C ${Math.min(frameIndex, total)} / ${total}`;
+    if (total === 0) return "0 / 0";
+    return `${Math.min(frameIndex, total)} / ${total}`;
+  }
+  function closeBattleStage() {
+    if (engineState.activeKeydownHandler) {
+      window.removeEventListener("keydown", engineState.activeKeydownHandler);
+      engineState.activeKeydownHandler = null;
+    }
+    engineState.isPlaying = false;
+    engineState.timeScale = 1;
+    nextPlaybackToken();
+    releaseSpoilerGuard();
+    if (engineState.hostElement) {
+      engineState.hostElement.remove();
+      engineState.hostElement = null;
+    }
+    document.querySelectorAll(`[data-mdbv-hidden-host], ${HOST_CONTENT_SELECTOR}`).forEach((el) => {
+      el.style.display = "";
+      el.removeAttribute("data-mdbv-hidden-host");
+    });
   }
   function createBattleStage() {
+    if (engineState.activeKeydownHandler) {
+      window.removeEventListener("keydown", engineState.activeKeydownHandler);
+      engineState.activeKeydownHandler = null;
+    }
     if (engineState.hostElement) engineState.hostElement.remove();
     const host = document.createElement("div");
     host.id = "mdbv-host";
@@ -3333,8 +3605,6 @@
     stage.className = "stage";
     const controls = document.createElement("div");
     controls.className = "controls";
-    const navGroup = document.createElement("div");
-    navGroup.className = "control-group";
     const playBtn = document.createElement("button");
     playBtn.id = "btn-play";
     playBtn.textContent = "\u66AB\u505C";
@@ -3343,12 +3613,16 @@
     const seekLabel = document.createElement("span");
     seekLabel.id = "seek-label";
     seekLabel.textContent = formatSeekLabelText(0);
+    const seekTrackWrapper = document.createElement("div");
+    seekTrackWrapper.className = "seek-track-wrapper";
     const seekRange = document.createElement("input");
     seekRange.type = "range";
     seekRange.id = "seek-range";
     seekRange.min = 0;
     seekRange.max = Math.max(0, engineState.frames.length - 1);
     seekRange.value = 0;
+    const seekMarkersLayer = document.createElement("div");
+    seekMarkersLayer.className = "seek-markers-layer";
     const jumpToFrame = (targetIdx) => {
       if (engineState.frames.length === 0) return;
       const clamped = Math.max(0, Math.min(targetIdx, engineState.frames.length - 1));
@@ -3360,11 +3634,7 @@
       seekLabel.textContent = formatSeekLabelText(clamped);
       syncStageToAbsoluteState(clamped, false, true);
     };
-    const prevTurnBtn = document.createElement("button");
-    prevTurnBtn.className = "btn-nav";
-    prevTurnBtn.title = "\u8DF3\u81F3\u4E0A\u4E00\u56DE\u5408";
-    prevTurnBtn.textContent = "\u23EE \u56DE\u5408";
-    prevTurnBtn.onclick = () => {
+    const jumpPrevTurn = () => {
       if (engineState.frames.length === 0) return;
       const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
       const curTurn = engineState.frames[curIdx]?.turnNumber ?? 1;
@@ -3384,13 +3654,46 @@
       }
       jumpToFrame(firstOfPrevTurn);
     };
-    const prevFrameBtn = document.createElement("button");
-    prevFrameBtn.className = "btn-nav";
-    prevFrameBtn.title = "\u55AE\u6B65\u5F8C\u9000\u4E00\u5E40";
-    prevFrameBtn.textContent = "\u23EA \u55AE\u6B65";
-    prevFrameBtn.onclick = () => {
-      jumpToFrame(engineState.currentFrameIndex - 1);
+    const jumpNextTurn = () => {
+      if (engineState.frames.length === 0) return;
+      const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
+      const curTurn = engineState.frames[curIdx]?.turnNumber ?? 0;
+      let nextIdx = curIdx + 1;
+      while (nextIdx < engineState.frames.length && engineState.frames[nextIdx]?.turnNumber <= curTurn) {
+        nextIdx++;
+      }
+      jumpToFrame(Math.min(nextIdx, engineState.frames.length - 1));
     };
+    const maxFrameIdx = Math.max(1, engineState.frames.length - 1);
+    const timelineMarkers = extractTimelineMarkers(engineState.frames);
+    timelineMarkers.forEach((marker) => {
+      const pin = document.createElement("div");
+      pin.className = `seek-pin pin-${marker.category}`;
+      const pct = Math.max(0, Math.min(100, marker.frameIndex / maxFrameIdx * 100));
+      pin.style.left = `${pct}%`;
+      const tooltip = document.createElement("div");
+      tooltip.className = "seek-pin-tooltip";
+      if (pct < 15) tooltip.classList.add("tooltip-align-left");
+      else if (pct > 85) tooltip.classList.add("tooltip-align-right");
+      const titleEl = document.createElement("span");
+      titleEl.className = "seek-pin-tooltip-title";
+      titleEl.textContent = `T${marker.turnNumber} (#${marker.frameIndex + 1}) \uFF5C ${marker.title}`;
+      tooltip.appendChild(titleEl);
+      if (marker.detail) {
+        const detailEl = document.createElement("span");
+        detailEl.className = "seek-pin-tooltip-detail";
+        detailEl.textContent = marker.detail;
+        tooltip.appendChild(detailEl);
+      }
+      pin.appendChild(tooltip);
+      pin.onclick = (e) => {
+        e.stopPropagation();
+        jumpToFrame(marker.frameIndex);
+      };
+      seekMarkersLayer.appendChild(pin);
+    });
+    seekTrackWrapper.appendChild(seekRange);
+    seekTrackWrapper.appendChild(seekMarkersLayer);
     playBtn.onclick = () => {
       if (!engineState.isPlaying) {
         if (engineState.currentFrameIndex === 0 || engineState.currentFrameIndex >= engineState.frames.length) {
@@ -3411,35 +3714,8 @@
         syncStageToAbsoluteState(engineState.currentFrameIndex, false, true);
       }
     };
-    const nextFrameBtn = document.createElement("button");
-    nextFrameBtn.className = "btn-nav";
-    nextFrameBtn.title = "\u55AE\u6B65\u524D\u9032\u4E00\u5E40";
-    nextFrameBtn.textContent = "\u55AE\u6B65 \u23E9";
-    nextFrameBtn.onclick = () => {
-      jumpToFrame(engineState.currentFrameIndex + 1);
-    };
-    const nextTurnBtn = document.createElement("button");
-    nextTurnBtn.className = "btn-nav";
-    nextTurnBtn.title = "\u8DF3\u81F3\u4E0B\u4E00\u56DE\u5408";
-    nextTurnBtn.textContent = "\u56DE\u5408 \u23ED";
-    nextTurnBtn.onclick = () => {
-      if (engineState.frames.length === 0) return;
-      const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
-      const curTurn = engineState.frames[curIdx]?.turnNumber ?? 0;
-      let nextIdx = curIdx + 1;
-      while (nextIdx < engineState.frames.length && engineState.frames[nextIdx]?.turnNumber <= curTurn) {
-        nextIdx++;
-      }
-      jumpToFrame(Math.min(nextIdx, engineState.frames.length - 1));
-    };
-    navGroup.appendChild(prevTurnBtn);
-    navGroup.appendChild(prevFrameBtn);
-    navGroup.appendChild(playBtn);
-    navGroup.appendChild(nextFrameBtn);
-    navGroup.appendChild(nextTurnBtn);
     const speedBtn = document.createElement("button");
     speedBtn.id = "btn-speed";
-    speedBtn.title = "\u5207\u63DB\u64AD\u653E\u500D\u901F (\u81EA\u52D5\u8A18\u61B6\u65BC\u700F\u89BD\u5668)";
     speedBtn.textContent = `\u901F\u5EA6: ${engineState.playbackSpeed}x`;
     speedBtn.onclick = () => {
       const currentIdx = PLAYBACK_SPEEDS.indexOf(engineState.playbackSpeed);
@@ -3463,13 +3739,12 @@
         syncStageToAbsoluteState(targetFrame, false, true);
       }
     };
-    seekContainer.appendChild(seekRange);
+    seekContainer.appendChild(seekTrackWrapper);
     seekContainer.appendChild(seekLabel);
     const skipBtn = document.createElement("button");
     skipBtn.id = "btn-skip";
     skipBtn.className = "btn-skip";
-    skipBtn.title = "\u8DF3\u904E\u6230\u9B25\u904E\u7A0B\uFF0C\u76F4\u63A5\u524D\u5F80\u6700\u7D42\u72C0\u614B\u8207 MVP \u7D50\u7B97\u9762\u677F";
-    skipBtn.textContent = "\u23ED \u8DF3\u81F3\u7D50\u7B97";
+    skipBtn.textContent = "\u8DF3\u904E";
     skipBtn.onclick = () => {
       engineState.isPlaying = false;
       engineState.timeScale = 1;
@@ -3483,28 +3758,10 @@
       playBtn.textContent = "\u91CD\u65B0\u64AD\u653E";
       showMVPPanel();
     };
-    const closeBtn = document.createElement("button");
-    closeBtn.className = "danger";
-    closeBtn.textContent = "\u95DC\u9589\u6F14\u51FA";
-    closeBtn.onclick = () => {
-      engineState.isPlaying = false;
-      engineState.timeScale = 1;
-      nextPlaybackToken();
-      releaseSpoilerGuard();
-      if (engineState.hostElement) {
-        engineState.hostElement.remove();
-        engineState.hostElement = null;
-      }
-      document.querySelectorAll(`[data-mdbv-hidden-host], ${HOST_CONTENT_SELECTOR}`).forEach((el) => {
-        el.style.display = "";
-        el.removeAttribute("data-mdbv-hidden-host");
-      });
-    };
-    controls.appendChild(navGroup);
+    controls.appendChild(playBtn);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
     controls.appendChild(skipBtn);
-    controls.appendChild(closeBtn);
     const ctbBox = document.createElement("div");
     ctbBox.className = "ctb-container";
     ctbBox.innerHTML = `
@@ -3547,12 +3804,113 @@
     const fatalityOverlay = document.createElement("div");
     fatalityOverlay.id = "fatality-overlay";
     fatalityOverlay.className = "fatality-overlay";
+    const dragDropOverlay = document.createElement("div");
+    dragDropOverlay.className = "drag-drop-overlay";
+    dragDropOverlay.innerHTML = `
+        <div class="drag-drop-box">
+            <div class="drag-drop-title">\u653E\u958B\u4EE5\u8F09\u5165\u6230\u5831 JSON</div>
+            <div class="drag-drop-sub">\u652F\u63F4\u532F\u51FA\u7684 .json \u6230\u5831\u5099\u4EFD\u6A94\u6216\u539F\u59CB API JSON</div>
+        </div>
+    `;
+    stage.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = "copy";
+      dragDropOverlay.classList.add("active");
+    });
+    stage.addEventListener("dragleave", (e) => {
+      if (!stage.contains(e.relatedTarget)) {
+        dragDropOverlay.classList.remove("active");
+      }
+    });
+    stage.addEventListener("drop", async (e) => {
+      e.preventDefault();
+      dragDropOverlay.classList.remove("active");
+      const file = e.dataTransfer?.files?.[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const parsed = parseImportedReportText(text);
+        if (typeof engineState.onImportReport === "function") {
+          await engineState.onImportReport(parsed);
+        }
+      } catch (err) {
+        alert(`\u6230\u5831\u62D6\u66F3\u8F09\u5165\u5931\u6557\uFF1A${err.message || "\u6A94\u6848\u683C\u5F0F\u932F\u8AA4"}`);
+      }
+    });
     stage.appendChild(controls);
     stage.appendChild(ctbBox);
     stage.appendChild(arena);
     stage.appendChild(dialogBox);
     stage.appendChild(fatalityOverlay);
+    stage.appendChild(dragDropOverlay);
     engineState.shadowRoot.appendChild(stage);
+    const handleKeydown = (e) => {
+      if (!engineState.hostElement || !engineState.hostElement.isConnected) return;
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      const activeTag = document.activeElement?.tagName;
+      if (activeTag === "INPUT" || activeTag === "TEXTAREA" || activeTag === "SELECT") return;
+      switch (e.key) {
+        case " ":
+          e.preventDefault();
+          playBtn.click();
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          if (e.shiftKey) jumpPrevTurn();
+          else jumpToFrame(engineState.currentFrameIndex - 1);
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          if (e.shiftKey) jumpNextTurn();
+          else jumpToFrame(engineState.currentFrameIndex + 1);
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          jumpPrevTurn();
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          jumpNextTurn();
+          break;
+        case "1":
+        case "2":
+        case "3":
+        case "4": {
+          e.preventDefault();
+          const idx = Number(e.key) - 1;
+          if (idx >= 0 && idx < PLAYBACK_SPEEDS.length) {
+            const nextSpeed = setPlaybackSpeed(PLAYBACK_SPEEDS[idx]);
+            speedBtn.textContent = `\u901F\u5EA6: ${nextSpeed}x`;
+          }
+          break;
+        }
+        case "s":
+        case "S":
+          e.preventDefault();
+          skipBtn.click();
+          break;
+        case "e":
+        case "E":
+          e.preventDefault();
+          exportCurrentBattleReport();
+          break;
+        case "o":
+        case "O":
+          e.preventDefault();
+          if (typeof engineState.onImportReport === "function") {
+            promptImportBattleReport(engineState.onImportReport);
+          }
+          break;
+        case "Escape":
+          e.preventDefault();
+          closeBattleStage();
+          break;
+        default:
+          break;
+      }
+    };
+    engineState.activeKeydownHandler = handleKeydown;
+    window.addEventListener("keydown", handleKeydown);
     const originalContent = document.querySelector(HOST_CONTENT_SELECTOR);
     if (originalContent) {
       originalContent.setAttribute("data-mdbv-hidden-host", "true");
@@ -3851,18 +4209,7 @@
   var originalFetch = window.fetch.bind(window);
   var lastAutoLaunchedReportId = null;
   function findBattlePayload(obj, depth = 0) {
-    if (!obj || typeof obj !== "object" || depth > 3) return null;
-    if (Array.isArray(obj.logs) && obj.logs.some((l) => l && typeof l === "object")) {
-      return obj;
-    }
-    for (const key of Object.keys(obj)) {
-      const val = obj[key];
-      if (val && typeof val === "object" && !Array.isArray(val)) {
-        const found = findBattlePayload(val, depth + 1);
-        if (found) return found;
-      }
-    }
-    return null;
+    return extractBattlePayload(obj, depth);
   }
   function hasValidParticipants(battleData) {
     const p = battleData?.participants;
@@ -3924,17 +4271,141 @@
     });
     createBattleStage();
   }
+  engineState.onImportReport = (payload) => {
+    prepareAndInitVisualizer(payload, { force: true });
+  };
   function createToggleButton() {
-    if (!document.body || document.getElementById("mdbv-toggle-btn")) return;
-    const btn = document.createElement("button");
-    btn.id = "mdbv-toggle-btn";
-    btn.textContent = "\u555F\u52D5\u8996\u89BA\u5316\u6F14\u51FA";
-    btn.style.cssText = "position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #2c7a7b; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);";
-    btn.onclick = async () => {
+    if (!document.body || document.getElementById("mdbv-floating-dock")) return;
+    if (!document.getElementById("mdbv-dock-styles")) {
+      const style = document.createElement("style");
+      style.id = "mdbv-dock-styles";
+      style.textContent = `
+            #mdbv-floating-dock {
+                position: fixed;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column-reverse;
+                align-items: flex-end;
+                gap: 6px;
+                padding: 4px;
+                user-select: none;
+                touch-action: none;
+            }
+            #mdbv-toggle-btn {
+                background: #2c7a7b;
+                color: white;
+                border: 1px solid #4fd1c5;
+                padding: 10px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+                font-size: 13px;
+                white-space: nowrap;
+                transition: background 0.15s, transform 0.1s;
+            }
+            #mdbv-toggle-btn:hover {
+                background: #319795;
+            }
+            #mdbv-toggle-btn:active {
+                transform: scale(0.98);
+            }
+            .mdbv-dock-menu {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(6px);
+                transition: opacity 0.18s ease, transform 0.18s ease;
+                position: relative;
+            }
+            /* Seamless hover bridge: ensures cursor never leaves dock when moving between button and menu */
+            .mdbv-dock-menu::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 100%;
+                height: 10px;
+                pointer-events: auto;
+            }
+            #mdbv-floating-dock:hover .mdbv-dock-menu,
+            #mdbv-floating-dock.menu-open .mdbv-dock-menu {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+            .mdbv-menu-item-btn {
+                background: #2b6cb0;
+                color: white;
+                border: 1px solid #63b3ed;
+                padding: 8px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+                font-size: 13px;
+                white-space: nowrap;
+                transition: background 0.15s, transform 0.1s;
+                text-align: left;
+            }
+            .mdbv-menu-item-btn:hover {
+                background: #3182ce;
+                transform: translateX(-2px);
+            }
+            .mdbv-menu-item-btn:active {
+                transform: scale(0.98);
+            }
+        `;
+      document.head.appendChild(style);
+    }
+    const dock = document.createElement("div");
+    dock.id = "mdbv-floating-dock";
+    const menu = document.createElement("div");
+    menu.className = "mdbv-dock-menu";
+    const importBtn = document.createElement("button");
+    importBtn.id = "mdbv-import-btn";
+    importBtn.className = "mdbv-menu-item-btn";
+    importBtn.textContent = "\u8F09\u5165\u6230\u5831";
+    importBtn.title = "\u5F9E\u96FB\u8166\u8F09\u5165\u5DF2\u4FDD\u5B58\u7684 .json \u6230\u5831\u6A94\u6848\u9032\u884C\u96E2\u7DDA\u91CD\u64AD";
+    importBtn.onclick = (e) => {
+      e.stopPropagation();
+      dock.classList.remove("menu-open");
+      promptImportBattleReport((payload) => {
+        prepareAndInitVisualizer(payload, { force: true });
+      });
+    };
+    const exportBtn = document.createElement("button");
+    exportBtn.id = "mdbv-export-btn";
+    exportBtn.className = "mdbv-menu-item-btn";
+    exportBtn.textContent = "\u532F\u51FA\u6230\u5831";
+    exportBtn.title = "\u5C07\u7576\u524D\u6230\u5831\u6253\u5305\u70BA .json \u6A94\u6848\u6C38\u4E45\u4FDD\u5B58\u81F3\u672C\u6A5F";
+    exportBtn.onclick = (e) => {
+      e.stopPropagation();
+      dock.classList.remove("menu-open");
+      if (!engineState.lastReportData) {
+        alert("\u76EE\u524D\u5C1A\u7121\u53EF\u532F\u51FA\u7684\u6230\u5831\u8CC7\u6599\uFF01\u8ACB\u5148\u9032\u5165\u6230\u5831\u9801\u9762\u6216\u9032\u884C\u4E00\u5834\u6230\u9B25\u3002");
+        return;
+      }
+      exportCurrentBattleReport();
+    };
+    menu.appendChild(importBtn);
+    menu.appendChild(exportBtn);
+    const mainBtn = document.createElement("button");
+    mainBtn.id = "mdbv-toggle-btn";
+    mainBtn.textContent = "\u555F\u52D5\u8996\u89BA\u5316\u6F14\u51FA";
+    mainBtn.title = "\u9EDE\u64CA\u555F\u52D5\u8996\u89BA\u5316\u6230\u6CC1\u56DE\u653E (\u6309\u4F4F\u53EF\u62D6\u66F3\u8ABF\u6574\u4F4D\u7F6E)";
+    mainBtn.onclick = async (e) => {
+      if (didDrag) {
+        e.stopPropagation();
+        didDrag = false;
+        return;
+      }
       const match = location.pathname.match(/\/reports\/(\d+)/);
       if (match) {
         const reportId = match[1];
-        btn.textContent = "\u8F09\u5165\u4E2D...";
+        mainBtn.textContent = "\u8F09\u5165\u4E2D...";
         try {
           const token = localStorage.getItem("token");
           const headers = token ? { "Authorization": `Bearer ${token}` } : {};
@@ -3949,19 +4420,118 @@
           } else {
             alert(`\u8B80\u53D6\u6230\u5831\u5931\u6557 (\u932F\u8AA4\u78BC: ${response.status})`);
           }
-        } catch (e) {
-          console.error("Visualizer error:", e);
+        } catch (err) {
+          console.error("Visualizer error:", err);
           alert("\u9023\u7DDA\u932F\u8AA4\uFF1A\u5DF2\u88AB\u700F\u89BD\u5668\u6216\u4F3A\u670D\u5668\u963B\u64CB\uFF0C\u8ACB\u67E5\u770B F12 \u4E3B\u63A7\u53F0");
         } finally {
-          btn.textContent = "\u555F\u52D5\u8996\u89BA\u5316\u6F14\u51FA";
+          mainBtn.textContent = "\u555F\u52D5\u8996\u89BA\u5316\u6F14\u51FA";
         }
       } else if (engineState.lastReportData) {
         initVisualizer(engineState.lastReportData);
       } else {
-        alert("\u8ACB\u5148\u9032\u884C\u4E00\u5834\u6230\u9B25\u6216\u5728\u6230\u5831\u9801\u9762\u4F7F\u7528\u6B64\u529F\u80FD");
+        alert("\u8ACB\u5148\u9032\u884C\u4E00\u5834\u6230\u9B25\u3001\u5728\u6230\u5831\u9801\u9762\u4F7F\u7528\uFF0C\u6216\u9EDE\u64CA\u300C\u8F09\u5165\u6230\u5831\u300D\u8B80\u53D6\u5DF2\u4FDD\u5B58\u7684 JSON \u6230\u5831\u6A94\uFF01");
       }
     };
-    document.body.appendChild(btn);
+    dock.appendChild(mainBtn);
+    dock.appendChild(menu);
+    document.body.appendChild(dock);
+    const updateMenuOrientation = () => {
+      const rect = dock.getBoundingClientRect();
+      const isTopHalf = rect.top < 160;
+      const isLeftHalf = rect.left < window.innerWidth / 2;
+      dock.style.flexDirection = isTopHalf ? "column" : "column-reverse";
+      dock.style.alignItems = isLeftHalf ? "flex-start" : "flex-end";
+    };
+    const savedPos = (() => {
+      try {
+        const raw = localStorage.getItem("mdbv_dock_pos");
+        if (raw) return JSON.parse(raw);
+      } catch {
+      }
+      return null;
+    })();
+    if (savedPos && typeof savedPos.left === "number" && typeof savedPos.top === "number") {
+      const maxLeft = Math.max(8, window.innerWidth - 180);
+      const maxTop = Math.max(8, window.innerHeight - 60);
+      dock.style.left = `${Math.max(8, Math.min(maxLeft, savedPos.left))}px`;
+      dock.style.top = `${Math.max(8, Math.min(maxTop, savedPos.top))}px`;
+      dock.style.right = "auto";
+      dock.style.bottom = "auto";
+    } else {
+      dock.style.right = "20px";
+      dock.style.bottom = "20px";
+    }
+    updateMenuOrientation();
+    let isDragging = false;
+    let didDrag = false;
+    let startX = 0;
+    let startY = 0;
+    let startLeft = 0;
+    let startTop = 0;
+    const onPointerMove = (e) => {
+      const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+      const clientY = e.clientY ?? e.touches?.[0]?.clientY;
+      if (clientX == null || clientY == null) return;
+      const dx = clientX - startX;
+      const dy = clientY - startY;
+      if (!isDragging && Math.hypot(dx, dy) > 5) {
+        isDragging = true;
+        didDrag = true;
+        dock.classList.remove("menu-open");
+      }
+      if (isDragging) {
+        const maxLeft = Math.max(8, window.innerWidth - dock.offsetWidth - 8);
+        const maxTop = Math.max(8, window.innerHeight - dock.offsetHeight - 8);
+        const nextLeft = Math.max(8, Math.min(maxLeft, startLeft + dx));
+        const nextTop = Math.max(8, Math.min(maxTop, startTop + dy));
+        dock.style.left = `${nextLeft}px`;
+        dock.style.top = `${nextTop}px`;
+        dock.style.right = "auto";
+        dock.style.bottom = "auto";
+        updateMenuOrientation();
+      }
+    };
+    const onPointerUp = () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      if (isDragging) {
+        isDragging = false;
+        try {
+          localStorage.setItem("mdbv_dock_pos", JSON.stringify({
+            left: parseInt(dock.style.left, 10),
+            top: parseInt(dock.style.top, 10)
+          }));
+        } catch {
+        }
+      }
+    };
+    mainBtn.addEventListener("pointerdown", (e) => {
+      if (e.button != null && e.button !== 0) return;
+      const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+      const clientY = e.clientY ?? e.touches?.[0]?.clientY;
+      if (clientX == null || clientY == null) return;
+      isDragging = false;
+      didDrag = false;
+      startX = clientX;
+      startY = clientY;
+      const rect = dock.getBoundingClientRect();
+      startLeft = rect.left;
+      startTop = rect.top;
+      window.addEventListener("pointermove", onPointerMove);
+      window.addEventListener("pointerup", onPointerUp);
+    });
+    window.addEventListener("resize", () => {
+      const rect = dock.getBoundingClientRect();
+      const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+      const maxTop = Math.max(8, window.innerHeight - rect.height - 8);
+      const nextLeft = Math.max(8, Math.min(maxLeft, rect.left));
+      const nextTop = Math.max(8, Math.min(maxTop, rect.top));
+      dock.style.left = `${nextLeft}px`;
+      dock.style.top = `${nextTop}px`;
+      dock.style.right = "auto";
+      dock.style.bottom = "auto";
+      updateMenuOrientation();
+    });
   }
   function installFetchInterceptor() {
     window.fetch = async function(...args) {
