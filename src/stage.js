@@ -49,12 +49,14 @@ import { armSpoilerGuard, releaseSpoilerGuard } from './spoilerGuard.js';
 import {
     isPrimaryUltimateTriggerFrame,
     extractTimelineMarkers,
+    updateATBUI
+} from './timeline.js';
+import {
     createLogLineElement,
-    updateATBUI,
     syncActorBondVisuals,
     syncActorHpAndDeathDOM,
     syncStageToAbsoluteState
-} from './timeline.js';
+} from './stageSync.js';
 import {
     exportCurrentBattleReport,
     promptImportBattleReport,

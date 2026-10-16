@@ -9,6 +9,10 @@
 
 import { engineState, getEffectiveSpeed } from './state.js';
 import {
+    getSkillChoreographyProfile,
+    CROSS_FINISHER_PROFILES
+} from './profiles.js';
+import {
     lookaheadComboState,
     advanceComboState,
     hasMoreHitsOnSameTargetInTurn,
@@ -691,8 +695,9 @@ function playSingleTargetChoreography(
         }
     }
 
-    // Collar-grab rapid shake for kibayuki_demand
-    if (frame.skillId === 'kibayuki_demand' && frame.type === 'DAMAGE') {
+    // 1. Declarative custom target reactions (e.g. RAPID_SHAKE / collar-grab)
+    const choreoProfile = getSkillChoreographyProfile(frame.skillId);
+    if (choreoProfile?.targetReaction === 'RAPID_SHAKE' && frame.type === 'DAMAGE') {
         targetKeyframes = [
             { transform: 'translate(0, 0) rotate(0deg)', filter: 'brightness(1)' },
             { transform: 'translate(-12px, -4px) rotate(-6deg)', filter: 'brightness(1.6)', offset: 0.2 },
@@ -701,30 +706,32 @@ function playSingleTargetChoreography(
             { transform: 'translate(8px, 0) rotate(3deg)', offset: 0.8 },
             { transform: 'translate(0, 0) rotate(0deg)', filter: 'brightness(1)', offset: 1 }
         ];
-        targetAnimConfig.duration = 420 / speed;
+        targetAnimConfig.duration = (choreoProfile.shakeDuration || 420) / speed;
     }
 
-    // Cyber-ninja emerald dash glow for Genji's Swift Strike and Dragonblade
-    if (
-        ['genji_swift_strike', 'genji_dragonblade', 'genji_dragonblade_sweep'].includes(frame.skillId) &&
-        frame.type === 'DAMAGE'
-    ) {
-        spawnClashSpark(arena, targetEl, 55, '#48bb78', speed);
+    // 2. Declarative custom attacker glow & clash sparks (e.g. cyber-ninja emerald glow)
+    if (choreoProfile?.glowColor && frame.type === 'DAMAGE') {
+        if (choreoProfile.sparkColor) {
+            spawnClashSpark(arena, targetEl, choreoProfile.sparkSize || 55, choreoProfile.sparkColor, speed);
+        }
         actorKeyframes = actorKeyframes.map((kf, idx) => {
             if (idx > 0 && idx < actorKeyframes.length - 1) {
                 return {
                     ...kf,
-                    filter: 'brightness(1.45) drop-shadow(0 0 16px #48bb78)'
+                    filter: `brightness(1.45) drop-shadow(0 0 16px ${choreoProfile.glowColor})`
                 };
             }
             return kf;
         });
     }
 
-    // 11th Sword Cross-Piercing burst for Mother's Rosario (kibayuki_rosario & yuuki_rosario)
+    // 3. Declarative Cross Finisher piercing burst (e.g., Mother's Rosario)
     if (frame.rosarioEvent === 'PIERCE_CROSS') {
-        spawnClashSpark(arena, targetEl, 60, '#f687b3', speed);
-        spawnClashSpark(arena, targetEl, 140, '#b794f4', speed);
+        const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId] || {};
+        const primaryColor = crossProfile.crossColor || '#f687b3';
+        const secondaryColor = crossProfile.glowColor || '#b794f4';
+        spawnClashSpark(arena, targetEl, 60, primaryColor, speed);
+        spawnClashSpark(arena, targetEl, 140, secondaryColor, speed);
         const crossEl = targetEl.querySelector('.rosario-cross-mark');
         if (crossEl) {
             crossEl.classList.add('shatter');

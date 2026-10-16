@@ -302,3 +302,56 @@ export const SPECIAL_SKILL_BADGE_RULES = [
         styleClass: 'dice-warn'
     }
 ];
+
+/**
+ * Beneficial defensive buff skills that protect an ally and trigger beneficial visual indicators.
+ * @type {Set<string>}
+ */
+export const BENEFICIAL_BUFF_SKILLS = new Set([
+    'sakura_shield'
+]);
+
+/**
+ * Declarative skill choreography profiles for custom motions, sparks, and target reactions.
+ * Decouples character-specific animation branches from the core choreography sequencing engine.
+ * @type {Record<string, {
+ *   glowColor?: string,
+ *   sparkColor?: string,
+ *   sparkSize?: number,
+ *   targetReaction?: 'RAPID_SHAKE',
+ *   shakeDuration?: number
+ * }>}
+ */
+export const SKILL_CHOREOGRAPHY_PROFILES = {
+    // Kibayuki & Yuuki demand skills
+    kibayuki_demand: {
+        targetReaction: 'RAPID_SHAKE',
+        shakeDuration: 420
+    },
+    // Genji cyber-ninja emerald glow & sparks
+    genji_swift_strike: {
+        glowColor: '#48bb78',
+        sparkColor: '#48bb78',
+        sparkSize: 55
+    },
+    genji_dragonblade: {
+        glowColor: '#48bb78',
+        sparkColor: '#48bb78',
+        sparkSize: 55
+    },
+    genji_dragonblade_sweep: {
+        glowColor: '#48bb78',
+        sparkColor: '#48bb78',
+        sparkSize: 55
+    }
+};
+
+/**
+ * Resolves the declarative choreography profile for a given skill identifier.
+ * @param {string} [skillId] - Skill identifier.
+ * @returns {object|null} Matched choreography configuration or null.
+ */
+export function getSkillChoreographyProfile(skillId) {
+    if (!skillId) return null;
+    return SKILL_CHOREOGRAPHY_PROFILES[skillId] || null;
+}
