@@ -10,7 +10,7 @@
 import { engineState, getEffectiveSpeed } from './state.js';
 import {
     getSkillChoreographyProfile,
-    CROSS_FINISHER_PROFILES
+    getCrossFinisherProfile
 } from './profiles.js';
 import {
     lookaheadComboState,
@@ -727,7 +727,7 @@ function playSingleTargetChoreography(
 
     // 3. Declarative Cross Finisher piercing burst (e.g., Mother's Rosario)
     if (frame.rosarioEvent === 'PIERCE_CROSS') {
-        const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId] || {};
+        const crossProfile = getCrossFinisherProfile(frame.skillId) || {};
         const primaryColor = crossProfile.crossColor || '#f687b3';
         const secondaryColor = crossProfile.glowColor || '#b794f4';
         spawnClashSpark(arena, targetEl, 60, primaryColor, speed);

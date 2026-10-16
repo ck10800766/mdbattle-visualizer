@@ -137,6 +137,25 @@ export function getLuckDropEmoji(message = '') {
     return DEFAULT_LUCK_EMOJI;
 }
 
+/**
+ * Checks whether a given rule definition matches a skill identifier.
+ * Supports exact string `skillId`, an array of `skillIds`, a RegExp `skillPattern`,
+ * or a custom `matchesSkill(skillId)` predicate function.
+ *
+ * @param {object} rule - Rule or profile containing matching criteria.
+ * @param {string} [skillId] - Skill identifier to check.
+ * @returns {boolean} True if the rule matches the skillId.
+ */
+export function matchesSkill(rule, skillId) {
+    if (!rule) return false;
+    if (rule.skillId === 'default') return true;
+    if (rule.skillId && rule.skillId === skillId) return true;
+    if (Array.isArray(rule.skillIds) && rule.skillIds.includes(skillId)) return true;
+    if (rule.skillPattern instanceof RegExp && rule.skillPattern.test(skillId || '')) return true;
+    if (typeof rule.matchesSkill === 'function') return rule.matchesSkill(skillId);
+    return false;
+}
+
 // ==========================================
 // Special Character & Skill Cinematic Profiles
 // ==========================================
@@ -148,6 +167,7 @@ export function getLuckDropEmoji(message = '') {
  */
 export const CONTRACT_SKILL_PROFILES = {
     kibayuki_trial_marriage: {
+        skillPattern: /^(kibayuki|yuuki)_trial_marriage$/,
         systemTitle: 'SYSTEM ALERT // MARRIAGE REQUEST',
         systemSubtitle: '兩人的道具欄合在了一起',
         badgeIcon: '💍',
@@ -160,6 +180,7 @@ export const CONTRACT_SKILL_PROFILES = {
         endRegex: /把婚紗還回了店裡|試婚到此結束/
     },
     yuuki_wedding: {
+        skillPattern: /^(kibayuki|yuuki)_wedding$/,
         systemTitle: 'SYSTEM ALERT // MARRIAGE REQUEST',
         systemSubtitle: '婚禮的鐘聲響起，這一次不是試穿了',
         badgeIcon: '💍',
@@ -174,17 +195,37 @@ export const CONTRACT_SKILL_PROFILES = {
 };
 
 /**
+ * Resolves the contract skill configuration for a given skill identifier.
+ * Supports exact key lookup or pattern matching across shared marriage skills.
+ * @param {string} [skillId] - Skill identifier.
+ * @returns {object|null} Matched contract profile or null.
+ */
+export function getContractSkillProfile(skillId) {
+    if (!skillId) return null;
+    if (CONTRACT_SKILL_PROFILES[skillId]) return CONTRACT_SKILL_PROFILES[skillId];
+    for (const profile of Object.values(CONTRACT_SKILL_PROFILES)) {
+        if (matchesSkill(profile, skillId)) return profile;
+    }
+    if (/trial_marriage|wedding|marriage/i.test(skillId)) {
+        return CONTRACT_SKILL_PROFILES.kibayuki_trial_marriage;
+    }
+    return null;
+}
+
+/**
  * Configuration for multi-hit cross-finisher ultimate skills (e.g., Mother's Rosario).
  * @type {Record<string, object>}
  */
 export const CROSS_FINISHER_PROFILES = {
     kibayuki_rosario: {
+        skillPattern: /^(kibayuki|yuuki)_rosario$/,
         inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
         pierceRegex: /貫穿十字的正中央/,
         crossColor: '#f687b3',
         glowColor: '#b794f4'
     },
     yuuki_rosario: {
+        skillPattern: /^(kibayuki|yuuki)_rosario$/,
         inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
         pierceRegex: /貫穿十字的正中央/,
         crossColor: '#f687b3',
@@ -193,13 +234,32 @@ export const CROSS_FINISHER_PROFILES = {
 };
 
 /**
+ * Resolves the multi-hit cross finisher configuration for a given skill identifier.
+ * Supports exact key lookup or fallback to Mother's Rosario patterns.
+ * @param {string} [skillId] - Skill identifier.
+ * @returns {object|null} Matched cross finisher profile or null.
+ */
+export function getCrossFinisherProfile(skillId) {
+    if (!skillId) return null;
+    if (CROSS_FINISHER_PROFILES[skillId]) return CROSS_FINISHER_PROFILES[skillId];
+    for (const profile of Object.values(CROSS_FINISHER_PROFILES)) {
+        if (matchesSkill(profile, skillId)) return profile;
+    }
+    if (/rosario/i.test(skillId)) {
+        return CROSS_FINISHER_PROFILES.yuuki_rosario || CROSS_FINISHER_PROFILES.kibayuki_rosario;
+    }
+    return null;
+}
+
+/**
  * Special SKILL_TEXT / TEXT status and badge triggers for character-specific flavor skills.
  * @type {Array<{ skillId: string, regex: RegExp, target: 'actor'|'target', text: (match: RegExpMatchArray) => string, styleClass: string, shakeTarget?: boolean }>}
  */
 export const SPECIAL_SKILL_BADGE_RULES = [
-    // Yuuki / Kibayuki
+    // Yuuki / Kibayuki Demand
     {
         skillId: 'kibayuki_demand',
+        skillPattern: /^(kibayuki|yuuki)_demand$/,
         regex: /被罵得抬不起頭|出手都心虛了/,
         target: 'target',
         text: () => '💦 心虛',
@@ -208,6 +268,7 @@ export const SPECIAL_SKILL_BADGE_RULES = [
     },
     {
         skillId: 'kibayuki_zekken',
+        skillPattern: /^(kibayuki|yuuki)_zekken$/,
         regex: /接下這一劍，第\s*(\d+)\s*勝/,
         target: 'actor',
         text: (m) => `⚔️ 絕劍 ${m[1]} 勝!`,
@@ -215,6 +276,7 @@ export const SPECIAL_SKILL_BADGE_RULES = [
     },
     {
         skillId: 'kibayuki_zekken',
+        skillPattern: /^(kibayuki|yuuki)_zekken$/,
         regex: /連勝停在第\s*(\d+)\s*勝/,
         target: 'actor',
         text: (m) => `💔 連勝中斷 (${m[1]}勝)`,
@@ -222,6 +284,7 @@ export const SPECIAL_SKILL_BADGE_RULES = [
     },
     {
         skillId: 'yuuki_lived',
+        skillPattern: /^(kibayuki|yuuki)_lived$/,
         regex: /在倒下前一刻撐住了身體/,
         target: 'actor',
         text: () => '🌸 毅力支撐',
@@ -229,6 +292,7 @@ export const SPECIAL_SKILL_BADGE_RULES = [
     },
     {
         skillId: 'yuuki_lived',
+        skillPattern: /^(kibayuki|yuuki)_lived$/,
         regex: /努力活過了/,
         target: 'actor',
         text: () => '✨ 絕劍的證明',
@@ -236,6 +300,7 @@ export const SPECIAL_SKILL_BADGE_RULES = [
     },
     {
         skillId: 'kibayuki_legacy',
+        skillPattern: /^(kibayuki|yuuki)_legacy$/,
         regex: /把聖母聖詠封進卷軸/,
         target: 'target',
         text: () => '📜 託付：聖母聖詠',
@@ -312,6 +377,18 @@ export const BENEFICIAL_BUFF_SKILLS = new Set([
 ]);
 
 /**
+ * Checks whether a skill is a beneficial defensive buff skill (e.g., shields).
+ * @param {string} [skillId] - Skill identifier.
+ * @returns {boolean} True if the skill is recognized as a beneficial shield/buff.
+ */
+export function isBeneficialBuffSkill(skillId) {
+    if (!skillId) return false;
+    if (BENEFICIAL_BUFF_SKILLS.has(skillId)) return true;
+    if (/shield|barrier|protect|護盾|防護/i.test(skillId)) return true;
+    return false;
+}
+
+/**
  * Declarative skill choreography profiles for custom motions, sparks, and target reactions.
  * Decouples character-specific animation branches from the core choreography sequencing engine.
  * @type {Record<string, {
@@ -348,10 +425,20 @@ export const SKILL_CHOREOGRAPHY_PROFILES = {
 
 /**
  * Resolves the declarative choreography profile for a given skill identifier.
+ * Supports exact key lookup and pattern matching across shared character skill sets.
  * @param {string} [skillId] - Skill identifier.
  * @returns {object|null} Matched choreography configuration or null.
  */
 export function getSkillChoreographyProfile(skillId) {
     if (!skillId) return null;
-    return SKILL_CHOREOGRAPHY_PROFILES[skillId] || null;
+    if (SKILL_CHOREOGRAPHY_PROFILES[skillId]) {
+        return SKILL_CHOREOGRAPHY_PROFILES[skillId];
+    }
+    if (/^(kibayuki|yuuki)_demand$/.test(skillId)) {
+        return SKILL_CHOREOGRAPHY_PROFILES.kibayuki_demand;
+    }
+    if (/^genji_(swift_strike|dragonblade|dragonblade_sweep)$/.test(skillId)) {
+        return SKILL_CHOREOGRAPHY_PROFILES.genji_swift_strike;
+    }
+    return null;
 }

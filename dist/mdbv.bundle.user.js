@@ -334,8 +334,18 @@
     }
     return DEFAULT_LUCK_EMOJI;
   }
+  function matchesSkill(rule, skillId) {
+    if (!rule) return false;
+    if (rule.skillId === "default") return true;
+    if (rule.skillId && rule.skillId === skillId) return true;
+    if (Array.isArray(rule.skillIds) && rule.skillIds.includes(skillId)) return true;
+    if (rule.skillPattern instanceof RegExp && rule.skillPattern.test(skillId || "")) return true;
+    if (typeof rule.matchesSkill === "function") return rule.matchesSkill(skillId);
+    return false;
+  }
   var CONTRACT_SKILL_PROFILES = {
     kibayuki_trial_marriage: {
+      skillPattern: /^(kibayuki|yuuki)_trial_marriage$/,
       systemTitle: "SYSTEM ALERT // MARRIAGE REQUEST",
       systemSubtitle: "\u5169\u4EBA\u7684\u9053\u5177\u6B04\u5408\u5728\u4E86\u4E00\u8D77",
       badgeIcon: "\u{1F48D}",
@@ -348,6 +358,7 @@
       endRegex: /把婚紗還回了店裡|試婚到此結束/
     },
     yuuki_wedding: {
+      skillPattern: /^(kibayuki|yuuki)_wedding$/,
       systemTitle: "SYSTEM ALERT // MARRIAGE REQUEST",
       systemSubtitle: "\u5A5A\u79AE\u7684\u9418\u8072\u97FF\u8D77\uFF0C\u9019\u4E00\u6B21\u4E0D\u662F\u8A66\u7A7F\u4E86",
       badgeIcon: "\u{1F48D}",
@@ -360,24 +371,49 @@
       endRegex: /把婚紗還回了店裡|試婚到此結束/
     }
   };
+  function getContractSkillProfile(skillId) {
+    if (!skillId) return null;
+    if (CONTRACT_SKILL_PROFILES[skillId]) return CONTRACT_SKILL_PROFILES[skillId];
+    for (const profile of Object.values(CONTRACT_SKILL_PROFILES)) {
+      if (matchesSkill(profile, skillId)) return profile;
+    }
+    if (/trial_marriage|wedding|marriage/i.test(skillId)) {
+      return CONTRACT_SKILL_PROFILES.kibayuki_trial_marriage;
+    }
+    return null;
+  }
   var CROSS_FINISHER_PROFILES = {
     kibayuki_rosario: {
+      skillPattern: /^(kibayuki|yuuki)_rosario$/,
       inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
       pierceRegex: /貫穿十字的正中央/,
       crossColor: "#f687b3",
       glowColor: "#b794f4"
     },
     yuuki_rosario: {
+      skillPattern: /^(kibayuki|yuuki)_rosario$/,
       inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
       pierceRegex: /貫穿十字的正中央/,
       crossColor: "#f687b3",
       glowColor: "#b794f4"
     }
   };
+  function getCrossFinisherProfile(skillId) {
+    if (!skillId) return null;
+    if (CROSS_FINISHER_PROFILES[skillId]) return CROSS_FINISHER_PROFILES[skillId];
+    for (const profile of Object.values(CROSS_FINISHER_PROFILES)) {
+      if (matchesSkill(profile, skillId)) return profile;
+    }
+    if (/rosario/i.test(skillId)) {
+      return CROSS_FINISHER_PROFILES.yuuki_rosario || CROSS_FINISHER_PROFILES.kibayuki_rosario;
+    }
+    return null;
+  }
   var SPECIAL_SKILL_BADGE_RULES = [
-    // Yuuki / Kibayuki
+    // Yuuki / Kibayuki Demand
     {
       skillId: "kibayuki_demand",
+      skillPattern: /^(kibayuki|yuuki)_demand$/,
       regex: /被罵得抬不起頭|出手都心虛了/,
       target: "target",
       text: () => "\u{1F4A6} \u5FC3\u865B",
@@ -386,6 +422,7 @@
     },
     {
       skillId: "kibayuki_zekken",
+      skillPattern: /^(kibayuki|yuuki)_zekken$/,
       regex: /接下這一劍，第\s*(\d+)\s*勝/,
       target: "actor",
       text: (m) => `\u2694\uFE0F \u7D55\u528D ${m[1]} \u52DD!`,
@@ -393,6 +430,7 @@
     },
     {
       skillId: "kibayuki_zekken",
+      skillPattern: /^(kibayuki|yuuki)_zekken$/,
       regex: /連勝停在第\s*(\d+)\s*勝/,
       target: "actor",
       text: (m) => `\u{1F494} \u9023\u52DD\u4E2D\u65B7 (${m[1]}\u52DD)`,
@@ -400,6 +438,7 @@
     },
     {
       skillId: "yuuki_lived",
+      skillPattern: /^(kibayuki|yuuki)_lived$/,
       regex: /在倒下前一刻撐住了身體/,
       target: "actor",
       text: () => "\u{1F338} \u6BC5\u529B\u652F\u6490",
@@ -407,6 +446,7 @@
     },
     {
       skillId: "yuuki_lived",
+      skillPattern: /^(kibayuki|yuuki)_lived$/,
       regex: /努力活過了/,
       target: "actor",
       text: () => "\u2728 \u7D55\u528D\u7684\u8B49\u660E",
@@ -414,6 +454,7 @@
     },
     {
       skillId: "kibayuki_legacy",
+      skillPattern: /^(kibayuki|yuuki)_legacy$/,
       regex: /把聖母聖詠封進卷軸/,
       target: "target",
       text: () => "\u{1F4DC} \u8A17\u4ED8\uFF1A\u8056\u6BCD\u8056\u8A60",
@@ -481,6 +522,12 @@
   var BENEFICIAL_BUFF_SKILLS = /* @__PURE__ */ new Set([
     "sakura_shield"
   ]);
+  function isBeneficialBuffSkill(skillId) {
+    if (!skillId) return false;
+    if (BENEFICIAL_BUFF_SKILLS.has(skillId)) return true;
+    if (/shield|barrier|protect|護盾|防護/i.test(skillId)) return true;
+    return false;
+  }
   var SKILL_CHOREOGRAPHY_PROFILES = {
     // Kibayuki & Yuuki demand skills
     kibayuki_demand: {
@@ -506,7 +553,16 @@
   };
   function getSkillChoreographyProfile(skillId) {
     if (!skillId) return null;
-    return SKILL_CHOREOGRAPHY_PROFILES[skillId] || null;
+    if (SKILL_CHOREOGRAPHY_PROFILES[skillId]) {
+      return SKILL_CHOREOGRAPHY_PROFILES[skillId];
+    }
+    if (/^(kibayuki|yuuki)_demand$/.test(skillId)) {
+      return SKILL_CHOREOGRAPHY_PROFILES.kibayuki_demand;
+    }
+    if (/^genji_(swift_strike|dragonblade|dragonblade_sweep)$/.test(skillId)) {
+      return SKILL_CHOREOGRAPHY_PROFILES.genji_swift_strike;
+    }
+    return null;
   }
 
   // src/calibrator.js
@@ -925,7 +981,7 @@
         if (!id || !delta) return;
         frame.hpDeltas.set(id, (frame.hpDeltas.get(id) || 0) + delta);
       };
-      const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
+      const contractProfile = getContractSkillProfile(frame.skillId);
       const isReactiveCoverText = frame.type === "SKILL_TEXT" && contractProfile && contractProfile.coverRegex.test(frame.message);
       const { isTurnAction, turnActorId } = evaluateTurnOwnership(frame, isReactiveCoverText);
       if (isTurnAction && turnActorId) {
@@ -955,7 +1011,7 @@
           buffSrc[victim.id][log.buffId || log.skillId || ""] = attacker.id;
           applyLog.push({ victim: victim.id, actor: attacker.id, msg: String(log.message || "") });
         }
-        if (BENEFICIAL_BUFF_SKILLS.has(frame.skillId) && log.targetId) {
+        if (isBeneficialBuffSkill(frame.skillId) && log.targetId) {
           frame.vfx.push("flash-blue");
           frame.isBeneficial = true;
         }
@@ -1127,12 +1183,12 @@
             addHpDelta
           );
         }
-        const crossProfile2 = CROSS_FINISHER_PROFILES[frame.skillId];
+        const crossProfile2 = getCrossFinisherProfile(frame.skillId);
         if (crossProfile2 && log.type === "SKILL_TEXT" && crossProfile2.inscribeRegex.test(msg)) {
           frame.rosarioEvent = "INSCRIBE_CROSS";
         }
       }
-      const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
+      const crossProfile = getCrossFinisherProfile(frame.skillId);
       if (crossProfile && ["DAMAGE", "BLOCK"].includes(log.type) && crossProfile.pierceRegex.test(frame.message)) {
         frame.rosarioEvent = "PIERCE_CROSS";
       }
@@ -1623,7 +1679,7 @@
       }, 1200 / getEffectiveSpeed());
     }
     if (frame.contractEvent === "END") {
-      const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+      const profile = getContractSkillProfile(frame.skillId);
       const actorOnlyEl = sr.getElementById(`actor-${frame.actorId}`);
       if (actorOnlyEl && profile) {
         const badge = document.createElement("div");
@@ -1637,7 +1693,7 @@
       return;
     }
     for (const rule of SPECIAL_SKILL_BADGE_RULES) {
-      if (frame.skillId === rule.skillId && frame.message) {
+      if (matchesSkill(rule, frame.skillId) && frame.message) {
         const match = frame.message.match(rule.regex);
         if (match) {
           const badgeTargetId = rule.target === "actor" ? frame.actorId : frame.targetId || frame.actorId;
@@ -1667,7 +1723,7 @@
   async function playContractCutIn(frame, sr, token) {
     const actor = engineState.actors.get(frame.actorId);
     const partner = frame.targetId ? engineState.actors.get(frame.targetId) : null;
-    const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+    const profile = getContractSkillProfile(frame.skillId);
     if (!actor || !profile || engineState.playbackToken !== token) return;
     const arena = sr.getElementById("arena");
     if (!arena) return;
@@ -1740,7 +1796,7 @@
     if (existing) existing.remove();
     const crossEl = document.createElement("div");
     crossEl.className = "rosario-cross-mark";
-    const profile = CROSS_FINISHER_PROFILES[frame.skillId];
+    const profile = getCrossFinisherProfile(frame.skillId);
     if (profile?.crossColor) crossEl.style.setProperty("--cross-color", profile.crossColor);
     if (profile?.glowColor) crossEl.style.setProperty("--glow-color", profile.glowColor);
     crossEl.innerHTML = `
@@ -2434,7 +2490,7 @@
       });
     }
     if (frame.rosarioEvent === "PIERCE_CROSS") {
-      const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId] || {};
+      const crossProfile = getCrossFinisherProfile(frame.skillId) || {};
       const primaryColor = crossProfile.crossColor || "#f687b3";
       const secondaryColor = crossProfile.glowColor || "#b794f4";
       spawnClashSpark(arena, targetEl, 60, primaryColor, speed);
@@ -3091,7 +3147,7 @@
       const bondInfo = bondStateMap ? bondStateMap.get(actor.id) : null;
       const existingBadge = wrapperEl.querySelector(".bond-ring-badge");
       if (bondInfo) {
-        const profile = CONTRACT_SKILL_PROFILES[bondInfo.skillId];
+        const profile = getContractSkillProfile(bondInfo.skillId);
         wrapperEl.classList.add("bond-active");
         if (!existingBadge) {
           const badge = document.createElement("div");
