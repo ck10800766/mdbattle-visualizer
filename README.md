@@ -110,6 +110,7 @@ mdbattle-visualizer/
 │   ├── styles.js               # 樣式表注入：所有舞台排版、玻璃擬態 UI、進度條 Pin 標記與 CSS 動畫樣式
 │   └── utils.js                # 通用工具：HTML 跳脫 (escapeHtml 防止 XSS)、日誌語法高亮、倍率延遲計算
 ├── scripts/
+│   ├── check.mjs               # 提交前一鍵完整性檢查：測試 + 打包 + dist 一致性驗證
 │   └── snapshot-runner.mjs     # 無頭 (Headless) 黃金快照回歸測試執行器
 ├── tests/
 │   ├── fixtures/               # 測試用真實戰報 JSON 樣本 (如 boss-patriot-rebirth.json, summon.json)
@@ -117,7 +118,11 @@ mdbattle-visualizer/
 ├── dist/
 │   ├── mdbv.bundle.user.js     # 打包後供使用者安裝之 Userscript 成品
 │   └── ai-context.txt          # 建置時自動產出之純原始碼合併檔（供 AI 審查使用）
-├── build.mjs                   # esbuild 打包腳本（自動從 package.json 同步版本號至 Userscript Header）
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # GitHub Actions 雲端自動化測試與打包驗證防線
+├── .gitattributes              # 跨平台換行 (LF) 與二進位檔案屬性設定
+├── build.mjs                   # esbuild 打包腳本（含毫秒級 Watch 增量編譯與版本同步）
 ├── repomix.config.json         # Repomix 完整無壓縮打包設定檔
 └── package.json                # 專案設定與 NPM Scripts
 ```
@@ -138,9 +143,10 @@ mdbattle-visualizer/
 | 指令 | 說明 |
 | :--- | :--- |
 | `npm run build` | 執行正式版打包，輸出 `dist/mdbv.bundle.user.js` 並同步更新 `dist/ai-context.txt`。 |
-| `npm run watch` | 啟動監聽模式（含 inline sourcemap），修改 `src/` 內任何檔案時自動重新編譯。 |
+| `npm run watch` | 啟動毫秒級增量監聽模式，修改 `src/` 存檔時即時印出耗時並同步更新成品（搭配 Tampermonkey 本地 `@require file:///...` 實現秒級除錯）。 |
 | `npm test` 或 `npm run test:snap` | 執行無頭黃金快照回歸測試，比對目前引擎解析結果與 `tests/snapshots/` 是否完全一致。 |
 | `npm run test:snap:update` | 當刻意調整解析邏輯或新增測試戰報樣本時，重新生成並更新 `tests/snapshots/*.snap.json`。 |
+| `npm run check` | 提交前一鍵完整性檢查（自動依序跑 snapshot 測試、打包、並驗證 `dist/` 產物是否與原始碼一致）。 |
 | `npm run repomix` | 依據 `repomix.config.json` 產出無壓縮、保留完整程式碼與註解之 `repomix-output.xml`。 |
 
 ---
