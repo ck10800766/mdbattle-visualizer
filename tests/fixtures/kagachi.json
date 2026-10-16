@@ -1,0 +1,3465 @@
+{
+  "participants": {
+    "players": [
+      {
+        "userId": "6acfa71c051fbeaaac339d6d",
+        "characterId": "6acfa76a051fbeaaac339de8",
+        "name": "gh",
+        "characterName": "牙紀",
+        "imagePath": "/images/characters/kibayuki.webp",
+        "title": "婚紗絕劍",
+        "level": 61,
+        "stats": {
+          "hp": 5860,
+          "atk": 403,
+          "def": 76,
+          "sta": 165,
+          "agi": 147,
+          "spd": 264,
+          "tec": 369,
+          "int": 58,
+          "luk": 163
+        },
+        "_id": "6ad0568b5a1d43c8884d058d"
+      },
+      {
+        "userId": "6ab4a4dc06f188d351063639",
+        "characterId": "6ac916adeca607cc5371e6b9",
+        "name": "ghgh",
+        "characterName": "同人",
+        "imagePath": "/images/characters/kirito.webp",
+        "doujinAppearance": {
+          "frontHair": "#f6fc77",
+          "backHair": "#a19600",
+          "brows": "#e0e84f",
+          "eyes": "#b66bd6",
+          "skin": "#ebc59b",
+          "outfit": "#6ba6ff",
+          "frontHairStyle": "curtain",
+          "backHairStyle": "waves",
+          "browStyle": "soft",
+          "eyeStyle": "almond",
+          "outfitStyle": "hoodie"
+        },
+        "title": "我的同人",
+        "level": 100,
+        "stats": {
+          "hp": 11460,
+          "atk": 240,
+          "def": 357,
+          "sta": 399,
+          "agi": 352,
+          "spd": 143,
+          "tec": 579,
+          "int": 914,
+          "luk": 386
+        },
+        "isAssist": true,
+        "_id": "6ad0568b5a1d43c8884d058e"
+      }
+    ],
+    "enemies": [
+      {
+        "entityId": "mob_0_kagachi",
+        "monsterId": "kagachi",
+        "name": "武士領主卡嘉奇",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "第十層頭目",
+        "floor": 10,
+        "level": 100,
+        "stats": {
+          "hp": 90000,
+          "atk": 660,
+          "def": 150,
+          "sta": 250,
+          "agi": 60,
+          "spd": 190,
+          "tec": 205,
+          "int": 40,
+          "luk": 50
+        },
+        "_id": "6ad0568b5a1d43c8884d058f"
+      }
+    ]
+  },
+  "_id": "6ad0568b5a1d43c8884d058c",
+  "reportId": 198076,
+  "userIds": [
+    "6ab4a4dc06f188d351063639"
+  ],
+  "battleType": "BOSS",
+  "boss": {
+    "floorNumber": 10,
+    "name": "武士領主卡嘉奇",
+    "title": "第十層頭目",
+    "imagePath": "/images/boss/kagachi.webp"
+  },
+  "result": "WIN",
+  "outcomes": [
+    {
+      "userId": "6acfa71c051fbeaaac339d6d",
+      "name": "牙紀",
+      "expGained": 1000,
+      "isDead": false,
+      "newFloor": 11
+    }
+  ],
+  "createdAt": "2026-10-15T04:28:59.098Z",
+  "__v": 0,
+  "logs": [
+    {
+      "type": "BATTLE_START",
+      "message": "戰鬥開始！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "message": "巨大的武者端坐在石台中央，纏繞鎧甲的長蛇緩緩睜眼\n武士領主卡嘉奇握住身旁的大太刀，刀尖拖過地面，刺耳聲響在大殿中迴盪"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6acfa71c051fbeaaac339d6d",
+      "value": 131,
+      "actionCancelled": true,
+      "eventId": "purple_2",
+      "message": "武士領主卡嘉奇 踩到香蕉皮摔倒受到 131 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 897,
+      "actualDamage": 897,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 897 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 854,
+      "actualDamage": 854,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 854 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 1184,
+      "actualDamage": 1184,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 1184 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_rising_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 446,
+      "actualDamage": 446,
+      "isCrit": false,
+      "blocked": false,
+      "message": "武士領主卡嘉奇 將刀尖壓向地面，踏地突進後由下而上斬向 牙紀，牙紀 受到 446 點傷害"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_kagachi",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 25,
+          "modifier": 0,
+          "baseText": "技巧（369 → 25）",
+          "roll": 29,
+          "total": 54
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 14,
+          "modifier": 0,
+          "baseText": "技巧（205 → 14）",
+          "roll": 10,
+          "total": 24
+        },
+        "winner": "LEFT"
+      },
+      "message": "絕劍判定：牙紀 技巧（369 → 25） + 骰出 29 = 54，武士領主卡嘉奇 技巧（205 → 14） + 骰出 10 = 24。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "message": "牙紀 接下這一劍，第 68 勝。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_riposte",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 154,
+      "actualDamage": 154,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 反手刺了回去，對 武士領主卡嘉奇 造成了 154 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6acfa71c051fbeaaac339d6d",
+        "targetId": "mob_0_kagachi",
+        "incomingSkillId": "kagachi_rising_slash"
+      }
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 353,
+      "actualDamage": 353,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 353 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 扭轉巨軀，大太刀掃出一道弧月"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "message": "刀風逼近 牙紀，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 182,
+      "actualDamage": 182,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀風逼近 同人，命中並造成 182 點傷害"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 446,
+      "message": "同人 喚出了小黃金樹，金色暖光使 牙紀 恢復了 446 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 182,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 182 HP！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「有人要跟牙紀結婚嗎？今天七夕！」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "系統跳出了結婚申請，同人 按下了接受。兩人的道具欄合在了一起。",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 1130,
+      "actualDamage": 1130,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 1130 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 225,
+      "actualDamage": 225,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 2 連擊，對 武士領主卡嘉奇 造成了 225 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "纏繞在 武士領主卡嘉奇 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "message": "震波湧向 牙紀，卻被對方在地面炸開前躍離"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 131,
+      "actualDamage": 131,
+      "isCrit": false,
+      "blocked": false,
+      "message": "震波湧向 同人，命中並造成 131 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "serpent_venom",
+      "message": "暗紫毒紋沿著 同人 的傷口向上蔓延",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6acfa71c051fbeaaac339d6d",
+      "value": 136,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 武士領主卡嘉奇 的頭，造成 136 點傷害。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_iai_stance",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 壓低身體將大太刀收至腰側，刀尖在地面刮出一串火星"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 398,
+      "actualDamage": 398,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 398 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6acfa71c051fbeaaac339d6d",
+      "value": 294,
+      "actionCancelled": true,
+      "eventId": "red_2",
+      "message": "武士領主卡嘉奇 走在路上被卡車以時速 150 公里正面撞飛，雖然沒有成功轉生但受到了 294 點傷害。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「封弊者都給我把道具交出來！」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 423,
+      "actualDamage": 423,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 甩開頭紗一把揪住對方的領子，對 武士領主卡嘉奇 造成了 423 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "message": "武士領主卡嘉奇 身上什麼都沒有，卻被罵得抬不起頭，出手都心虛了。",
+      "targetId": "mob_0_kagachi"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 364,
+      "actualDamage": 364,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 364 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 230,
+      "actualDamage": 230,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 2 連擊，對 武士領主卡嘉奇 造成了 230 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "牙紀 把婚紗還回了店裡，試婚到此結束。"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "同人 受到 大蛇猛毒 影響，受到了 229 點傷害！",
+      "value": 229
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 985,
+      "actualDamage": 985,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 985 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1533,
+      "actualDamage": 1533,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 1533 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 1358,
+      "actualDamage": 1358,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 1358 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 200,
+      "actualDamage": 200,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 2 連擊，對 武士領主卡嘉奇 造成了 200 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 405,
+      "actualDamage": 405,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 405 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 200,
+      "actualDamage": 200,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 2 連擊，對 武士領主卡嘉奇 造成了 200 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_ground_iai",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 406,
+      "actualDamage": 406,
+      "isCrit": false,
+      "blocked": false,
+      "message": "武士領主卡嘉奇 貼地爆發前衝，拖地的刀鋒在 同人 面前驟然上挑，同人 受到 406 點傷害"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "同人 受到 大蛇猛毒 影響，受到了 229 點傷害！",
+      "value": 229
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 牙紀 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 995,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 995 HP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 3472,
+      "actualDamage": 3472,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 3472 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_rising_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "武士領主卡嘉奇 將刀尖壓向地面，踏地突進後由下而上斬向 同人，同人 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6acfa71c051fbeaaac339d6d",
+      "value": 138,
+      "actionCancelled": true,
+      "eventId": "purple_4",
+      "message": "武士領主卡嘉奇 右腳踩到釘子受到 138 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 4034,
+      "actualDamage": 4034,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 4034 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 420,
+      "actualDamage": 420,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 420 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 220,
+      "actualDamage": 220,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 2 連擊，對 武士領主卡嘉奇 造成了 220 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 扭轉巨軀，大太刀掃出一道弧月"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 299,
+      "actualDamage": 299,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀風逼近 牙紀，命中並造成 299 點傷害"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "刀風逼近 同人，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_guard_break",
+      "message": "接連的 Switch，交錯的攻勢撬開刀鋒，武士領主卡嘉奇 沉重的身軀向前跪落"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 1015,
+      "actualDamage": 1015,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 1015 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1854,
+      "actualDamage": 1854,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 1854 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「有人要跟牙紀結婚嗎？今天七夕！」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "系統跳出了結婚申請，同人 按下了接受。兩人的道具欄合在了一起。",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 雙膝一夾擺出內八，全身的超能力一口氣湧了上來。他抬起手，路邊的樹連根拔起，停著的車一台接一台浮上半空，朝敵人砸了下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 377,
+      "actualDamage": 377,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 377 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "還沒完，第二批車子又被拋了起來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1794,
+      "actualDamage": 1794,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 武士領主卡嘉奇 造成了 1794 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "最後一台車重重砸了下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 402,
+      "actualDamage": 402,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 402 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "牙紀 使出了 聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 37,
+      "actualDamage": 37,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 1 劍，對 武士領主卡嘉奇 造成了 37 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 40,
+      "actualDamage": 40,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 劍，對 武士領主卡嘉奇 造成了 40 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 34,
+      "actualDamage": 34,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 3 劍，對 武士領主卡嘉奇 造成了 34 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 39,
+      "actualDamage": 39,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 劍，對 武士領主卡嘉奇 造成了 39 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 37,
+      "actualDamage": 37,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 劍，對 武士領主卡嘉奇 造成了 37 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 38,
+      "actualDamage": 38,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 6 劍，對 武士領主卡嘉奇 造成了 38 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 39,
+      "actualDamage": 39,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 7 劍，對 武士領主卡嘉奇 造成了 39 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 38,
+      "actualDamage": 38,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 8 劍，對 武士領主卡嘉奇 造成了 38 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 130,
+      "actualDamage": 130,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 9 劍，會心一擊！對 武士領主卡嘉奇 造成了 130 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 113,
+      "actualDamage": 113,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 10 劍，會心一擊！對 武士領主卡嘉奇 造成了 113 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "message": "武士領主卡嘉奇 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_kagachi"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 925,
+      "actualDamage": 925,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 11 劍，貫穿十字的正中央，對 武士領主卡嘉奇 造成 925 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6ab4a4dc06f188d351063639",
+      "value": 366,
+      "actionCancelled": true,
+      "eventId": "purple_4",
+      "message": "武士領主卡嘉奇 右腳踩到釘子受到 366 點傷害。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6ab4a4dc06f188d351063639",
+      "value": 739,
+      "actionCancelled": true,
+      "eventId": "red_4",
+      "message": "一道紅色落雷直接劈中 武士領主卡嘉奇，造成 739 點傷害。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「封弊者都給我把道具交出來！」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 392,
+      "actualDamage": 392,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 甩開頭紗一把揪住對方的領子，對 武士領主卡嘉奇 造成了 392 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "message": "武士領主卡嘉奇 身上什麼都沒有，卻被罵得抬不起頭，出手都心虛了。",
+      "targetId": "mob_0_kagachi"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "牙紀 使出了 聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "stage": "TIRED",
+      "message": "牙紀 開始有點喘"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 29,
+      "actualDamage": 29,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 1 劍，對 武士領主卡嘉奇 造成了 29 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 92,
+      "actualDamage": 92,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 劍，會心一擊！對 武士領主卡嘉奇 造成了 92 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 26,
+      "actualDamage": 26,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 3 劍，對 武士領主卡嘉奇 造成了 26 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 80,
+      "actualDamage": 80,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 4 劍，會心一擊！對 武士領主卡嘉奇 造成了 80 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 29,
+      "actualDamage": 29,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 劍，對 武士領主卡嘉奇 造成了 29 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 27,
+      "actualDamage": 27,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 6 劍，對 武士領主卡嘉奇 造成了 29 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 86,
+      "actualDamage": 86,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 7 劍，會心一擊！對 武士領主卡嘉奇 造成了 86 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 30,
+      "actualDamage": 30,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 8 劍，對 武士領主卡嘉奇 造成了 30 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 80,
+      "actualDamage": 80,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 9 劍，會心一擊！對 武士領主卡嘉奇 造成了 80 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 31,
+      "actualDamage": 31,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 10 劍，對 武士領主卡嘉奇 造成了 31 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "message": "武士領主卡嘉奇 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_kagachi"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 2021,
+      "actualDamage": 2021,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 11 劍，會心一擊！貫穿十字的正中央，對 武士領主卡嘉奇 造成 2021 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_recover_guard",
+      "message": "武士領主卡嘉奇 以刀撐地重新站起，刀鋒再次封住身前"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "牙紀 把婚紗還回了店裡，試婚到此結束。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「有人要跟牙紀結婚嗎？今天七夕！」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "系統跳出了結婚申請，同人 按下了接受。兩人的道具欄合在了一起。",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 831,
+      "actualDamage": 831,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 831 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 831,
+      "actualDamage": 831,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 831 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 793,
+      "actualDamage": 793,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 793 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_rising_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 140,
+      "actualDamage": 140,
+      "isCrit": false,
+      "blocked": false,
+      "message": "武士領主卡嘉奇 將刀尖壓向地面，踏地突進後由下而上斬向 同人，同人 受到 140 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "牙紀 拖著婚紗擋到 同人 身前，替對方扛下了 93 點傷害。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 364,
+      "actualDamage": 364,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 364 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 扭轉巨軀，大太刀掃出一道弧月"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 838,
+      "actualDamage": 838,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀風逼近 牙紀，精準劃過要害，命中並造成 838 點傷害"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_great_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "刀風逼近 同人，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "纏繞在 武士領主卡嘉奇 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 242,
+      "actualDamage": 242,
+      "isCrit": false,
+      "blocked": false,
+      "message": "震波湧向 牙紀，命中並造成 242 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "serpent_venom",
+      "message": "暗紫毒紋沿著 牙紀 的傷口向上蔓延",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 121,
+      "actualDamage": 121,
+      "isCrit": false,
+      "blocked": false,
+      "message": "震波湧向 同人，命中並造成 121 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "serpent_venom",
+      "message": "暗紫毒紋沿著 同人 的傷口向上蔓延",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "牙紀 受到 大蛇猛毒 影響，受到了 117 點傷害！",
+      "value": 117
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 269,
+      "actualDamage": 269,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 269 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "同人 受到 大蛇猛毒 影響，受到了 229 點傷害！",
+      "value": 229
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 雙膝一夾擺出內八，全身的超能力一口氣湧了上來。他抬起手，路邊的樹連根拔起，停著的車一台接一台浮上半空，朝敵人砸了下去——"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_guard_break",
+      "message": "接連的 Switch，交錯的攻勢撬開刀鋒，武士領主卡嘉奇 沉重的身軀向前跪落"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 391,
+      "actualDamage": 391,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 391 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "還沒完，第二批車子又被拋了起來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 339,
+      "actualDamage": 339,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 339 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "最後一台車重重砸了下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 341,
+      "actualDamage": 341,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 341 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "牙紀 把婚紗還回了店裡，試婚到此結束。"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "同人 受到 大蛇猛毒 影響，受到了 229 點傷害！",
+      "value": 229
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 4254,
+      "actualDamage": 4254,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 4254 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1652,
+      "actualDamage": 1652,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 1652 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "牙紀 受到 大蛇猛毒 影響，受到了 117 點傷害！",
+      "value": 117
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「有人要跟牙紀結婚嗎？今天七夕！」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "系統跳出了結婚申請，同人 按下了接受。兩人的道具欄合在了一起。",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_recover_guard",
+      "message": "武士領主卡嘉奇 以刀撐地重新站起，刀鋒再次封住身前"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 866,
+      "actualDamage": 866,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 866 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6ab4a4dc06f188d351063639",
+      "value": 365,
+      "actionCancelled": true,
+      "eventId": "purple_1",
+      "message": "武士領主卡嘉奇 往後退後腦撞到樹受到 365 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 316,
+      "actualDamage": 316,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 316 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 826,
+      "actualDamage": 826,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 826 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「封弊者都給我把道具交出來！」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 298,
+      "actualDamage": 298,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 甩開頭紗一把揪住對方的領子，對 武士領主卡嘉奇 造成了 298 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "message": "武士領主卡嘉奇 身上什麼都沒有，卻被罵得抬不起頭，出手都心虛了。",
+      "targetId": "mob_0_kagachi"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 雙膝一夾擺出內八，全身的超能力一口氣湧了上來。他抬起手，路邊的樹連根拔起，停著的車一台接一台浮上半空，朝敵人砸了下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 361,
+      "actualDamage": 361,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 361 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "還沒完，第二批車子又被拋了起來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1517,
+      "actualDamage": 1517,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 武士領主卡嘉奇 造成了 1517 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_second_blade",
+      "message": "武士領主卡嘉奇 向後踏開，掌中亮起暗紅光芒，第二把大太刀在光粒中成形\n纏繞在鎧甲上的巨蛇抬起頭，兩道刀鋒同時轉向眾人"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "最後一台車重重砸了下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 367,
+      "actualDamage": 367,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 367 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 1706,
+      "message": "同人 喚出了小黃金樹，金色暖光使 牙紀 恢復了 1706 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 719,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 719 HP！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "武士領主卡嘉奇 兩柄大太刀交錯斬向 同人，同人 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 96,
+      "actualDamage": 96,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 擊，同人 受到 96 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "牙紀 拖著婚紗擋到 同人 身前，替對方扛下了 63 點傷害。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 將雙刀同時掃出，兩道刀光一前一後旋過大殿"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 192,
+      "actualDamage": 192,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第一道刀風掠向 牙紀，命中並造成 192 點傷害"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 106,
+      "actualDamage": 106,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第一道刀風掠向 同人，命中並造成 106 點傷害"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "targetId": "mob_0_kagachi",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kagachi_twin_sweep",
+      "value": 285,
+      "isCrit": false,
+      "message": "第二道刀風追向 牙紀，但是遭牙紀反擊，受到 285 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6acfa71c051fbeaaac339d6d",
+        "targetId": "mob_0_kagachi",
+        "incomingSkillId": "kagachi_twin_sweep"
+      }
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第二道刀風追向 同人，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 765,
+      "actualDamage": 765,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 765 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 305,
+      "actualDamage": 305,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 305 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_trial_marriage",
+      "message": "牙紀 把婚紗還回了店裡，試婚到此結束。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "纏繞在 武士領主卡嘉奇 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "message": "震波湧向 牙紀，卻被對方在地面炸開前躍離"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "震波湧向 同人，卻被對方在地面炸開前躍離"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_dual_stance",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 將雙刀一前一後壓低，紅光沿著兩道刀刃同時亮起"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 298,
+      "actualDamage": 298,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 298 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 1017,
+      "actualDamage": 1017,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 1017 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 337,
+      "actualDamage": 337,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 337 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_demon_flurry",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 106,
+      "actualDamage": 106,
+      "isCrit": false,
+      "blocked": false,
+      "message": "武士領主卡嘉奇 化作一道披著鎧甲的殘影，雙刀連續斬向 同人，同人 受到 106 點傷害"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "targetId": "mob_0_kagachi",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kagachi_demon_flurry",
+      "value": 769,
+      "isCrit": true,
+      "message": "第 2 擊，但是遭同人反擊，會心一擊！受到 769 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_demon_flurry",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 267,
+      "actualDamage": 267,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 擊，刀鋒精準劃過要害，同人 受到 267 點傷害"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "targetId": "mob_0_kagachi",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kagachi_demon_flurry",
+      "value": 742,
+      "isCrit": true,
+      "message": "第 4 擊，但是遭同人反擊，會心一擊！受到 742 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 331,
+      "actualDamage": 331,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 331 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 3687,
+      "actualDamage": 3687,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 3687 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 3841,
+      "actualDamage": 3841,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 3841 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 369,
+      "actualDamage": 369,
+      "isCrit": false,
+      "blocked": false,
+      "message": "武士領主卡嘉奇 兩柄大太刀交錯斬向 牙紀，牙紀 受到 369 點傷害"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 365,
+      "actualDamage": 365,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 擊，牙紀 受到 365 點傷害"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_kagachi",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 25,
+          "modifier": 0,
+          "baseText": "技巧（369 → 25）",
+          "roll": 4,
+          "total": 29
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 14,
+          "modifier": 0,
+          "baseText": "技巧（205 → 14）",
+          "roll": 88,
+          "total": 102
+        },
+        "winner": "RIGHT"
+      },
+      "message": "絕劍判定：牙紀 技巧（369 → 25） + 骰出 4 = 29，武士領主卡嘉奇 技巧（205 → 14） + 骰出 88 = 102。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "message": "牙紀 的連勝停在第 68 勝。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 將雙刀同時掃出，兩道刀光一前一後旋過大殿"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 229,
+      "actualDamage": 229,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第一道刀風掠向 牙紀，命中並造成 229 點傷害"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 305,
+      "actualDamage": 305,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第一道刀風掠向 同人，精準劃過要害，命中並造成 305 點傷害"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "targetId": "mob_0_kagachi",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kagachi_twin_sweep",
+      "value": 253,
+      "isCrit": false,
+      "message": "第二道刀風追向 牙紀，但是遭牙紀反擊，受到 253 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6acfa71c051fbeaaac339d6d",
+        "targetId": "mob_0_kagachi",
+        "incomingSkillId": "kagachi_twin_sweep"
+      }
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第二道刀風追向 同人，命中並造成 127 點傷害",
+      "value": 127,
+      "actualDamage": 127,
+      "isCrit": false,
+      "blocked": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 759,
+      "actualDamage": 759,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 759 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 297,
+      "actualDamage": 297,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 297 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "纏繞在 武士領主卡嘉奇 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 237,
+      "actualDamage": 237,
+      "isCrit": false,
+      "blocked": false,
+      "message": "震波湧向 牙紀，命中並造成 237 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "serpent_venom",
+      "message": "暗紫毒紋沿著 牙紀 的傷口向上蔓延",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 340,
+      "actualDamage": 340,
+      "isCrit": true,
+      "blocked": false,
+      "message": "震波湧向 同人，正中要害，命中並造成 340 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "serpent_venom",
+      "message": "暗紫毒紋沿著 同人 的傷口向上蔓延",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "同人 受到 大蛇猛毒 影響，受到了 229 點傷害！",
+      "value": 229
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_guard_break",
+      "message": "接連的 Switch，交錯的攻勢撬開刀鋒，武士領主卡嘉奇 沉重的身軀向前跪落"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 1028,
+      "actualDamage": 1028,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 1028 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 438,
+      "actualDamage": 438,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 438 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "牙紀 受到 大蛇猛毒 影響，受到了 117 點傷害！",
+      "value": 117
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 302,
+      "actualDamage": 302,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 302 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "同人 受到 大蛇猛毒 影響，受到了 229 點傷害！",
+      "value": 229
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 雙膝一夾擺出內八，全身的超能力一口氣湧了上來。他抬起手，路邊的樹連根拔起，停著的車一台接一台浮上半空，朝敵人砸了下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 353,
+      "actualDamage": 353,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 353 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "還沒完，第二批車子又被拋了起來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 406,
+      "actualDamage": 406,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 武士領主卡嘉奇 造成了 406 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "最後一台車重重砸了下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_telekinesis",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1736,
+      "actualDamage": 1736,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 武士領主卡嘉奇 造成了 1736 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_recover_guard",
+      "message": "武士領主卡嘉奇 以刀撐地重新站起，刀鋒再次封住身前"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "牙紀 受到 大蛇猛毒 影響，受到了 117 點傷害！",
+      "value": 117
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_kagachi",
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kibayuki_slash",
+      "value": 529,
+      "isCrit": false,
+      "message": "牙紀 攻擊，但是遭武士領主卡嘉奇反擊，受到 529 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 171,
+      "actualDamage": 171,
+      "isCrit": false,
+      "blocked": false,
+      "message": "武士領主卡嘉奇 兩柄大太刀交錯斬向 同人，同人 受到 171 點傷害"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第 2 擊，同人 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "牙紀 使出了 聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "stage": "EXHAUSTED",
+      "message": "牙紀 快累到不行了"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 55,
+      "actualDamage": 55,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 1 劍，會心一擊！對 武士領主卡嘉奇 造成了 55 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 48,
+      "actualDamage": 48,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 劍，會心一擊！對 武士領主卡嘉奇 造成了 48 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 18,
+      "actualDamage": 18,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 3 劍，對 武士領主卡嘉奇 造成了 18 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 19,
+      "actualDamage": 19,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 劍，對 武士領主卡嘉奇 造成了 19 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_kagachi",
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kibayuki_rosario",
+      "value": 1424,
+      "isCrit": true,
+      "message": "第 5 劍，但是遭武士領主卡嘉奇反擊，會心一擊！受到 1424 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 17,
+      "actualDamage": 17,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 6 劍，對 武士領主卡嘉奇 造成了 17 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 45,
+      "actualDamage": 45,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 7 劍，會心一擊！對 武士領主卡嘉奇 造成了 45 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 21,
+      "actualDamage": 21,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 8 劍，對 武士領主卡嘉奇 造成了 21 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 18,
+      "actualDamage": 18,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 9 劍，對 武士領主卡嘉奇 造成了 18 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 17,
+      "actualDamage": 17,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 10 劍，對 武士領主卡嘉奇 造成了 17 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "message": "武士領主卡嘉奇 身上的十字刻下了 9 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_kagachi"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 427,
+      "actualDamage": 427,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 11 劍，貫穿十字的正中央，對 武士領主卡嘉奇 造成 427 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 3691,
+      "actualDamage": 3691,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 3691 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "hiro_rebuttal",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "同人 靜靜地盯著對手，等著對方開口。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 將雙刀同時掃出，兩道刀光一前一後旋過大殿"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 224,
+      "actualDamage": 224,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第一道刀風掠向 牙紀，命中並造成 224 點傷害"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第一道刀風掠向 同人，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 213,
+      "actualDamage": 213,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第二道刀風追向 牙紀，命中並造成 213 點傷害"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第二道刀風追向 同人，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "纏繞在 武士領主卡嘉奇 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 247,
+      "actualDamage": 247,
+      "isCrit": false,
+      "blocked": false,
+      "message": "震波湧向 牙紀，命中並造成 247 點傷害"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "serpent_venom",
+      "message": "暗紫毒紋沿著 牙紀 的傷口向上蔓延",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_serpent_quake",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "震波湧向 同人，卻被對方在地面炸開前躍離"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_dual_stance",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 將雙刀一前一後壓低，紅光沿著兩道刀刃同時亮起"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "牙紀 受到 大蛇猛毒 影響，受到了 117 點傷害！",
+      "value": 117
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 213,
+      "actualDamage": 213,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 213 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 4204,
+      "actualDamage": 4204,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 4204 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "buffId": "serpent_venom",
+      "buffType": "DOT",
+      "message": "牙紀 受到 大蛇猛毒 影響，受到了 117 點傷害！",
+      "value": 117
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 218,
+      "actualDamage": 218,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 218 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 2010,
+      "message": "同人 喚出了小黃金樹，金色暖光使 牙紀 恢復了 2010 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "value": 1976,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 1976 HP！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6acfa71c051fbeaaac339d6d",
+      "value": 56,
+      "actionCancelled": true,
+      "eventId": "purple_7",
+      "message": "一群發狂的比特犬衝過來襲擊 武士領主卡嘉奇，造成 56 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 224,
+      "actualDamage": 224,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 224 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "hiro_rebuttal",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "同人 靜靜地盯著對手，等著對方開口。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_demon_flurry",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "武士領主卡嘉奇 化作一道披著鎧甲的殘影，雙刀連續斬向 同人，同人 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_demon_flurry",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第 2 擊，同人 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_demon_flurry",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第 3 擊，同人 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_demon_flurry",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第 4 擊，同人 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "FATIGUE_SKIP",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "message": "牙紀 累得無法動彈"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 839,
+      "actualDamage": 839,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 839 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1507,
+      "actualDamage": 1507,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 1507 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 238,
+      "actualDamage": 238,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 238 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6acfa71c051fbeaaac339d6d",
+      "value": 113,
+      "actionCancelled": true,
+      "eventId": "red_5",
+      "message": "一顆雄三飛彈把 武士領主卡嘉奇 的頭頂當作降落點，造成 113 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 804,
+      "actualDamage": 804,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 804 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 336,
+      "actualDamage": 336,
+      "isCrit": false,
+      "blocked": false,
+      "message": "武士領主卡嘉奇 兩柄大太刀交錯斬向 牙紀，牙紀 受到 336 點傷害"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 898,
+      "actualDamage": 898,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 擊，刀鋒精準劃過要害，牙紀 受到 898 點傷害"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_kagachi",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 25,
+          "modifier": 0,
+          "baseText": "技巧（369 → 25）",
+          "roll": 72,
+          "total": 97
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 14,
+          "modifier": 0,
+          "baseText": "技巧（205 → 14）",
+          "roll": 9,
+          "total": 23
+        },
+        "winner": "LEFT"
+      },
+      "message": "絕劍判定：牙紀 技巧（369 → 25） + 骰出 72 = 97，武士領主卡嘉奇 技巧（205 → 14） + 骰出 9 = 23。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "message": "牙紀 接下這一劍，第 68 勝。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_riposte",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 93,
+      "actualDamage": 93,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 反手刺了回去，對 武士領主卡嘉奇 造成了 93 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6acfa71c051fbeaaac339d6d",
+        "targetId": "mob_0_kagachi",
+        "incomingSkillId": "kagachi_cross_slash"
+      }
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 213,
+      "actualDamage": 213,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 213 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 505,
+      "actualDamage": 505,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 505 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 558,
+      "actualDamage": 558,
+      "isCrit": true,
+      "blocked": false,
+      "message": "牙紀 攻擊，會心一擊！對 武士領主卡嘉奇 造成了 558 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 897,
+      "actualDamage": 897,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 897 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "武士領主卡嘉奇 將雙刀同時掃出，兩道刀光一前一後旋過大殿"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 219,
+      "actualDamage": 219,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第一道刀風掠向 牙紀，命中並造成 219 點傷害"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第一道刀風掠向 同人，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 231,
+      "actualDamage": 231,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第二道刀風追向 牙紀，命中並造成 231 點傷害"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_twin_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "第二道刀風追向 同人，卻被對方在刀鋒落下前避開"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 892,
+      "actualDamage": 892,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 892 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 1529,
+      "actualDamage": 1529,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 1529 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 927,
+      "actualDamage": 927,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 927 點傷害！"
+    },
+    {
+      "type": "REST",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "value": 66,
+      "message": "牙紀 暫時停下攻勢，調整呼吸"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」牙紀 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6acfa71c051fbeaaac339d6d"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_guard_break",
+      "message": "接連的 Switch，交錯的攻勢撬開刀鋒，武士領主卡嘉奇 沉重的身軀向前跪落"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 355,
+      "actualDamage": 355,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 攻擊，對 武士領主卡嘉奇 造成了 355 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6ab4a4dc06f188d351063639",
+      "value": 386,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 武士領主卡嘉奇 的頭，造成 386 點傷害。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "牙紀：「封弊者都給我把道具交出來！」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 367,
+      "actualDamage": 367,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 甩開頭紗一把揪住對方的領子，對 武士領主卡嘉奇 造成了 367 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_demand",
+      "message": "武士領主卡嘉奇 身上什麼都沒有，卻被罵得抬不起頭，出手都心虛了。",
+      "targetId": "mob_0_kagachi"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_kagachi",
+      "targetId": "mob_0_kagachi",
+      "opponentId": "6acfa71c051fbeaaac339d6d",
+      "value": 87,
+      "actionCancelled": true,
+      "eventId": "purple_6",
+      "message": "天外飛來一支箭射中 武士領主卡嘉奇 的左膝蓋造成 87 點傷害。"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "hiro_rebuttal",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab4a4dc06f188d351063639",
+      "message": "同人 靜靜地盯著對手，等著對方開口。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_recover_guard",
+      "message": "武士領主卡嘉奇 以刀撐地重新站起，刀鋒再次封住身前"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "message": "武士領主卡嘉奇 兩柄大太刀交錯斬向 牙紀，牙紀 趕在刀鋒落下前退開"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_cross_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "value": 312,
+      "actualDamage": 312,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 擊，牙紀 受到 312 點傷害"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_kagachi",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 25,
+          "modifier": 0,
+          "baseText": "技巧（369 → 25）",
+          "roll": 55,
+          "total": 80
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 14,
+          "modifier": 0,
+          "baseText": "技巧（205 → 14）",
+          "roll": 44,
+          "total": 58
+        },
+        "winner": "LEFT"
+      },
+      "message": "絕劍判定：牙紀 技巧（369 → 25） + 骰出 55 = 80，武士領主卡嘉奇 技巧（205 → 14） + 骰出 44 = 58。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_zekken",
+      "message": "牙紀 接下這一劍，第 69 勝。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "kibayuki_riposte",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 131,
+      "actualDamage": 131,
+      "isCrit": false,
+      "blocked": false,
+      "message": "牙紀 反手刺了回去，對 武士領主卡嘉奇 造成了 131 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6acfa71c051fbeaaac339d6d",
+        "targetId": "mob_0_kagachi",
+        "incomingSkillId": "kagachi_cross_slash"
+      }
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "skillId": "kagachi_switch",
+      "message": "「Switch！」同人 從刀勢外側切入，卡嘉奇的架勢被撼動",
+      "targetId": "6ab4a4dc06f188d351063639"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 4386,
+      "actualDamage": 4386,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 4386 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_kagachi",
+      "targetId": "6acfa71c051fbeaaac339d6d",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kibayuki_slash",
+      "value": 535,
+      "isCrit": false,
+      "message": "牙紀 攻擊，但是遭武士領主卡嘉奇反擊，受到 535 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 891,
+      "actualDamage": 891,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 891 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kagachi",
+      "value": 340,
+      "actualDamage": 340,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 武士領主卡嘉奇，對 武士領主卡嘉奇 造成了 340 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kagachi",
+      "value": 3784,
+      "actualDamage": 1043,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 武士領主卡嘉奇，會心一擊！對 武士領主卡嘉奇 造成了 3784 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "mob_0_kagachi",
+      "message": "武士領主卡嘉奇 倒下了！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kagachi",
+      "message": "兩柄大太刀先後碎成光片，巨蛇從鎧甲上滑落，武士領主卡嘉奇仍維持著持刀姿勢，直到整副武者鎧甲在寂靜中崩解"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "value": 779,
+      "maxHp": 5860,
+      "message": "牙紀 剩餘 779 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6ab4a4dc06f188d351063639",
+      "value": 11460,
+      "maxHp": 11460,
+      "message": "同人 剩餘 11460 HP"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6acfa71c051fbeaaac339d6d",
+      "value": 1000,
+      "message": "牙紀 獲得了 1000 點經驗值"
+    }
+  ],
+  "_mdbvMeta": {
+    "exportedAt": "2026-10-16T23:09:07.718Z",
+    "totalTurns": 94,
+    "frameCount": 312
+  }
+}
+

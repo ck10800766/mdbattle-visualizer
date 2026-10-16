@@ -22,7 +22,7 @@ import {
     setPlaybackSpeed,
     nextPlaybackToken
 } from './state.js';
-import { escapeHtml } from './utils.js';
+import { escapeHtml, getMessageReadingDuration } from './utils.js';
 import { STAGE_STYLES } from './styles.js';
 import {
     playFatalitySequence,
@@ -30,7 +30,11 @@ import {
     playContractCutIn,
     spawnRosarioCross,
     renderSpeechBubble,
-    spawnStatusOrDiceBadge
+    spawnStatusOrDiceBadge,
+    playEnvironmentalFieldPulse,
+    resolveDialogueSpeaker,
+    isSceneNarrationFrame,
+    renderSceneNarrationBanner
 } from './cinematics.js';
 import {
     lookaheadComboState,
@@ -750,14 +754,22 @@ export async function renderFrame(frame, token) {
         }
     }
 
-    // 3. Render speech bubble for boss dialogue or spoken skill quotes
-    const isSpokenSkillQuote =
-        frame.type === 'SKILL_TEXT' &&
-        /^[^：「\s]+：「.+」$/.test(frame.message.trim());
-
-    if (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE' || isSpokenSkillQuote) {
+    // 3. Render speech bubble for dialogue (only on resolved on-field speaker) OR scene narration subtitle banner
+    const speaker = resolveDialogueSpeaker(frame);
+    if (speaker) {
         const readTime = renderSpeechBubble(frame, sr, token);
-        frameDuration += isSpokenSkillQuote ? Math.min(readTime, 900) : readTime;
+        const textDuration = getMessageReadingDuration(speaker.quote);
+        frameDuration = Math.max(frameDuration, textDuration, readTime);
+    } else if (isSceneNarrationFrame(frame)) {
+        const readTime = renderSceneNarrationBanner(frame, sr, token);
+        const textDuration = getMessageReadingDuration(frame.message);
+        frameDuration = Math.max(frameDuration, textDuration, readTime);
+    }
+
+    // 4. Play environmental field pulse on battlefield hazards or altar waves
+    if (frame.isEnvironmentalPulse && frame.type === 'TEXT') {
+        playEnvironmentalFieldPulse(frame, sr);
+        frameDuration = Math.max(frameDuration, 1100);
     }
 
     // 4. Spawn overhead dice check or character flavor badges
@@ -851,6 +863,7 @@ export async function renderFrame(frame, token) {
                 setTimeout(() => {
                     if (dropEl.isConnected) dropEl.remove();
                 }, 1000 / getEffectiveSpeed());
+                frameDuration = Math.max(frameDuration, 750);
             }
             if (frame.vfx.includes('break-stamp')) {
                 const breakEl = document.createElement('div');

@@ -73,6 +73,7 @@ export const STAGE_STYLES = `
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; }
     .log-line.system-log { background: rgba(255, 255, 255, 0.03); }
     .log-line.dialogue-log { background: rgba(79, 209, 197, 0.1); border-left: 3px solid #4fd1c5; color: #e2e8f0; font-weight: 500; }
+    .log-line.narrative-log { background: rgba(255, 255, 255, 0.04); border-left: 3px solid #718096; color: #f1f5f9; font-style: italic; }
     .actor-name-left { font-weight: bold; color: #90cdf4; }
     .actor-name-right { font-weight: bold; color: #feb2b2; }
 
@@ -202,6 +203,16 @@ export const STAGE_STYLES = `
     .aoe-fan-wave.wave-right { border-right: 14px solid var(--wave-color, #fc8181); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 0 180px 180px 0; box-shadow: 18px 0 28px -4px var(--wave-color, #fc8181), inset -14px 0 22px -6px #ffffff; }
     .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
     .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
+
+    /* Environmental Battlefield Hazard Wave & Scene Narration Subtitle Banner */
+    .arena-field-wave { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 38; background: radial-gradient(circle at 50% 50%, rgba(229, 62, 62, 0.45) 0%, rgba(183, 28, 28, 0.22) 50%, transparent 80%); opacity: 0; animation: arenaFieldPulse 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes arenaFieldPulse { 0% { opacity: 0; transform: scale(0.65); } 30% { opacity: 1; transform: scale(1.04); } 70% { opacity: 0.85; transform: scale(1); } 100% { opacity: 0; transform: scale(1.15); filter: blur(4px); } }
+
+    .scene-narration-banner { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); max-width: 86%; padding: 8px 20px; background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(226, 232, 240, 0.25); border-radius: 8px; color: #f1f5f9; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: 14px; font-style: italic; line-height: 1.6; text-align: center; letter-spacing: 0.5px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); pointer-events: none; z-index: 55; animation: narrationFadeIn 0.35s ease-out forwards; white-space: pre-line; }
+    .scene-narration-banner.fade-out { animation: narrationFadeOut 0.4s ease-in forwards; }
+    @keyframes narrationFadeIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    @keyframes narrationFadeOut { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -8px); } }
+
 
     /* Timeline Milestone Event Pins & Tooltips */
     .seek-track-wrapper { position: relative; flex: 1; display: flex; align-items: center; height: 32px; }

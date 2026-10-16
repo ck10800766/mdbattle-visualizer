@@ -23,7 +23,10 @@ import {
 import { spawnFloatingText } from './floatingText.js';
 import {
     renderSpeechBubble,
-    spawnStatusOrDiceBadge
+    spawnStatusOrDiceBadge,
+    resolveDialogueSpeaker,
+    isSceneNarrationFrame,
+    renderSceneNarrationBanner
 } from './cinematics.js';
 import {
     spawnAOEFanWave,
@@ -40,8 +43,18 @@ import { updateATBUI } from './timeline.js';
  */
 export function createLogLineElement(frame) {
     const msgEl = document.createElement('div');
-    const isDialogue = frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE';
-    msgEl.className = `log-line ${isDialogue ? 'dialogue-log' : 'system-log'}`;
+    const speaker = resolveDialogueSpeaker(frame);
+    const isDialogue = Boolean(speaker) || (frame.type === 'DIALOGUE' && /[「『"“]/.test(frame.message));
+    const isNarrative = !isDialogue && isSceneNarrationFrame(frame);
+
+    let logClass = 'system-log';
+    if (isDialogue) {
+        logClass = 'dialogue-log';
+    } else if (isNarrative) {
+        logClass = 'narrative-log';
+    }
+
+    msgEl.className = `log-line ${logClass}`;
     msgEl.dataset.frameIndex = String(frame.index);
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
     msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
@@ -317,12 +330,12 @@ export function renderSeekPreviewState(sr, frameIndex) {
         triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
     }
 
-    // 5. Render speech bubbles, overhead status/dice badges, and floating combat numbers
-    const isSpokenSkillQuote =
-        frame.type === 'SKILL_TEXT' &&
-        /^[^：「\s]+：「.+」$/.test(frame.message.trim());
-    if (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE' || isSpokenSkillQuote) {
+    // 5. Render speech bubbles, scene narration subtitle banner, and overhead badges
+    const speaker = resolveDialogueSpeaker(frame);
+    if (speaker) {
         renderSpeechBubble(frame, sr, engineState.playbackToken);
+    } else if (isSceneNarrationFrame(frame)) {
+        renderSceneNarrationBanner(frame, sr, engineState.playbackToken);
     }
 
     if (
@@ -358,7 +371,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
 
     // Remove all transient overlays, badges, and floating combat effects
     sr.querySelectorAll(
-        '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile'
+        '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile, .arena-field-wave, .scene-narration-banner'
     ).forEach(el => el.remove());
 
     // Cancel active Web Animations and reset actor transforms

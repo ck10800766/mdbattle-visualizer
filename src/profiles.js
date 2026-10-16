@@ -365,6 +365,78 @@ export const SPECIAL_SKILL_BADGE_RULES = [
         target: 'actor',
         text: () => '🗡️ 收刀入鞘',
         styleClass: 'dice-warn'
+    },
+
+    // Patriot & Guerrilla squad skills
+    {
+        skillId: 'patriot_dust',
+        regex: /結晶從他的鎧甲縫隙崩落，化作一陣源石塵暴/,
+        target: 'actor',
+        text: () => '🌪️ 源石塵暴',
+        styleClass: 'dice-warn',
+        shakeTarget: true
+    },
+    {
+        skillId: 'patriot_march',
+        regex: /頂著塔盾向前壓進/,
+        target: 'actor',
+        text: () => '🛡️ 盾牆推進',
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'patriot_javelin',
+        regex: /舉起一支長槍，越過前排/,
+        target: 'actor',
+        text: () => '🔱 標槍鎖定',
+        styleClass: 'dice-warn'
+    },
+    {
+        skillId: 'patriot_sacrifice',
+        regex: /身軀燃起源石的紅光|灼熱的脈動/,
+        target: 'actor',
+        text: () => '🔥 捨身燃燒',
+        styleClass: 'dice-warn',
+        shakeTarget: true
+    },
+    {
+        skillId: 'patriot_ruin',
+        regex: /雙手握戟，一步一步逼向/,
+        target: 'actor',
+        text: () => '⚡ 雙手毀滅戟',
+        styleClass: 'dice-fail'
+    },
+
+    // Oripathy & Environmental Debuffs
+    {
+        skillId: 'oripathy',
+        regex: /吸進了源石粉塵|長出了成片的結晶|半邊身體都被結晶覆蓋/,
+        target: 'actor',
+        text: () => '💎 礦石病侵蝕',
+        styleClass: 'dice-warn'
+    },
+
+    // Eris & Sylphy
+    {
+        skillId: 'sylphy_white_hair',
+        regex: /硬是撐住了最後一口氣/,
+        target: 'actor',
+        text: () => '💨 守護風牆',
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'eris_deprivation',
+        regex: /武器被挑偏，握不穩了/,
+        target: 'target',
+        text: () => '⚔️ 武器挑偏',
+        styleClass: 'dice-fail',
+        shakeTarget: true
+    },
+    {
+        skillId: 'eris_silent_sword',
+        regex: /露出了破綻/,
+        target: 'actor',
+        text: () => '⚠️ 架勢破綻',
+        styleClass: 'dice-warn'
     }
 ];
 
