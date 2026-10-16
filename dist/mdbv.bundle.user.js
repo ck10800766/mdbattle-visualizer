@@ -831,6 +831,8 @@
     let lastTurnActorId = null;
     const buffSrc = {};
     const applyLog = [];
+    const prefixOwner = {};
+    const IGNORE_PREFIX = { basic: 1, imitated: 1, standard: 1 };
     const actorsDeathState = /* @__PURE__ */ new Map();
     const actorsSummonState = /* @__PURE__ */ new Map();
     const actorsBondState = /* @__PURE__ */ new Map();
@@ -853,6 +855,12 @@
     });
     logs.forEach((log, index) => {
       if (!log || typeof log !== "object") return;
+      if (log.actorId && log.skillId) {
+        const pre = String(log.skillId).split("_")[0];
+        if (!IGNORE_PREFIX[pre] && !prefixOwner[pre]) {
+          prefixOwner[pre] = log.actorId;
+        }
+      }
       const rawValue = Number(log.value) || 0;
       const actualDamage = log.actualDamage != null ? Number(log.actualDamage) : rawValue;
       const isCounterSetup = detectCounterSetup(logs, index, log, rawValue);
@@ -1048,6 +1056,22 @@
                 }
               }
             }
+            if (!sourceId && log.buffId) {
+              const pre = String(log.buffId).split("_")[0];
+              const preActorId = prefixOwner[pre];
+              const preActor = preActorId ? engineState.actors.get(preActorId) : null;
+              if (preActor && preActor.side !== target.side) {
+                sourceId = preActorId;
+              }
+            }
+            if (!sourceId) {
+              const opposingUnits = Array.from(engineState.actors.values()).filter(
+                (u) => u.side !== target.side && !u.isSummon
+              );
+              if (opposingUnits.length === 1) {
+                sourceId = opposingUnits[0].id;
+              }
+            }
             const sourceActor = engineState.actors.get(sourceId);
             if (sourceActor) {
               sourceActor.totalDamageDealt += frame.value;
@@ -1071,6 +1095,7 @@
             const amount = Number(lossMatch[1]);
             target.currentHp = Math.max(0, target.currentHp - amount);
             addHpDelta(target.id, -amount);
+            target.totalDamageTaken += amount;
           }
         }
         if (contractProfile && log.type === "SKILL_TEXT") {
