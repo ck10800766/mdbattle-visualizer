@@ -61,6 +61,11 @@
   // src/profiles.js
   var KNOWN_AOE_SKILLS = /* @__PURE__ */ new Set([
     "genji_fan_of_blades",
+    "sakura_firey",
+    "evaluator_whistle",
+    "undead_chef_shovel",
+    "undead_chef_curry",
+    "oni_gunsou_grenade",
     "inspector_blanket",
     "sylphy_that_day_wind",
     "patriot_dust",
@@ -76,8 +81,15 @@
     "genji_dragonblade",
     "genji_dragonblade_sweep"
   ]);
+  var ULTIMATE_CUTIN_EXCLUDED_SKILLS = /* @__PURE__ */ new Set([
+    "genji_dragonblade_sweep"
+  ]);
+  var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字/;
+  var SUMMON_DESPAWN_REGEX = /揮了揮手，回到.+?的隊伍裡|離開了戰場|消失在戰場/;
   var ENVIRONMENTAL_SKILLS = /* @__PURE__ */ new Set([
-    "originium_altar"
+    "originium_altar",
+    "undead_chef_karma",
+    "oni_gunsou_prayer"
   ]);
   var REBIRTH_RULES = {
     dialogueRegex: /站了起來|進軍|重生|甦醒|恢復|第二階段/,
@@ -123,6 +135,18 @@
       acceptRegex: /系統跳出了結婚申請|道具欄合在了一起/,
       coverRegex: /擋到.+?身前，替對方扛下了\s*(\d+)\s*點傷害/,
       endRegex: /把婚紗還回了店裡|試婚到此結束/
+    },
+    yuuki_wedding: {
+      systemTitle: "SYSTEM ALERT // MARRIAGE REQUEST",
+      systemSubtitle: "\u5A5A\u79AE\u7684\u9418\u8072\u97FF\u8D77\uFF0C\u9019\u4E00\u6B21\u4E0D\u662F\u8A66\u7A7F\u4E86",
+      badgeIcon: "\u{1F48D}",
+      badgeText: "\u4E03\u5915\u5A5A\u7D04",
+      endBadgeText: "\u{1F494} \u5A5A\u7D04\u7D50\u675F",
+      themeColor: "#f687b3",
+      proposeRegex: /有人要跟.+?結婚嗎/,
+      acceptRegex: /婚禮的鐘聲響起|按下了接受|系統跳出了結婚申請/,
+      coverRegex: /擋到.+?身前，替對方扛下了\s*(\d+)\s*點傷害/,
+      endRegex: /把婚紗還回了店裡|試婚到此結束/
     }
   };
   var CROSS_FINISHER_PROFILES = {
@@ -131,9 +155,16 @@
       pierceRegex: /貫穿十字的正中央/,
       crossColor: "#f687b3",
       glowColor: "#b794f4"
+    },
+    yuuki_rosario: {
+      inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
+      pierceRegex: /貫穿十字的正中央/,
+      crossColor: "#f687b3",
+      glowColor: "#b794f4"
     }
   };
   var SPECIAL_SKILL_BADGE_RULES = [
+    // Yuuki / Kibayuki
     {
       skillId: "kibayuki_demand",
       regex: /被罵得抬不起頭|出手都心虛了/,
@@ -155,6 +186,85 @@
       target: "actor",
       text: (m) => `\u{1F494} \u9023\u52DD\u4E2D\u65B7 (${m[1]}\u52DD)`,
       styleClass: "dice-fail"
+    },
+    {
+      skillId: "yuuki_lived",
+      regex: /在倒下前一刻撐住了身體/,
+      target: "actor",
+      text: () => "\u{1F338} \u6BC5\u529B\u652F\u6490",
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "yuuki_lived",
+      regex: /努力活過了/,
+      target: "actor",
+      text: () => "\u2728 \u7D55\u528D\u7684\u8B49\u660E",
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "kibayuki_legacy",
+      regex: /把聖母聖詠封進卷軸/,
+      target: "target",
+      text: () => "\u{1F4DC} \u8A17\u4ED8\uFF1A\u8056\u6BCD\u8056\u8A60",
+      styleClass: "dice-roll"
+    },
+    // Kinomoto Sakura
+    {
+      skillId: "sakura_release",
+      regex: /封印解除/,
+      target: "actor",
+      text: () => "\u{1F511} \u5C01\u5370\u89E3\u9664\uFF01",
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "sakura_convert",
+      regex: /把「(.+?)」轉換成了小櫻牌/,
+      target: "actor",
+      text: (m) => `\u{1F31F} \u5C0F\u6AFB\u724C\u3010${m[1]}\u3011`,
+      styleClass: "dice-roll"
+    },
+    {
+      skillId: "sakura_shield",
+      regex: /透明的光罩張開/,
+      target: "actor",
+      text: () => "\u{1F6E1}\uFE0F \u76FE\u4E4B\u724C\u5C55\u958B",
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "sakura_invincible_spell",
+      regex: /絕對沒問題的/,
+      target: "actor",
+      text: () => "\u{1F338} \u7D55\u5C0D\u6C92\u554F\u984C\u7684\uFF01",
+      styleClass: "dice-pass"
+    },
+    // Genji
+    {
+      skillId: "genji_deflect",
+      regex: /擺出了招架的架勢/,
+      target: "actor",
+      text: () => "\u2694\uFE0F \u62DB\u67B6\u67B6\u52E2",
+      styleClass: "dice-roll"
+    },
+    {
+      skillId: "default",
+      regex: /(?:主要|次要)特殊能力「(.+?)」已啟用/,
+      target: "actor",
+      text: (m) => `\u26A1 ${m[1]}`,
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "default",
+      regex: /自己繞到邊線抓起一個醫療包/,
+      target: "actor",
+      text: () => "\u{1F691} \u7DCA\u6025\u91AB\u7642\u5305",
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "default",
+      regex: /收刀入鞘，綠光熄了/,
+      target: "actor",
+      text: () => "\u{1F5E1}\uFE0F \u6536\u5200\u5165\u9798",
+      styleClass: "dice-warn"
     }
   ];
 
@@ -281,47 +391,59 @@
         }
         return;
       }
-      const searchLimit = firstPostRebirthDeltaIndex !== -1 ? firstPostRebirthDeltaIndex : anchorIndex;
-      let rebirthFrameIndex = -1;
-      for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
+      const rebirthIndices = [];
+      let lastDamageFrameSeen = lowHpStartIndex;
+      for (let i = lowHpStartIndex + 1; i <= anchorIndex; i++) {
         const f = frames[i];
-        if (f.actorId === actor.id && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type) && REBIRTH_RULES.dialogueRegex.test(f.message)) {
-          rebirthFrameIndex = i;
-          break;
+        const delta = f.hpDeltas?.get(actor.id) || 0;
+        if (delta < 0) {
+          lastDamageFrameSeen = i;
         }
-      }
-      if (rebirthFrameIndex === -1) {
-        for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
-          const f = frames[i];
-          if (f.targetId === actor.id && f.type === "BLOCK" && f.message.includes(REBIRTH_RULES.blockKeyword)) {
-            rebirthFrameIndex = i;
-            break;
+        if (f.actorId === actor.id && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type) && REBIRTH_RULES.dialogueRegex.test(f.message)) {
+          if (rebirthIndices.length === 0 || lastDamageFrameSeen > rebirthIndices[rebirthIndices.length - 1]) {
+            rebirthIndices.push(i);
+          } else {
+            rebirthIndices[rebirthIndices.length - 1] = i;
           }
         }
       }
-      if (rebirthFrameIndex === -1) {
-        rebirthFrameIndex = searchLimit;
-      }
-      const backwardHp = new Array(anchorIndex + 1);
-      let currentBackHp = anchorHp;
-      for (let i = anchorIndex; i >= rebirthFrameIndex; i--) {
-        backwardHp[i] = currentBackHp;
-        const delta = frames[i].hpDeltas?.get(actor.id) || 0;
-        currentBackHp = Math.max(0, Math.min(actor.maxHp, currentBackHp - delta));
-      }
-      const prevHp = frames[Math.max(0, rebirthFrameIndex - 1)].actorsHpState.get(actor.id) ?? hpAtLowStart;
-      const healedAmount = Math.round(backwardHp[rebirthFrameIndex] - prevHp);
-      if (healedAmount > 0) {
-        const rebirthFrame = frames[rebirthFrameIndex];
-        rebirthFrame.rebirthHeal = true;
-        rebirthFrame.isBeneficial = true;
-        rebirthFrame.value = healedAmount;
-        if (!rebirthFrame.vfx.includes("flash-green")) {
-          rebirthFrame.vfx.push("flash-green");
+      if (rebirthIndices.length === 0) {
+        const searchLimit = firstPostRebirthDeltaIndex !== -1 ? firstPostRebirthDeltaIndex : anchorIndex;
+        let fallbackIdx = -1;
+        for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
+          const f = frames[i];
+          if (f.targetId === actor.id && f.type === "BLOCK" && f.message.includes(REBIRTH_RULES.blockKeyword)) {
+            fallbackIdx = i;
+            break;
+          }
         }
+        rebirthIndices.push(fallbackIdx !== -1 ? fallbackIdx : searchLimit);
       }
-      for (let i = rebirthFrameIndex; i <= anchorIndex; i++) {
-        frames[i].actorsHpState.set(actor.id, backwardHp[i]);
+      for (let s = 0; s < rebirthIndices.length; s++) {
+        const rIdx = rebirthIndices[s];
+        const segEnd = s + 1 < rebirthIndices.length ? rebirthIndices[s + 1] - 1 : anchorIndex;
+        const segEndHp = s + 1 < rebirthIndices.length ? 0 : anchorHp;
+        const backwardHp = new Array(segEnd - rIdx + 1);
+        let currentBackHp = segEndHp;
+        for (let i = segEnd; i >= rIdx; i--) {
+          backwardHp[i - rIdx] = currentBackHp;
+          const delta = frames[i].hpDeltas?.get(actor.id) || 0;
+          currentBackHp = Math.max(0, Math.min(actor.maxHp, currentBackHp - delta));
+        }
+        const prevHp = frames[Math.max(0, rIdx - 1)].actorsHpState.get(actor.id) ?? 0;
+        const healedAmount = Math.round(backwardHp[0] - prevHp);
+        if (healedAmount > 0) {
+          const rebirthFrame = frames[rIdx];
+          rebirthFrame.rebirthHeal = true;
+          rebirthFrame.isBeneficial = true;
+          rebirthFrame.value = healedAmount;
+          if (!rebirthFrame.vfx.includes("flash-green")) {
+            rebirthFrame.vfx.push("flash-green");
+          }
+        }
+        for (let i = rIdx; i <= segEnd; i++) {
+          frames[i].actorsHpState.set(actor.id, backwardHp[i - rIdx]);
+        }
       }
       for (let i = anchorIndex + 1; i < frames.length; i++) {
         frames[i].actorsHpState.set(actor.id, anchorHp);
@@ -425,7 +547,7 @@
         avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
         isSummon,
         ownerId: player.summonerId || null,
-        initiallySpawned: !summonedIds.has(id)
+        initiallySpawned: !isSummon
       }));
     });
     (p.enemies || []).forEach((enemy) => {
@@ -448,23 +570,20 @@
         avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
         isSummon,
         ownerId: enemy.summonerId || null,
-        initiallySpawned: !summonedIds.has(id)
+        initiallySpawned: !isSummon
       }));
     });
     logs.forEach((log, index) => {
       if (!log || log.type !== "SUMMON" || !log.targetId) return;
       const owner = engineState.actors.get(log.actorId);
-      const explicitHp = Number(log.maxHp || log.hp || log.stats?.hp);
-      const hasExplicitHp = explicitHp > 1;
-      const maxHp = hasExplicitHp ? explicitHp : 1;
       const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
       if (!engineState.actors.has(log.targetId)) {
         engineState.actors.set(log.targetId, createActorEntity({
           id: log.targetId,
           name: summonName,
           side: owner ? owner.side : "left",
-          maxHp,
-          hideHp: !hasExplicitHp,
+          maxHp: 1,
+          hideHp: true,
           avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
           isSummon: true,
           ownerId: log.actorId || null,
@@ -542,6 +661,8 @@
         deadActorId: null,
         isSummonEvent: false,
         summonedActorId: null,
+        isDespawnEvent: false,
+        despawnedActorId: null,
         actorsBondState: /* @__PURE__ */ new Map(),
         contractEvent: null,
         isContractRepeat: false,
@@ -555,34 +676,39 @@
         if (!id || !delta) return;
         frame.hpDeltas.set(id, (frame.hpDeltas.get(id) || 0) + delta);
       };
+      const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
+      const isReactiveCoverText = frame.type === "SKILL_TEXT" && contractProfile && contractProfile.coverRegex.test(frame.message);
       let isTurnAction = false;
-      if (["SKILL_TEXT", "BOSS_DIALOGUE"].includes(frame.type)) {
+      let turnActorId = frame.actorId;
+      if (frame.type === "BOSS_DIALOGUE") {
         isTurnAction = true;
-      } else if (["DAMAGE", "MISS", "BLOCK"].includes(frame.type) && !frame.isCounter && !frame.isSelfDamage && !frame.isEnvironmentalPulse && frame.source !== "DIRECT") {
+      } else if (frame.type === "SKILL_TEXT" && !frame.isCounter && !frame.passiveId && !isReactiveCoverText) {
         isTurnAction = true;
+      } else if (["DAMAGE", "MISS", "BLOCK"].includes(frame.type) && !frame.isCounter && !frame.isSelfDamage && !frame.isEnvironmentalPulse && frame.source !== "DIRECT" && frame.source !== "REFLECTION") {
+        isTurnAction = true;
+      } else if (frame.type === "COUNTER" && frame.targetId) {
+        isTurnAction = true;
+        turnActorId = frame.targetId;
       }
-      if (isTurnAction && frame.actorId) {
-        if (lastTurnActorId !== frame.actorId) {
+      if (isTurnAction && turnActorId) {
+        if (lastTurnActorId !== turnActorId) {
           currentTurn++;
-          lastTurnActorId = frame.actorId;
+          lastTurnActorId = turnActorId;
           frame.turnNumber = currentTurn;
-          const actor = engineState.actors.get(frame.actorId);
+          const actor = engineState.actors.get(turnActorId);
           if (actor) actor.turnNumbers.push(currentTurn);
         }
       }
       if (log.type === "SUMMON" && log.targetId) {
         const owner = engineState.actors.get(log.actorId);
-        const explicitHp = Number(log.maxHp || log.hp || log.stats?.hp);
-        const hasExplicitHp = explicitHp > 1;
-        const maxHp = hasExplicitHp ? explicitHp : 1;
         const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
         if (!engineState.actors.has(log.targetId)) {
           engineState.actors.set(log.targetId, createActorEntity({
             id: log.targetId,
             name: summonName,
             side: owner ? owner.side : "left",
-            maxHp,
-            hideHp: !hasExplicitHp,
+            maxHp: 1,
+            hideHp: true,
             avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
             isSummon: true,
             ownerId: log.actorId,
@@ -597,6 +723,24 @@
         frame.isSummonEvent = true;
         frame.summonedActorId = log.targetId;
       }
+      if (log.actorId && actorsSummonState.get(log.actorId) === false && !["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(log.type)) {
+        const summonActor = engineState.actors.get(log.actorId);
+        if (summonActor && summonActor.isSummon) {
+          summonActor.currentHp = summonActor.maxHp;
+          actorsDeathState.set(log.actorId, false);
+          actorsSummonState.set(log.actorId, true);
+          frame.isSummonEvent = true;
+          frame.summonedActorId = log.actorId;
+        }
+      }
+      if (log.actorId && (log.type === "SKILL_TEXT" || log.type === "TEXT") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
+        const actingUnit = engineState.actors.get(log.actorId);
+        if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
+          actorsSummonState.set(log.actorId, false);
+          frame.isDespawnEvent = true;
+          frame.despawnedActorId = log.actorId;
+        }
+      }
       if (log.type === "BUFF_APPLY") {
         const attacker = engineState.actors.get(log.actorId);
         const victim = engineState.actors.get(log.targetId);
@@ -604,6 +748,10 @@
           if (!buffSrc[victim.id]) buffSrc[victim.id] = {};
           buffSrc[victim.id][log.buffId || log.skillId || ""] = attacker.id;
           applyLog.push({ victim: victim.id, actor: attacker.id, msg: String(log.message || "") });
+        }
+        if (frame.skillId === "sakura_shield" && log.targetId) {
+          frame.vfx.push("flash-blue");
+          frame.isBeneficial = true;
         }
       }
       if (["DAMAGE", "BLOCK", "COUNTER"].includes(log.type)) {
@@ -657,7 +805,7 @@
         }
       } else if (log.type === "HP_REMAINING") {
         const target = engineState.actors.get(log.actorId);
-        if (target && log.maxHp) {
+        if (target && log.maxHp && !target.isSummon) {
           target.maxHp = Number(log.maxHp);
           target.hideHp = false;
         }
@@ -731,7 +879,6 @@
             addHpDelta(target.id, -amount);
           }
         }
-        const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
         if (contractProfile && log.type === "SKILL_TEXT") {
           if (contractProfile.proposeRegex.test(msg)) {
             frame.contractEvent = "PROPOSE";
@@ -918,6 +1065,7 @@
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
     .actor.unspawned { display: none !important; }
     .actor.spawning { animation: summonSpawn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.despawning { animation: summonDespawn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; }
@@ -970,9 +1118,9 @@
     .ult-text-wrapper.left-side { right: 8%; }
     .ult-text-wrapper.right-side { left: 8%; }
     .ult-quote { display: inline-block; margin-left: 2vw; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8), -3px 3px 0px #000, -8px 8px 0px rgba(180, 0, 0, 0.9); animation: ult-stamp 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
-    .ult-quote.lang-zh { font-size: clamp(30px, 7vh, 70px); text-orientation: upright; letter-spacing: 1vh; }
+    .ult-quote.lang-zh { font-size: clamp(30px, 7vh, 70px); text-orientation: mixed; letter-spacing: 1vh; }
     .ult-quote.lang-en { font-size: clamp(24px, 6vh, 60px); text-orientation: mixed; letter-spacing: 4px; }
-    .ult-flavor { display: inline-block; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: clamp(14px, 2.5vh, 22px); color: #e2e8f0; text-shadow: -2px 2px 4px #000; text-orientation: upright; letter-spacing: 0.5vh; animation: ult-stamp-delay 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
+    .ult-flavor { display: inline-block; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: clamp(14px, 2.5vh, 22px); color: #e2e8f0; text-shadow: -2px 2px 4px #000; text-orientation: mixed; letter-spacing: 0.5vh; animation: ult-stamp-delay 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
 
     /* Low HP Danger Pulse */
     @keyframes panting-pulse { 0%, 100% { filter: drop-shadow(0 0 4px #e53e3e); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px #c53030); transform: scale(1.03); } }
@@ -994,6 +1142,7 @@
 
     /* Keyframe Animations */
     @keyframes summonSpawn { 0% { opacity: 0; transform: scale(0.3) translateY(-30px); filter: brightness(3) drop-shadow(0 0 20px #fc8181); } 100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } }
+    @keyframes summonDespawn { 0% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } 100% { opacity: 0; transform: scale(0.4) translateY(-25px); filter: brightness(2.5) blur(3px); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
     @keyframes ult-bg-zoom { 0% { transform: scale(1.15); filter: grayscale(0%) contrast(100%) brightness(0.9); } 10% { filter: grayscale(70%) contrast(160%) brightness(0.55); } 100% { transform: scale(1); filter: grayscale(70%) contrast(160%) brightness(0.55); } }
@@ -1055,6 +1204,18 @@
 `;
 
   // src/cinematics.js
+  function stripCombatOutcomeText(rawText, actorName = "") {
+    let text = String(rawText || "");
+    if (actorName) {
+      const escapedActorName = escapeRegExp(actorName);
+      text = text.replace(new RegExp(`^${escapedActorName}[\uFF1A:]?\\s*(\u7684\\s*)?`), "");
+    }
+    text = text.replace(/[，,、]?\s*會心一擊[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*造成了?\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, "").replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?受到\s*\d+\s*點傷害[！!]?/g, "").replace(/[，,、]?\s*(?:對\s*.+?\s*)?造成了?\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, "").replace(/[—─ー―-]+$/g, "").replace(/^[，,、：:\s]+/, "").replace(/[，,、\s]+$/, "").trim();
+    if (text.length > 0 && !/[。！!?.」…]$/.test(text)) {
+      text += "\u2026\u2026";
+    }
+    return text;
+  }
   async function playFatalitySequence(sr, actorId) {
     const overlay = sr.getElementById("fatality-overlay");
     const actorEl = sr.getElementById(`actor-${actorId}`);
@@ -1103,11 +1264,11 @@
     textWrapper.className = `ult-text-wrapper ${actor.side === "left" ? "left-side" : "right-side"}`;
     let mainText = "";
     let subText = "";
-    const quoteMatch = frame.message.match(/「(.*?)」/);
-    const remainingText = frame.message.replace(actor.name, "").replace(/[：:]?\s*「.*?」\s*/, " ").trim();
-    if (quoteMatch && quoteMatch[1].length <= 15 && remainingText.length > 0) {
-      mainText = quoteMatch[1];
-      subText = remainingText;
+    const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
+    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 15) {
+      mainText = spokenQuoteMatch[1];
+      const rawRemainingText = frame.message.replace(actor.name, "").replace(/[：:]\s*「[^」]+」\s*/, " ").trim();
+      subText = stripCombatOutcomeText(rawRemainingText, actor.name);
     } else {
       let extractedSkillName = null;
       const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
@@ -1129,15 +1290,7 @@
         }
         mainText = rawSkillId.replace(/_/g, " ").toUpperCase();
       }
-      const escapedActorName = escapeRegExp(actor.name);
-      let cleanMsg = frame.message.replace(new RegExp(`^${escapedActorName}[\uFF1A:]?\\s*(\u7684\\s*)?`), "");
-      cleanMsg = cleanMsg.replace(/[，,]?\s*會心一擊！?/g, "");
-      cleanMsg = cleanMsg.replace(/[，,]?\s*(對\s*.+?\s*)?造成了?\s*\d+\s*點(真實)?傷害！?/g, "");
-      cleanMsg = cleanMsg.replace(/^[，,]\s*/, "").trim();
-      if (cleanMsg.length > 0 && !/[。！!?.—]$/.test(cleanMsg)) {
-        cleanMsg += "\u2026\u2026";
-      }
-      subText = cleanMsg;
+      subText = stripCombatOutcomeText(frame.message, actor.name);
     }
     const isEnglish = /[A-Za-z]/.test(mainText);
     const quoteEl = document.createElement("div");
@@ -1347,6 +1500,7 @@
   }
   function spawnRosarioCross(frame, sr) {
     const targetId = frame.targetId || frame.actorId;
+    if (!targetId) return;
     const targetEl = sr.getElementById(`actor-${targetId}`);
     if (!targetEl) return;
     const existing = targetEl.querySelector(".rosario-cross-mark");
@@ -1398,7 +1552,14 @@
         continue;
       }
       if (["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(lookahead.type)) {
-        if (lookahead.isCounter || lookahead.type === "COUNTER") continue;
+        if (lookahead.isCounter || lookahead.type === "COUNTER") {
+          const counteredAttackerId = lookahead.counterSource?.targetId || lookahead.targetId;
+          if (counteredAttackerId && counteredAttackerId !== frame.actorId) {
+            shouldReturnToOrigin = true;
+            break;
+          }
+          continue;
+        }
         if (lookahead.isSelfDamage || lookahead.isEnvironmentalPulse) {
           shouldReturnToOrigin = true;
           continue;
@@ -1449,6 +1610,13 @@
       return 420;
     }
     const displayDamage = frame.value || frame.actualDamage || 0;
+    if (frame.isCounter || frame.type === "COUNTER") {
+      const counteredAttackerId = frame.counterSource?.targetId || frame.targetId;
+      if (counteredAttackerId && engineState.currentCombo.actorId !== counteredAttackerId) {
+        engineState.currentCombo.keepAlive = false;
+        engineState.currentCombo.knockedBack = true;
+      }
+    }
     if (!frame.isCounter && frame.type !== "COUNTER") {
       if (engineState.currentCombo.lastFrameIndex !== frame.index) {
         if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
@@ -1902,6 +2070,18 @@
           { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)", offset: 1 }
         ];
         targetAnimConfig.duration = 420 / speed;
+      }
+      if (["genji_swift_strike", "genji_dragonblade", "genji_dragonblade_sweep"].includes(frame.skillId) && frame.type === "DAMAGE") {
+        triggerClashSpark(55, "#48bb78");
+        actorKeyframes = actorKeyframes.map((kf, idx) => {
+          if (idx > 0 && idx < actorKeyframes.length - 1) {
+            return {
+              ...kf,
+              filter: "brightness(1.45) drop-shadow(0 0 16px #48bb78)"
+            };
+          }
+          return kf;
+        });
       }
       if (frame.rosarioEvent === "PIERCE_CROSS") {
         triggerClashSpark(60, "#f687b3");
@@ -2482,6 +2662,12 @@
   }
 
   // src/stage.js
+  function isPrimaryUltimateTriggerFrame(frame) {
+    if (frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
+      return false;
+    }
+    return true;
+  }
   function createLogLineElement(frame) {
     const msgEl = document.createElement("div");
     const isDialogue = frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE";
@@ -2746,7 +2932,7 @@
         if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
         el.style.filter = "";
         el.style.transform = "";
-        el.classList.remove("blink-active", "spawning");
+        el.classList.remove("blink-active", "spawning", "despawning");
       }
     });
     const dialog = sr.getElementById("dialog-box");
@@ -2757,7 +2943,7 @@
         const limit = Math.min(frameIndex, engineState.frames.length);
         for (let i = 0; i < limit; i++) {
           const f = engineState.frames[i];
-          if (f.skillTier === "ultimate" && ["SKILL_TEXT", "TEXT", "DAMAGE"].includes(f.type) && !f.isNormalAttack) {
+          if (isPrimaryUltimateTriggerFrame(f)) {
             const a = engineState.actors.get(f.actorId);
             if (a) a.lastUltimateTurn = f.turnNumber;
           }
@@ -2785,7 +2971,7 @@
           fillEl.classList.remove("warning", "danger");
         }
         if (wrapperEl) {
-          wrapperEl.classList.remove("dead", "danger-state", "spawning");
+          wrapperEl.classList.remove("dead", "danger-state", "spawning", "despawning");
           if (actor.initiallySpawned === false) wrapperEl.classList.add("unspawned");
           else wrapperEl.classList.remove("unspawned");
         }
@@ -2804,6 +2990,7 @@
       const wrapperEl = sr.getElementById(`actor-${actorId}`);
       const isSpawned = frame.actorsSummonState ? frame.actorsSummonState.get(actorId) !== false : actor?.initiallySpawned !== false;
       if (wrapperEl) {
+        wrapperEl.classList.remove("spawning", "despawning");
         if (!isSpawned) wrapperEl.classList.add("unspawned");
         else wrapperEl.classList.remove("unspawned");
       }
@@ -2882,11 +3069,24 @@
     if (frame.isSummonEvent && frame.summonedActorId) {
       const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
       if (summonedEl) {
-        summonedEl.classList.remove("unspawned");
+        summonedEl.classList.remove("unspawned", "despawning");
         summonedEl.classList.add("spawning");
         setTimeout(() => {
           if (summonedEl.isConnected) summonedEl.classList.remove("spawning");
-        }, 600);
+        }, 600 / getEffectiveSpeed());
+      }
+    }
+    if (frame.isDespawnEvent && frame.despawnedActorId) {
+      const despawnedEl = sr.getElementById(`actor-${frame.despawnedActorId}`);
+      if (despawnedEl) {
+        despawnedEl.classList.remove("spawning");
+        despawnedEl.classList.add("despawning");
+        setTimeout(() => {
+          if (despawnedEl.isConnected) {
+            despawnedEl.classList.remove("despawning");
+            despawnedEl.classList.add("unspawned");
+          }
+        }, 450 / getEffectiveSpeed());
       }
     }
     const isSpokenSkillQuote = frame.type === "SKILL_TEXT" && /^[^：「\s]+：「.+」$/.test(frame.message.trim());
@@ -2894,7 +3094,7 @@
       const readTime = renderSpeechBubble(frame, sr, token);
       frameDuration += isSpokenSkillQuote ? Math.min(readTime, 900) : readTime;
     }
-    if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED"].includes(frame.type) || frame.type === "SKILL_TEXT") {
+    if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED"].includes(frame.type) || frame.type === "SKILL_TEXT" || frame.type === "TEXT") {
       spawnStatusOrDiceBadge(frame, sr);
     }
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
@@ -2908,9 +3108,9 @@
       spawnRosarioCross(frame, sr);
       frameDuration = 520;
     }
-    if (frame.skillTier === "ultimate" && ["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) && !frame.isNormalAttack) {
+    if (isPrimaryUltimateTriggerFrame(frame)) {
       const actor = engineState.actors.get(frame.actorId);
-      const isMultiHitSubFrame = /^第\s*\d+\s*[劍擊發道]/.test(frame.message) || frame.rosarioEvent === "INSCRIBE_CROSS";
+      const isMultiHitSubFrame = ULTIMATE_SUBFRAME_REGEX.test(frame.message.trim()) || frame.rosarioEvent === "INSCRIBE_CROSS";
       if (actor && actor.lastUltimateTurn !== frame.turnNumber && !isMultiHitSubFrame) {
         actor.lastUltimateTurn = frame.turnNumber;
         await playUltimateCutIn(frame, sr, token);

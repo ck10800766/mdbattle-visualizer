@@ -110,8 +110,8 @@ export function markAOEWaves(frames) {
 
 /**
  * Calibrates actor HP timelines using terminal HP_REMAINING or DEATH anchors.
- * Reconstructs unlogged Phase 2 Boss HP regeneration (e.g., kneeling at 1 HP and reviving)
- * by walking backward from the anchor state through recorded HP deltas.
+ * Supports both single and multi-stage Boss revivals (e.g., Oni Gunsou reviving multiple times)
+ * by segmenting phases at revival narrative frames or walking backward from the anchor state.
  * @param {Array<object>} frames - The list of combat state frames.
  */
 export function calibrateHpWithAnchors(frames) {
@@ -147,7 +147,6 @@ export function calibrateHpWithAnchors(frames) {
         }
 
         if (lowHpStartIndex < 0) {
-            // No low-HP phase occurred; ensure anchor and trailing frames match anchorHp
             for (let i = anchorIndex; i < frames.length; i++) {
                 frames[i].actorsHpState.set(actor.id, anchorHp);
             }
@@ -156,7 +155,6 @@ export function calibrateHpWithAnchors(frames) {
 
         const hpAtLowStart = frames[lowHpStartIndex].actorsHpState.get(actor.id) ?? 0;
 
-        // Sum all unclamped HP deltas between lowHpStartIndex and anchorIndex
         let sumDeltasAfterLow = 0;
         let firstPostRebirthDeltaIndex = -1;
         for (let i = lowHpStartIndex + 1; i <= anchorIndex; i++) {
@@ -170,7 +168,6 @@ export function calibrateHpWithAnchors(frames) {
         const expectedEndHpWithoutRebirth = hpAtLowStart + sumDeltasAfterLow;
         const missingHeal = anchorHp - expectedEndHpWithoutRebirth;
 
-        // If no hidden phase-transition heal exists, sync anchor frames and exit
         if (Math.abs(missingHeal) <= 1) {
             for (let i = anchorIndex; i < frames.length; i++) {
                 frames[i].actorsHpState.set(actor.id, anchorHp);
@@ -178,24 +175,34 @@ export function calibrateHpWithAnchors(frames) {
             return;
         }
 
-        const searchLimit = firstPostRebirthDeltaIndex !== -1 ? firstPostRebirthDeltaIndex : anchorIndex;
-
-        // Primary match: narrative frame where the Boss stands back up / enters Phase 2
-        let rebirthFrameIndex = -1;
-        for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
+        // Collect all explicit narrative revival frames for this actor (supports multi-revive bosses)
+        const rebirthIndices = [];
+        let lastDamageFrameSeen = lowHpStartIndex;
+        for (let i = lowHpStartIndex + 1; i <= anchorIndex; i++) {
             const f = frames[i];
+            const delta = f.hpDeltas?.get(actor.id) || 0;
+            if (delta < 0) {
+                lastDamageFrameSeen = i;
+            }
             if (
                 f.actorId === actor.id &&
                 ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(f.type) &&
                 REBIRTH_RULES.dialogueRegex.test(f.message)
             ) {
-                rebirthFrameIndex = i;
-                break;
+                // Only register one revival per damage phase
+                if (rebirthIndices.length === 0 || lastDamageFrameSeen > rebirthIndices[rebirthIndices.length - 1]) {
+                    rebirthIndices.push(i);
+                } else {
+                    // Use the latest line in the same revival sequence (e.g., "站了起來，傷口全部合上了。")
+                    rebirthIndices[rebirthIndices.length - 1] = i;
+                }
             }
         }
 
-        // Fallback 1: first BLOCK frame containing the rebirth keyword
-        if (rebirthFrameIndex === -1) {
+        // Fallback if no dialogue matched
+        if (rebirthIndices.length === 0) {
+            const searchLimit = firstPostRebirthDeltaIndex !== -1 ? firstPostRebirthDeltaIndex : anchorIndex;
+            let fallbackIdx = -1;
             for (let i = lowHpStartIndex + 1; i <= searchLimit; i++) {
                 const f = frames[i];
                 if (
@@ -203,42 +210,45 @@ export function calibrateHpWithAnchors(frames) {
                     f.type === 'BLOCK' &&
                     f.message.includes(REBIRTH_RULES.blockKeyword)
                 ) {
-                    rebirthFrameIndex = i;
+                    fallbackIdx = i;
                     break;
                 }
             }
+            rebirthIndices.push(fallbackIdx !== -1 ? fallbackIdx : searchLimit);
         }
 
-        // Fallback 2: frame immediately at the first post-rebirth HP delta
-        if (rebirthFrameIndex === -1) {
-            rebirthFrameIndex = searchLimit;
-        }
+        // Calibrate each revival segment [rebirthStart .. segmentEnd] by walking backward from segmentEndHp
+        for (let s = 0; s < rebirthIndices.length; s++) {
+            const rIdx = rebirthIndices[s];
+            const segEnd = s + 1 < rebirthIndices.length ? rebirthIndices[s + 1] - 1 : anchorIndex;
+            const segEndHp = s + 1 < rebirthIndices.length ? 0 : anchorHp;
 
-        // Walk backward from anchorIndex down to rebirthFrameIndex using recorded hpDeltas
-        const backwardHp = new Array(anchorIndex + 1);
-        let currentBackHp = anchorHp;
-        for (let i = anchorIndex; i >= rebirthFrameIndex; i--) {
-            backwardHp[i] = currentBackHp;
-            const delta = frames[i].hpDeltas?.get(actor.id) || 0;
-            currentBackHp = Math.max(0, Math.min(actor.maxHp, currentBackHp - delta));
-        }
+            const backwardHp = new Array(segEnd - rIdx + 1);
+            let currentBackHp = segEndHp;
+            for (let i = segEnd; i >= rIdx; i--) {
+                backwardHp[i - rIdx] = currentBackHp;
+                const delta = frames[i].hpDeltas?.get(actor.id) || 0;
+                currentBackHp = Math.max(0, Math.min(actor.maxHp, currentBackHp - delta));
+            }
 
-        const prevHp = frames[Math.max(0, rebirthFrameIndex - 1)].actorsHpState.get(actor.id) ?? hpAtLowStart;
-        const healedAmount = Math.round(backwardHp[rebirthFrameIndex] - prevHp);
+            const prevHp = frames[Math.max(0, rIdx - 1)].actorsHpState.get(actor.id) ?? 0;
+            const healedAmount = Math.round(backwardHp[0] - prevHp);
 
-        if (healedAmount > 0) {
-            const rebirthFrame = frames[rebirthFrameIndex];
-            rebirthFrame.rebirthHeal = true;
-            rebirthFrame.isBeneficial = true;
-            rebirthFrame.value = healedAmount;
-            if (!rebirthFrame.vfx.includes('flash-green')) {
-                rebirthFrame.vfx.push('flash-green');
+            if (healedAmount > 0) {
+                const rebirthFrame = frames[rIdx];
+                rebirthFrame.rebirthHeal = true;
+                rebirthFrame.isBeneficial = true;
+                rebirthFrame.value = healedAmount;
+                if (!rebirthFrame.vfx.includes('flash-green')) {
+                    rebirthFrame.vfx.push('flash-green');
+                }
+            }
+
+            for (let i = rIdx; i <= segEnd; i++) {
+                frames[i].actorsHpState.set(actor.id, backwardHp[i - rIdx]);
             }
         }
 
-        for (let i = rebirthFrameIndex; i <= anchorIndex; i++) {
-            frames[i].actorsHpState.set(actor.id, backwardHp[i]);
-        }
         for (let i = anchorIndex + 1; i < frames.length; i++) {
             frames[i].actorsHpState.set(actor.id, anchorHp);
         }

@@ -57,7 +57,14 @@ export function lookaheadComboState(currentIndex, frame) {
         }
 
         if (['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(lookahead.type)) {
-            if (lookahead.isCounter || lookahead.type === 'COUNTER') continue;
+            if (lookahead.isCounter || lookahead.type === 'COUNTER') {
+                const counteredAttackerId = lookahead.counterSource?.targetId || lookahead.targetId;
+                if (counteredAttackerId && counteredAttackerId !== frame.actorId) {
+                    shouldReturnToOrigin = true;
+                    break;
+                }
+                continue;
+            }
             if (lookahead.isSelfDamage || lookahead.isEnvironmentalPulse) {
                 shouldReturnToOrigin = true;
                 continue;
@@ -141,6 +148,15 @@ export function playCombatAnimation(
     }
 
     const displayDamage = frame.value || frame.actualDamage || 0;
+
+    // If a counter frame involves a different attacker than the active combo owner, break the previous combo
+    if (frame.isCounter || frame.type === 'COUNTER') {
+        const counteredAttackerId = frame.counterSource?.targetId || frame.targetId;
+        if (counteredAttackerId && engineState.currentCombo.actorId !== counteredAttackerId) {
+            engineState.currentCombo.keepAlive = false;
+            engineState.currentCombo.knockedBack = true;
+        }
+    }
 
     // Update combo hit & damage state for non-counter offensive actions
     if (!frame.isCounter && frame.type !== 'COUNTER') {
@@ -685,7 +701,24 @@ export function playCombatAnimation(
             targetAnimConfig.duration = 420 / speed;
         }
 
-        // 11th Sword Cross-Piercing burst for Mother's Rosario
+        // Cyber-ninja emerald dash glow for Genji's Swift Strike and Dragonblade
+        if (
+            ['genji_swift_strike', 'genji_dragonblade', 'genji_dragonblade_sweep'].includes(frame.skillId) &&
+            frame.type === 'DAMAGE'
+        ) {
+            triggerClashSpark(55, '#48bb78');
+            actorKeyframes = actorKeyframes.map((kf, idx) => {
+                if (idx > 0 && idx < actorKeyframes.length - 1) {
+                    return {
+                        ...kf,
+                        filter: 'brightness(1.45) drop-shadow(0 0 16px #48bb78)'
+                    };
+                }
+                return kf;
+            });
+        }
+
+        // 11th Sword Cross-Piercing burst for Mother's Rosario (kibayuki_rosario & yuuki_rosario)
         if (frame.rosarioEvent === 'PIERCE_CROSS') {
             triggerClashSpark(60, '#f687b3');
             triggerClashSpark(140, '#b794f4');
@@ -697,7 +730,7 @@ export function playCombatAnimation(
                 }, 450 / speed);
             }
         }
-        
+
         actorEl.animate(actorKeyframes, actorAnimConfig);
         if (targetKeyframes.length > 0) {
             targetEl.animate(targetKeyframes, targetAnimConfig);

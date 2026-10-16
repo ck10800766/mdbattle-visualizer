@@ -37,6 +37,7 @@ export const STAGE_STYLES = `
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
     .actor.unspawned { display: none !important; }
     .actor.spawning { animation: summonSpawn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.despawning { animation: summonDespawn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; }
@@ -89,9 +90,9 @@ export const STAGE_STYLES = `
     .ult-text-wrapper.left-side { right: 8%; }
     .ult-text-wrapper.right-side { left: 8%; }
     .ult-quote { display: inline-block; margin-left: 2vw; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8), -3px 3px 0px #000, -8px 8px 0px rgba(180, 0, 0, 0.9); animation: ult-stamp 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
-    .ult-quote.lang-zh { font-size: clamp(30px, 7vh, 70px); text-orientation: upright; letter-spacing: 1vh; }
+    .ult-quote.lang-zh { font-size: clamp(30px, 7vh, 70px); text-orientation: mixed; letter-spacing: 1vh; }
     .ult-quote.lang-en { font-size: clamp(24px, 6vh, 60px); text-orientation: mixed; letter-spacing: 4px; }
-    .ult-flavor { display: inline-block; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: clamp(14px, 2.5vh, 22px); color: #e2e8f0; text-shadow: -2px 2px 4px #000; text-orientation: upright; letter-spacing: 0.5vh; animation: ult-stamp-delay 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
+    .ult-flavor { display: inline-block; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: clamp(14px, 2.5vh, 22px); color: #e2e8f0; text-shadow: -2px 2px 4px #000; text-orientation: mixed; letter-spacing: 0.5vh; animation: ult-stamp-delay 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
 
     /* Low HP Danger Pulse */
     @keyframes panting-pulse { 0%, 100% { filter: drop-shadow(0 0 4px #e53e3e); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px #c53030); transform: scale(1.03); } }
@@ -113,6 +114,7 @@ export const STAGE_STYLES = `
 
     /* Keyframe Animations */
     @keyframes summonSpawn { 0% { opacity: 0; transform: scale(0.3) translateY(-30px); filter: brightness(3) drop-shadow(0 0 20px #fc8181); } 100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } }
+    @keyframes summonDespawn { 0% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } 100% { opacity: 0; transform: scale(0.4) translateY(-25px); filter: brightness(2.5) blur(3px); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
     @keyframes ult-bg-zoom { 0% { transform: scale(1.15); filter: grayscale(0%) contrast(100%) brightness(0.9); } 10% { filter: grayscale(70%) contrast(160%) brightness(0.55); } 100% { transform: scale(1); filter: grayscale(70%) contrast(160%) brightness(0.55); } }

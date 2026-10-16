@@ -1,9 +1,11 @@
 // ==========================================
 // FILE: src/stage.js
 // ==========================================
-import { 
-    getLuckDropEmoji, 
-    CONTRACT_SKILL_PROFILES 
+import {
+    getLuckDropEmoji,
+    CONTRACT_SKILL_PROFILES,
+    ULTIMATE_CUTIN_EXCLUDED_SKILLS,
+    ULTIMATE_SUBFRAME_REGEX
 } from './profiles.js';
 import {
     engineState,
@@ -29,6 +31,23 @@ import {
 import { spawnFloatingText } from './floatingText.js';
 import { showMVPPanel } from './mvp.js';
 import { armSpoilerGuard, releaseSpoilerGuard } from './spoilerGuard.js';
+
+/**
+ * Evaluates whether a given frame should trigger a full-screen Ultimate Cut-In.
+ * @param {object} frame - Combat frame to evaluate.
+ * @returns {boolean} True if this frame initiates a primary ultimate skill cast.
+ */
+function isPrimaryUltimateTriggerFrame(frame) {
+    if (
+        frame.skillTier !== 'ultimate' ||
+        !['SKILL_TEXT', 'TEXT', 'DAMAGE'].includes(frame.type) ||
+        frame.isNormalAttack ||
+        ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)
+    ) {
+        return false;
+    }
+    return true;
+}
 
 /**
  * Creates a formatted DOM element for a single combat log line in the bottom dialog box.
@@ -371,7 +390,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
             if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());
             el.style.filter = '';
             el.style.transform = '';
-            el.classList.remove('blink-active', 'spawning');
+            el.classList.remove('blink-active', 'spawning', 'despawning');
         }
     });
 
@@ -383,7 +402,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
             const limit = Math.min(frameIndex, engineState.frames.length);
             for (let i = 0; i < limit; i++) {
                 const f = engineState.frames[i];
-                if (f.skillTier === 'ultimate' && ['SKILL_TEXT', 'TEXT', 'DAMAGE'].includes(f.type) && !f.isNormalAttack) {
+                if (isPrimaryUltimateTriggerFrame(f)) {
                     const a = engineState.actors.get(f.actorId);
                     if (a) a.lastUltimateTurn = f.turnNumber;
                 }
@@ -410,7 +429,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
                 fillEl.classList.remove('warning', 'danger');
             }
             if (wrapperEl) {
-                wrapperEl.classList.remove('dead', 'danger-state', 'spawning');
+                wrapperEl.classList.remove('dead', 'danger-state', 'spawning', 'despawning');
                 if (actor.initiallySpawned === false) wrapperEl.classList.add('unspawned');
                 else wrapperEl.classList.remove('unspawned');
             }
@@ -435,6 +454,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
             : actor?.initiallySpawned !== false;
 
         if (wrapperEl) {
+            wrapperEl.classList.remove('spawning', 'despawning');
             if (!isSpawned) wrapperEl.classList.add('unspawned');
             else wrapperEl.classList.remove('unspawned');
         }
@@ -517,7 +537,7 @@ export async function playbackLoop(token) {
 }
 
 /**
- * Renders a single combat frame including log appending, summon spawns, dialogues,
+ * Renders a single combat frame including log appending, summon spawns/despawns, dialogues,
  * ultimate cut-ins, physical combat choreography, floating numbers, HP bar updates, and K.O. sequences.
  * @param {object} frame - Frame snapshot to render.
  * @param {number} token - Active playback token.
@@ -542,11 +562,25 @@ export async function renderFrame(frame, token) {
     if (frame.isSummonEvent && frame.summonedActorId) {
         const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
         if (summonedEl) {
-            summonedEl.classList.remove('unspawned');
+            summonedEl.classList.remove('unspawned', 'despawning');
             summonedEl.classList.add('spawning');
             setTimeout(() => {
                 if (summonedEl.isConnected) summonedEl.classList.remove('spawning');
-            }, 600);
+            }, 600 / getEffectiveSpeed());
+        }
+    }
+
+    if (frame.isDespawnEvent && frame.despawnedActorId) {
+        const despawnedEl = sr.getElementById(`actor-${frame.despawnedActorId}`);
+        if (despawnedEl) {
+            despawnedEl.classList.remove('spawning');
+            despawnedEl.classList.add('despawning');
+            setTimeout(() => {
+                if (despawnedEl.isConnected) {
+                    despawnedEl.classList.remove('despawning');
+                    despawnedEl.classList.add('unspawned');
+                }
+            }, 450 / getEffectiveSpeed());
         }
     }
 
@@ -562,7 +596,8 @@ export async function renderFrame(frame, token) {
     if (
         frame.diceCheck ||
         ['FATIGUE', 'FATIGUE_SKIP', 'SILENCED'].includes(frame.type) ||
-        frame.type === 'SKILL_TEXT'
+        frame.type === 'SKILL_TEXT' ||
+        frame.type === 'TEXT'
     ) {
         spawnStatusOrDiceBadge(frame, sr);
     }
@@ -581,11 +616,12 @@ export async function renderFrame(frame, token) {
         frameDuration = 520;
     }
 
-    if (frame.skillTier === 'ultimate' && ['SKILL_TEXT', 'TEXT', 'DAMAGE'].includes(frame.type) && !frame.isNormalAttack) {
+    if (isPrimaryUltimateTriggerFrame(frame)) {
         const actor = engineState.actors.get(frame.actorId);
-        // Prevent mid-combo ultimate hits (e.g., "第 1 劍" after an interleaved BOSS_DIALOGUE Switch)
-        // from re-triggering a duplicate Ultimate Cut-In.
-        const isMultiHitSubFrame = /^第\s*\d+\s*[劍擊發道]/.test(frame.message) || frame.rosarioEvent === 'INSCRIBE_CROSS';
+        const isMultiHitSubFrame =
+            ULTIMATE_SUBFRAME_REGEX.test(frame.message.trim()) ||
+            frame.rosarioEvent === 'INSCRIBE_CROSS';
+
         if (actor && actor.lastUltimateTurn !== frame.turnNumber && !isMultiHitSubFrame) {
             actor.lastUltimateTurn = frame.turnNumber;
             await playUltimateCutIn(frame, sr, token);
