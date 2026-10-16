@@ -6,7 +6,8 @@ import { markAOEWaves, calibrateHpWithAnchors } from './calibrator.js';
 import {
     ENVIRONMENTAL_SKILLS,
     CONTRACT_SKILL_PROFILES,
-    CROSS_FINISHER_PROFILES
+    CROSS_FINISHER_PROFILES,
+    SUMMON_DESPAWN_REGEX
 } from './profiles.js';
 
 const DEFAULT_AVATAR_URL = 'https://via.placeholder.com/150';
@@ -105,6 +106,7 @@ function inferSummonName(logs, summonIndex, summonId, ownerName) {
 
 /**
  * Parses report participants and pre-registers any dynamically summoned units into engineState.actors.
+ * Dynamic summons always keep hideHp = true to prevent end-of-battle HP_REMAINING spoilers.
  * @param {object} reportData - Battle report payload.
  */
 export function parseParticipants(reportData) {
@@ -138,7 +140,7 @@ export function parseParticipants(reportData) {
             avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
             isSummon,
             ownerId: player.summonerId || null,
-            initiallySpawned: !summonedIds.has(id)
+            initiallySpawned: !isSummon
         }));
     });
 
@@ -164,18 +166,15 @@ export function parseParticipants(reportData) {
             avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
             isSummon,
             ownerId: enemy.summonerId || null,
-            initiallySpawned: !summonedIds.has(id)
+            initiallySpawned: !isSummon
         }));
     });
 
-    // Pre-register dynamic summons so initial DOM creation and frame 0 snapshots include them
+    // Pre-register dynamic summons with hideHp: true so survival state is never spoiled
     logs.forEach((log, index) => {
         if (!log || log.type !== 'SUMMON' || !log.targetId) return;
 
         const owner = engineState.actors.get(log.actorId);
-        const explicitHp = Number(log.maxHp || log.hp || log.stats?.hp);
-        const hasExplicitHp = explicitHp > 1;
-        const maxHp = hasExplicitHp ? explicitHp : 1;
         const summonName = inferSummonName(logs, index, log.targetId, owner?.name || '');
 
         if (!engineState.actors.has(log.targetId)) {
@@ -183,8 +182,8 @@ export function parseParticipants(reportData) {
                 id: log.targetId,
                 name: summonName,
                 side: owner ? owner.side : 'left',
-                maxHp,
-                hideHp: !hasExplicitHp,
+                maxHp: 1,
+                hideHp: true,
                 avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
                 isSummon: true,
                 ownerId: log.actorId || null,
@@ -283,6 +282,8 @@ export function buildStateSnapshots(logs) {
             deadActorId: null,
             isSummonEvent: false,
             summonedActorId: null,
+            isDespawnEvent: false,
+            despawnedActorId: null,
             actorsBondState: new Map(),
             contractEvent: null,
             isContractRepeat: false,
@@ -298,34 +299,52 @@ export function buildStateSnapshots(logs) {
             frame.hpDeltas.set(id, (frame.hpDeltas.get(id) || 0) + delta);
         };
 
+        const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
+        const isReactiveCoverText =
+            frame.type === 'SKILL_TEXT' &&
+            contractProfile &&
+            contractProfile.coverRegex.test(frame.message);
+
         let isTurnAction = false;
-        if (['SKILL_TEXT', 'BOSS_DIALOGUE'].includes(frame.type)) {
+        let turnActorId = frame.actorId;
+
+        if (frame.type === 'BOSS_DIALOGUE') {
+            isTurnAction = true;
+        } else if (
+            frame.type === 'SKILL_TEXT' &&
+            !frame.isCounter &&
+            !frame.passiveId &&
+            !isReactiveCoverText
+        ) {
             isTurnAction = true;
         } else if (
             ['DAMAGE', 'MISS', 'BLOCK'].includes(frame.type) &&
             !frame.isCounter &&
             !frame.isSelfDamage &&
             !frame.isEnvironmentalPulse &&
-            frame.source !== 'DIRECT'
+            frame.source !== 'DIRECT' &&
+            frame.source !== 'REFLECTION'
         ) {
             isTurnAction = true;
+        } else if (frame.type === 'COUNTER' && frame.targetId) {
+            // In a COUNTER log, targetId is the attacker who initiated the action that got countered
+            isTurnAction = true;
+            turnActorId = frame.targetId;
         }
 
-        if (isTurnAction && frame.actorId) {
-            if (lastTurnActorId !== frame.actorId) {
+        if (isTurnAction && turnActorId) {
+            if (lastTurnActorId !== turnActorId) {
                 currentTurn++;
-                lastTurnActorId = frame.actorId;
+                lastTurnActorId = turnActorId;
                 frame.turnNumber = currentTurn;
-                const actor = engineState.actors.get(frame.actorId);
+                const actor = engineState.actors.get(turnActorId);
                 if (actor) actor.turnNumbers.push(currentTurn);
             }
         }
 
+        // 1. Explicit SUMMON log entry (always keep hideHp: true for dynamic summons)
         if (log.type === 'SUMMON' && log.targetId) {
             const owner = engineState.actors.get(log.actorId);
-            const explicitHp = Number(log.maxHp || log.hp || log.stats?.hp);
-            const hasExplicitHp = explicitHp > 1;
-            const maxHp = hasExplicitHp ? explicitHp : 1;
             const summonName = inferSummonName(logs, index, log.targetId, owner?.name || '');
 
             if (!engineState.actors.has(log.targetId)) {
@@ -333,8 +352,8 @@ export function buildStateSnapshots(logs) {
                     id: log.targetId,
                     name: summonName,
                     side: owner ? owner.side : 'left',
-                    maxHp,
-                    hideHp: !hasExplicitHp,
+                    maxHp: 1,
+                    hideHp: true,
                     avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
                     isSummon: true,
                     ownerId: log.actorId,
@@ -350,6 +369,36 @@ export function buildStateSnapshots(logs) {
             frame.summonedActorId = log.targetId;
         }
 
+        // 2. Narrative summon spawn (e.g., Brick Kiln `mob_kiln_1` built mid-battle without a SUMMON log)
+        if (
+            log.actorId &&
+            actorsSummonState.get(log.actorId) === false &&
+            !['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(log.type)
+        ) {
+            const summonActor = engineState.actors.get(log.actorId);
+            if (summonActor && summonActor.isSummon) {
+                summonActor.currentHp = summonActor.maxHp;
+                actorsDeathState.set(log.actorId, false);
+                actorsSummonState.set(log.actorId, true);
+                frame.isSummonEvent = true;
+                frame.summonedActorId = log.actorId;
+            }
+        }
+
+        // 3. Summon voluntary despawn (Bug #8: e.g., Sleeping Knights waving goodbye and leaving)
+        if (
+            log.actorId &&
+            (log.type === 'SKILL_TEXT' || log.type === 'TEXT') &&
+            SUMMON_DESPAWN_REGEX.test(frame.message)
+        ) {
+            const actingUnit = engineState.actors.get(log.actorId);
+            if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
+                actorsSummonState.set(log.actorId, false);
+                frame.isDespawnEvent = true;
+                frame.despawnedActorId = log.actorId;
+            }
+        }
+
         if (log.type === 'BUFF_APPLY') {
             const attacker = engineState.actors.get(log.actorId);
             const victim = engineState.actors.get(log.targetId);
@@ -357,6 +406,10 @@ export function buildStateSnapshots(logs) {
                 if (!buffSrc[victim.id]) buffSrc[victim.id] = {};
                 buffSrc[victim.id][log.buffId || log.skillId || ''] = attacker.id;
                 applyLog.push({ victim: victim.id, actor: attacker.id, msg: String(log.message || '') });
+            }
+            if (frame.skillId === 'sakura_shield' && log.targetId) {
+                frame.vfx.push('flash-blue');
+                frame.isBeneficial = true;
             }
         }
 
@@ -415,7 +468,8 @@ export function buildStateSnapshots(logs) {
             }
         } else if (log.type === 'HP_REMAINING') {
             const target = engineState.actors.get(log.actorId);
-            if (target && log.maxHp) {
+            // Do not unhide HP for dynamic summons at the end of the battle to prevent spoilers
+            if (target && log.maxHp && !target.isSummon) {
                 target.maxHp = Number(log.maxHp);
                 target.hideHp = false;
             }
@@ -493,7 +547,6 @@ export function buildStateSnapshots(logs) {
             }
 
             // Handle Contract Skill lifecycle (Propose / Accept / Cover / End)
-            const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
             if (contractProfile && log.type === 'SKILL_TEXT') {
                 if (contractProfile.proposeRegex.test(msg)) {
                     frame.contractEvent = 'PROPOSE';
@@ -534,7 +587,6 @@ export function buildStateSnapshots(logs) {
                             prev.actorId !== frame.targetId
                         ) {
                             coverAttackerId = prev.actorId;
-                            // Keep the attacker in front of the ally on the preceding hit so the cover clash connects seamlessly
                             if (prev.targetId === frame.targetId) {
                                 prev.holdPositionForCover = true;
                             }

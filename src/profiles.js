@@ -8,6 +8,11 @@
  */
 export const KNOWN_AOE_SKILLS = new Set([
     'genji_fan_of_blades',
+    'sakura_firey',
+    'evaluator_whistle',
+    'undead_chef_shovel',
+    'undead_chef_curry',
+    'oni_gunsou_grenade',
     'inspector_blanket',
     'sylphy_that_day_wind',
     'patriot_dust',
@@ -37,12 +42,34 @@ export const AOE_EXCLUDED_SKILLS = new Set([
 ]);
 
 /**
+ * Ultimate-tier follow-up or passive cleave skills that should not trigger a full-screen Cut-In.
+ * @type {Set<string>}
+ */
+export const ULTIMATE_CUTIN_EXCLUDED_SKILLS = new Set([
+    'genji_dragonblade_sweep'
+]);
+
+/**
+ * Regex matching mid-combo or secondary ultimate log lines that should not re-trigger an Ultimate Cut-In.
+ * @type {RegExp}
+ */
+export const ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字/;
+
+/**
+ * Regex matching log messages where a summoned unit voluntarily leaves the battlefield.
+ * @type {RegExp}
+ */
+export const SUMMON_DESPAWN_REGEX = /揮了揮手，回到.+?的隊伍裡|離開了戰場|消失在戰場/;
+
+/**
  * Battlefield environmental hazard skills that pulse passively without consuming
  * an actor's turn or triggering physical lunge animations.
  * @type {Set<string>}
  */
 export const ENVIRONMENTAL_SKILLS = new Set([
-    'originium_altar'
+    'originium_altar',
+    'undead_chef_karma',
+    'oni_gunsou_prayer'
 ]);
 
 /**
@@ -109,7 +136,7 @@ export function getLuckDropEmoji(message = '') {
 // ==========================================
 
 /**
- * Configuration for dual/solo system contract skills (e.g., Kibayuki's Trial Marriage).
+ * Configuration for dual/solo system contract skills (e.g., Kibayuki's Trial Marriage & Yuuki's Wedding).
  * Supports both duo pairing (actor + target) and solo fallback.
  * @type {Record<string, object>}
  */
@@ -125,6 +152,18 @@ export const CONTRACT_SKILL_PROFILES = {
         acceptRegex: /系統跳出了結婚申請|道具欄合在了一起/,
         coverRegex: /擋到.+?身前，替對方扛下了\s*(\d+)\s*點傷害/,
         endRegex: /把婚紗還回了店裡|試婚到此結束/
+    },
+    yuuki_wedding: {
+        systemTitle: 'SYSTEM ALERT // MARRIAGE REQUEST',
+        systemSubtitle: '婚禮的鐘聲響起，這一次不是試穿了',
+        badgeIcon: '💍',
+        badgeText: '七夕婚約',
+        endBadgeText: '💔 婚約結束',
+        themeColor: '#f687b3',
+        proposeRegex: /有人要跟.+?結婚嗎/,
+        acceptRegex: /婚禮的鐘聲響起|按下了接受|系統跳出了結婚申請/,
+        coverRegex: /擋到.+?身前，替對方扛下了\s*(\d+)\s*點傷害/,
+        endRegex: /把婚紗還回了店裡|試婚到此結束/
     }
 };
 
@@ -138,14 +177,21 @@ export const CROSS_FINISHER_PROFILES = {
         pierceRegex: /貫穿十字的正中央/,
         crossColor: '#f687b3',
         glowColor: '#b794f4'
+    },
+    yuuki_rosario: {
+        inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
+        pierceRegex: /貫穿十字的正中央/,
+        crossColor: '#f687b3',
+        glowColor: '#b794f4'
     }
 };
 
 /**
- * Special SKILL_TEXT status/badge triggers for character-specific flavor skills.
+ * Special SKILL_TEXT / TEXT status and badge triggers for character-specific flavor skills.
  * @type {Array<{ skillId: string, regex: RegExp, target: 'actor'|'target', text: (match: RegExpMatchArray) => string, styleClass: string, shakeTarget?: boolean }>}
  */
 export const SPECIAL_SKILL_BADGE_RULES = [
+    // Yuuki / Kibayuki
     {
         skillId: 'kibayuki_demand',
         regex: /被罵得抬不起頭|出手都心虛了/,
@@ -167,5 +213,86 @@ export const SPECIAL_SKILL_BADGE_RULES = [
         target: 'actor',
         text: (m) => `💔 連勝中斷 (${m[1]}勝)`,
         styleClass: 'dice-fail'
+    },
+    {
+        skillId: 'yuuki_lived',
+        regex: /在倒下前一刻撐住了身體/,
+        target: 'actor',
+        text: () => '🌸 毅力支撐',
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'yuuki_lived',
+        regex: /努力活過了/,
+        target: 'actor',
+        text: () => '✨ 絕劍的證明',
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'kibayuki_legacy',
+        regex: /把聖母聖詠封進卷軸/,
+        target: 'target',
+        text: () => '📜 託付：聖母聖詠',
+        styleClass: 'dice-roll'
+    },
+
+    // Kinomoto Sakura
+    {
+        skillId: 'sakura_release',
+        regex: /封印解除/,
+        target: 'actor',
+        text: () => '🔑 封印解除！',
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'sakura_convert',
+        regex: /把「(.+?)」轉換成了小櫻牌/,
+        target: 'actor',
+        text: (m) => `🌟 小櫻牌【${m[1]}】`,
+        styleClass: 'dice-roll'
+    },
+    {
+        skillId: 'sakura_shield',
+        regex: /透明的光罩張開/,
+        target: 'actor',
+        text: () => '🛡️ 盾之牌展開',
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'sakura_invincible_spell',
+        regex: /絕對沒問題的/,
+        target: 'actor',
+        text: () => '🌸 絕對沒問題的！',
+        styleClass: 'dice-pass'
+    },
+
+    // Genji
+    {
+        skillId: 'genji_deflect',
+        regex: /擺出了招架的架勢/,
+        target: 'actor',
+        text: () => '⚔️ 招架架勢',
+        styleClass: 'dice-roll'
+    },
+    {
+        skillId: 'default',
+        regex: /(?:主要|次要)特殊能力「(.+?)」已啟用/,
+        target: 'actor',
+        text: (m) => `⚡ ${m[1]}`,
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'default',
+        regex: /自己繞到邊線抓起一個醫療包/,
+        target: 'actor',
+        text: () => '🚑 緊急醫療包',
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'default',
+        regex: /收刀入鞘，綠光熄了/,
+        target: 'actor',
+        text: () => '🗡️ 收刀入鞘',
+        styleClass: 'dice-warn'
     }
 ];

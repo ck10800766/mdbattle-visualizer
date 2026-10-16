@@ -6,6 +6,37 @@ import { escapeRegExp } from './utils.js';
 import { CONTRACT_SKILL_PROFILES, SPECIAL_SKILL_BADGE_RULES } from './profiles.js';
 
 /**
+ * Strips combat resolution clauses (damage numbers, crits, blocks, dodges, counters, and actor prefix)
+ * and normalizes trailing dashes from an ultimate cut-in message so only clean flavor text remains.
+ * @param {string} rawText - Raw log message segment.
+ * @param {string} [actorName=''] - Display name of the casting actor.
+ * @returns {string} Cleaned narrative flavor text.
+ */
+function stripCombatOutcomeText(rawText, actorName = '') {
+    let text = String(rawText || '');
+    if (actorName) {
+        const escapedActorName = escapeRegExp(actorName);
+        text = text.replace(new RegExp(`^${escapedActorName}[：:]?\\s*(的\\s*)?`), '');
+    }
+
+    text = text
+        .replace(/[，,、]?\s*會心一擊[！!]?/g, '')
+        .replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*造成了?\s*\d+\s*點(?:真實)?傷害[！!]?/g, '')
+        .replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, '')
+        .replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?受到\s*\d+\s*點傷害[！!]?/g, '')
+        .replace(/[，,、]?\s*(?:對\s*.+?\s*)?造成了?\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, '')
+        .replace(/[—─ー―-]+$/g, '')
+        .replace(/^[，,、：:\s]+/, '')
+        .replace(/[，,、\s]+$/, '')
+        .trim();
+
+    if (text.length > 0 && !/[。！!?.」…]$/.test(text)) {
+        text += '……';
+    }
+    return text;
+}
+
+/**
  * Plays a slow-motion letterbox K.O. slash sequence on a defeated actor.
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
  * @param {string} actorId - ID of the defeated actor.
@@ -50,7 +81,7 @@ export async function playFatalitySequence(sr, actorId) {
 
 /**
  * Renders a full-screen vertical-text Ultimate skill cut-in animation.
- * Extracts either a short spoken quote or the skill name along with narrative flavor text.
+ * Extracts either a spoken quote (preceded by a colon) or the skill name along with cleaned flavor text.
  * @param {object} frame - Current combat frame.
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
  * @param {number} token - Active playback token for cancellation checks.
@@ -82,12 +113,17 @@ export async function playUltimateCutIn(frame, sr, token) {
     let mainText = '';
     let subText = '';
 
-    const quoteMatch = frame.message.match(/「(.*?)」/);
-    const remainingText = frame.message.replace(actor.name, '').replace(/[：:]?\s*「.*?」\s*/, ' ').trim();
+    // Only match actual spoken dialogue quotes preceded by a colon (e.g., 低喝：「...」 or 角色：「...」),
+    // preventing inline object quotes like 把「火」拋向半空 from being hollowed out.
+    const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
 
-    if (quoteMatch && quoteMatch[1].length <= 15 && remainingText.length > 0) {
-        mainText = quoteMatch[1];
-        subText = remainingText;
+    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 15) {
+        mainText = spokenQuoteMatch[1];
+        const rawRemainingText = frame.message
+            .replace(actor.name, '')
+            .replace(/[：:]\s*「[^」]+」\s*/, ' ')
+            .trim();
+        subText = stripCombatOutcomeText(rawRemainingText, actor.name);
     } else {
         let extractedSkillName = null;
         const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
@@ -111,16 +147,7 @@ export async function playUltimateCutIn(frame, sr, token) {
             mainText = rawSkillId.replace(/_/g, ' ').toUpperCase();
         }
 
-        const escapedActorName = escapeRegExp(actor.name);
-        let cleanMsg = frame.message.replace(new RegExp(`^${escapedActorName}[：:]?\\s*(的\\s*)?`), '');
-        cleanMsg = cleanMsg.replace(/[，,]?\s*會心一擊！?/g, '');
-        cleanMsg = cleanMsg.replace(/[，,]?\s*(對\s*.+?\s*)?造成了?\s*\d+\s*點(真實)?傷害！?/g, '');
-        cleanMsg = cleanMsg.replace(/^[，,]\s*/, '').trim();
-
-        if (cleanMsg.length > 0 && !/[。！!?.—]$/.test(cleanMsg)) {
-            cleanMsg += '……';
-        }
-        subText = cleanMsg;
+        subText = stripCombatOutcomeText(frame.message, actor.name);
     }
 
     const isEnglish = /[A-Za-z]/.test(mainText);
@@ -398,6 +425,7 @@ export async function playContractCutIn(frame, sr, token) {
  */
 export function spawnRosarioCross(frame, sr) {
     const targetId = frame.targetId || frame.actorId;
+    if (!targetId) return;
     const targetEl = sr.getElementById(`actor-${targetId}`);
     if (!targetEl) return;
 
