@@ -56,8 +56,9 @@ export function createLogLineElement(frame) {
 
     msgEl.className = `log-line ${logClass}`;
     msgEl.dataset.frameIndex = String(frame.index);
+    msgEl.title = `點擊跳轉至此影格 (#${frame.index + 1})`;
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
-    msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
+    msgEl.innerHTML = `<span class="log-index" style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
     return msgEl;
 }
 

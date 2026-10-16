@@ -360,6 +360,18 @@ export function createBattleStage() {
     dialogBox.className = 'dialog-box';
     dialogBox.id = 'dialog-box';
 
+    dialogBox.addEventListener('click', (e) => {
+        const selection = window.getSelection ? window.getSelection() : null;
+        if (selection && selection.toString().trim().length > 0) return;
+        const lineEl = e.target.closest('.log-line[data-frame-index]');
+        if (!lineEl) return;
+        const targetFrame = Number(lineEl.dataset.frameIndex);
+        if (Number.isFinite(targetFrame)) {
+            if (!engineState.isPlaying && engineState.currentFrameIndex === targetFrame) return;
+            jumpToFrame(targetFrame);
+        }
+    });
+
     const fatalityOverlay = document.createElement('div');
     fatalityOverlay.id = 'fatality-overlay';
     fatalityOverlay.className = 'fatality-overlay';

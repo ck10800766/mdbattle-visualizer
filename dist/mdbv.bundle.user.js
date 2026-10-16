@@ -1382,10 +1382,15 @@
 
     /* Combat Log Dialog Box */
     .dialog-box { height: 160px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 10px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: 14px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
-    .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; }
-    .log-line.system-log { background: rgba(255, 255, 255, 0.03); }
+    .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; cursor: pointer; transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; user-select: text; border-left: 3px solid transparent; }
+    .log-line:hover { background: rgba(255, 255, 255, 0.08); padding-left: 12px; }
+    .log-line:hover .log-index { color: #81e6d9 !important; font-weight: 700; }
+    .log-line.system-log { background: rgba(255, 255, 255, 0.03); border-left-color: transparent; }
+    .log-line.system-log:hover { background: rgba(255, 255, 255, 0.08); border-left-color: #81e6d9; }
     .log-line.dialogue-log { background: rgba(79, 209, 197, 0.1); border-left: 3px solid #4fd1c5; color: #e2e8f0; font-weight: 500; }
+    .log-line.dialogue-log:hover { background: rgba(79, 209, 197, 0.22); border-left-color: #81e6d9; }
     .log-line.narrative-log { background: rgba(255, 255, 255, 0.04); border-left: 3px solid #718096; color: #f1f5f9; font-style: italic; }
+    .log-line.narrative-log:hover { background: rgba(255, 255, 255, 0.1); border-left-color: #cbd5e1; }
     .actor-name-left { font-weight: bold; color: #90cdf4; }
     .actor-name-right { font-weight: bold; color: #feb2b2; }
 
@@ -1500,7 +1505,8 @@
     @keyframes rosario-shatter { 0% { transform: scale(1); filter: brightness(2); opacity: 1; } 100% { transform: scale(2.1); filter: brightness(3) blur(4px); opacity: 0; } }
 
     /* Seek / Step Situation HUD Banner & Active Combat Highlights */
-    .log-line.current-frame-log { background: rgba(79, 209, 197, 0.2); border-left: 3px solid #f6e05e; color: #fff; box-shadow: inset 0 0 12px rgba(246, 224, 94, 0.15); }
+    .log-line.current-frame-log { background: rgba(79, 209, 197, 0.2); border-left: 3px solid #f6e05e !important; color: #fff; box-shadow: inset 0 0 12px rgba(246, 224, 94, 0.15); }
+    .log-line.current-frame-log:hover { background: rgba(79, 209, 197, 0.3); border-left-color: #f6e05e; }
     .seek-situation-banner { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 75; background: rgba(15, 23, 42, 0.94); border: 1px solid #4fd1c5; border-top: 3px solid #f6e05e; border-radius: 10px; padding: 8px 16px; color: #f8fafc; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.78), 0 0 15px rgba(79, 209, 197, 0.25); backdrop-filter: blur(6px); display: flex; flex-direction: column; gap: 4px; max-width: min(720px, 88vw); min-width: 280px; pointer-events: none; animation: slideInUp 0.15s ease-out forwards; }
     .seek-banner-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; font-weight: 800; color: #a0aec0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 4px; }
     .seek-turn-pill { background: #f6e05e; color: #1a202c; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: 0.5px; }
@@ -3346,8 +3352,9 @@
     }
     msgEl.className = `log-line ${logClass}`;
     msgEl.dataset.frameIndex = String(frame.index);
+    msgEl.title = `\u9EDE\u64CA\u8DF3\u8F49\u81F3\u6B64\u5F71\u683C (#${frame.index + 1})`;
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
-    msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
+    msgEl.innerHTML = `<span class="log-index" style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
     return msgEl;
   }
   function syncActorBondVisuals(sr, bondStateMap = null) {
@@ -4152,6 +4159,17 @@
     const dialogBox = document.createElement("div");
     dialogBox.className = "dialog-box";
     dialogBox.id = "dialog-box";
+    dialogBox.addEventListener("click", (e) => {
+      const selection = window.getSelection ? window.getSelection() : null;
+      if (selection && selection.toString().trim().length > 0) return;
+      const lineEl = e.target.closest(".log-line[data-frame-index]");
+      if (!lineEl) return;
+      const targetFrame = Number(lineEl.dataset.frameIndex);
+      if (Number.isFinite(targetFrame)) {
+        if (!engineState.isPlaying && engineState.currentFrameIndex === targetFrame) return;
+        jumpToFrame(targetFrame);
+      }
+    });
     const fatalityOverlay = document.createElement("div");
     fatalityOverlay.id = "fatality-overlay";
     fatalityOverlay.className = "fatality-overlay";
