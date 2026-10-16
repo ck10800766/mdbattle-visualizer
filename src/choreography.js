@@ -32,8 +32,19 @@ export function lookaheadComboState(currentIndex, frame) {
 
         if (lookahead.turnNumber !== frame.turnNumber) break;
 
-        if (['HEAL', 'SP_RECOVER', 'SKILL_TEXT', 'BOSS_DIALOGUE', 'SUMMON'].includes(lookahead.type)) {
+        if (['HEAL', 'SP_RECOVER', 'BOSS_DIALOGUE', 'SUMMON'].includes(lookahead.type)) {
             shouldReturnToOrigin = true;
+            continue;
+        }
+        if (lookahead.type === 'SKILL_TEXT') {
+            const isSameSkillBridgeText =
+                lookahead.actorId === frame.actorId &&
+                activeSkillId &&
+                lookahead.skillId === activeSkillId &&
+                !lookahead.isCoverEvent;
+            if (!isSameSkillBridgeText) {
+                shouldReturnToOrigin = true;
+            }
             continue;
         }
         if (lookahead.type === 'TEXT' && lookahead.skillTier === 'ultimate') {
@@ -423,8 +434,14 @@ export function playCombatAnimation(
             engineState.currentCombo.knockedBack = false;
         }
 
-        const stayAtTarget = isNextFrameSameCombo && !isNextTargetDifferent && !shouldReturnToOrigin;
-        if ((shouldReturnToOrigin || isNextTargetDifferent) && !frame.isCounter && frame.type !== 'COUNTER') {
+        const isFollowedByCover = !!frame.holdPositionForCover;
+        const stayAtTarget =
+            (isNextFrameSameCombo && !isNextTargetDifferent && !shouldReturnToOrigin) ||
+            isFollowedByCover;
+
+        if (isFollowedByCover) {
+            engineState.currentCombo.heldForCoverActorId = frame.actorId;
+        } else if ((shouldReturnToOrigin || isNextTargetDifferent) && !frame.isCounter && frame.type !== 'COUNTER') {
             engineState.currentCombo.knockedBack = true;
         }
 
@@ -655,6 +672,32 @@ export function playCombatAnimation(
             engineState.currentCombo.keepAlive = isNextFrameSameCombo;
         }
 
+        // Collar-grab rapid shake for kibayuki_demand
+        if (frame.skillId === 'kibayuki_demand' && frame.type === 'DAMAGE') {
+            targetKeyframes = [
+                { transform: 'translate(0, 0) rotate(0deg)', filter: 'brightness(1)' },
+                { transform: 'translate(-12px, -4px) rotate(-6deg)', filter: 'brightness(1.6)', offset: 0.2 },
+                { transform: 'translate(10px, 2px) rotate(5deg)', offset: 0.4 },
+                { transform: 'translate(-10px, -2px) rotate(-5deg)', offset: 0.6 },
+                { transform: 'translate(8px, 0) rotate(3deg)', offset: 0.8 },
+                { transform: 'translate(0, 0) rotate(0deg)', filter: 'brightness(1)', offset: 1 }
+            ];
+            targetAnimConfig.duration = 420 / speed;
+        }
+
+        // 11th Sword Cross-Piercing burst for Mother's Rosario
+        if (frame.rosarioEvent === 'PIERCE_CROSS') {
+            triggerClashSpark(60, '#f687b3');
+            triggerClashSpark(140, '#b794f4');
+            const crossEl = targetEl.querySelector('.rosario-cross-mark');
+            if (crossEl) {
+                crossEl.classList.add('shatter');
+                setTimeout(() => {
+                    if (crossEl.isConnected) crossEl.remove();
+                }, 450 / speed);
+            }
+        }
+        
         actorEl.animate(actorKeyframes, actorAnimConfig);
         if (targetKeyframes.length > 0) {
             targetEl.animate(targetKeyframes, targetAnimConfig);
@@ -662,4 +705,155 @@ export function playCombatAnimation(
     }
 
     return frameDuration;
+}
+
+/**
+ * Animates an actor dashing in front of an allied target to intercept an enemy attack,
+ * complete with enemy strike follow-through, clash spark, and knockback recoil.
+ * @param {object} frame - Active cover combat frame.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @returns {number} Base frame duration in milliseconds.
+ */
+export function playCoverAnimation(frame, sr) {
+    const speed = getEffectiveSpeed();
+    const arena = sr.getElementById('arena');
+    const actorEl = sr.getElementById(`actor-${frame.actorId}`);
+    const targetEl = frame.targetId ? sr.getElementById(`actor-${frame.targetId}`) : null;
+    const attackerEl = frame.coverAttackerId ? sr.getElementById(`actor-${frame.coverAttackerId}`) : null;
+
+    if (!actorEl || !targetEl || actorEl === targetEl) return 500;
+
+    const wasHeldAtTarget =
+        !!frame.coverAttackerId &&
+        engineState.currentCombo.heldForCoverActorId === frame.coverAttackerId;
+    engineState.currentCombo.heldForCoverActorId = null;
+    engineState.currentCombo.knockedBack = true;
+    engineState.currentCombo.keepAlive = false;
+
+    // Cancel active animations first so getBoundingClientRect() measures clean origin positions
+    if (actorEl.getAnimations) actorEl.getAnimations().forEach(anim => anim.cancel());
+    if (targetEl.getAnimations) targetEl.getAnimations().forEach(anim => anim.cancel());
+    if (attackerEl && attackerEl.getAnimations) {
+        attackerEl.getAnimations().forEach(anim => anim.cancel());
+    }
+
+    const side = engineState.actors.get(frame.actorId)?.side || 'left';
+    const actorRect = actorEl.getBoundingClientRect();
+    const targetRect = targetEl.getBoundingClientRect();
+
+    // Protector intercepts right in front of the protected ally
+    const frontOffsetX = side === 'left' ? 44 : -44;
+    const moveX = (targetRect.left - actorRect.left) + frontOffsetX;
+    const deltaY = targetRect.top - actorRect.top;
+
+    const shieldRing = document.createElement('div');
+    shieldRing.className = 'bridal-cover-shield';
+    shieldRing.innerHTML = '<span>💍 GUARD</span>';
+    actorEl.appendChild(shieldRing);
+
+    if (frame.coverDamage > 0) {
+        const dmgEl = document.createElement('div');
+        dmgEl.className = 'floating-text';
+        dmgEl.style.color = '#fbb6ce';
+        dmgEl.textContent = `-${frame.coverDamage}`;
+        actorEl.appendChild(dmgEl);
+        setTimeout(() => {
+            if (dmgEl.isConnected) dmgEl.remove();
+        }, 850 / speed);
+    }
+
+    // Animate Enemy Attacker pressing the attack into the shield and getting repelled
+    if (attackerEl) {
+        const attackerSide = engineState.actors.get(frame.coverAttackerId)?.side || (side === 'left' ? 'right' : 'left');
+        const attackerRect = attackerEl.getBoundingClientRect();
+
+        const enemyHeldX = (targetRect.left - attackerRect.left) + (attackerSide === 'left' ? -60 : 60);
+        const enemyHeldY = targetRect.top - attackerRect.top;
+        const enemyClashX = (targetRect.left - attackerRect.left) + (attackerSide === 'left' ? -78 : 78);
+        const enemyRecoilX = enemyClashX + (attackerSide === 'left' ? -28 : 28);
+
+        const pEnemyStart = wasHeldAtTarget
+            ? `translate(${enemyHeldX}px, ${enemyHeldY}px) scale(1.15)`
+            : 'translate(0, 0) scale(1)';
+
+        attackerEl.animate([
+            { transform: pEnemyStart, zIndex: 14 },
+            {
+                transform: `translate(${enemyClashX}px, ${enemyHeldY}px) scale(1.22)`,
+                filter: 'brightness(1.45)',
+                zIndex: 14,
+                offset: 0.25
+            },
+            {
+                transform: `translate(${enemyRecoilX}px, ${enemyHeldY}px) scale(1.06)`,
+                filter: 'brightness(1.8) drop-shadow(0 0 12px #f687b3)',
+                zIndex: 14,
+                offset: 0.45
+            },
+            { transform: 'translate(0, 0) scale(1)', filter: 'none', zIndex: 1, offset: 1 }
+        ], {
+            duration: 640 / speed,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+        });
+
+        // Spawn clash spark between Protector and Enemy at the moment of impact
+        if (arena) {
+            setTimeout(() => {
+                if (!actorEl.isConnected || !arena.isConnected) return;
+                const sparkEl = document.createElement('div');
+                sparkEl.style.cssText = 'position: absolute; width: 80px; height: 80px; background: radial-gradient(circle, #ffffff 25%, #f687b3 55%, transparent 80%); border-radius: 50%; z-index: 25; transform: translate(-50%, -50%) scale(0); pointer-events: none; mix-blend-mode: screen; box-shadow: 0 0 24px #f687b3;';
+                const aRect = actorEl.getBoundingClientRect();
+                const arRect = arena.getBoundingClientRect();
+                const sparkOffsetX = side === 'left' ? aRect.width * 0.85 : aRect.width * 0.15;
+                sparkEl.style.left = `${(aRect.left - arRect.left) + sparkOffsetX}px`;
+                sparkEl.style.top = `${(aRect.top - arRect.top) + aRect.height / 2}px`;
+                arena.appendChild(sparkEl);
+
+                const sparkAnim = sparkEl.animate([
+                    { transform: 'translate(-50%, -50%) scale(0) rotate(0deg)', opacity: 1 },
+                    { transform: 'translate(-50%, -50%) scale(3.2) rotate(45deg)', opacity: 1, offset: 0.3 },
+                    { transform: 'translate(-50%, -50%) scale(4.5) rotate(90deg)', opacity: 0, offset: 1 }
+                ], { duration: 320 / speed });
+                sparkAnim.onfinish = () => sparkEl.remove();
+            }, 140 / speed);
+        }
+    }
+
+    // Animate Protector dashing in to block and absorbing the recoil
+    actorEl.animate([
+        { transform: 'translate(0, 0) scale(1)', zIndex: 15 },
+        {
+            transform: `translate(${moveX}px, ${deltaY}px) scale(1.14)`,
+            filter: 'brightness(1.35) drop-shadow(0 0 14px #f687b3)',
+            zIndex: 15,
+            offset: 0.23
+        },
+        {
+            transform: `translate(${moveX - (side === 'left' ? 12 : -12)}px, ${deltaY}px) scale(1.08)`,
+            filter: 'brightness(1.6) drop-shadow(0 0 22px #fbb6ce)',
+            zIndex: 15,
+            offset: 0.52
+        },
+        { transform: 'translate(0, 0) scale(1)', filter: 'none', zIndex: 1, offset: 1 }
+    ], {
+        duration: 640 / speed,
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+    });
+
+    // Protected ally recoils slightly behind the protector
+    targetEl.animate([
+        { transform: 'translate(0, 0) scale(1)' },
+        { transform: `translate(${side === 'left' ? -14 : 14}px, 0) scale(0.95)`, offset: 0.3 },
+        { transform: `translate(${side === 'left' ? -14 : 14}px, 0) scale(0.95)`, offset: 0.55 },
+        { transform: 'translate(0, 0) scale(1)', offset: 1 }
+    ], {
+        duration: 580 / speed,
+        easing: 'ease-out'
+    });
+
+    setTimeout(() => {
+        if (shieldRing.isConnected) shieldRing.remove();
+    }, 620 / speed);
+
+    return 660;
 }

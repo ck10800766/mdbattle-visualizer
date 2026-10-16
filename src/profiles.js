@@ -103,3 +103,69 @@ export function getLuckDropEmoji(message = '') {
     }
     return DEFAULT_LUCK_EMOJI;
 }
+
+// ==========================================
+// Special Character & Skill Cinematic Profiles
+// ==========================================
+
+/**
+ * Configuration for dual/solo system contract skills (e.g., Kibayuki's Trial Marriage).
+ * Supports both duo pairing (actor + target) and solo fallback.
+ * @type {Record<string, object>}
+ */
+export const CONTRACT_SKILL_PROFILES = {
+    kibayuki_trial_marriage: {
+        systemTitle: 'SYSTEM ALERT // MARRIAGE REQUEST',
+        systemSubtitle: '兩人的道具欄合在了一起',
+        badgeIcon: '💍',
+        badgeText: '試婚契約',
+        endBadgeText: '💔 試婚結束',
+        themeColor: '#f687b3',
+        proposeRegex: /有人要跟.+?結婚嗎/,
+        acceptRegex: /系統跳出了結婚申請|道具欄合在了一起/,
+        coverRegex: /擋到.+?身前，替對方扛下了\s*(\d+)\s*點傷害/,
+        endRegex: /把婚紗還回了店裡|試婚到此結束/
+    }
+};
+
+/**
+ * Configuration for multi-hit cross-finisher ultimate skills (e.g., Mother's Rosario).
+ * @type {Record<string, object>}
+ */
+export const CROSS_FINISHER_PROFILES = {
+    kibayuki_rosario: {
+        inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
+        pierceRegex: /貫穿十字的正中央/,
+        crossColor: '#f687b3',
+        glowColor: '#b794f4'
+    }
+};
+
+/**
+ * Special SKILL_TEXT status/badge triggers for character-specific flavor skills.
+ * @type {Array<{ skillId: string, regex: RegExp, target: 'actor'|'target', text: (match: RegExpMatchArray) => string, styleClass: string, shakeTarget?: boolean }>}
+ */
+export const SPECIAL_SKILL_BADGE_RULES = [
+    {
+        skillId: 'kibayuki_demand',
+        regex: /被罵得抬不起頭|出手都心虛了/,
+        target: 'target',
+        text: () => '💦 心虛',
+        styleClass: 'dice-warn',
+        shakeTarget: true
+    },
+    {
+        skillId: 'kibayuki_zekken',
+        regex: /接下這一劍，第\s*(\d+)\s*勝/,
+        target: 'actor',
+        text: (m) => `⚔️ 絕劍 ${m[1]} 勝!`,
+        styleClass: 'dice-pass'
+    },
+    {
+        skillId: 'kibayuki_zekken',
+        regex: /連勝停在第\s*(\d+)\s*勝/,
+        target: 'actor',
+        text: (m) => `💔 連勝中斷 (${m[1]}勝)`,
+        styleClass: 'dice-fail'
+    }
+];

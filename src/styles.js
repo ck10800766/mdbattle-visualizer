@@ -128,4 +128,47 @@ export const STAGE_STYLES = `
 
     .shake-active { animation: shake 0.3s ease-in-out; }
     .blink-active { animation: blink 0.3s ease-in-out; }
+
+    /* SAO Contract Cut-In & Bond System */
+    .contract-cutin-overlay { position: absolute; inset: 0; z-index: 1800; display: flex; align-items: center; justify-content: center; pointer-events: none; overflow: hidden; animation: contract-overlay-fade ease-out forwards; }
+    @keyframes contract-overlay-fade { 0% { opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+    .contract-backdrop { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(20, 10, 28, 0.85) 0%, rgba(246, 135, 179, 0.28) 50%, rgba(15, 23, 42, 0.88) 100%); backdrop-filter: blur(4px); }
+    .contract-Portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
+    .contract-cutin-overlay.solo-mode .contract-Portraits-layer { justify-content: center; }
+    .contract-portrait { display: flex; flex-direction: column; align-items: center; gap: 8px; filter: drop-shadow(0 0 24px rgba(246, 135, 179, 0.7)); }
+    .contract-portrait img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #fbb6ce; background: #1a202c; }
+    .contract-portrait.left-partner { animation: slide-in-left-partner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .contract-portrait.right-partner { animation: slide-in-right-partner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes slide-in-left-partner { from { transform: translateX(-120px) scale(0.85); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+    @keyframes slide-in-right-partner { from { transform: translateX(120px) scale(0.85); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+    .contract-partner-name { background: rgba(26, 32, 44, 0.9); color: #fff5f7; padding: 4px 14px; border-radius: 999px; font-size: 15px; font-weight: 700; border: 1px solid #f687b3; }
+
+    .sao-modal-card { position: relative; z-index: 2; width: min(420px, 82vw); background: rgba(245, 247, 250, 0.95); border: 2px solid #cbd5e0; border-radius: 6px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 30px rgba(246, 135, 179, 0.55); color: #2d3748; overflow: hidden; animation: sao-modal-pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes sao-modal-pop { 0% { transform: scaleY(0.05) scaleX(0.6); opacity: 0; } 60% { transform: scaleY(1.04) scaleX(1.02); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+    .sao-modal-header { background: linear-gradient(90deg, #4a5568, #2d3748); color: #edf2f7; font-size: 12px; font-weight: 800; letter-spacing: 1.5px; padding: 8px 14px; text-align: center; border-bottom: 2px solid #f687b3; }
+    .sao-modal-body { padding: 18px 20px 14px; text-align: center; }
+    .sao-modal-couple { font-size: 20px; font-weight: 900; color: #1a202c; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .sao-modal-desc { font-size: 14px; color: #4a5568; font-weight: 600; }
+    .sao-modal-footer { display: flex; justify-content: center; gap: 36px; padding: 10px 0 16px; background: rgba(237, 242, 247, 0.8); border-top: 1px solid #e2e8f0; }
+    .sao-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; border: 2px solid #a0aec0; background: #fff; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease; }
+    .sao-btn-accept { color: #ed8936; border-color: #ed8936; }
+    .sao-btn-accept.pressed { background: #ed8936; color: #fff; transform: scale(1.25); box-shadow: 0 0 20px #f6ad55, 0 0 35px #f687b3; }
+    .sao-btn-cancel { color: #718096; }
+
+    /* Persistent Marriage Bond Aura & Cover Shield */
+    .actor.bond-active .avatar { border-color: #f687b3; box-shadow: 0 0 16px rgba(246, 135, 179, 0.85); }
+    .bond-ring-badge { position: absolute; top: -10px; right: -12px; background: linear-gradient(135deg, #d53f8c, #b83280); color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1.5px solid #fbb6ce; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 30; white-space: nowrap; pointer-events: none; }
+    .bridal-cover-shield { position: absolute; inset: -10px; border: 3px solid #fbb6ce; border-radius: 14px; background: radial-gradient(circle, rgba(246, 135, 179, 0.35) 0%, transparent 75%); box-shadow: 0 0 20px #f687b3; display: flex; align-items: flex-start; justify-content: center; z-index: 20; pointer-events: none; }
+    .bridal-cover-shield span { margin-top: -12px; background: #d53f8c; color: #fff; font-size: 11px; font-weight: 900; padding: 1px 8px; border-radius: 999px; border: 1px solid #fff; }
+
+    /* Mother's Rosario 10-Hit Cross Emblem */
+    .rosario-cross-mark { position: absolute; inset: -15px; z-index: 35; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+    .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, #f687b3, #fff, transparent); box-shadow: 0 0 14px #f687b3, 0 0 24px #b794f4; border-radius: 999px; }
+    .rosario-line.line-1 { transform: rotate(38deg); animation: rosario-slash-in 0.22s ease-out forwards; }
+    .rosario-line.line-2 { transform: rotate(-38deg); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
+    .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px #f687b3; animation: rosario-core-pulse 0.4s infinite alternate; }
+    .rosario-cross-mark.shatter { animation: rosario-shatter 0.4s ease-out forwards; }
+    @keyframes rosario-slash-in { from { transform: scaleX(0) rotate(38deg); opacity: 0; } to { opacity: 1; } }
+    @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }
+    @keyframes rosario-shatter { 0% { transform: scale(1); filter: brightness(2); opacity: 1; } 100% { transform: scale(2.1); filter: brightness(3) blur(4px); opacity: 0; } }
 `;

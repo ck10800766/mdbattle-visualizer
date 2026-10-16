@@ -3,6 +3,7 @@
 // ==========================================
 import { engineState, getEffectiveSpeed } from './state.js';
 import { escapeRegExp } from './utils.js';
+import { CONTRACT_SKILL_PROFILES, SPECIAL_SKILL_BADGE_RULES } from './profiles.js';
 
 /**
  * Plays a slow-motion letterbox K.O. slash sequence on a defeated actor.
@@ -261,4 +262,158 @@ export function spawnStatusOrDiceBadge(frame, sr) {
             if (badge.isConnected) badge.remove();
         }, 1200 / getEffectiveSpeed());
     }
+
+    if (frame.contractEvent === 'END') {
+        const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+        const actorOnlyEl = sr.getElementById(`actor-${frame.actorId}`);
+        if (actorOnlyEl && profile) {
+            const badge = document.createElement('div');
+            badge.className = 'dice-badge dice-warn';
+            badge.textContent = profile.endBadgeText || '契約結束';
+            actorOnlyEl.appendChild(badge);
+            setTimeout(() => {
+                if (badge.isConnected) badge.remove();
+            }, 1200 / getEffectiveSpeed());
+        }
+        return;
+    }
+
+    for (const rule of SPECIAL_SKILL_BADGE_RULES) {
+        if (frame.skillId === rule.skillId && frame.message) {
+            const match = frame.message.match(rule.regex);
+            if (match) {
+                const badgeTargetId = rule.target === 'actor' ? frame.actorId : (frame.targetId || frame.actorId);
+                const badgeTargetEl = sr.getElementById(`actor-${badgeTargetId}`);
+                if (!badgeTargetEl) return;
+
+                const badge = document.createElement('div');
+                badge.className = `dice-badge ${rule.styleClass}`;
+                badge.textContent = rule.text(match);
+                badgeTargetEl.appendChild(badge);
+
+                if (rule.shakeTarget) {
+                    badgeTargetEl.animate([
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-6px) rotate(-2deg)', offset: 0.25 },
+                        { transform: 'translateX(6px) rotate(2deg)', offset: 0.5 },
+                        { transform: 'translateX(-4px)', offset: 0.75 },
+                        { transform: 'translateX(0)' }
+                    ], { duration: 360 / getEffectiveSpeed() });
+                }
+
+                setTimeout(() => {
+                    if (badge.isConnected) badge.remove();
+                }, 1300 / getEffectiveSpeed());
+                return;
+            }
+        }
+    }
+}
+
+/**
+ * Renders a dual-actor (or solo-fallback) SAO-styled System Contract Cut-In overlay.
+ * Automatically shortens duration on repeat casts within the same battle to preserve pacing.
+ * @param {object} frame - Current combat frame.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {number} token - Active playback token.
+ * @returns {Promise<void>}
+ */
+export async function playContractCutIn(frame, sr, token) {
+    const actor = engineState.actors.get(frame.actorId);
+    const partner = frame.targetId ? engineState.actors.get(frame.targetId) : null;
+    const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+    if (!actor || !profile || engineState.playbackToken !== token) return;
+
+    const arena = sr.getElementById('arena');
+    if (!arena) return;
+
+    const isDual = !!partner && partner.id !== actor.id;
+    const baseDuration = frame.isContractRepeat ? 1050 : 1750;
+    const actualDuration = baseDuration / getEffectiveSpeed();
+
+    const overlay = document.createElement('div');
+    overlay.className = `contract-cutin-overlay ${isDual ? 'dual-mode' : 'solo-mode'}`;
+    overlay.style.setProperty('--contract-theme', profile.themeColor || '#f687b3');
+    overlay.style.animationDuration = `${actualDuration}ms`;
+
+    const portraitsHtml = isDual
+        ? `
+            <div class="contract-portrait left-partner">
+                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
+                <div class="contract-partner-name">${actor.name}</div>
+            </div>
+            <div class="contract-portrait right-partner">
+                <img src="${partner.avatar}" onerror="this.src='https://via.placeholder.com/150'">
+                <div class="contract-partner-name">${partner.name}</div>
+            </div>
+        `
+        : `
+            <div class="contract-portrait solo-partner">
+                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
+                <div class="contract-partner-name">${actor.name}</div>
+            </div>
+        `;
+
+    const headlineText = isDual
+        ? `${actor.name} <span>${profile.badgeIcon}</span> ${partner.name}`
+        : `${actor.name} <span>${profile.badgeIcon}</span> ${profile.badgeText}`;
+
+    overlay.innerHTML = `
+        <div class="contract-backdrop"></div>
+        <div class="contract-Portraits-layer">${portraitsHtml}</div>
+        <div class="sao-modal-card">
+            <div class="sao-modal-header">${profile.systemTitle}</div>
+            <div class="sao-modal-body">
+                <div class="sao-modal-couple">${headlineText}</div>
+                <div class="sao-modal-desc">${profile.systemSubtitle}</div>
+            </div>
+            <div class="sao-modal-footer">
+                <div class="sao-btn sao-btn-accept">◯</div>
+                <div class="sao-btn sao-btn-cancel">✕</div>
+            </div>
+        </div>
+    `;
+
+    arena.appendChild(overlay);
+
+    const acceptBtn = overlay.querySelector('.sao-btn-accept');
+    setTimeout(() => {
+        if (acceptBtn && acceptBtn.isConnected) {
+            acceptBtn.classList.add('pressed');
+        }
+    }, actualDuration * 0.38);
+
+    return new Promise(resolve => {
+        setTimeout(() => {
+            if (overlay.isConnected) overlay.remove();
+            resolve();
+        }, actualDuration);
+    });
+}
+
+/**
+ * Spawns a glowing diagonal cross emblem on the target before the 11th piercing hit of Mother's Rosario.
+ * @param {object} frame - Current combat frame.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ */
+export function spawnRosarioCross(frame, sr) {
+    const targetId = frame.targetId || frame.actorId;
+    const targetEl = sr.getElementById(`actor-${targetId}`);
+    if (!targetEl) return;
+
+    const existing = targetEl.querySelector('.rosario-cross-mark');
+    if (existing) existing.remove();
+
+    const crossEl = document.createElement('div');
+    crossEl.className = 'rosario-cross-mark';
+    crossEl.innerHTML = `
+        <div class="rosario-line line-1"></div>
+        <div class="rosario-line line-2"></div>
+        <div class="rosario-core"></div>
+    `;
+    targetEl.appendChild(crossEl);
+
+    setTimeout(() => {
+        if (crossEl.isConnected) crossEl.remove();
+    }, 1800 / getEffectiveSpeed());
 }
