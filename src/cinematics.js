@@ -10,7 +10,11 @@
 import { DEFAULT_AVATAR_URL } from './constants.js';
 import { engineState, getEffectiveSpeed } from './state.js';
 import { escapeRegExp, escapeHtml } from './utils.js';
-import { CONTRACT_SKILL_PROFILES, SPECIAL_SKILL_BADGE_RULES } from './profiles.js';
+import {
+    CONTRACT_SKILL_PROFILES,
+    SPECIAL_SKILL_BADGE_RULES,
+    CROSS_FINISHER_PROFILES
+} from './profiles.js';
 
 /**
  * Strips combat resolution clauses (damage numbers, crits, blocks, dodges, counters, and actor prefix)
@@ -455,6 +459,9 @@ export function spawnRosarioCross(frame, sr) {
 
     const crossEl = document.createElement('div');
     crossEl.className = 'rosario-cross-mark';
+    const profile = CROSS_FINISHER_PROFILES[frame.skillId];
+    if (profile?.crossColor) crossEl.style.setProperty('--cross-color', profile.crossColor);
+    if (profile?.glowColor) crossEl.style.setProperty('--glow-color', profile.glowColor);
     crossEl.innerHTML = `
         <div class="rosario-line line-1"></div>
         <div class="rosario-line line-2"></div>

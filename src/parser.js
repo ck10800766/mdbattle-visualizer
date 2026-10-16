@@ -21,7 +21,8 @@ import {
     ENVIRONMENTAL_SKILLS,
     CONTRACT_SKILL_PROFILES,
     CROSS_FINISHER_PROFILES,
-    SUMMON_DESPAWN_REGEX
+    SUMMON_DESPAWN_REGEX,
+    BENEFICIAL_BUFF_SKILLS
 } from './profiles.js';
 
 export {
@@ -427,7 +428,7 @@ export function buildStateSnapshots(logs) {
                 buffSrc[victim.id][log.buffId || log.skillId || ''] = attacker.id;
                 applyLog.push({ victim: victim.id, actor: attacker.id, msg: String(log.message || '') });
             }
-            if (frame.skillId === 'sakura_shield' && log.targetId) {
+            if (BENEFICIAL_BUFF_SKILLS.has(frame.skillId) && log.targetId) {
                 frame.vfx.push('flash-blue');
                 frame.isBeneficial = true;
             }

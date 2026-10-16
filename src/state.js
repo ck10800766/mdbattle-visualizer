@@ -56,6 +56,13 @@ export function createEmptyCombo() {
 }
 
 /**
+ * Resets the active combo tracking state back to its initial clean structure.
+ */
+export function resetComboState() {
+    engineState.currentCombo = createEmptyCombo();
+}
+
+/**
  * Global mutable state store for the battle visualizer engine.
  */
 export const engineState = {

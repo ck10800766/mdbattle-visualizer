@@ -475,6 +475,36 @@
       styleClass: "dice-warn"
     }
   ];
+  var BENEFICIAL_BUFF_SKILLS = /* @__PURE__ */ new Set([
+    "sakura_shield"
+  ]);
+  var SKILL_CHOREOGRAPHY_PROFILES = {
+    // Kibayuki & Yuuki demand skills
+    kibayuki_demand: {
+      targetReaction: "RAPID_SHAKE",
+      shakeDuration: 420
+    },
+    // Genji cyber-ninja emerald glow & sparks
+    genji_swift_strike: {
+      glowColor: "#48bb78",
+      sparkColor: "#48bb78",
+      sparkSize: 55
+    },
+    genji_dragonblade: {
+      glowColor: "#48bb78",
+      sparkColor: "#48bb78",
+      sparkSize: 55
+    },
+    genji_dragonblade_sweep: {
+      glowColor: "#48bb78",
+      sparkColor: "#48bb78",
+      sparkSize: 55
+    }
+  };
+  function getSkillChoreographyProfile(skillId) {
+    if (!skillId) return null;
+    return SKILL_CHOREOGRAPHY_PROFILES[skillId] || null;
+  }
 
   // src/calibrator.js
   function markAOEWaves(frames) {
@@ -913,7 +943,7 @@
           buffSrc[victim.id][log.buffId || log.skillId || ""] = attacker.id;
           applyLog.push({ victim: victim.id, actor: attacker.id, msg: String(log.message || "") });
         }
-        if (frame.skillId === "sakura_shield" && log.targetId) {
+        if (BENEFICIAL_BUFF_SKILLS.has(frame.skillId) && log.targetId) {
           frame.vfx.push("flash-blue");
           frame.isBeneficial = true;
         }
@@ -1286,10 +1316,10 @@
 
     /* Mother's Rosario 10-Hit Cross Emblem */
     .rosario-cross-mark { position: absolute; inset: -15px; z-index: 35; pointer-events: none; display: flex; align-items: center; justify-content: center; }
-    .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, #f687b3, #fff, transparent); box-shadow: 0 0 14px #f687b3, 0 0 24px #b794f4; border-radius: 999px; }
+    .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, var(--cross-color, #f687b3), #fff, transparent); box-shadow: 0 0 14px var(--cross-color, #f687b3), 0 0 24px var(--glow-color, #b794f4); border-radius: 999px; }
     .rosario-line.line-1 { --slash-angle: 38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s ease-out forwards; }
     .rosario-line.line-2 { --slash-angle: -38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
-    .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px #f687b3; animation: rosario-core-pulse 0.4s infinite alternate; }
+    .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px var(--cross-color, #f687b3); animation: rosario-core-pulse 0.4s infinite alternate; }
     .rosario-cross-mark.shatter { animation: rosario-shatter 0.4s ease-out forwards; }
     @keyframes rosario-slash-in { from { transform: rotate(var(--slash-angle, 38deg)) scaleX(0); opacity: 0; } to { transform: rotate(var(--slash-angle, 38deg)) scaleX(1); opacity: 1; } }
     @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }
@@ -1667,6 +1697,9 @@
     if (existing) existing.remove();
     const crossEl = document.createElement("div");
     crossEl.className = "rosario-cross-mark";
+    const profile = CROSS_FINISHER_PROFILES[frame.skillId];
+    if (profile?.crossColor) crossEl.style.setProperty("--cross-color", profile.crossColor);
+    if (profile?.glowColor) crossEl.style.setProperty("--glow-color", profile.glowColor);
     crossEl.innerHTML = `
         <div class="rosario-line line-1"></div>
         <div class="rosario-line line-2"></div>
@@ -2331,7 +2364,8 @@
         frameDuration = 450;
       }
     }
-    if (frame.skillId === "kibayuki_demand" && frame.type === "DAMAGE") {
+    const choreoProfile = getSkillChoreographyProfile(frame.skillId);
+    if (choreoProfile?.targetReaction === "RAPID_SHAKE" && frame.type === "DAMAGE") {
       targetKeyframes = [
         { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)" },
         { transform: "translate(-12px, -4px) rotate(-6deg)", filter: "brightness(1.6)", offset: 0.2 },
@@ -2340,23 +2374,28 @@
         { transform: "translate(8px, 0) rotate(3deg)", offset: 0.8 },
         { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)", offset: 1 }
       ];
-      targetAnimConfig.duration = 420 / speed;
+      targetAnimConfig.duration = (choreoProfile.shakeDuration || 420) / speed;
     }
-    if (["genji_swift_strike", "genji_dragonblade", "genji_dragonblade_sweep"].includes(frame.skillId) && frame.type === "DAMAGE") {
-      spawnClashSpark(arena, targetEl, 55, "#48bb78", speed);
+    if (choreoProfile?.glowColor && frame.type === "DAMAGE") {
+      if (choreoProfile.sparkColor) {
+        spawnClashSpark(arena, targetEl, choreoProfile.sparkSize || 55, choreoProfile.sparkColor, speed);
+      }
       actorKeyframes = actorKeyframes.map((kf, idx) => {
         if (idx > 0 && idx < actorKeyframes.length - 1) {
           return {
             ...kf,
-            filter: "brightness(1.45) drop-shadow(0 0 16px #48bb78)"
+            filter: `brightness(1.45) drop-shadow(0 0 16px ${choreoProfile.glowColor})`
           };
         }
         return kf;
       });
     }
     if (frame.rosarioEvent === "PIERCE_CROSS") {
-      spawnClashSpark(arena, targetEl, 60, "#f687b3", speed);
-      spawnClashSpark(arena, targetEl, 140, "#b794f4", speed);
+      const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId] || {};
+      const primaryColor = crossProfile.crossColor || "#f687b3";
+      const secondaryColor = crossProfile.glowColor || "#b794f4";
+      spawnClashSpark(arena, targetEl, 60, primaryColor, speed);
+      spawnClashSpark(arena, targetEl, 140, secondaryColor, speed);
       const crossEl = targetEl.querySelector(".rosario-cross-mark");
       if (crossEl) {
         crossEl.classList.add("shatter");
@@ -2989,91 +3028,7 @@
     }
   }
 
-  // src/timeline.js
-  function isPrimaryUltimateTriggerFrame(frame) {
-    if (frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
-      return false;
-    }
-    return true;
-  }
-  function extractTimelineMarkers(frames) {
-    if (!Array.isArray(frames) || frames.length === 0) return [];
-    const markers = [];
-    const lastUltTurnByActor = /* @__PURE__ */ new Map();
-    frames.forEach((f, idx) => {
-      const events = [];
-      if (f.rebirthHeal) {
-        const targetId = f.targetId || f.actorId;
-        const actorName = engineState.actors.get(targetId)?.name || "Boss";
-        events.push({
-          priority: 5,
-          category: "rebirth",
-          icon: "\u{1F525}",
-          title: `\u{1F525} \u4E8C\u968E\u6BB5\u7526\u9192\uFF1A${actorName}`
-        });
-      }
-      if (f.isDeathEvent && f.deadActorId) {
-        const deadName = engineState.actors.get(f.deadActorId)?.name || f.deadActorId;
-        events.push({
-          priority: 4,
-          category: "death",
-          icon: "\u{1F480}",
-          title: `\u{1F480} \u9663\u4EA1\uFF1A${deadName}`
-        });
-      }
-      if (isPrimaryUltimateTriggerFrame(f)) {
-        const msg = String(f.message || "").trim();
-        const isSubFrame = ULTIMATE_SUBFRAME_REGEX.test(msg) || f.rosarioEvent === "INSCRIBE_CROSS";
-        if (!isSubFrame && lastUltTurnByActor.get(f.actorId) !== f.turnNumber) {
-          lastUltTurnByActor.set(f.actorId, f.turnNumber);
-          const actorName = engineState.actors.get(f.actorId)?.name || f.actorId;
-          events.push({
-            priority: 3,
-            category: "ultimate",
-            icon: "\u{1F31F}",
-            title: `\u{1F31F} \u5967\u7FA9\u767C\u52D5\uFF1A${actorName}`
-          });
-        } else if (isSubFrame) {
-          lastUltTurnByActor.set(f.actorId, f.turnNumber);
-        }
-      }
-      if (f.contractEvent === "ACCEPT") {
-        const actorName = engineState.actors.get(f.actorId)?.name || f.actorId;
-        const partnerName = f.targetId ? engineState.actors.get(f.targetId)?.name : null;
-        events.push({
-          priority: 2,
-          category: "contract",
-          icon: "\u{1F48D}",
-          title: `\u{1F48D} \u5951\u7D04\u7DE0\u7D50\uFF1A${actorName}${partnerName ? ` & ${partnerName}` : ""}`
-        });
-      }
-      if (f.isSummonEvent && f.summonedActorId) {
-        const summonName = engineState.actors.get(f.summonedActorId)?.name || f.summonedActorId;
-        events.push({
-          priority: 1,
-          category: "summon",
-          icon: "\u{1F300}",
-          title: `\u{1F300} \u53EC\u559A\u767B\u5834\uFF1A${summonName}`
-        });
-      }
-      if (events.length > 0) {
-        events.sort((a, b) => b.priority - a.priority);
-        const top = events[0];
-        const combinedTitle = events.map((e) => e.title).join(" \uFF5C ");
-        const rawMsg = String(f.message || "").replace(/\s+/g, " ").trim();
-        const detail = rawMsg.length > 46 ? `${rawMsg.slice(0, 46)}\u2026` : rawMsg;
-        markers.push({
-          frameIndex: idx,
-          turnNumber: f.turnNumber,
-          category: top.category,
-          icon: top.icon,
-          title: combinedTitle,
-          detail
-        });
-      }
-    });
-    return markers;
-  }
+  // src/stageSync.js
   function createLogLineElement(frame) {
     const msgEl = document.createElement("div");
     const isDialogue = frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE";
@@ -3082,75 +3037,6 @@
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
     msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
     return msgEl;
-  }
-  function updateATBUI(currentTurn, skipTransition = false, summonStateMap = null) {
-    const sr = engineState.shadowRoot;
-    if (!sr) return;
-    const track = sr.getElementById("ctb-track");
-    if (!track) return;
-    engineState.actors.forEach((actor) => {
-      if (actor.currentHp <= 0 && actor.turnNumbers.length === 0) return;
-      const isSpawned = summonStateMap ? summonStateMap.get(actor.id) !== false : actor.initiallySpawned !== false;
-      let progress = 0;
-      const turns = actor.turnNumbers;
-      if (turns.length === 0) {
-        progress = 0;
-      } else if (currentTurn <= turns[0]) {
-        progress = turns[0] > 0 ? currentTurn / turns[0] * 100 : 100;
-      } else {
-        let prev = turns[0];
-        let next = null;
-        for (let i = 0; i < turns.length; i++) {
-          if (turns[i] === currentTurn) {
-            progress = 100;
-            prev = turns[i];
-            next = turns[i];
-            break;
-          } else if (turns[i] > currentTurn) {
-            next = turns[i];
-            break;
-          } else {
-            prev = turns[i];
-          }
-        }
-        if (progress !== 100) {
-          if (next !== null) {
-            progress = (currentTurn - prev) / (next - prev) * 100;
-          } else {
-            const avgGap = turns.length > 1 ? (turns[turns.length - 1] - turns[0]) / (turns.length - 1) : 4;
-            progress = (currentTurn - prev) / avgGap * 100;
-            progress = Math.min(95, progress);
-          }
-        }
-      }
-      progress = Math.max(0, Math.min(100, progress));
-      let icon = sr.getElementById(`ctb-icon-${actor.id}`);
-      if (!icon) {
-        icon = document.createElement("div");
-        icon.id = `ctb-icon-${actor.id}`;
-        icon.className = `ctb-icon ${actor.side}`;
-        icon.innerHTML = `<img src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">`;
-        track.appendChild(icon);
-      }
-      icon.style.zIndex = Math.round(progress);
-      const prevProgress = Number(icon.dataset.progress || 0);
-      if (skipTransition || progress < prevProgress - 20) {
-        icon.style.transition = "none";
-        icon.style.left = `${progress}%`;
-        void icon.offsetHeight;
-      } else {
-        icon.style.transition = `left ${400 / getEffectiveSpeed()}ms linear`;
-        icon.style.left = `${progress}%`;
-      }
-      if (progress === 100) icon.classList.add("acting");
-      else icon.classList.remove("acting");
-      if (!isSpawned || actor.currentHp <= 0 && progress !== 100) {
-        icon.style.opacity = "0";
-      } else {
-        icon.style.opacity = "1";
-      }
-      icon.dataset.progress = progress;
-    });
   }
   function syncActorBondVisuals(sr, bondStateMap = null) {
     engineState.actors.forEach((actor) => {
@@ -3272,32 +3158,33 @@
     const targetObj = frame.targetId ? engineState.actors.get(frame.targetId) : null;
     let engagementHtml = "";
     if (actorObj && frame.isAOE) {
-      engagementHtml = `<span>${escapeHtml(actorObj.name)} \u2794 \u5168\u9AD4\u7BC4\u570D\u76EE\u6A19</span>`;
-    } else if (actorObj && targetObj && actorObj.id !== targetObj.id) {
-      engagementHtml = `<span>${escapeHtml(actorObj.name)} \u2794 ${escapeHtml(targetObj.name)}</span>`;
-    } else if (actorObj) {
-      engagementHtml = `<span>${escapeHtml(actorObj.name)}</span>`;
+      engagementHtml = `<span>\u767C\u8D77\u5168\u9AD4\u653B\u64CA</span>`;
+    } else if (actorObj && targetObj && actorObj !== targetObj) {
+      engagementHtml = `<span>\u5C0D <strong>${escapeHtml(targetObj.name)}</strong></span>`;
     }
     const bannerEl = document.createElement("div");
     bannerEl.className = "seek-situation-banner";
-    const contextHtml = skillContextFrame?.message ? `<div class="seek-skill-context">\u25B8 ${formatLogMessage(skillContextFrame.message, engineState.actors)}</div>` : "";
-    const bodyHtml = frame.message ? `<div class="seek-banner-body">${formatLogMessage(frame.message, engineState.actors)}</div>` : "";
+    const skillPill = frame.skillName ? `<span class="seek-skill-pill">${escapeHtml(frame.skillName)}</span>` : "";
+    const skillContextHtml = skillContextFrame ? `<span class="seek-skill-context">\u3010${escapeHtml(skillContextFrame.skillName || skillContextFrame.message)}\u3011</span>` : "";
     bannerEl.innerHTML = `
         <div class="seek-banner-header">
             <span class="seek-turn-pill">TURN ${frame.turnNumber}</span>
-            <span class="seek-skill-pill">${actionLabel}</span>
+            <span>${actionLabel}</span>
+            ${skillPill}
+            ${skillContextHtml}
             ${engagementHtml}
         </div>
-        ${contextHtml}
-        ${bodyHtml}
+        <div class="seek-banner-body">
+            ${formatLogMessage(frame.message, engineState.actors)}
+        </div>
     `;
     arena.appendChild(bannerEl);
-    const arenaRect = arena.getBoundingClientRect();
     const actorEl = activeCasterId ? sr.getElementById(`actor-${activeCasterId}`) : null;
     const targetEl = frame.targetId ? sr.getElementById(`actor-${frame.targetId}`) : null;
     if (actorEl) actorEl.classList.add("seek-acting");
     if (targetEl && targetEl !== actorEl) targetEl.classList.add("seek-targeted");
-    if (frame.isAOE && actorEl && arenaRect.width > 0) {
+    const arenaRect = arena.getBoundingClientRect();
+    if (frame.isAOE && actorEl) {
       const aRect = actorEl.getBoundingClientRect();
       const cMoveX = arenaRect.left + arenaRect.width / 2 - (aRect.left + aRect.width / 2);
       const cDeltaY = arenaRect.top + arenaRect.height / 2 - (aRect.top + aRect.height / 2);
@@ -3351,7 +3238,6 @@
   function syncStageToAbsoluteState(frameIndex, isInitialReset = false, showActivePreview = false) {
     const sr = engineState.shadowRoot;
     if (!sr) return;
-    engineState.timeScale = 1;
     engineState.currentCombo = createEmptyCombo();
     engineState.floatTracker.clear();
     const mvpPanel = sr.getElementById("mdbv-mvp-panel");
@@ -3378,14 +3264,11 @@
       dialog.innerHTML = "";
       if (!isInitialReset && engineState.frames.length > 0) {
         const fragment = document.createDocumentFragment();
-        const limit = showActivePreview ? Math.min(stateFrameIndex + 1, engineState.frames.length) : Math.min(frameIndex, engineState.frames.length);
-        for (let i = 0; i < limit; i++) {
+        const limit = showActivePreview ? Math.min(stateFrameIndex, engineState.frames.length - 1) : Math.min(stateFrameIndex - 1, engineState.frames.length - 1);
+        const startLogIdx = Math.max(0, limit - 30);
+        for (let i = startLogIdx; i <= limit; i++) {
           const f = engineState.frames[i];
-          if (isPrimaryUltimateTriggerFrame(f)) {
-            const a = engineState.actors.get(f.actorId);
-            if (a) a.lastUltimateTurn = f.turnNumber;
-          }
-          if (f.message) {
+          if (f && f.message) {
             const lineEl = createLogLineElement(f);
             if (showActivePreview && i === stateFrameIndex) {
               lineEl.classList.add("current-frame-log");
@@ -3397,42 +3280,196 @@
         dialog.scrollTop = dialog.scrollHeight;
       }
     }
-    if (isInitialReset || engineState.frames.length === 0) {
+    if (engineState.frames.length === 0) return;
+    if (isInitialReset) {
       engineState.actors.forEach((actor) => {
         actor.currentHp = actor.maxHp;
         const fillEl = sr.getElementById(`hp-fill-${actor.id}`);
         const textEl = sr.getElementById(`hp-text-${actor.id}`);
         const wrapperEl = sr.getElementById(`actor-${actor.id}`);
-        if (fillEl && textEl && !actor.hideHp) {
-          fillEl.style.transition = "none";
-          fillEl.style.width = "100%";
-          setTimeout(() => {
-            fillEl.style.transition = "";
-          }, 50);
-          textEl.textContent = `${actor.maxHp}/${actor.maxHp}`;
-          fillEl.classList.remove("warning", "danger");
-        }
         if (wrapperEl) {
-          wrapperEl.classList.remove("dead", "danger-state", "spawning", "despawning", "seek-acting", "seek-targeted");
+          wrapperEl.classList.remove("dead", "danger-state");
           if (actor.initiallySpawned === false) wrapperEl.classList.add("unspawned");
           else wrapperEl.classList.remove("unspawned");
         }
+        if (fillEl && textEl && !actor.hideHp) {
+          fillEl.style.transition = "none";
+          fillEl.style.width = "100%";
+          fillEl.classList.remove("warning", "danger");
+          textEl.textContent = `${actor.maxHp}/${actor.maxHp}`;
+        }
       });
+      updateATBUI(1, true);
       syncActorBondVisuals(sr, null);
-      updateATBUI(0, true);
-      return;
+    } else {
+      const frame = engineState.frames[stateFrameIndex];
+      if (!frame) return;
+      syncActorHpAndDeathDOM(sr, frame, {
+        skipHpTransition: true,
+        syncSummonVisibility: true,
+        deferDeadClassForActorId: null
+      });
+      updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
+      syncActorBondVisuals(sr, frame.actorsBondState);
+      if (showActivePreview) {
+        renderSeekPreviewState(sr, stateFrameIndex);
+      }
     }
-    const frame = engineState.frames[stateFrameIndex];
-    if (!frame) return;
-    syncActorHpAndDeathDOM(sr, frame, {
-      skipHpTransition: true,
-      syncSummonVisibility: true
+  }
+
+  // src/timeline.js
+  function isPrimaryUltimateTriggerFrame(frame) {
+    if (frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
+      return false;
+    }
+    return true;
+  }
+  function extractTimelineMarkers(frames) {
+    if (!Array.isArray(frames) || frames.length === 0) return [];
+    const markers = [];
+    const lastUltTurnByActor = /* @__PURE__ */ new Map();
+    frames.forEach((f, idx) => {
+      const events = [];
+      if (f.rebirthHeal) {
+        const targetId = f.targetId || f.actorId;
+        const actorName = engineState.actors.get(targetId)?.name || "Boss";
+        events.push({
+          priority: 5,
+          category: "rebirth",
+          icon: "\u{1F525}",
+          title: `\u{1F525} \u4E8C\u968E\u6BB5\u7526\u9192\uFF1A${actorName}`
+        });
+      }
+      if (f.isDeathEvent && f.deadActorId) {
+        const deadName = engineState.actors.get(f.deadActorId)?.name || f.deadActorId;
+        events.push({
+          priority: 4,
+          category: "death",
+          icon: "\u{1F480}",
+          title: `\u{1F480} \u9663\u4EA1\uFF1A${deadName}`
+        });
+      }
+      if (isPrimaryUltimateTriggerFrame(f)) {
+        const msg = String(f.message || "").trim();
+        const isSubFrame = ULTIMATE_SUBFRAME_REGEX.test(msg) || f.rosarioEvent === "INSCRIBE_CROSS";
+        if (!isSubFrame && lastUltTurnByActor.get(f.actorId) !== f.turnNumber) {
+          lastUltTurnByActor.set(f.actorId, f.turnNumber);
+          const actorName = engineState.actors.get(f.actorId)?.name || f.actorId;
+          events.push({
+            priority: 3,
+            category: "ultimate",
+            icon: "\u{1F31F}",
+            title: `\u{1F31F} \u5967\u7FA9\u767C\u52D5\uFF1A${actorName}`
+          });
+        } else if (isSubFrame) {
+          lastUltTurnByActor.set(f.actorId, f.turnNumber);
+        }
+      }
+      if (f.contractEvent === "ACCEPT") {
+        const actorName = engineState.actors.get(f.actorId)?.name || f.actorId;
+        const partnerName = f.targetId ? engineState.actors.get(f.targetId)?.name : null;
+        events.push({
+          priority: 2,
+          category: "contract",
+          icon: "\u{1F48D}",
+          title: `\u{1F48D} \u5951\u7D04\u7DE0\u7D50\uFF1A${actorName}${partnerName ? ` & ${partnerName}` : ""}`
+        });
+      }
+      if (f.isSummonEvent && f.summonedActorId) {
+        const summonName = engineState.actors.get(f.summonedActorId)?.name || f.summonedActorId;
+        events.push({
+          priority: 1,
+          category: "summon",
+          icon: "\u{1F300}",
+          title: `\u{1F300} \u53EC\u559A\u767B\u5834\uFF1A${summonName}`
+        });
+      }
+      if (events.length > 0) {
+        events.sort((a, b) => b.priority - a.priority);
+        const top = events[0];
+        const combinedTitle = events.map((e) => e.title).join(" \uFF5C ");
+        const rawMsg = String(f.message || "").replace(/\s+/g, " ").trim();
+        const detail = rawMsg.length > 46 ? `${rawMsg.slice(0, 46)}\u2026` : rawMsg;
+        markers.push({
+          frameIndex: idx,
+          turnNumber: f.turnNumber,
+          category: top.category,
+          icon: top.icon,
+          title: combinedTitle,
+          detail
+        });
+      }
     });
-    syncActorBondVisuals(sr, frame.actorsBondState);
-    updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
-    if (showActivePreview) {
-      renderSeekPreviewState(sr, stateFrameIndex);
-    }
+    return markers;
+  }
+  function updateATBUI(currentTurn, skipTransition = false, summonStateMap = null) {
+    const sr = engineState.shadowRoot;
+    if (!sr) return;
+    const track = sr.getElementById("ctb-track");
+    if (!track) return;
+    engineState.actors.forEach((actor) => {
+      if (actor.currentHp <= 0 && actor.turnNumbers.length === 0) return;
+      const isSpawned = summonStateMap ? summonStateMap.get(actor.id) !== false : actor.initiallySpawned !== false;
+      let progress = 0;
+      const turns = actor.turnNumbers;
+      if (turns.length === 0) {
+        progress = 0;
+      } else if (currentTurn <= turns[0]) {
+        progress = turns[0] > 0 ? currentTurn / turns[0] * 100 : 100;
+      } else {
+        let prev = turns[0];
+        let next = null;
+        for (let i = 0; i < turns.length; i++) {
+          if (turns[i] === currentTurn) {
+            progress = 100;
+            prev = turns[i];
+            next = turns[i];
+            break;
+          } else if (turns[i] > currentTurn) {
+            next = turns[i];
+            break;
+          } else {
+            prev = turns[i];
+          }
+        }
+        if (progress !== 100) {
+          if (next !== null) {
+            progress = (currentTurn - prev) / (next - prev) * 100;
+          } else {
+            const avgGap = turns.length > 1 ? (turns[turns.length - 1] - turns[0]) / (turns.length - 1) : 4;
+            progress = (currentTurn - prev) / avgGap * 100;
+            progress = Math.min(95, progress);
+          }
+        }
+      }
+      progress = Math.max(0, Math.min(100, progress));
+      let icon = sr.getElementById(`ctb-icon-${actor.id}`);
+      if (!icon) {
+        icon = document.createElement("div");
+        icon.id = `ctb-icon-${actor.id}`;
+        icon.className = `ctb-icon ${actor.side}`;
+        icon.innerHTML = `<img src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">`;
+        track.appendChild(icon);
+      }
+      icon.style.zIndex = Math.round(progress);
+      const prevProgress = Number(icon.dataset.progress || 0);
+      if (skipTransition || progress < prevProgress - 20) {
+        icon.style.transition = "none";
+        icon.style.left = `${progress}%`;
+        void icon.offsetHeight;
+      } else {
+        icon.style.transition = `left ${400 / getEffectiveSpeed()}ms linear`;
+        icon.style.left = `${progress}%`;
+      }
+      if (progress === 100) icon.classList.add("acting");
+      else icon.classList.remove("acting");
+      if (!isSpawned || actor.currentHp <= 0 && progress !== 100) {
+        icon.style.opacity = "0";
+      } else {
+        icon.style.opacity = "1";
+      }
+      icon.dataset.progress = progress;
+    });
   }
 
   // src/reportIO.js

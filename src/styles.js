@@ -177,10 +177,10 @@ export const STAGE_STYLES = `
 
     /* Mother's Rosario 10-Hit Cross Emblem */
     .rosario-cross-mark { position: absolute; inset: -15px; z-index: 35; pointer-events: none; display: flex; align-items: center; justify-content: center; }
-    .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, #f687b3, #fff, transparent); box-shadow: 0 0 14px #f687b3, 0 0 24px #b794f4; border-radius: 999px; }
+    .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, var(--cross-color, #f687b3), #fff, transparent); box-shadow: 0 0 14px var(--cross-color, #f687b3), 0 0 24px var(--glow-color, #b794f4); border-radius: 999px; }
     .rosario-line.line-1 { --slash-angle: 38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s ease-out forwards; }
     .rosario-line.line-2 { --slash-angle: -38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
-    .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px #f687b3; animation: rosario-core-pulse 0.4s infinite alternate; }
+    .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px var(--cross-color, #f687b3); animation: rosario-core-pulse 0.4s infinite alternate; }
     .rosario-cross-mark.shatter { animation: rosario-shatter 0.4s ease-out forwards; }
     @keyframes rosario-slash-in { from { transform: rotate(var(--slash-angle, 38deg)) scaleX(0); opacity: 0; } to { transform: rotate(var(--slash-angle, 38deg)) scaleX(1); opacity: 1; } }
     @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }

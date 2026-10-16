@@ -67,7 +67,7 @@ flowchart TD
 
     subgraph Stage ["3. 舞台渲染與動畫編排層 (DOM & VFX)"]
         H --> I["stage.js 舞台初始化、快捷鍵與播放迴圈 (playbackLoop)"]
-        I <--> J["timeline.js 時間軸跳轉同步與關鍵事件標記 (extractTimelineMarkers)"]
+        I <--> J["timeline.js & stageSync.js 時間軸進度計算、狀態瞬移與事件標記"]
         I --> FT["floatingText.js 防重疊浮動傷害與累積連段傷害"]
         I --> K["choreography.js 攻擊/AOE 波次/護衛動畫編排"]
         K <--> L["combo.js 連段預判 (lookahead) 與 Combo 橫幅"]
@@ -99,7 +99,8 @@ mdbattle-visualizer/
 │   ├── parser.js               # 戰鬥紀錄解析器：正則匹配、回合歸屬推論、召喚/契約生命週期、快照建構
 │   ├── calibrator.js           # 多錨點 HP 校正器：根據錨點/百分比/致死量回推 Max HP 與 Boss 復活階段
 │   ├── stage.js                # 舞台渲染與主播放迴圈：DOM 骨架生成、控制列、鍵盤快捷鍵與 AOE 波次調度
-│   ├── timeline.js             # 時間軸同步與 UI：任意幀狀態瞬移、關鍵事件標記提取 (extractTimelineMarkers)、ATB 進度條
+│   ├── timeline.js             # 時間軸與進度計算：關鍵事件標記提取 (extractTimelineMarkers)、ATB 進度條、Seek 位置運算
+│   ├── stageSync.js            # 舞台狀態同步：快照 DOM 重建、HP/死亡狀態瞬移、Seek 戰況預覽
 │   ├── floatingText.js         # 浮動戰鬥數字：傷害/治療/格擋跳字、徑向防重疊碰撞迴避、單目標累積連段總傷害
 │   ├── choreography.js         # 戰鬥動作編排：單體連擊、AOE 波次齊射、護衛代償移動、交鋒火花特效
 │   ├── combo.js                # 連段系統：同回合連段預判 (lookaheadComboState)、連擊計數推進與 UI 橫幅
