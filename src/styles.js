@@ -1,6 +1,10 @@
 // ==========================================
 // FILE: src/styles.js
 // ==========================================
+/**
+ * @fileoverview Encapsulated Shadow DOM stylesheet (`STAGE_STYLES`) for the battle stage,
+ * playback controls, ATB timeline bar, actor cards, combat VFX, and cinematic overlays.
+ */
 
 /**
  * Shadow DOM stylesheet for the battle stage, ATB bar, combat VFX, and overlays.
@@ -135,8 +139,8 @@ export const STAGE_STYLES = `
     .contract-cutin-overlay { position: absolute; inset: 0; z-index: 1800; display: flex; align-items: center; justify-content: center; pointer-events: none; overflow: hidden; animation: contract-overlay-fade ease-out forwards; }
     @keyframes contract-overlay-fade { 0% { opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
     .contract-backdrop { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(20, 10, 28, 0.85) 0%, rgba(246, 135, 179, 0.28) 50%, rgba(15, 23, 42, 0.88) 100%); backdrop-filter: blur(4px); }
-    .contract-Portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
-    .contract-cutin-overlay.solo-mode .contract-Portraits-layer { justify-content: center; }
+    .contract-portraits-layer, .contract-Portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
+    .contract-cutin-overlay.solo-mode .contract-portraits-layer, .contract-cutin-overlay.solo-mode .contract-Portraits-layer { justify-content: center; }
     .contract-portrait { display: flex; flex-direction: column; align-items: center; gap: 8px; filter: drop-shadow(0 0 24px rgba(246, 135, 179, 0.7)); }
     .contract-portrait img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #fbb6ce; background: #1a202c; }
     .contract-portrait.left-partner { animation: slide-in-left-partner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -166,11 +170,11 @@ export const STAGE_STYLES = `
     /* Mother's Rosario 10-Hit Cross Emblem */
     .rosario-cross-mark { position: absolute; inset: -15px; z-index: 35; pointer-events: none; display: flex; align-items: center; justify-content: center; }
     .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, #f687b3, #fff, transparent); box-shadow: 0 0 14px #f687b3, 0 0 24px #b794f4; border-radius: 999px; }
-    .rosario-line.line-1 { transform: rotate(38deg); animation: rosario-slash-in 0.22s ease-out forwards; }
-    .rosario-line.line-2 { transform: rotate(-38deg); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
+    .rosario-line.line-1 { --slash-angle: 38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s ease-out forwards; }
+    .rosario-line.line-2 { --slash-angle: -38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
     .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px #f687b3; animation: rosario-core-pulse 0.4s infinite alternate; }
     .rosario-cross-mark.shatter { animation: rosario-shatter 0.4s ease-out forwards; }
-    @keyframes rosario-slash-in { from { transform: scaleX(0) rotate(38deg); opacity: 0; } to { opacity: 1; } }
+    @keyframes rosario-slash-in { from { transform: rotate(var(--slash-angle, 38deg)) scaleX(0); opacity: 0; } to { transform: rotate(var(--slash-angle, 38deg)) scaleX(1); opacity: 1; } }
     @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }
     @keyframes rosario-shatter { 0% { transform: scale(1); filter: brightness(2); opacity: 1; } 100% { transform: scale(2.1); filter: brightness(3) blur(4px); opacity: 0; } }
 `;

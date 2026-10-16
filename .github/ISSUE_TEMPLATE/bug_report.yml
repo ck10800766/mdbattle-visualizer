@@ -1,53 +1,61 @@
-name: Bug Report
-description: File a bug report.
+name: 錯誤回報 (Bug Report)
+description: 回報戰鬥視覺化腳本的演出異常、數值誤差或介面問題。
 title: "[Bug]: "
-labels: ["bug", "triage"]
-projects: ["octo-org/1", "octo-org/44"]
-assignees:
-  - octocat
+labels: ["bug"]
 type: bug
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        感謝您協助回報問題！請盡量提供詳細資訊（特別是戰鬥紀錄 JSON 或錯誤訊息），以利快速重現與修復。
   - type: input
-    id: contact
+    id: version
     attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
+      label: 腳本版本 (Script Version)
+      description: 請查看畫面右上角控制列顯示的版本號，或 Tampermonkey 內的腳本版本。
+      placeholder: 例如：V7.4 (7.4.0)
     validations:
       required: false
-  - type: textarea
-    id: what-happened
+  - type: dropdown
+    id: userscript-manager
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: 使用的腳本管理器 (Userscript Manager)
+      options:
+        - Tampermonkey
+        - Violentmonkey
+        - ScriptCat (腳本貓)
+        - 其他 (請於下方補充)
     validations:
       required: true
   - type: dropdown
     id: browsers
     attributes:
-      label: What browsers are you seeing the problem on?
+      label: 瀏覽器環境 (Browser)
       multiple: true
       options:
+        - Chrome / Brave / Edge (Chromium)
         - Firefox
-        - Chrome
         - Safari
-        - Microsoft Edge
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 問題描述 (What happened?)
+      description: 請說明發生的異常現象（例如：某角色召喚物未消失、血條校正異常、特定技能演出卡住等），以及您原本預期的正常表現。
+      placeholder: 請描述您看到的異常情況...
+    validations:
+      required: true
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      label: 瀏覽器 Console 錯誤訊息或戰報片段 (Console Logs / Battle Report JSON)
+      description: 請按 F12 開啟開發者工具 (Console)，複製任何 `[MDBV]` 相關訊息或紅色錯誤訊息；若方便提供該場戰鬥的 API JSON 結構或戰報文字，更能大幅加速修復！
       render: shell
+    validations:
+      required: false
   - type: upload
     id: screenshots
     attributes:
-      label: Upload screenshots
-      description: If applicable, add screenshots to help explain your problem.
+      label: 畫面截圖 (Screenshots)
+      description: 若為視覺呈現或排版問題，請附上畫面截圖。
     validations:
       required: false

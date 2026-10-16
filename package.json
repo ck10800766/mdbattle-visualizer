@@ -1,15 +1,18 @@
 {
   "name": "mdbattle-visualizer",
-  "version": "7.3.0",
+  "version": "7.4.0",
+  "description": "Userscript battle report visualizer for mydoujin.online with ATB timeline, HP anchor calibration, anti-spoiler guard, and cinematic VFX.",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "node build.mjs",
     "watch": "node build.mjs --watch",
+    "test": "node scripts/snapshot-runner.mjs",
     "test:snap": "node scripts/snapshot-runner.mjs",
-    "test:snap:update": "node scripts/snapshot-runner.mjs --update"
+    "test:snap:update": "node scripts/snapshot-runner.mjs --update",
+    "repomix": "npx repomix --config repomix.config.json"
   },
   "devDependencies": {
     "esbuild": "^0.24.0"
-  },
-  "type": "module"
+  }
 }

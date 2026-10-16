@@ -1,6 +1,11 @@
 // ==========================================
 // FILE: src/floatingText.js
 // ==========================================
+/**
+ * @fileoverview Floating combat numbers (damage, heal, block, miss, immunity) with radial
+ * collision avoidance and cumulative per-target combo damage counters.
+ */
+
 import { engineState, getEffectiveSpeed } from './state.js';
 
 /**

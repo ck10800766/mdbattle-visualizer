@@ -1,0 +1,43 @@
+{
+  "$schema": "https://repomix.com/schemas/latest/schema.json",
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "parsableStyle": true,
+    "headerText": "MDBattle-Visualizer (MDBV) - Full Uncompressed Repository Context.\nArchitecture:\n- src/index.js: Entry point (fetch/XHR interception, supplementary HP fetch, DOM/Vue unmount lifecycle)\n- src/constants.js: Shared API endpoints, asset URLs, and playback speed constants\n- src/state.js: Reactive singleton state store (engineState) and speed/session helpers\n- src/participants.js: Participant parsing, summon name inference, and MVP stat aggregation\n- src/parser.js: Battle log parser, summon/contract lifecycles, and immutable frame snapshot builder\n- src/calibrator.js: Multi-anchor HP calibration and boss rebirth / dynamic HP scaling inference\n- src/stage.js: Stage DOM initialization, playback loop, and card animations\n- src/timeline.js: Instant time-travel (syncStageToAbsoluteState), ATB bar UI, and combat log DOM\n- src/floatingText.js: Floating combat numbers with radial collision avoidance and cumulative combo counters\n- src/choreography.js: Combat animation choreography (single-target, AOE wave, cover, clash spark)\n- src/combo.js: Combo lookahead, runtime combo state progression, and combo banner UI\n- src/cinematics.js: Ultimate cut-ins, contract invocation overlays, and fatality sequences\n- src/mvp.js: Post-battle MVP ceremony and damage statistics dashboard\n- src/profiles.js: Declarative skill profiles (cinematics, projectile VFX, contract buffs)\n- src/spoilerGuard.js: Anti-spoiler DOM masking for the host SPA\n- src/styles.js: Scoped CSS stylesheet and keyframe animations\n- src/utils.js: HTML escaping, log syntax highlighting, and timing utilities\n- scripts/snapshot-runner.mjs: Headless golden snapshot regression test runner\n- build.mjs: esbuild Userscript bundler and dist/ai-context.txt generator",
+    "fileSummary": true,
+    "directoryStructure": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "compress": false,
+    "topFilesLength": 20,
+    "showLineNumbers": false,
+    "copyToClipboard": false
+  },
+  "include": [
+    "src/**/*.js",
+    "scripts/**/*.mjs",
+    "build.mjs",
+    "package.json",
+    "README.md",
+    ".gitignore",
+    ".repomixignore",
+    "repomix.config.json",
+    ".github/**/*.yml"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "dist/**",
+      "tests/fixtures/**",
+      "tests/snapshots/**",
+      "package-lock.json",
+      "repomix-output.xml",
+      "node_modules/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}

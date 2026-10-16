@@ -1,6 +1,10 @@
 // ==========================================
 // FILE: src/state.js
 // ==========================================
+/**
+ * @fileoverview Global mutable state store (`engineState`) and playback timing/token utilities.
+ * Shared across both headless parsing modules and Shadow DOM rendering modules.
+ */
 
 /**
  * Creates a clean combo tracking state object with all geometric and hit-tracking fields initialized.
@@ -18,6 +22,7 @@ export function createEmptyCombo() {
         knockedBack: false,
         keepAlive: false,
         targetChangedThisHit: false,
+        heldForCoverActorId: null,
         moveX: undefined,
         deltaY: undefined,
         prevMoveX: 0,

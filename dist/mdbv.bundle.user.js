@@ -11,6 +11,14 @@
 // ==/UserScript==
 
 (() => {
+  // src/constants.js
+  var API_BASE = "https://mydoujin-backend.onrender.com";
+  var ASSET_HOST = "https://mydoujin.online";
+  var DEFAULT_AVATAR_URL = "https://via.placeholder.com/150";
+  var DEFAULT_MVP_AVATAR_URL = "https://via.placeholder.com/600";
+  var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
+  var PLAYBACK_SPEEDS = Object.freeze([1, 2, 4, 8]);
+
   // src/state.js
   function createEmptyCombo() {
     return {
@@ -24,6 +32,7 @@
       knockedBack: false,
       keepAlive: false,
       targetChangedThisHit: false,
+      heldForCoverActorId: null,
       moveX: void 0,
       deltaY: void 0,
       prevMoveX: 0,
@@ -56,6 +65,174 @@
   function nextPlaybackToken() {
     engineState.playbackToken += 1;
     return engineState.playbackToken;
+  }
+
+  // src/participants.js
+  function createActorEntity({
+    id,
+    name = "Unknown",
+    side = "left",
+    maxHp = 1,
+    hideHp = false,
+    avatar = DEFAULT_AVATAR_URL,
+    isSummon = false,
+    ownerId = null,
+    initiallySpawned = true
+  }) {
+    return {
+      id,
+      name,
+      side,
+      maxHp,
+      currentHp: maxHp,
+      hideHp,
+      avatar,
+      isSummon,
+      ownerId,
+      initiallySpawned,
+      turnNumbers: [],
+      totalDamageDealt: 0,
+      luckDamageDealt: 0,
+      totalDamageTaken: 0,
+      lastUltimateTurn: null
+    };
+  }
+  function inferSummonName(logs, summonIndex, summonId, ownerName) {
+    const summonLog = logs[summonIndex];
+    if (!summonLog) return "Summon";
+    const explicitName = summonLog.targetName || summonLog.summonName || summonLog.characterName || summonLog.name;
+    if (explicitName) return String(explicitName).trim();
+    for (let i = summonIndex + 1; i < logs.length; i++) {
+      const log = logs[i];
+      if (!log || typeof log !== "object") continue;
+      const msg = String(log.message || "");
+      if (log.actorId === summonId) {
+        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
+          const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
+          if (deathMatch) return deathMatch[1];
+        }
+        const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
+        if (dialogueMatch) return dialogueMatch[1];
+        const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
+        if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
+          return actorPrefixMatch[1];
+        }
+      }
+      if (log.targetId === summonId && ["DAMAGE", "BLOCK", "HEAL"].includes(log.type)) {
+        const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
+        if (targetMatch) return targetMatch[1];
+      }
+    }
+    const summonMsg = String(summonLog.message || "").trim();
+    const whitespaceTokens = summonMsg.split(/\s+/);
+    if (whitespaceTokens.length >= 3) {
+      const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、的]/).pop();
+      if (candidate && candidate !== ownerName) {
+        return candidate;
+      }
+    }
+    return "Summon";
+  }
+  function parseParticipants(reportData) {
+    engineState.actors.clear();
+    const p = reportData.participants || {};
+    const logs = reportData.logs || [];
+    const fallbackBossImage = reportData.boss ? reportData.boss.imagePath : null;
+    const summonedIds = /* @__PURE__ */ new Set();
+    logs.forEach((log) => {
+      if (log && log.type === "SUMMON" && log.targetId) {
+        summonedIds.add(log.targetId);
+      }
+    });
+    (p.players || []).forEach((player) => {
+      const id = player.userId || player.entityId || player._id;
+      const name = player.characterName || player.name || "Unknown";
+      const rawHp = Number(player.stats?.hp);
+      const isSummon = !!player.summonerId || summonedIds.has(id);
+      const hideHp = isSummon && !(rawHp > 1);
+      const maxHp = rawHp > 0 ? rawHp : 1;
+      const avatarPath = player.imagePath;
+      engineState.actors.set(id, createActorEntity({
+        id,
+        name,
+        side: "left",
+        maxHp,
+        hideHp,
+        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
+        isSummon,
+        ownerId: player.summonerId || null,
+        initiallySpawned: !isSummon
+      }));
+    });
+    (p.enemies || []).forEach((enemy) => {
+      const id = enemy.userId || enemy.entityId || enemy._id;
+      const name = enemy.characterName || enemy.name || "Unknown";
+      const rawHp = Number(enemy.stats?.hp);
+      const isSummon = !!enemy.summonerId || summonedIds.has(id);
+      const hideHp = isSummon && !(rawHp > 1);
+      const maxHp = rawHp > 0 ? rawHp : 1;
+      let avatarPath = enemy.imagePath;
+      if ((!avatarPath || avatarPath.includes("default-boss.webp")) && fallbackBossImage) {
+        avatarPath = fallbackBossImage;
+      }
+      engineState.actors.set(id, createActorEntity({
+        id,
+        name,
+        side: "right",
+        maxHp,
+        hideHp,
+        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
+        isSummon,
+        ownerId: enemy.summonerId || null,
+        initiallySpawned: !isSummon
+      }));
+    });
+    logs.forEach((log, index) => {
+      if (!log || log.type !== "SUMMON" || !log.targetId) return;
+      const owner = engineState.actors.get(log.actorId);
+      const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
+      if (!engineState.actors.has(log.targetId)) {
+        engineState.actors.set(log.targetId, createActorEntity({
+          id: log.targetId,
+          name: summonName,
+          side: owner ? owner.side : "left",
+          maxHp: 1,
+          hideHp: true,
+          avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
+          isSummon: true,
+          ownerId: log.actorId || null,
+          initiallySpawned: false
+        }));
+      }
+    });
+  }
+  function getConsolidatedStats() {
+    let mvp = null;
+    let maxTotalDamage = 0;
+    const consolidated = /* @__PURE__ */ new Map();
+    engineState.actors.forEach((actor) => {
+      if (actor.side === "left") {
+        const baseId = actor.isSummon ? actor.ownerId : actor.id;
+        const targetId = engineState.actors.has(baseId) ? baseId : actor.id;
+        if (!consolidated.has(targetId)) {
+          consolidated.set(targetId, {
+            actor: engineState.actors.get(targetId),
+            totalOutput: 0,
+            totalTaken: 0
+          });
+        }
+        const stats = consolidated.get(targetId);
+        stats.totalOutput += (actor.totalDamageDealt || 0) + (actor.luckDamageDealt || 0);
+        stats.totalTaken += actor.totalDamageTaken || 0;
+      }
+    });
+    consolidated.forEach((stats) => {
+      if (!stats.actor.isSummon && stats.totalOutput > maxTotalDamage) {
+        maxTotalDamage = stats.totalOutput;
+        mvp = stats.actor;
+      }
+    });
+    return { consolidated, mvp, maxTotalDamage };
   }
 
   // src/profiles.js
@@ -435,8 +612,10 @@
         if (healedAmount > 0) {
           const rebirthFrame = frames[rIdx];
           rebirthFrame.rebirthHeal = true;
-          rebirthFrame.isBeneficial = true;
-          rebirthFrame.value = healedAmount;
+          if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(rebirthFrame.type) || !rebirthFrame.value) {
+            rebirthFrame.isBeneficial = true;
+            rebirthFrame.value = healedAmount;
+          }
           if (!rebirthFrame.vfx.includes("flash-green")) {
             rebirthFrame.vfx.push("flash-green");
           }
@@ -452,129 +631,33 @@
   }
 
   // src/parser.js
-  var DEFAULT_AVATAR_URL = "https://via.placeholder.com/150";
-  var ASSET_HOST = "https://mydoujin.online";
-  function createActorEntity({
-    id,
-    name = "Unknown",
-    side = "left",
-    maxHp = 1,
-    hideHp = false,
-    avatar = DEFAULT_AVATAR_URL,
-    isSummon = false,
-    ownerId = null,
-    initiallySpawned = true
-  }) {
-    return {
-      id,
-      name,
-      side,
-      maxHp,
-      currentHp: maxHp,
-      hideHp,
-      avatar,
-      isSummon,
-      ownerId,
-      initiallySpawned,
-      turnNumbers: [],
-      totalDamageDealt: 0,
-      luckDamageDealt: 0,
-      totalDamageTaken: 0,
-      lastUltimateTurn: null
-    };
-  }
-  function inferSummonName(logs, summonIndex, summonId, ownerName) {
-    const summonLog = logs[summonIndex];
-    if (!summonLog) return "Summon";
-    const explicitName = summonLog.targetName || summonLog.summonName || summonLog.characterName || summonLog.name;
-    if (explicitName) return String(explicitName).trim();
-    for (let i = summonIndex + 1; i < logs.length; i++) {
-      const log = logs[i];
-      if (!log || typeof log !== "object") continue;
-      const msg = String(log.message || "");
-      if (log.actorId === summonId) {
-        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
-          const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
-          if (deathMatch) return deathMatch[1];
-        }
-        const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
-        if (dialogueMatch) return dialogueMatch[1];
-        const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
-        if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
-          return actorPrefixMatch[1];
-        }
-      }
-      if (log.targetId === summonId && ["DAMAGE", "BLOCK", "HEAL"].includes(log.type)) {
-        const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
-        if (targetMatch) return targetMatch[1];
+  function detectCounterSetup(logs, index, log, rawValue) {
+    if (log.type !== "COUNTER") return false;
+    for (let j = index + 1; j < Math.min(logs.length, index + 6); j++) {
+      const nextLog = logs[j];
+      if (nextLog && (nextLog.type === "DAMAGE" || nextLog.type === "BLOCK") && nextLog.isCounter && (Number(nextLog.value) === rawValue || nextLog.actorId === log.actorId)) {
+        return true;
       }
     }
-    const summonMsg = String(summonLog.message || "").trim();
-    const whitespaceTokens = summonMsg.split(/\s+/);
-    if (whitespaceTokens.length >= 3) {
-      const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、的]/).pop();
-      if (candidate && candidate !== ownerName) {
-        return candidate;
-      }
-    }
-    return "Summon";
+    return false;
   }
-  function parseParticipants(reportData) {
-    engineState.actors.clear();
-    const p = reportData.participants || {};
-    const logs = reportData.logs || [];
-    const fallbackBossImage = reportData.boss ? reportData.boss.imagePath : null;
-    const summonedIds = /* @__PURE__ */ new Set();
-    logs.forEach((log) => {
-      if (log && log.type === "SUMMON" && log.targetId) {
-        summonedIds.add(log.targetId);
-      }
-    });
-    (p.players || []).forEach((player) => {
-      const id = player.userId || player.entityId || player._id;
-      const name = player.characterName || player.name || "Unknown";
-      const rawHp = Number(player.stats?.hp);
-      const isSummon = !!player.summonerId || summonedIds.has(id);
-      const hideHp = isSummon && !(rawHp > 1);
-      const maxHp = rawHp > 0 ? rawHp : 1;
-      const avatarPath = player.imagePath;
-      engineState.actors.set(id, createActorEntity({
-        id,
-        name,
-        side: "left",
-        maxHp,
-        hideHp,
-        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
-        isSummon,
-        ownerId: player.summonerId || null,
-        initiallySpawned: !isSummon
-      }));
-    });
-    (p.enemies || []).forEach((enemy) => {
-      const id = enemy.userId || enemy.entityId || enemy._id;
-      const name = enemy.characterName || enemy.name || "Unknown";
-      const rawHp = Number(enemy.stats?.hp);
-      const isSummon = !!enemy.summonerId || summonedIds.has(id);
-      const hideHp = isSummon && !(rawHp > 1);
-      const maxHp = rawHp > 0 ? rawHp : 1;
-      let avatarPath = enemy.imagePath;
-      if ((!avatarPath || avatarPath.includes("default-boss.webp")) && fallbackBossImage) {
-        avatarPath = fallbackBossImage;
-      }
-      engineState.actors.set(id, createActorEntity({
-        id,
-        name,
-        side: "right",
-        maxHp,
-        hideHp,
-        avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
-        isSummon,
-        ownerId: enemy.summonerId || null,
-        initiallySpawned: !isSummon
-      }));
-    });
-    logs.forEach((log, index) => {
-      if (!log || log.type !== "SUMMON" || !log.targetId) return;
+  function evaluateTurnOwnership(frame, isReactiveCoverText) {
+    let isTurnAction = false;
+    let turnActorId = frame.actorId;
+    if (frame.type === "BOSS_DIALOGUE") {
+      isTurnAction = true;
+    } else if (frame.type === "SKILL_TEXT" && !frame.isCounter && !frame.passiveId && !isReactiveCoverText) {
+      isTurnAction = true;
+    } else if (["DAMAGE", "MISS", "BLOCK"].includes(frame.type) && !frame.isCounter && !frame.isSelfDamage && !frame.isEnvironmentalPulse && frame.source !== "DIRECT" && frame.source !== "REFLECTION") {
+      isTurnAction = true;
+    } else if (frame.type === "COUNTER" && frame.targetId) {
+      isTurnAction = true;
+      turnActorId = frame.targetId;
+    }
+    return { isTurnAction, turnActorId };
+  }
+  function processSummonLifecycle(log, index, logs, frame, actorsDeathState, actorsSummonState, explicitlySummonedIds, despawnedActors) {
+    if (log.type === "SUMMON" && log.targetId) {
       const owner = engineState.actors.get(log.actorId);
       const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
       if (!engineState.actors.has(log.targetId)) {
@@ -586,11 +669,100 @@
           hideHp: true,
           avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
           isSummon: true,
-          ownerId: log.actorId || null,
+          ownerId: log.actorId,
           initiallySpawned: false
         }));
+      } else {
+        const summonActor = engineState.actors.get(log.targetId);
+        summonActor.currentHp = summonActor.maxHp;
+        actorsDeathState.set(log.targetId, false);
       }
-    });
+      despawnedActors.delete(log.targetId);
+      actorsSummonState.set(log.targetId, true);
+      frame.isSummonEvent = true;
+      frame.summonedActorId = log.targetId;
+    }
+    if (log.actorId && actorsSummonState.get(log.actorId) === false && !explicitlySummonedIds.has(log.actorId) && !despawnedActors.has(log.actorId) && !SUMMON_DESPAWN_REGEX.test(frame.message) && !["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(log.type)) {
+      const summonActor = engineState.actors.get(log.actorId);
+      if (summonActor && summonActor.isSummon) {
+        summonActor.currentHp = summonActor.maxHp;
+        actorsDeathState.set(log.actorId, false);
+        actorsSummonState.set(log.actorId, true);
+        frame.isSummonEvent = true;
+        frame.summonedActorId = log.actorId;
+      }
+    }
+    if (log.actorId && (log.type === "SKILL_TEXT" || log.type === "TEXT") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
+      const actingUnit = engineState.actors.get(log.actorId);
+      if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
+        actorsSummonState.set(log.actorId, false);
+        despawnedActors.add(log.actorId);
+        frame.isDespawnEvent = true;
+        frame.despawnedActorId = log.actorId;
+      }
+    }
+  }
+  function processContractSkillLifecycle(frame, contractProfile, msg, target, actorsBondState, contractCutInCount, addHpDelta) {
+    if (contractProfile.proposeRegex.test(msg)) {
+      frame.contractEvent = "PROPOSE";
+    } else if (contractProfile.acceptRegex.test(msg)) {
+      frame.contractEvent = "ACCEPT";
+      const prevCount = contractCutInCount.get(frame.skillId) || 0;
+      frame.isContractRepeat = prevCount > 0;
+      contractCutInCount.set(frame.skillId, prevCount + 1);
+      if (frame.actorId) {
+        actorsBondState.set(frame.actorId, {
+          partnerId: frame.targetId || null,
+          skillId: frame.skillId
+        });
+      }
+      if (frame.targetId) {
+        actorsBondState.set(frame.targetId, {
+          partnerId: frame.actorId || null,
+          skillId: frame.skillId
+        });
+      }
+    } else if (contractProfile.coverRegex.test(msg)) {
+      const coverMatch = msg.match(contractProfile.coverRegex);
+      const coverAmount = coverMatch ? Number(coverMatch[1]) : 0;
+      frame.contractEvent = "COVER";
+      frame.isCoverEvent = true;
+      frame.coverDamage = coverAmount;
+      let coverAttackerId = null;
+      for (let k = engineState.frames.length - 1; k >= Math.max(0, engineState.frames.length - 5); k--) {
+        const prev = engineState.frames[k];
+        if (prev && ["DAMAGE", "BLOCK", "MISS", "COUNTER"].includes(prev.type) && prev.actorId && prev.actorId !== frame.actorId && prev.actorId !== frame.targetId) {
+          coverAttackerId = prev.actorId;
+          if (prev.targetId === frame.targetId) {
+            prev.holdPositionForCover = true;
+          }
+          break;
+        }
+      }
+      if (!coverAttackerId) {
+        const protectorSide = target?.side || "left";
+        engineState.actors.forEach((a) => {
+          if (!coverAttackerId && a.side !== protectorSide && a.currentHp > 0) {
+            coverAttackerId = a.id;
+          }
+        });
+      }
+      frame.coverAttackerId = coverAttackerId;
+      if (target && coverAmount > 0) {
+        if (!target.hideHp) {
+          target.currentHp = Math.max(0, target.currentHp - coverAmount);
+          addHpDelta(target.id, -coverAmount);
+        }
+        target.totalDamageTaken += coverAmount;
+      }
+    } else if (contractProfile.endRegex.test(msg)) {
+      frame.contractEvent = "END";
+      actorsBondState.forEach((bond, bondedActorId) => {
+        if (bondedActorId === frame.actorId || bond.partnerId === frame.actorId) {
+          actorsBondState.delete(bondedActorId);
+        }
+      });
+    }
   }
   function buildStateSnapshots(logs) {
     engineState.frames = [];
@@ -602,23 +774,27 @@
     const actorsSummonState = /* @__PURE__ */ new Map();
     const actorsBondState = /* @__PURE__ */ new Map();
     const contractCutInCount = /* @__PURE__ */ new Map();
+    const despawnedActors = /* @__PURE__ */ new Set();
+    const explicitlySummonedIds = /* @__PURE__ */ new Set();
+    logs.forEach((log) => {
+      if (log && log.type === "SUMMON" && log.targetId) {
+        explicitlySummonedIds.add(log.targetId);
+      }
+    });
     engineState.actors.forEach((actor) => {
+      actor.currentHp = actor.maxHp;
+      actor.turnNumbers = [];
+      actor.totalDamageDealt = 0;
+      actor.luckDamageDealt = 0;
+      actor.totalDamageTaken = 0;
+      actor.lastUltimateTurn = null;
       actorsSummonState.set(actor.id, actor.initiallySpawned !== false);
     });
     logs.forEach((log, index) => {
       if (!log || typeof log !== "object") return;
       const rawValue = Number(log.value) || 0;
       const actualDamage = log.actualDamage != null ? Number(log.actualDamage) : rawValue;
-      let isCounterSetup = false;
-      if (log.type === "COUNTER") {
-        for (let j = index + 1; j < Math.min(logs.length, index + 6); j++) {
-          const nextLog = logs[j];
-          if (nextLog && (nextLog.type === "DAMAGE" || nextLog.type === "BLOCK") && nextLog.isCounter && (Number(nextLog.value) === rawValue || nextLog.actorId === log.actorId)) {
-            isCounterSetup = true;
-            break;
-          }
-        }
-      }
+      const isCounterSetup = detectCounterSetup(logs, index, log, rawValue);
       const isSelfDamage = log.type === "DAMAGE" && log.actorId && log.actorId === log.targetId;
       const isEnvironmentalPulse = ENVIRONMENTAL_SKILLS.has(log.skillId);
       const frame = {
@@ -678,18 +854,7 @@
       };
       const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
       const isReactiveCoverText = frame.type === "SKILL_TEXT" && contractProfile && contractProfile.coverRegex.test(frame.message);
-      let isTurnAction = false;
-      let turnActorId = frame.actorId;
-      if (frame.type === "BOSS_DIALOGUE") {
-        isTurnAction = true;
-      } else if (frame.type === "SKILL_TEXT" && !frame.isCounter && !frame.passiveId && !isReactiveCoverText) {
-        isTurnAction = true;
-      } else if (["DAMAGE", "MISS", "BLOCK"].includes(frame.type) && !frame.isCounter && !frame.isSelfDamage && !frame.isEnvironmentalPulse && frame.source !== "DIRECT" && frame.source !== "REFLECTION") {
-        isTurnAction = true;
-      } else if (frame.type === "COUNTER" && frame.targetId) {
-        isTurnAction = true;
-        turnActorId = frame.targetId;
-      }
+      const { isTurnAction, turnActorId } = evaluateTurnOwnership(frame, isReactiveCoverText);
       if (isTurnAction && turnActorId) {
         if (lastTurnActorId !== turnActorId) {
           currentTurn++;
@@ -699,48 +864,16 @@
           if (actor) actor.turnNumbers.push(currentTurn);
         }
       }
-      if (log.type === "SUMMON" && log.targetId) {
-        const owner = engineState.actors.get(log.actorId);
-        const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
-        if (!engineState.actors.has(log.targetId)) {
-          engineState.actors.set(log.targetId, createActorEntity({
-            id: log.targetId,
-            name: summonName,
-            side: owner ? owner.side : "left",
-            maxHp: 1,
-            hideHp: true,
-            avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
-            isSummon: true,
-            ownerId: log.actorId,
-            initiallySpawned: false
-          }));
-        } else {
-          const summonActor = engineState.actors.get(log.targetId);
-          summonActor.currentHp = summonActor.maxHp;
-          actorsDeathState.set(log.targetId, false);
-        }
-        actorsSummonState.set(log.targetId, true);
-        frame.isSummonEvent = true;
-        frame.summonedActorId = log.targetId;
-      }
-      if (log.actorId && actorsSummonState.get(log.actorId) === false && !["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(log.type)) {
-        const summonActor = engineState.actors.get(log.actorId);
-        if (summonActor && summonActor.isSummon) {
-          summonActor.currentHp = summonActor.maxHp;
-          actorsDeathState.set(log.actorId, false);
-          actorsSummonState.set(log.actorId, true);
-          frame.isSummonEvent = true;
-          frame.summonedActorId = log.actorId;
-        }
-      }
-      if (log.actorId && (log.type === "SKILL_TEXT" || log.type === "TEXT") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
-        const actingUnit = engineState.actors.get(log.actorId);
-        if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-          actorsSummonState.set(log.actorId, false);
-          frame.isDespawnEvent = true;
-          frame.despawnedActorId = log.actorId;
-        }
-      }
+      processSummonLifecycle(
+        log,
+        index,
+        logs,
+        frame,
+        actorsDeathState,
+        actorsSummonState,
+        explicitlySummonedIds,
+        despawnedActors
+      );
       if (log.type === "BUFF_APPLY") {
         const attacker = engineState.actors.get(log.actorId);
         const victim = engineState.actors.get(log.targetId);
@@ -880,66 +1013,15 @@
           }
         }
         if (contractProfile && log.type === "SKILL_TEXT") {
-          if (contractProfile.proposeRegex.test(msg)) {
-            frame.contractEvent = "PROPOSE";
-          } else if (contractProfile.acceptRegex.test(msg)) {
-            frame.contractEvent = "ACCEPT";
-            const prevCount = contractCutInCount.get(frame.skillId) || 0;
-            frame.isContractRepeat = prevCount > 0;
-            contractCutInCount.set(frame.skillId, prevCount + 1);
-            if (frame.actorId) {
-              actorsBondState.set(frame.actorId, {
-                partnerId: frame.targetId || null,
-                skillId: frame.skillId
-              });
-            }
-            if (frame.targetId) {
-              actorsBondState.set(frame.targetId, {
-                partnerId: frame.actorId || null,
-                skillId: frame.skillId
-              });
-            }
-          } else if (contractProfile.coverRegex.test(msg)) {
-            const coverMatch = msg.match(contractProfile.coverRegex);
-            const coverAmount = coverMatch ? Number(coverMatch[1]) : 0;
-            frame.contractEvent = "COVER";
-            frame.isCoverEvent = true;
-            frame.coverDamage = coverAmount;
-            let coverAttackerId = null;
-            for (let k = engineState.frames.length - 1; k >= Math.max(0, engineState.frames.length - 5); k--) {
-              const prev = engineState.frames[k];
-              if (prev && ["DAMAGE", "BLOCK", "MISS", "COUNTER"].includes(prev.type) && prev.actorId && prev.actorId !== frame.actorId && prev.actorId !== frame.targetId) {
-                coverAttackerId = prev.actorId;
-                if (prev.targetId === frame.targetId) {
-                  prev.holdPositionForCover = true;
-                }
-                break;
-              }
-            }
-            if (!coverAttackerId) {
-              const protectorSide = target?.side || "left";
-              engineState.actors.forEach((a) => {
-                if (!coverAttackerId && a.side !== protectorSide && a.currentHp > 0) {
-                  coverAttackerId = a.id;
-                }
-              });
-            }
-            frame.coverAttackerId = coverAttackerId;
-            if (target && coverAmount > 0) {
-              if (!target.hideHp) {
-                target.currentHp = Math.max(0, target.currentHp - coverAmount);
-                addHpDelta(target.id, -coverAmount);
-              }
-              target.totalDamageTaken += coverAmount;
-            }
-          } else if (contractProfile.endRegex.test(msg)) {
-            frame.contractEvent = "END";
-            actorsBondState.forEach((bond, bondedActorId) => {
-              if (bondedActorId === frame.actorId || bond.partnerId === frame.actorId) {
-                actorsBondState.delete(bondedActorId);
-              }
-            });
-          }
+          processContractSkillLifecycle(
+            frame,
+            contractProfile,
+            msg,
+            target,
+            actorsBondState,
+            contractCutInCount,
+            addHpDelta
+          );
         }
         const crossProfile2 = CROSS_FINISHER_PROFILES[frame.skillId];
         if (crossProfile2 && log.type === "SKILL_TEXT" && crossProfile2.inscribeRegex.test(msg)) {
@@ -947,7 +1029,7 @@
         }
       }
       const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
-      if (crossProfile && log.type === "DAMAGE" && crossProfile.pierceRegex.test(frame.message)) {
+      if (crossProfile && ["DAMAGE", "BLOCK"].includes(log.type) && crossProfile.pierceRegex.test(frame.message)) {
         frame.rosarioEvent = "PIERCE_CROSS";
       }
       if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
@@ -974,34 +1056,6 @@
       if (f.isAOE) f.holdPositionForCover = false;
     });
     engineState.totalTurns = currentTurn;
-  }
-  function getConsolidatedStats() {
-    let mvp = null;
-    let maxTotalDamage = 0;
-    const consolidated = /* @__PURE__ */ new Map();
-    engineState.actors.forEach((actor) => {
-      if (actor.side === "left") {
-        const baseId = actor.isSummon ? actor.ownerId : actor.id;
-        const targetId = engineState.actors.has(baseId) ? baseId : actor.id;
-        if (!consolidated.has(targetId)) {
-          consolidated.set(targetId, {
-            actor: engineState.actors.get(targetId),
-            totalOutput: 0,
-            totalTaken: 0
-          });
-        }
-        const stats = consolidated.get(targetId);
-        stats.totalOutput += (actor.totalDamageDealt || 0) + (actor.luckDamageDealt || 0);
-        stats.totalTaken += actor.totalDamageTaken || 0;
-      }
-    });
-    consolidated.forEach((stats) => {
-      if (!stats.actor.isSummon && stats.totalOutput > maxTotalDamage) {
-        maxTotalDamage = stats.totalOutput;
-        mvp = stats.actor;
-      }
-    });
-    return { consolidated, mvp, maxTotalDamage };
   }
 
   // src/utils.js
@@ -1163,8 +1217,8 @@
     .contract-cutin-overlay { position: absolute; inset: 0; z-index: 1800; display: flex; align-items: center; justify-content: center; pointer-events: none; overflow: hidden; animation: contract-overlay-fade ease-out forwards; }
     @keyframes contract-overlay-fade { 0% { opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
     .contract-backdrop { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(20, 10, 28, 0.85) 0%, rgba(246, 135, 179, 0.28) 50%, rgba(15, 23, 42, 0.88) 100%); backdrop-filter: blur(4px); }
-    .contract-Portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
-    .contract-cutin-overlay.solo-mode .contract-Portraits-layer { justify-content: center; }
+    .contract-portraits-layer, .contract-Portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
+    .contract-cutin-overlay.solo-mode .contract-portraits-layer, .contract-cutin-overlay.solo-mode .contract-Portraits-layer { justify-content: center; }
     .contract-portrait { display: flex; flex-direction: column; align-items: center; gap: 8px; filter: drop-shadow(0 0 24px rgba(246, 135, 179, 0.7)); }
     .contract-portrait img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #fbb6ce; background: #1a202c; }
     .contract-portrait.left-partner { animation: slide-in-left-partner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -1194,11 +1248,11 @@
     /* Mother's Rosario 10-Hit Cross Emblem */
     .rosario-cross-mark { position: absolute; inset: -15px; z-index: 35; pointer-events: none; display: flex; align-items: center; justify-content: center; }
     .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, #f687b3, #fff, transparent); box-shadow: 0 0 14px #f687b3, 0 0 24px #b794f4; border-radius: 999px; }
-    .rosario-line.line-1 { transform: rotate(38deg); animation: rosario-slash-in 0.22s ease-out forwards; }
-    .rosario-line.line-2 { transform: rotate(-38deg); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
+    .rosario-line.line-1 { --slash-angle: 38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s ease-out forwards; }
+    .rosario-line.line-2 { --slash-angle: -38deg; transform: rotate(var(--slash-angle)); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
     .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px #f687b3; animation: rosario-core-pulse 0.4s infinite alternate; }
     .rosario-cross-mark.shatter { animation: rosario-shatter 0.4s ease-out forwards; }
-    @keyframes rosario-slash-in { from { transform: scaleX(0) rotate(38deg); opacity: 0; } to { opacity: 1; } }
+    @keyframes rosario-slash-in { from { transform: rotate(var(--slash-angle, 38deg)) scaleX(0); opacity: 0; } to { transform: rotate(var(--slash-angle, 38deg)) scaleX(1); opacity: 1; } }
     @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }
     @keyframes rosario-shatter { 0% { transform: scale(1); filter: brightness(2); opacity: 1; } 100% { transform: scale(2.1); filter: brightness(3) blur(4px); opacity: 0; } }
 `;
@@ -1216,10 +1270,10 @@
     }
     return text;
   }
-  async function playFatalitySequence(sr, actorId) {
+  async function playFatalitySequence(sr, actorId, token = engineState.playbackToken) {
     const overlay = sr.getElementById("fatality-overlay");
     const actorEl = sr.getElementById(`actor-${actorId}`);
-    if (!overlay || !actorEl) return;
+    if (!overlay || !actorEl || engineState.playbackToken !== token) return;
     engineState.timeScale = 0.25;
     try {
       const effectiveSpeed = getEffectiveSpeed();
@@ -1237,13 +1291,17 @@
       deathText.style.animationDelay = `${100 / effectiveSpeed}ms`;
       actorEl.appendChild(deathText);
       await new Promise((resolve) => setTimeout(resolve, 600 / effectiveSpeed));
-      overlay.classList.remove("active");
+      if (engineState.playbackToken === token) {
+        overlay.classList.remove("active");
+      }
       setTimeout(() => {
         if (slash.isConnected) slash.remove();
         if (deathText.isConnected) deathText.remove();
       }, 1e3);
     } finally {
-      engineState.timeScale = 1;
+      if (engineState.playbackToken === token) {
+        engineState.timeScale = 1;
+      }
     }
   }
   async function playUltimateCutIn(frame, sr, token) {
@@ -1453,30 +1511,38 @@
     overlay.className = `contract-cutin-overlay ${isDual ? "dual-mode" : "solo-mode"}`;
     overlay.style.setProperty("--contract-theme", profile.themeColor || "#f687b3");
     overlay.style.animationDuration = `${actualDuration}ms`;
+    const safeActorName = escapeHtml(actor.name);
+    const safeActorAvatar = escapeHtml(actor.avatar);
+    const safePartnerName = partner ? escapeHtml(partner.name) : "";
+    const safePartnerAvatar = partner ? escapeHtml(partner.avatar) : "";
+    const safeBadgeIcon = escapeHtml(profile.badgeIcon);
+    const safeBadgeText = escapeHtml(profile.badgeText);
+    const safeSystemTitle = escapeHtml(profile.systemTitle);
+    const safeSystemSubtitle = escapeHtml(profile.systemSubtitle);
     const portraitsHtml = isDual ? `
             <div class="contract-portrait left-partner">
-                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
-                <div class="contract-partner-name">${actor.name}</div>
+                <img src="${safeActorAvatar}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="contract-partner-name">${safeActorName}</div>
             </div>
             <div class="contract-portrait right-partner">
-                <img src="${partner.avatar}" onerror="this.src='https://via.placeholder.com/150'">
-                <div class="contract-partner-name">${partner.name}</div>
+                <img src="${safePartnerAvatar}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="contract-partner-name">${safePartnerName}</div>
             </div>
         ` : `
             <div class="contract-portrait solo-partner">
-                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
-                <div class="contract-partner-name">${actor.name}</div>
+                <img src="${safeActorAvatar}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="contract-partner-name">${safeActorName}</div>
             </div>
         `;
-    const headlineText = isDual ? `${actor.name} <span>${profile.badgeIcon}</span> ${partner.name}` : `${actor.name} <span>${profile.badgeIcon}</span> ${profile.badgeText}`;
+    const headlineText = isDual ? `${safeActorName} <span>${safeBadgeIcon}</span> ${safePartnerName}` : `${safeActorName} <span>${safeBadgeIcon}</span> ${safeBadgeText}`;
     overlay.innerHTML = `
         <div class="contract-backdrop"></div>
-        <div class="contract-Portraits-layer">${portraitsHtml}</div>
+        <div class="contract-portraits-layer contract-Portraits-layer">${portraitsHtml}</div>
         <div class="sao-modal-card">
-            <div class="sao-modal-header">${profile.systemTitle}</div>
+            <div class="sao-modal-header">${safeSystemTitle}</div>
             <div class="sao-modal-body">
                 <div class="sao-modal-couple">${headlineText}</div>
-                <div class="sao-modal-desc">${profile.systemSubtitle}</div>
+                <div class="sao-modal-desc">${safeSystemSubtitle}</div>
             </div>
             <div class="sao-modal-footer">
                 <div class="sao-btn sao-btn-accept">\u25EF</div>
@@ -1518,7 +1584,7 @@
     }, 1800 / getEffectiveSpeed());
   }
 
-  // src/choreography.js
+  // src/combo.js
   function lookaheadComboState(currentIndex, frame) {
     let isNextFrameSameCombo = false;
     let isNextTargetDifferent = false;
@@ -1579,6 +1645,58 @@
     }
     return { isNextFrameSameCombo, isNextTargetDifferent, shouldReturnToOrigin };
   }
+  function advanceComboState(frame, isNextFrameSameCombo) {
+    if (frame.isCoverEvent) {
+      engineState.currentCombo.heldForCoverActorId = null;
+      engineState.currentCombo.knockedBack = true;
+      engineState.currentCombo.keepAlive = false;
+      return;
+    }
+    if (!frame.actorId || !["DAMAGE", "MISS", "COUNTER", "BLOCK"].includes(frame.type) || frame.isCounterSetup || frame.isSelfDamage || frame.isEnvironmentalPulse) {
+      return;
+    }
+    if (frame.isCounter || frame.type === "COUNTER") {
+      const counteredAttackerId = frame.counterSource?.targetId || frame.targetId;
+      if (counteredAttackerId && engineState.currentCombo.actorId !== counteredAttackerId) {
+        engineState.currentCombo.keepAlive = false;
+        engineState.currentCombo.knockedBack = true;
+      }
+      return;
+    }
+    const displayDamage = frame.value || frame.actualDamage || 0;
+    if (engineState.currentCombo.lastFrameIndex !== frame.index) {
+      if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
+        engineState.currentCombo.count++;
+        engineState.currentCombo.totalDamage = (engineState.currentCombo.totalDamage || 0) + displayDamage;
+        if (!engineState.currentCombo.targetDamages) engineState.currentCombo.targetDamages = {};
+        engineState.currentCombo.targetDamages[frame.targetId] = (engineState.currentCombo.targetDamages[frame.targetId] || 0) + displayDamage;
+        if (!engineState.currentCombo.targetHitCounts) engineState.currentCombo.targetHitCounts = {};
+        engineState.currentCombo.targetHitCounts[frame.targetId] = (engineState.currentCombo.targetHitCounts[frame.targetId] || 0) + 1;
+        if (engineState.currentCombo.targetId !== frame.targetId) {
+          engineState.currentCombo.targetId = frame.targetId;
+          engineState.currentCombo.moveX = void 0;
+          engineState.currentCombo.deltaY = void 0;
+          engineState.currentCombo.targetChangedThisHit = true;
+        } else {
+          engineState.currentCombo.targetChangedThisHit = false;
+        }
+      } else {
+        engineState.currentCombo = {
+          ...createEmptyCombo(),
+          actorId: frame.actorId,
+          skillId: frame.skillId,
+          targetId: frame.targetId,
+          count: 1,
+          totalDamage: displayDamage,
+          targetDamages: { [frame.targetId]: displayDamage },
+          targetHitCounts: { [frame.targetId]: 1 },
+          lastFrameIndex: frame.index
+        };
+      }
+      engineState.currentCombo.lastFrameIndex = frame.index;
+    }
+    engineState.currentCombo.keepAlive = isNextFrameSameCombo;
+  }
   function hasMoreHitsOnSameTargetInTurn(currentIndex, turnNumber, actorId, targetId) {
     for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
       const lookahead = engineState.frames[i];
@@ -1589,6 +1707,450 @@
       }
     }
     return false;
+  }
+  function renderComboBanner(arena, frame, speed) {
+    if (engineState.currentCombo.count <= 1) return;
+    const actor = engineState.actors.get(frame.actorId);
+    const side = actor ? actor.side : "left";
+    const existingCombo = arena.querySelector(`.global-combo-text-${side}`);
+    if (existingCombo) existingCombo.remove();
+    const comboEl = document.createElement("div");
+    comboEl.className = `combo-text global-combo-text-${side}`;
+    comboEl.innerHTML = `
+        <div style="font-style: italic;">${engineState.currentCombo.count} HIT!</div>
+        <div style="font-size: 36px; color: #ff6b6b; margin-top: -5px; text-shadow: 0 4px 10px rgba(0,0,0,0.8), 0 0 15px rgba(255, 107, 107, 0.8);">
+            ${engineState.currentCombo.totalDamage} DMG
+        </div>
+    `;
+    comboEl.style.cssText = `
+        position: absolute; top: 10%; z-index: 60;
+        color: #63b3ed; font-size: 64px; font-weight: 900; text-align: center;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.8), 0 0 15px rgba(99, 179, 237, 0.9);
+        pointer-events: none;
+        ${side === "left" ? "left: 5vw; right: auto;" : "right: 5vw; left: auto;"}
+    `;
+    arena.appendChild(comboEl);
+    comboEl.animate([
+      { transform: "scale(1.3) translateX(10px)", opacity: 0 },
+      { transform: "scale(1) translateX(0)", opacity: 1 }
+    ], { duration: 150 / speed, easing: "cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
+    setTimeout(() => {
+      if (comboEl.isConnected) {
+        const fade = comboEl.animate(
+          [{ opacity: 1 }, { opacity: 0, transform: "translateY(-20px)" }],
+          { duration: 300 / speed, fill: "forwards" }
+        );
+        fade.onfinish = () => comboEl.remove();
+      }
+    }, 1200 / speed);
+  }
+
+  // src/choreography.js
+  function spawnClashSpark(arena, anchorEl, delay = 120, color = "#f6e05e", speed = 1) {
+    setTimeout(() => {
+      if (!anchorEl.isConnected || !arena.isConnected) return;
+      const sparkEl = document.createElement("div");
+      sparkEl.style.cssText = `position: absolute; width: 70px; height: 70px; background: radial-gradient(circle, #ffffff 20%, ${color} 50%, transparent 80%); border-radius: 50%; z-index: 20; transform: translate(-50%, -50%) scale(0); pointer-events: none; mix-blend-mode: screen; box-shadow: 0 0 20px ${color};`;
+      const tRect = anchorEl.getBoundingClientRect();
+      const aRect = arena.getBoundingClientRect();
+      sparkEl.style.left = `${tRect.left - aRect.left + tRect.width / 2}px`;
+      sparkEl.style.top = `${tRect.top - aRect.top + tRect.height / 2}px`;
+      arena.appendChild(sparkEl);
+      const sparkAnim = sparkEl.animate([
+        { transform: "translate(-50%, -50%) scale(0) rotate(0deg)", opacity: 1 },
+        { transform: "translate(-50%, -50%) scale(3) rotate(45deg)", opacity: 1, offset: 0.3 },
+        { transform: "translate(-50%, -50%) scale(4.2) rotate(90deg)", opacity: 0, offset: 1 }
+      ], { duration: 300 / speed });
+      sparkAnim.onfinish = () => sparkEl.remove();
+    }, delay / speed);
+  }
+  function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed) {
+    if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
+    if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
+    const arenaRect = arena.getBoundingClientRect();
+    if (frame.isCounter || frame.type === "COUNTER") {
+      const tRect = targetEl.getBoundingClientRect();
+      const cMoveX2 = engineState.currentCombo.aoeCenterX ?? arenaRect.left + arenaRect.width / 2 - (tRect.left + tRect.width / 2);
+      const cDeltaY2 = engineState.currentCombo.aoeCenterY ?? arenaRect.top + arenaRect.height / 2 - (tRect.top + tRect.height / 2);
+      engineState.currentCombo.aoeCenterX = cMoveX2;
+      engineState.currentCombo.aoeCenterY = cDeltaY2;
+      const aRect = actorEl.getBoundingClientRect();
+      const defToCenterX = arenaRect.left + arenaRect.width / 2 - (aRect.left + aRect.width / 2) + (side === "left" ? -45 : 45);
+      const defToCenterY = arenaRect.top + arenaRect.height / 2 - (aRect.top + aRect.height / 2);
+      const pCasterCenter = `translate(${cMoveX2}px, ${cDeltaY2}px) scale(1.2)`;
+      const pCasterRecoil = `translate(${cMoveX2 + (targetSide === "left" ? -20 : 20)}px, ${cDeltaY2}px) scale(1.12)`;
+      actorEl.animate([
+        { transform: "translate(0,0) scale(1)", zIndex: 12 },
+        { transform: `translate(${defToCenterX}px, ${defToCenterY}px) scale(1.15)`, filter: "brightness(1.5) drop-shadow(0 0 10px #fc8181)", zIndex: 12, offset: 0.25 },
+        { transform: `translate(${defToCenterX}px, ${defToCenterY}px) scale(1.15)`, zIndex: 12, offset: 0.45 },
+        { transform: "translate(0,0) scale(1)", zIndex: 1, offset: 1 }
+      ], { duration: 480 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" });
+      if (frame.isAOELast) {
+        targetEl.animate([
+          { transform: pCasterCenter, zIndex: 10 },
+          { transform: pCasterRecoil, zIndex: 10, offset: 0.3 },
+          { transform: "translate(0,0) scale(1)", zIndex: 1, offset: 1 }
+        ], { duration: 480 / speed, easing: "ease-out", fill: "none" });
+        engineState.currentCombo.atCenterStage = false;
+        engineState.currentCombo.knockedBack = true;
+      } else {
+        targetEl.animate([
+          { transform: engineState.currentCombo.atCenterStage ? pCasterCenter : "translate(0,0) scale(1)", zIndex: 10 },
+          { transform: pCasterRecoil, zIndex: 10, offset: 0.35 },
+          { transform: pCasterCenter, zIndex: 10, offset: 1 }
+        ], { duration: 480 / speed, easing: "ease-out", fill: "forwards" });
+        engineState.currentCombo.atCenterStage = true;
+      }
+      spawnClashSpark(arena, targetEl, 80, "#f6e05e", speed);
+      return 520;
+    }
+    if (engineState.currentCombo.aoeCenterX === void 0 || frame.isAOEFirst) {
+      const cleanActorRect = actorEl.getBoundingClientRect();
+      engineState.currentCombo.aoeCenterX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
+      engineState.currentCombo.aoeCenterY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+    }
+    const cMoveX = engineState.currentCombo.aoeCenterX;
+    const cDeltaY = engineState.currentCombo.aoeCenterY;
+    const p0 = "translate(0px, 0px) scale(1)";
+    const pCenter = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.2)`;
+    const pCenterPulse = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.28)`;
+    let frameDuration;
+    let actorKeyframes = [];
+    const actorAnimConfig = { duration: 280 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" };
+    if (!engineState.currentCombo.atCenterStage && !frame.isAOELast) {
+      frameDuration = 280;
+      actorAnimConfig.duration = 260 / speed;
+      actorAnimConfig.fill = "forwards";
+      actorKeyframes = [
+        { transform: p0, zIndex: 10 },
+        { transform: pCenterPulse, filter: `drop-shadow(0 0 14px ${shadowColor})`, zIndex: 10, offset: 0.7 },
+        { transform: pCenter, filter: `drop-shadow(0 0 10px ${shadowColor})`, zIndex: 10, offset: 1 }
+      ];
+      engineState.currentCombo.atCenterStage = true;
+    } else if (engineState.currentCombo.atCenterStage && !frame.isAOELast) {
+      frameDuration = 220;
+      actorAnimConfig.duration = 200 / speed;
+      actorAnimConfig.fill = "forwards";
+      actorKeyframes = [
+        { transform: pCenter, filter: `drop-shadow(0 0 10px ${shadowColor})`, zIndex: 10 },
+        { transform: pCenterPulse, filter: `drop-shadow(0 0 16px ${shadowColor})`, zIndex: 10, offset: 0.45 },
+        { transform: pCenter, filter: `drop-shadow(0 0 10px ${shadowColor})`, zIndex: 10, offset: 1 }
+      ];
+    } else {
+      frameDuration = 400;
+      actorAnimConfig.duration = 380 / speed;
+      actorAnimConfig.fill = "none";
+      const startTransform = engineState.currentCombo.atCenterStage ? pCenter : p0;
+      actorKeyframes = [
+        { transform: startTransform, zIndex: 10 },
+        { transform: pCenterPulse, filter: `drop-shadow(0 0 16px ${shadowColor})`, zIndex: 10, offset: 0.35 },
+        { transform: p0, filter: "none", zIndex: 1, offset: 1 }
+      ];
+      engineState.currentCombo.atCenterStage = false;
+      engineState.currentCombo.knockedBack = true;
+    }
+    actorEl.animate(actorKeyframes, actorAnimConfig);
+    const dodgeDir = targetSide === "left" ? -24 : 24;
+    if (frame.type === "MISS") {
+      targetEl.animate([
+        { transform: "translate(0,0) scale(1)", filter: "blur(0px)" },
+        { transform: `translate(${dodgeDir}px, 0) scale(0.88)`, filter: "blur(2px) brightness(1.5)", offset: 0.35 },
+        { transform: "translate(0,0) scale(1)", filter: "blur(0px)", offset: 1 }
+      ], { duration: 320 / speed, easing: "ease-out" });
+    } else if (frame.type === "BLOCK" || frame.blocked) {
+      targetEl.animate([
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
+        { transform: `translate(${dodgeDir * 0.3}px, 2px) scale(0.96)`, filter: "brightness(1.4) drop-shadow(0 0 10px #63b3ed)", offset: 0.35 },
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
+      ], { duration: 240 / speed, easing: "ease-out" });
+      spawnClashSpark(arena, targetEl, 40, "#63b3ed", speed);
+    } else {
+      targetEl.animate([
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
+        { transform: `translate(${dodgeDir * 0.5}px, 0) scale(0.94)`, filter: "brightness(1.8) contrast(1.3)", offset: 0.3 },
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
+      ], { duration: 240 / speed, easing: "ease-out" });
+      spawnClashSpark(arena, targetEl, 40, shadowColor, speed);
+    }
+    return frameDuration;
+  }
+  function playSingleTargetChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed, isNextFrameSameCombo, isNextTargetDifferent, shouldReturnToOrigin) {
+    if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
+    if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
+    let frameDuration = 600;
+    let moveX;
+    let deltaY;
+    if (engineState.currentCombo.count > 1 && engineState.currentCombo.moveX !== void 0 && !frame.isCounter && frame.type !== "COUNTER") {
+      moveX = engineState.currentCombo.moveX;
+      deltaY = engineState.currentCombo.deltaY;
+    } else {
+      const actorRect = actorEl.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      moveX = targetRect.left - actorRect.left + (side === "left" ? -60 : 60);
+      deltaY = targetRect.top - actorRect.top;
+      if (!frame.isCounter && frame.type !== "COUNTER") {
+        engineState.currentCombo.moveX = moveX;
+        engineState.currentCombo.deltaY = deltaY;
+      }
+    }
+    const isCombo = engineState.currentCombo.count > 1 || isNextFrameSameCombo;
+    const startsFromOrigin = engineState.currentCombo.count === 1 || !isCombo || engineState.currentCombo.knockedBack || engineState.currentCombo.targetChangedThisHit;
+    if (!frame.isCounter && frame.type !== "COUNTER") {
+      engineState.currentCombo.knockedBack = false;
+    }
+    const isFollowedByCover = !!frame.holdPositionForCover;
+    const stayAtTarget = isNextFrameSameCombo && !isNextTargetDifferent && !shouldReturnToOrigin || isFollowedByCover;
+    if (isFollowedByCover) {
+      engineState.currentCombo.heldForCoverActorId = frame.actorId;
+    } else if ((shouldReturnToOrigin || isNextTargetDifferent) && !frame.isCounter && frame.type !== "COUNTER") {
+      engineState.currentCombo.knockedBack = true;
+    }
+    const isFirstHit = startsFromOrigin && stayAtTarget;
+    const isMiddleHit = !startsFromOrigin && stayAtTarget;
+    const p0 = "translate(0px, 0px) scale(1)";
+    const pTarget = `translate(${moveX}px, ${deltaY}px) scale(1.15)`;
+    const pStart = startsFromOrigin ? p0 : pTarget;
+    let actorKeyframes = [];
+    let targetKeyframes = [];
+    const actorAnimConfig = { duration: 400 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" };
+    const targetAnimConfig = { duration: 400 / speed, easing: "ease-out", fill: "none" };
+    if (frame.isCounter || frame.type === "COUNTER") {
+      frameDuration = 600;
+      actorAnimConfig.duration = 500 / speed;
+      targetAnimConfig.duration = 500 / speed;
+      const originalAttackerId = frame.targetId;
+      const isMiddleHitCounter = engineState.currentCombo.actorId === originalAttackerId && engineState.currentCombo.count > 1;
+      const attackerContinuesOnSameTarget = hasMoreHitsOnSameTargetInTurn(
+        engineState.currentFrameIndex,
+        frame.turnNumber,
+        originalAttackerId,
+        frame.actorId
+      );
+      const actorRect = actorEl.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      const attackerToDefenderX = actorRect.left - targetRect.left + (targetSide === "left" ? -60 : 60);
+      const attackerToDefenderY = actorRect.top - targetRect.top;
+      const pAttackerClash = `translate(${attackerToDefenderX}px, ${attackerToDefenderY}px) scale(1.15)`;
+      const pAttackerPushback = `translate(${attackerToDefenderX * 0.2}px, ${attackerToDefenderY * 0.2}px) scale(1.1)`;
+      const counterDashX = side === "left" ? 20 : -20;
+      actorKeyframes = [
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", zIndex: 11 },
+        { transform: `translate(${counterDashX}px, 0) scale(1.05)`, filter: "brightness(1.5) drop-shadow(0 0 10px #fc8181)", zIndex: 11, offset: 0.15 },
+        { transform: `translate(${counterDashX}px, 0) scale(1.05)`, filter: "brightness(1.5) drop-shadow(0 0 10px #fc8181)", zIndex: 11, offset: 0.4 },
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", zIndex: 1, offset: 1 }
+      ];
+      if (!isMiddleHitCounter || !attackerContinuesOnSameTarget) {
+        targetKeyframes = [
+          { transform: isMiddleHitCounter ? pAttackerClash : "translate(0,0) scale(1)", zIndex: 10 },
+          { transform: pAttackerClash, zIndex: 10, offset: 0.15 },
+          { transform: pAttackerClash, zIndex: 10, offset: 0.2 },
+          { transform: "translate(0,0) scale(1)", zIndex: 1, offset: 1 }
+        ];
+        engineState.currentCombo.knockedBack = true;
+      } else {
+        targetKeyframes = [
+          { transform: pAttackerClash, zIndex: 10 },
+          { transform: pAttackerClash, zIndex: 10, offset: 0.15 },
+          { transform: pAttackerPushback, zIndex: 10, offset: 0.5 },
+          { transform: pAttackerClash, zIndex: 10, offset: 1 }
+        ];
+        targetAnimConfig.fill = "forwards";
+      }
+      spawnClashSpark(arena, targetEl, 60, "#f6e05e", speed);
+    } else if (frame.type === "BLOCK" || frame.blocked) {
+      const recoilOffset = side === "left" ? -18 : 18;
+      targetKeyframes = [
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
+        { transform: `translate(${side === "left" ? 4 : -4}px, 2px) scale(0.97)`, filter: "brightness(1.4) drop-shadow(0 0 10px #63b3ed)", offset: 0.35 },
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
+      ];
+      if (isFirstHit) {
+        frameDuration = 280;
+        actorAnimConfig.duration = 260 / speed;
+        targetAnimConfig.duration = 260 / speed;
+        actorKeyframes = [
+          { transform: p0, zIndex: 10 },
+          { transform: pTarget, zIndex: 10, offset: 0.6 },
+          { transform: `translate(${moveX + recoilOffset}px, ${deltaY}px) scale(1.1)`, zIndex: 10, offset: 0.85 },
+          { transform: pTarget, zIndex: 10, offset: 1 }
+        ];
+        actorAnimConfig.fill = "forwards";
+        spawnClashSpark(arena, targetEl, 80, "#63b3ed", speed);
+      } else if (isMiddleHit) {
+        frameDuration = 210;
+        actorAnimConfig.duration = 190 / speed;
+        targetAnimConfig.duration = 190 / speed;
+        actorKeyframes = [
+          { transform: pTarget, zIndex: 10 },
+          { transform: `translate(${moveX + recoilOffset}px, ${deltaY + (Math.random() * 12 - 6)}px) scale(1.08)`, zIndex: 10, offset: 0.45 },
+          { transform: pTarget, zIndex: 10, offset: 1 }
+        ];
+        actorAnimConfig.fill = "forwards";
+        spawnClashSpark(arena, targetEl, 40, "#63b3ed", speed);
+      } else {
+        frameDuration = 420;
+        actorAnimConfig.duration = 380 / speed;
+        targetAnimConfig.duration = 350 / speed;
+        actorKeyframes = [
+          { transform: pStart, zIndex: 10 },
+          { transform: pTarget, zIndex: 10, offset: 0.35 },
+          { transform: `translate(${moveX + recoilOffset * 1.5}px, ${deltaY}px) scale(1.05)`, zIndex: 10, offset: 0.55 },
+          { transform: p0, zIndex: 1, offset: 1 }
+        ];
+        spawnClashSpark(arena, targetEl, 70, "#63b3ed", speed);
+      }
+    } else if (frame.type === "MISS") {
+      const isStandaloneFirstMiss = engineState.currentCombo.count === 1 && !isNextFrameSameCombo && !isNextTargetDifferent;
+      if (isStandaloneFirstMiss) {
+        frameDuration = 850;
+        actorAnimConfig.duration = 800 / speed;
+        targetAnimConfig.duration = 500 / speed;
+        const dashOutX = moveX * 4;
+        const reappearX = moveX * -1.5;
+        actorKeyframes = [
+          { transform: p0, zIndex: 10, offset: 0 },
+          { transform: `translate(${dashOutX}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.3 },
+          { transform: `translate(${reappearX}px, 0px) scale(1)`, zIndex: 1, offset: 0.31 },
+          { transform: p0, zIndex: 1, offset: 1 }
+        ];
+        actorAnimConfig.fill = "none";
+        targetKeyframes = [
+          { transform: "scale(1)", filter: "blur(0px)" },
+          { transform: "scale(0.8)", filter: "blur(3px) brightness(1.5)", offset: 0.3 },
+          { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
+        ];
+        engineState.currentCombo.knockedBack = true;
+      } else {
+        frameDuration = 420;
+        actorAnimConfig.duration = 380 / speed;
+        targetAnimConfig.duration = 380 / speed;
+        const missReachMultiplier = isNextTargetDifferent ? 1 : 1.35;
+        if (isFirstHit) {
+          actorKeyframes = [
+            { transform: p0, zIndex: 1 },
+            { transform: `translate(${moveX * missReachMultiplier}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.5 },
+            { transform: pTarget, zIndex: 10, offset: 1 }
+          ];
+          actorAnimConfig.fill = "forwards";
+          targetKeyframes = [
+            { transform: "scale(1)", filter: "blur(0px)" },
+            { transform: "scale(0.8)", filter: "blur(3px) brightness(1.5)", offset: 0.4 },
+            { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
+          ];
+        } else if (isMiddleHit) {
+          actorKeyframes = [
+            { transform: pStart, zIndex: 10 },
+            { transform: `translate(${moveX * missReachMultiplier}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.5 },
+            { transform: pTarget, zIndex: 10, offset: 1 }
+          ];
+          actorAnimConfig.fill = "forwards";
+          targetKeyframes = [
+            { transform: "scale(1)", filter: "blur(0px)" },
+            { transform: "scale(0.85)", filter: "blur(4px) brightness(1.8)", offset: 0.5 },
+            { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
+          ];
+        } else {
+          actorKeyframes = [
+            { transform: pStart, zIndex: 10 },
+            { transform: `translate(${moveX * missReachMultiplier}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.4 },
+            { transform: p0, zIndex: 1, offset: 1 }
+          ];
+          targetKeyframes = [
+            { transform: "scale(1)", filter: "blur(0px)" },
+            { transform: "scale(0.8)", filter: "blur(3px)", offset: 0.4 },
+            { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
+          ];
+        }
+      }
+    } else {
+      if (isFirstHit) {
+        actorKeyframes = [
+          { transform: p0, zIndex: 1 },
+          { transform: `translate(${side === "left" ? -20 : 20}px, 0) scale(0.95)`, zIndex: 1, offset: 0.15 },
+          { transform: pTarget, zIndex: 10, offset: 0.8 },
+          { transform: pTarget, zIndex: 10, offset: 1 }
+        ];
+        actorAnimConfig.fill = "forwards";
+        actorAnimConfig.duration = 250 / speed;
+        frameDuration = 250;
+      } else if (isMiddleHit) {
+        const vibX = moveX + (Math.random() * 20 - 10);
+        const vibY = deltaY + (Math.random() * 20 - 10);
+        actorKeyframes = [
+          { transform: pStart, zIndex: 10 },
+          { transform: `translate(${vibX}px, ${vibY}px) scale(1.25)`, zIndex: 10, filter: `drop-shadow(0 0 12px ${shadowColor})`, offset: 0.5 },
+          { transform: pTarget, zIndex: 10, offset: 1 }
+        ];
+        actorAnimConfig.fill = "forwards";
+        actorAnimConfig.duration = 150 / speed;
+        frameDuration = 180;
+        if (targetEl) {
+          targetEl.style.filter = "brightness(2) contrast(1.5)";
+          targetEl.style.transform = `translateX(${side === "left" ? 10 : -10}px)`;
+          setTimeout(() => {
+            if (targetEl.isConnected) {
+              targetEl.style.filter = "";
+              targetEl.style.transform = "";
+            }
+          }, 80 / speed);
+        }
+      } else {
+        actorKeyframes = [
+          { transform: pStart, zIndex: 10 },
+          { transform: pTarget, zIndex: 10, offset: 0.4 },
+          { transform: p0, zIndex: 1, offset: 1 }
+        ];
+        actorAnimConfig.duration = 400 / speed;
+        frameDuration = 450;
+      }
+    }
+    if (frame.skillId === "kibayuki_demand" && frame.type === "DAMAGE") {
+      targetKeyframes = [
+        { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)" },
+        { transform: "translate(-12px, -4px) rotate(-6deg)", filter: "brightness(1.6)", offset: 0.2 },
+        { transform: "translate(10px, 2px) rotate(5deg)", offset: 0.4 },
+        { transform: "translate(-10px, -2px) rotate(-5deg)", offset: 0.6 },
+        { transform: "translate(8px, 0) rotate(3deg)", offset: 0.8 },
+        { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)", offset: 1 }
+      ];
+      targetAnimConfig.duration = 420 / speed;
+    }
+    if (["genji_swift_strike", "genji_dragonblade", "genji_dragonblade_sweep"].includes(frame.skillId) && frame.type === "DAMAGE") {
+      spawnClashSpark(arena, targetEl, 55, "#48bb78", speed);
+      actorKeyframes = actorKeyframes.map((kf, idx) => {
+        if (idx > 0 && idx < actorKeyframes.length - 1) {
+          return {
+            ...kf,
+            filter: "brightness(1.45) drop-shadow(0 0 16px #48bb78)"
+          };
+        }
+        return kf;
+      });
+    }
+    if (frame.rosarioEvent === "PIERCE_CROSS") {
+      spawnClashSpark(arena, targetEl, 60, "#f687b3", speed);
+      spawnClashSpark(arena, targetEl, 140, "#b794f4", speed);
+      const crossEl = targetEl.querySelector(".rosario-cross-mark");
+      if (crossEl) {
+        crossEl.classList.add("shatter");
+        setTimeout(() => {
+          if (crossEl.isConnected) crossEl.remove();
+        }, 450 / speed);
+      }
+    } else if (frame.isCounter || frame.type === "COUNTER") {
+      const defenderCrossEl = actorEl.querySelector(".rosario-cross-mark");
+      if (defenderCrossEl) {
+        defenderCrossEl.classList.add("shatter");
+        setTimeout(() => {
+          if (defenderCrossEl.isConnected) defenderCrossEl.remove();
+        }, 450 / speed);
+      }
+    }
+    actorEl.animate(actorKeyframes, actorAnimConfig);
+    if (targetKeyframes.length > 0) {
+      targetEl.animate(targetKeyframes, targetAnimConfig);
+    }
+    return frameDuration;
   }
   function playCombatAnimation(frame, sr, isNextFrameSameCombo, isNextTargetDifferent, shouldReturnToOrigin) {
     if (frame.isCounterSetup) {
@@ -1609,90 +2171,9 @@
       }
       return 420;
     }
-    const displayDamage = frame.value || frame.actualDamage || 0;
-    if (frame.isCounter || frame.type === "COUNTER") {
-      const counteredAttackerId = frame.counterSource?.targetId || frame.targetId;
-      if (counteredAttackerId && engineState.currentCombo.actorId !== counteredAttackerId) {
-        engineState.currentCombo.keepAlive = false;
-        engineState.currentCombo.knockedBack = true;
-      }
-    }
+    advanceComboState(frame, isNextFrameSameCombo);
     if (!frame.isCounter && frame.type !== "COUNTER") {
-      if (engineState.currentCombo.lastFrameIndex !== frame.index) {
-        if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
-          engineState.currentCombo.count++;
-          engineState.currentCombo.totalDamage = (engineState.currentCombo.totalDamage || 0) + displayDamage;
-          if (!engineState.currentCombo.targetDamages) engineState.currentCombo.targetDamages = {};
-          engineState.currentCombo.targetDamages[frame.targetId] = (engineState.currentCombo.targetDamages[frame.targetId] || 0) + displayDamage;
-          if (!engineState.currentCombo.targetHitCounts) engineState.currentCombo.targetHitCounts = {};
-          engineState.currentCombo.targetHitCounts[frame.targetId] = (engineState.currentCombo.targetHitCounts[frame.targetId] || 0) + 1;
-          if (engineState.currentCombo.targetId !== frame.targetId) {
-            engineState.currentCombo.targetId = frame.targetId;
-            engineState.currentCombo.moveX = void 0;
-            engineState.currentCombo.deltaY = void 0;
-            engineState.currentCombo.targetChangedThisHit = true;
-          } else {
-            engineState.currentCombo.targetChangedThisHit = false;
-          }
-        } else {
-          engineState.currentCombo = {
-            actorId: frame.actorId,
-            skillId: frame.skillId,
-            targetId: frame.targetId,
-            count: 1,
-            totalDamage: displayDamage,
-            targetDamages: { [frame.targetId]: displayDamage },
-            targetHitCounts: { [frame.targetId]: 1 },
-            knockedBack: false,
-            keepAlive: false,
-            targetChangedThisHit: false,
-            moveX: void 0,
-            deltaY: void 0,
-            prevMoveX: 0,
-            prevDeltaY: 0,
-            aoeCenterX: void 0,
-            aoeCenterY: void 0,
-            atCenterStage: false,
-            lastFrameIndex: frame.index
-          };
-        }
-        engineState.currentCombo.lastFrameIndex = frame.index;
-      }
-      if (engineState.currentCombo.count > 1) {
-        const actor = engineState.actors.get(frame.actorId);
-        const side = actor ? actor.side : "left";
-        const existingCombo = arena.querySelector(`.global-combo-text-${side}`);
-        if (existingCombo) existingCombo.remove();
-        const comboEl = document.createElement("div");
-        comboEl.className = `combo-text global-combo-text-${side}`;
-        comboEl.innerHTML = `
-                <div style="font-style: italic;">${engineState.currentCombo.count} HIT!</div>
-                <div style="font-size: 36px; color: #ff6b6b; margin-top: -5px; text-shadow: 0 4px 10px rgba(0,0,0,0.8), 0 0 15px rgba(255, 107, 107, 0.8);">
-                    ${engineState.currentCombo.totalDamage} DMG
-                </div>
-            `;
-        comboEl.style.cssText = `
-                position: absolute; top: 10%; z-index: 60;
-                color: #63b3ed; font-size: 64px; font-weight: 900; text-align: center;
-                text-shadow: 0 4px 10px rgba(0,0,0,0.8), 0 0 15px rgba(99, 179, 237, 0.9);
-                pointer-events: none;
-                ${side === "left" ? "left: 5vw; right: auto;" : "right: 5vw; left: auto;"}
-            `;
-        arena.appendChild(comboEl);
-        comboEl.animate([
-          { transform: "scale(1.3) translateX(10px)", opacity: 0 },
-          { transform: "scale(1) translateX(0)", opacity: 1 }
-        ], { duration: 150 / speed, easing: "cubic-bezier(0.175, 0.885, 0.32, 1.275)" });
-        setTimeout(() => {
-          if (comboEl.isConnected) {
-            const fade = comboEl.animate(
-              [{ opacity: 1 }, { opacity: 0, transform: "translateY(-20px)" }],
-              { duration: 300 / speed, fill: "forwards" }
-            );
-            fade.onfinish = () => comboEl.remove();
-          }
-        }, 1200 / speed);
-      }
+      renderComboBanner(arena, frame, speed);
     }
     const actorEl = sr.getElementById(`actor-${frame.actorId}`);
     const targetEl = frame.targetId ? sr.getElementById(`actor-${frame.targetId}`) : null;
@@ -1700,404 +2181,22 @@
       const side = engineState.actors.get(frame.actorId)?.side || "left";
       const targetSide = engineState.actors.get(frame.targetId)?.side || "right";
       const shadowColor = side === "left" ? "#fc8181" : "#4fd1c5";
-      const triggerClashSpark = (delay = 120, color = "#f6e05e") => {
-        setTimeout(() => {
-          if (!targetEl.isConnected || !arena.isConnected) return;
-          const sparkEl = document.createElement("div");
-          sparkEl.style.cssText = `position: absolute; width: 70px; height: 70px; background: radial-gradient(circle, #ffffff 20%, ${color} 50%, transparent 80%); border-radius: 50%; z-index: 20; transform: translate(-50%, -50%) scale(0); pointer-events: none; mix-blend-mode: screen; box-shadow: 0 0 20px ${color};`;
-          const tRect = targetEl.getBoundingClientRect();
-          const aRect = arena.getBoundingClientRect();
-          sparkEl.style.left = `${tRect.left - aRect.left + tRect.width / 2}px`;
-          sparkEl.style.top = `${tRect.top - aRect.top + tRect.height / 2}px`;
-          arena.appendChild(sparkEl);
-          const sparkAnim = sparkEl.animate([
-            { transform: "translate(-50%, -50%) scale(0) rotate(0deg)", opacity: 1 },
-            { transform: "translate(-50%, -50%) scale(3) rotate(45deg)", opacity: 1, offset: 0.3 },
-            { transform: "translate(-50%, -50%) scale(4.2) rotate(90deg)", opacity: 0, offset: 1 }
-          ], { duration: 300 / speed });
-          sparkAnim.onfinish = () => sparkEl.remove();
-        }, delay / speed);
-      };
       if (frame.isAOE) {
-        if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
-        if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
-        const arenaRect = arena.getBoundingClientRect();
-        if (frame.isCounter || frame.type === "COUNTER") {
-          frameDuration = 520;
-          const tRect = targetEl.getBoundingClientRect();
-          const cMoveX2 = engineState.currentCombo.aoeCenterX ?? arenaRect.left + arenaRect.width / 2 - (tRect.left + tRect.width / 2);
-          const cDeltaY2 = engineState.currentCombo.aoeCenterY ?? arenaRect.top + arenaRect.height / 2 - (tRect.top + tRect.height / 2);
-          engineState.currentCombo.aoeCenterX = cMoveX2;
-          engineState.currentCombo.aoeCenterY = cDeltaY2;
-          const aRect = actorEl.getBoundingClientRect();
-          const defToCenterX = arenaRect.left + arenaRect.width / 2 - (aRect.left + aRect.width / 2) + (side === "left" ? -45 : 45);
-          const defToCenterY = arenaRect.top + arenaRect.height / 2 - (aRect.top + aRect.height / 2);
-          const pCasterCenter = `translate(${cMoveX2}px, ${cDeltaY2}px) scale(1.2)`;
-          const pCasterRecoil = `translate(${cMoveX2 + (targetSide === "left" ? -20 : 20)}px, ${cDeltaY2}px) scale(1.12)`;
-          actorEl.animate([
-            { transform: "translate(0,0) scale(1)", zIndex: 12 },
-            { transform: `translate(${defToCenterX}px, ${defToCenterY}px) scale(1.15)`, filter: "brightness(1.5) drop-shadow(0 0 10px #fc8181)", zIndex: 12, offset: 0.25 },
-            { transform: `translate(${defToCenterX}px, ${defToCenterY}px) scale(1.15)`, zIndex: 12, offset: 0.45 },
-            { transform: "translate(0,0) scale(1)", zIndex: 1, offset: 1 }
-          ], { duration: 480 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" });
-          if (frame.isAOELast) {
-            targetEl.animate([
-              { transform: pCasterCenter, zIndex: 10 },
-              { transform: pCasterRecoil, zIndex: 10, offset: 0.3 },
-              { transform: "translate(0,0) scale(1)", zIndex: 1, offset: 1 }
-            ], { duration: 480 / speed, easing: "ease-out", fill: "none" });
-            engineState.currentCombo.atCenterStage = false;
-            engineState.currentCombo.knockedBack = true;
-          } else {
-            targetEl.animate([
-              { transform: engineState.currentCombo.atCenterStage ? pCasterCenter : "translate(0,0) scale(1)", zIndex: 10 },
-              { transform: pCasterRecoil, zIndex: 10, offset: 0.35 },
-              { transform: pCasterCenter, zIndex: 10, offset: 1 }
-            ], { duration: 480 / speed, easing: "ease-out", fill: "forwards" });
-            engineState.currentCombo.atCenterStage = true;
-          }
-          triggerClashSpark(80, "#f6e05e");
-          return frameDuration;
-        }
-        if (engineState.currentCombo.aoeCenterX === void 0 || frame.isAOEFirst) {
-          const cleanActorRect = actorEl.getBoundingClientRect();
-          engineState.currentCombo.aoeCenterX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
-          engineState.currentCombo.aoeCenterY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
-        }
-        const cMoveX = engineState.currentCombo.aoeCenterX;
-        const cDeltaY = engineState.currentCombo.aoeCenterY;
-        const p02 = "translate(0px, 0px) scale(1)";
-        const pCenter = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.2)`;
-        const pCenterPulse = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.28)`;
-        let actorKeyframes2 = [];
-        const actorAnimConfig2 = { duration: 280 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" };
-        if (!engineState.currentCombo.atCenterStage && !frame.isAOELast) {
-          frameDuration = 280;
-          actorAnimConfig2.duration = 260 / speed;
-          actorAnimConfig2.fill = "forwards";
-          actorKeyframes2 = [
-            { transform: p02, zIndex: 10 },
-            { transform: pCenterPulse, filter: `drop-shadow(0 0 14px ${shadowColor})`, zIndex: 10, offset: 0.7 },
-            { transform: pCenter, filter: `drop-shadow(0 0 10px ${shadowColor})`, zIndex: 10, offset: 1 }
-          ];
-          engineState.currentCombo.atCenterStage = true;
-        } else if (engineState.currentCombo.atCenterStage && !frame.isAOELast) {
-          frameDuration = 220;
-          actorAnimConfig2.duration = 200 / speed;
-          actorAnimConfig2.fill = "forwards";
-          actorKeyframes2 = [
-            { transform: pCenter, filter: `drop-shadow(0 0 10px ${shadowColor})`, zIndex: 10 },
-            { transform: pCenterPulse, filter: `drop-shadow(0 0 16px ${shadowColor})`, zIndex: 10, offset: 0.45 },
-            { transform: pCenter, filter: `drop-shadow(0 0 10px ${shadowColor})`, zIndex: 10, offset: 1 }
-          ];
-        } else {
-          frameDuration = 400;
-          actorAnimConfig2.duration = 380 / speed;
-          actorAnimConfig2.fill = "none";
-          const startTransform = engineState.currentCombo.atCenterStage ? pCenter : p02;
-          actorKeyframes2 = [
-            { transform: startTransform, zIndex: 10 },
-            { transform: pCenterPulse, filter: `drop-shadow(0 0 16px ${shadowColor})`, zIndex: 10, offset: 0.35 },
-            { transform: p02, filter: "none", zIndex: 1, offset: 1 }
-          ];
-          engineState.currentCombo.atCenterStage = false;
-          engineState.currentCombo.knockedBack = true;
-        }
-        actorEl.animate(actorKeyframes2, actorAnimConfig2);
-        const dodgeDir = targetSide === "left" ? -24 : 24;
-        if (frame.type === "MISS") {
-          targetEl.animate([
-            { transform: "translate(0,0) scale(1)", filter: "blur(0px)" },
-            { transform: `translate(${dodgeDir}px, 0) scale(0.88)`, filter: "blur(2px) brightness(1.5)", offset: 0.35 },
-            { transform: "translate(0,0) scale(1)", filter: "blur(0px)", offset: 1 }
-          ], { duration: 320 / speed, easing: "ease-out" });
-        } else if (frame.type === "BLOCK" || frame.blocked) {
-          targetEl.animate([
-            { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
-            { transform: `translate(${dodgeDir * 0.3}px, 2px) scale(0.96)`, filter: "brightness(1.4) drop-shadow(0 0 10px #63b3ed)", offset: 0.35 },
-            { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
-          ], { duration: 240 / speed, easing: "ease-out" });
-          triggerClashSpark(40, "#63b3ed");
-        } else {
-          targetEl.animate([
-            { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
-            { transform: `translate(${dodgeDir * 0.5}px, 0) scale(0.94)`, filter: "brightness(1.8) contrast(1.3)", offset: 0.3 },
-            { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
-          ], { duration: 240 / speed, easing: "ease-out" });
-          triggerClashSpark(40, shadowColor);
-        }
-        engineState.currentCombo.keepAlive = isNextFrameSameCombo;
-        return frameDuration;
+        return playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed);
       }
-      if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
-      if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
-      let moveX;
-      let deltaY;
-      if (engineState.currentCombo.count > 1 && engineState.currentCombo.moveX !== void 0 && !frame.isCounter && frame.type !== "COUNTER") {
-        moveX = engineState.currentCombo.moveX;
-        deltaY = engineState.currentCombo.deltaY;
-      } else {
-        const actorRect = actorEl.getBoundingClientRect();
-        const targetRect = targetEl.getBoundingClientRect();
-        moveX = targetRect.left - actorRect.left + (side === "left" ? -60 : 60);
-        deltaY = targetRect.top - actorRect.top;
-        if (!frame.isCounter && frame.type !== "COUNTER") {
-          engineState.currentCombo.moveX = moveX;
-          engineState.currentCombo.deltaY = deltaY;
-        }
-      }
-      const isCombo = engineState.currentCombo.count > 1 || isNextFrameSameCombo;
-      const startsFromOrigin = engineState.currentCombo.count === 1 || !isCombo || engineState.currentCombo.knockedBack || engineState.currentCombo.targetChangedThisHit;
-      if (!frame.isCounter && frame.type !== "COUNTER") {
-        engineState.currentCombo.knockedBack = false;
-      }
-      const isFollowedByCover = !!frame.holdPositionForCover;
-      const stayAtTarget = isNextFrameSameCombo && !isNextTargetDifferent && !shouldReturnToOrigin || isFollowedByCover;
-      if (isFollowedByCover) {
-        engineState.currentCombo.heldForCoverActorId = frame.actorId;
-      } else if ((shouldReturnToOrigin || isNextTargetDifferent) && !frame.isCounter && frame.type !== "COUNTER") {
-        engineState.currentCombo.knockedBack = true;
-      }
-      const isFirstHit = startsFromOrigin && stayAtTarget;
-      const isMiddleHit = !startsFromOrigin && stayAtTarget;
-      const p0 = "translate(0px, 0px) scale(1)";
-      const pTarget = `translate(${moveX}px, ${deltaY}px) scale(1.15)`;
-      const pStart = startsFromOrigin ? p0 : pTarget;
-      let actorKeyframes = [];
-      let targetKeyframes = [];
-      const actorAnimConfig = { duration: 400 / speed, easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", fill: "none" };
-      const targetAnimConfig = { duration: 400 / speed, easing: "ease-out", fill: "none" };
-      if (frame.isCounter || frame.type === "COUNTER") {
-        frameDuration = 600;
-        actorAnimConfig.duration = 500 / speed;
-        targetAnimConfig.duration = 500 / speed;
-        const originalAttackerId = frame.targetId;
-        const isMiddleHitCounter = engineState.currentCombo.actorId === originalAttackerId && engineState.currentCombo.count > 1;
-        const attackerContinuesOnSameTarget = hasMoreHitsOnSameTargetInTurn(
-          engineState.currentFrameIndex,
-          frame.turnNumber,
-          originalAttackerId,
-          frame.actorId
-        );
-        const actorRect = actorEl.getBoundingClientRect();
-        const targetRect = targetEl.getBoundingClientRect();
-        const attackerToDefenderX = actorRect.left - targetRect.left + (targetSide === "left" ? -60 : 60);
-        const attackerToDefenderY = actorRect.top - targetRect.top;
-        const pAttackerClash = `translate(${attackerToDefenderX}px, ${attackerToDefenderY}px) scale(1.15)`;
-        const pAttackerPushback = `translate(${attackerToDefenderX * 0.2}px, ${attackerToDefenderY * 0.2}px) scale(1.1)`;
-        const counterDashX = side === "left" ? 20 : -20;
-        actorKeyframes = [
-          { transform: "translate(0,0) scale(1)", filter: "brightness(1)", zIndex: 11 },
-          { transform: `translate(${counterDashX}px, 0) scale(1.05)`, filter: "brightness(1.5) drop-shadow(0 0 10px #fc8181)", zIndex: 11, offset: 0.15 },
-          { transform: `translate(${counterDashX}px, 0) scale(1.05)`, filter: "brightness(1.5) drop-shadow(0 0 10px #fc8181)", zIndex: 11, offset: 0.4 },
-          { transform: "translate(0,0) scale(1)", filter: "brightness(1)", zIndex: 1, offset: 1 }
-        ];
-        if (!isMiddleHitCounter || !attackerContinuesOnSameTarget) {
-          targetKeyframes = [
-            { transform: isMiddleHitCounter ? pAttackerClash : "translate(0,0) scale(1)", zIndex: 10 },
-            { transform: pAttackerClash, zIndex: 10, offset: 0.15 },
-            { transform: pAttackerClash, zIndex: 10, offset: 0.2 },
-            { transform: "translate(0,0) scale(1)", zIndex: 1, offset: 1 }
-          ];
-          engineState.currentCombo.knockedBack = true;
-        } else {
-          targetKeyframes = [
-            { transform: pAttackerClash, zIndex: 10 },
-            { transform: pAttackerClash, zIndex: 10, offset: 0.15 },
-            { transform: pAttackerPushback, zIndex: 10, offset: 0.5 },
-            { transform: pAttackerClash, zIndex: 10, offset: 1 }
-          ];
-          targetAnimConfig.fill = "forwards";
-        }
-        triggerClashSpark(60, "#f6e05e");
-      } else if (frame.type === "BLOCK" || frame.blocked) {
-        const recoilOffset = side === "left" ? -18 : 18;
-        targetKeyframes = [
-          { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
-          { transform: `translate(${side === "left" ? 4 : -4}px, 2px) scale(0.97)`, filter: "brightness(1.4) drop-shadow(0 0 10px #63b3ed)", offset: 0.35 },
-          { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
-        ];
-        if (isFirstHit) {
-          frameDuration = 280;
-          actorAnimConfig.duration = 260 / speed;
-          targetAnimConfig.duration = 260 / speed;
-          actorKeyframes = [
-            { transform: p0, zIndex: 10 },
-            { transform: pTarget, zIndex: 10, offset: 0.6 },
-            { transform: `translate(${moveX + recoilOffset}px, ${deltaY}px) scale(1.1)`, zIndex: 10, offset: 0.85 },
-            { transform: pTarget, zIndex: 10, offset: 1 }
-          ];
-          actorAnimConfig.fill = "forwards";
-          triggerClashSpark(80, "#63b3ed");
-        } else if (isMiddleHit) {
-          frameDuration = 210;
-          actorAnimConfig.duration = 190 / speed;
-          targetAnimConfig.duration = 190 / speed;
-          actorKeyframes = [
-            { transform: pTarget, zIndex: 10 },
-            { transform: `translate(${moveX + recoilOffset}px, ${deltaY + (Math.random() * 12 - 6)}px) scale(1.08)`, zIndex: 10, offset: 0.45 },
-            { transform: pTarget, zIndex: 10, offset: 1 }
-          ];
-          actorAnimConfig.fill = "forwards";
-          triggerClashSpark(40, "#63b3ed");
-        } else {
-          frameDuration = 420;
-          actorAnimConfig.duration = 380 / speed;
-          targetAnimConfig.duration = 350 / speed;
-          actorKeyframes = [
-            { transform: pStart, zIndex: 10 },
-            { transform: pTarget, zIndex: 10, offset: 0.35 },
-            { transform: `translate(${moveX + recoilOffset * 1.5}px, ${deltaY}px) scale(1.05)`, zIndex: 10, offset: 0.55 },
-            { transform: p0, zIndex: 1, offset: 1 }
-          ];
-          triggerClashSpark(70, "#63b3ed");
-        }
-      } else if (frame.type === "MISS") {
-        const isStandaloneFirstMiss = engineState.currentCombo.count === 1 && !isNextFrameSameCombo && !isNextTargetDifferent;
-        if (isStandaloneFirstMiss) {
-          frameDuration = 850;
-          actorAnimConfig.duration = 800 / speed;
-          targetAnimConfig.duration = 500 / speed;
-          const dashOutX = moveX * 4;
-          const reappearX = moveX * -1.5;
-          actorKeyframes = [
-            { transform: p0, zIndex: 10, offset: 0 },
-            { transform: `translate(${dashOutX}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.3 },
-            { transform: `translate(${reappearX}px, 0px) scale(1)`, zIndex: 1, offset: 0.31 },
-            { transform: p0, zIndex: 1, offset: 1 }
-          ];
-          actorAnimConfig.fill = "none";
-          targetKeyframes = [
-            { transform: "scale(1)", filter: "blur(0px)" },
-            { transform: "scale(0.8)", filter: "blur(3px) brightness(1.5)", offset: 0.3 },
-            { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
-          ];
-          engineState.currentCombo.knockedBack = true;
-        } else {
-          frameDuration = 420;
-          actorAnimConfig.duration = 380 / speed;
-          targetAnimConfig.duration = 380 / speed;
-          const missReachMultiplier = isNextTargetDifferent ? 1 : 1.35;
-          if (isFirstHit) {
-            actorKeyframes = [
-              { transform: p0, zIndex: 1 },
-              { transform: `translate(${moveX * missReachMultiplier}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.5 },
-              { transform: pTarget, zIndex: 10, offset: 1 }
-            ];
-            actorAnimConfig.fill = "forwards";
-            targetKeyframes = [
-              { transform: "scale(1)", filter: "blur(0px)" },
-              { transform: "scale(0.8)", filter: "blur(3px) brightness(1.5)", offset: 0.4 },
-              { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
-            ];
-          } else if (isMiddleHit) {
-            actorKeyframes = [
-              { transform: pStart, zIndex: 10 },
-              { transform: `translate(${moveX * missReachMultiplier}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.5 },
-              { transform: pTarget, zIndex: 10, offset: 1 }
-            ];
-            actorAnimConfig.fill = "forwards";
-            targetKeyframes = [
-              { transform: "scale(1)", filter: "blur(0px)" },
-              { transform: "scale(0.85)", filter: "blur(4px) brightness(1.8)", offset: 0.5 },
-              { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
-            ];
-          } else {
-            actorKeyframes = [
-              { transform: pStart, zIndex: 10 },
-              { transform: `translate(${moveX * missReachMultiplier}px, ${deltaY}px) scale(1.15)`, zIndex: 10, offset: 0.4 },
-              { transform: p0, zIndex: 1, offset: 1 }
-            ];
-            targetKeyframes = [
-              { transform: "scale(1)", filter: "blur(0px)" },
-              { transform: "scale(0.8)", filter: "blur(3px)", offset: 0.4 },
-              { transform: "scale(1)", filter: "blur(0px)", offset: 1 }
-            ];
-          }
-        }
-      } else {
-        if (isFirstHit) {
-          actorKeyframes = [
-            { transform: p0, zIndex: 1 },
-            { transform: `translate(${side === "left" ? -20 : 20}px, 0) scale(0.95)`, zIndex: 1, offset: 0.15 },
-            { transform: pTarget, zIndex: 10, offset: 0.8 },
-            { transform: pTarget, zIndex: 10, offset: 1 }
-          ];
-          actorAnimConfig.fill = "forwards";
-          actorAnimConfig.duration = 250 / speed;
-          frameDuration = 250;
-        } else if (isMiddleHit) {
-          const vibX = moveX + (Math.random() * 20 - 10);
-          const vibY = deltaY + (Math.random() * 20 - 10);
-          actorKeyframes = [
-            { transform: pStart, zIndex: 10 },
-            { transform: `translate(${vibX}px, ${vibY}px) scale(1.25)`, zIndex: 10, filter: `drop-shadow(0 0 12px ${shadowColor})`, offset: 0.5 },
-            { transform: pTarget, zIndex: 10, offset: 1 }
-          ];
-          actorAnimConfig.fill = "forwards";
-          actorAnimConfig.duration = 150 / speed;
-          frameDuration = 180;
-          if (targetEl) {
-            targetEl.style.filter = "brightness(2) contrast(1.5)";
-            targetEl.style.transform = `translateX(${side === "left" ? 10 : -10}px)`;
-            setTimeout(() => {
-              if (targetEl.isConnected) {
-                targetEl.style.filter = "";
-                targetEl.style.transform = "";
-              }
-            }, 80 / speed);
-          }
-        } else {
-          actorKeyframes = [
-            { transform: pStart, zIndex: 10 },
-            { transform: pTarget, zIndex: 10, offset: 0.4 },
-            { transform: p0, zIndex: 1, offset: 1 }
-          ];
-          actorAnimConfig.duration = 400 / speed;
-          frameDuration = 450;
-        }
-      }
-      if (!frame.isCounter && frame.type !== "COUNTER") {
-        engineState.currentCombo.keepAlive = isNextFrameSameCombo;
-      }
-      if (frame.skillId === "kibayuki_demand" && frame.type === "DAMAGE") {
-        targetKeyframes = [
-          { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)" },
-          { transform: "translate(-12px, -4px) rotate(-6deg)", filter: "brightness(1.6)", offset: 0.2 },
-          { transform: "translate(10px, 2px) rotate(5deg)", offset: 0.4 },
-          { transform: "translate(-10px, -2px) rotate(-5deg)", offset: 0.6 },
-          { transform: "translate(8px, 0) rotate(3deg)", offset: 0.8 },
-          { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)", offset: 1 }
-        ];
-        targetAnimConfig.duration = 420 / speed;
-      }
-      if (["genji_swift_strike", "genji_dragonblade", "genji_dragonblade_sweep"].includes(frame.skillId) && frame.type === "DAMAGE") {
-        triggerClashSpark(55, "#48bb78");
-        actorKeyframes = actorKeyframes.map((kf, idx) => {
-          if (idx > 0 && idx < actorKeyframes.length - 1) {
-            return {
-              ...kf,
-              filter: "brightness(1.45) drop-shadow(0 0 16px #48bb78)"
-            };
-          }
-          return kf;
-        });
-      }
-      if (frame.rosarioEvent === "PIERCE_CROSS") {
-        triggerClashSpark(60, "#f687b3");
-        triggerClashSpark(140, "#b794f4");
-        const crossEl = targetEl.querySelector(".rosario-cross-mark");
-        if (crossEl) {
-          crossEl.classList.add("shatter");
-          setTimeout(() => {
-            if (crossEl.isConnected) crossEl.remove();
-          }, 450 / speed);
-        }
-      }
-      actorEl.animate(actorKeyframes, actorAnimConfig);
-      if (targetKeyframes.length > 0) {
-        targetEl.animate(targetKeyframes, targetAnimConfig);
-      }
+      return playSingleTargetChoreography(
+        frame,
+        arena,
+        actorEl,
+        targetEl,
+        side,
+        targetSide,
+        shadowColor,
+        speed,
+        isNextFrameSameCombo,
+        isNextTargetDifferent,
+        shouldReturnToOrigin
+      );
     }
     return frameDuration;
   }
@@ -2109,9 +2208,7 @@
     const attackerEl = frame.coverAttackerId ? sr.getElementById(`actor-${frame.coverAttackerId}`) : null;
     if (!actorEl || !targetEl || actorEl === targetEl) return 500;
     const wasHeldAtTarget = !!frame.coverAttackerId && engineState.currentCombo.heldForCoverActorId === frame.coverAttackerId;
-    engineState.currentCombo.heldForCoverActorId = null;
-    engineState.currentCombo.knockedBack = true;
-    engineState.currentCombo.keepAlive = false;
+    advanceComboState(frame, false);
     if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
     if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
     if (attackerEl && attackerEl.getAnimations) {
@@ -2489,7 +2586,7 @@
       mvpImg.className = "mvp-avatar";
       mvpImg.src = mvp.avatar;
       mvpImg.onerror = () => {
-        mvpImg.src = "https://via.placeholder.com/600";
+        mvpImg.src = DEFAULT_MVP_AVATAR_URL;
       };
       mvpSplash.appendChild(mvpLabel);
       mvpSplash.appendChild(mvpImg);
@@ -2543,18 +2640,18 @@
       row.className = "stat-row";
       row.style.animationDelay = `${delayCounter}s`;
       row.innerHTML = `
-            <div class="stat-name">${actor.name}</div>
+            <div class="stat-name">${escapeHtml(actor.name)}</div>
             <div class="stat-bar-wrapper">
                 <div class="stat-bar-fill" style="--target-width: ${dmgPct}%; animation-delay: ${delayCounter + 0.2}s;"></div>
             </div>
             <div class="stat-numbers">
-                <div class="stat-dmg" id="dmg-${actor.id}">0</div>
+                <div class="stat-dmg">0</div>
                 <div class="stat-taken">TAKEN: ${formatNum(totalTaken)}</div>
             </div>
         `;
       statsContainer.appendChild(row);
       setTimeout(() => {
-        const dmgEl = row.querySelector(`#dmg-${actor.id}`);
+        const dmgEl = row.querySelector(".stat-dmg");
         if (dmgEl) animateValue(dmgEl, totalOutput, delayCounter + 0.2);
       }, 0);
       delayCounter += 0.1;
@@ -2591,12 +2688,12 @@
   function applySpoilerMask() {
     if (!isGuardArmed) return;
     ensureSpoilerStyle();
-    document.querySelectorAll("div").forEach((div) => {
+    document.querySelectorAll("div:not([data-mdbv-gone])").forEach((div) => {
       if (div.childElementCount === 0 && div.textContent.trim() === DEATH_BANNER_TEXT) {
         div.setAttribute("data-mdbv-gone", "");
       }
     });
-    document.querySelectorAll("p").forEach((p) => {
+    document.querySelectorAll("p:not([data-mdbv-hide])").forEach((p) => {
       if (p.childElementCount === 0 && PARTY_STATUS_REGEX.test(p.textContent.trim())) {
         p.setAttribute("data-mdbv-hide", "");
       }
@@ -2608,10 +2705,14 @@
       if (titleEl) {
         let sibling = titleEl.nextElementSibling;
         while (sibling) {
-          sibling.setAttribute("data-mdbv-hide", "");
+          if (!sibling.hasAttribute("data-mdbv-hide")) {
+            sibling.setAttribute("data-mdbv-hide", "");
+          }
           sibling = sibling.nextElementSibling;
         }
-        dlg.setAttribute("data-mdbv-dialog-pending", "");
+        if (!dlg.hasAttribute("data-mdbv-dialog-pending")) {
+          dlg.setAttribute("data-mdbv-dialog-pending", "");
+        }
       }
     });
   }
@@ -2661,7 +2762,7 @@
     }
   }
 
-  // src/stage.js
+  // src/timeline.js
   function isPrimaryUltimateTriggerFrame(frame) {
     if (frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
       return false;
@@ -2676,150 +2777,6 @@
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
     msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
     return msgEl;
-  }
-  function createBattleStage() {
-    if (engineState.hostElement) engineState.hostElement.remove();
-    const host = document.createElement("div");
-    host.id = "mdbv-host";
-    host.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2147483647; background: #000;";
-    document.body.appendChild(host);
-    engineState.hostElement = host;
-    engineState.shadowRoot = host.attachShadow({ mode: "open" });
-    const style = document.createElement("style");
-    style.textContent = STAGE_STYLES;
-    engineState.shadowRoot.appendChild(style);
-    const stage = document.createElement("div");
-    stage.className = "stage";
-    const controls = document.createElement("div");
-    controls.className = "controls";
-    const playBtn = document.createElement("button");
-    playBtn.id = "btn-play";
-    playBtn.textContent = "\u66AB\u505C";
-    playBtn.onclick = () => {
-      if (!engineState.isPlaying) {
-        if (engineState.currentFrameIndex === 0 || engineState.currentFrameIndex >= engineState.frames.length) {
-          engineState.currentFrameIndex = 0;
-          armSpoilerGuard(0);
-          syncStageToAbsoluteState(0, true);
-        }
-        engineState.isPlaying = true;
-        playBtn.textContent = "\u66AB\u505C";
-        const token2 = nextPlaybackToken();
-        playbackLoop(token2);
-      } else {
-        engineState.isPlaying = false;
-        nextPlaybackToken();
-        playBtn.textContent = "\u64AD\u653E";
-      }
-    };
-    const speedBtn = document.createElement("button");
-    speedBtn.textContent = `\u901F\u5EA6: ${engineState.playbackSpeed}x`;
-    speedBtn.onclick = () => {
-      const speeds = [1, 2, 4, 8];
-      const currentIdx = speeds.indexOf(engineState.playbackSpeed);
-      const nextIndex = (currentIdx === -1 ? 0 : currentIdx + 1) % speeds.length;
-      engineState.playbackSpeed = speeds[nextIndex];
-      speedBtn.textContent = `\u901F\u5EA6: ${engineState.playbackSpeed}x`;
-    };
-    const seekContainer = document.createElement("div");
-    seekContainer.className = "seek-container";
-    const seekLabel = document.createElement("span");
-    seekLabel.id = "seek-label";
-    seekLabel.textContent = `0 / ${engineState.frames.length}`;
-    const seekRange = document.createElement("input");
-    seekRange.type = "range";
-    seekRange.id = "seek-range";
-    seekRange.min = 0;
-    seekRange.max = Math.max(0, engineState.frames.length - 1);
-    seekRange.value = 0;
-    seekRange.oninput = (e) => {
-      const targetFrame = Number(e.target.value);
-      engineState.currentFrameIndex = targetFrame;
-      seekLabel.textContent = `${targetFrame} / ${engineState.frames.length}`;
-      engineState.currentCombo = createEmptyCombo();
-      const token2 = nextPlaybackToken();
-      syncStageToAbsoluteState(targetFrame, false);
-      if (engineState.isPlaying) {
-        playbackLoop(token2);
-      } else if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
-        playBtn.textContent = "\u64AD\u653E";
-      }
-    };
-    seekContainer.appendChild(seekRange);
-    seekContainer.appendChild(seekLabel);
-    const closeBtn = document.createElement("button");
-    closeBtn.className = "danger";
-    closeBtn.textContent = "\u95DC\u9589\u6F14\u51FA";
-    closeBtn.onclick = () => {
-      engineState.isPlaying = false;
-      engineState.timeScale = 1;
-      nextPlaybackToken();
-      releaseSpoilerGuard();
-      if (engineState.hostElement) {
-        engineState.hostElement.remove();
-        engineState.hostElement = null;
-      }
-      const originalContent2 = document.querySelector(".css-1svsvwq");
-      if (originalContent2) originalContent2.style.display = "";
-    };
-    controls.appendChild(playBtn);
-    controls.appendChild(speedBtn);
-    controls.appendChild(seekContainer);
-    controls.appendChild(closeBtn);
-    const ctbBox = document.createElement("div");
-    ctbBox.className = "ctb-container";
-    ctbBox.innerHTML = `
-        <div class="ctb-track" id="ctb-track">
-            <div class="ctb-action-point">ACTION</div>
-        </div>
-    `;
-    const arena = document.createElement("div");
-    arena.className = "arena";
-    arena.id = "arena";
-    const leftTeam = document.createElement("div");
-    leftTeam.className = "team left-team";
-    const rightTeam = document.createElement("div");
-    rightTeam.className = "team right-team";
-    engineState.actors.forEach((actor) => {
-      const el = document.createElement("div");
-      const unspawnedClass = actor.initiallySpawned === false ? "unspawned" : "";
-      el.className = `actor ${actor.side} ${unspawnedClass}`.trim();
-      el.id = `actor-${actor.id}`;
-      const hpContainerStyle = actor.hideHp ? ' style="display: none;"' : "";
-      const hpTextContent = actor.hideHp ? "" : `${actor.maxHp}/${actor.maxHp}`;
-      el.innerHTML = `
-            <div class="actor-name">${actor.name}</div>
-            <div class="avatar-wrapper">
-                <img class="avatar" src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
-            </div>
-            <div class="hp-container"${hpContainerStyle}>
-                <div class="hp-fill" id="hp-fill-${actor.id}"></div>
-                <div class="hp-text" id="hp-text-${actor.id}">${hpTextContent}</div>
-            </div>
-        `;
-      if (actor.side === "left") leftTeam.appendChild(el);
-      else rightTeam.appendChild(el);
-    });
-    arena.appendChild(leftTeam);
-    arena.appendChild(rightTeam);
-    const dialogBox = document.createElement("div");
-    dialogBox.className = "dialog-box";
-    dialogBox.id = "dialog-box";
-    const fatalityOverlay = document.createElement("div");
-    fatalityOverlay.id = "fatality-overlay";
-    fatalityOverlay.className = "fatality-overlay";
-    stage.appendChild(controls);
-    stage.appendChild(ctbBox);
-    stage.appendChild(arena);
-    stage.appendChild(dialogBox);
-    stage.appendChild(fatalityOverlay);
-    engineState.shadowRoot.appendChild(stage);
-    const originalContent = document.querySelector(".css-1svsvwq");
-    if (originalContent) originalContent.style.display = "none";
-    engineState.isPlaying = true;
-    updateATBUI(0, true);
-    const token = nextPlaybackToken();
-    playbackLoop(token);
   }
   function updateATBUI(currentTurn, skipTransition = false, summonStateMap = null) {
     const sr = engineState.shadowRoot;
@@ -2867,7 +2824,7 @@
         icon = document.createElement("div");
         icon.id = `ctb-icon-${actor.id}`;
         icon.className = `ctb-icon ${actor.side}`;
-        icon.innerHTML = `<img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">`;
+        icon.innerHTML = `<img src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">`;
         track.appendChild(icon);
       }
       icon.style.zIndex = Math.round(progress);
@@ -2909,6 +2866,58 @@
       } else {
         wrapperEl.classList.remove("bond-active");
         if (existingBadge) existingBadge.remove();
+      }
+    });
+  }
+  function syncActorHpAndDeathDOM(sr, frame, {
+    skipHpTransition = false,
+    syncSummonVisibility = false,
+    deferDeadClassForActorId = null
+  } = {}) {
+    frame.actorsHpState.forEach((currentHp, actorId) => {
+      const actor = engineState.actors.get(actorId);
+      const fillEl = sr.getElementById(`hp-fill-${actorId}`);
+      const textEl = sr.getElementById(`hp-text-${actorId}`);
+      const wrapperEl = sr.getElementById(`actor-${actorId}`);
+      if (syncSummonVisibility && wrapperEl) {
+        const isSpawned = frame.actorsSummonState ? frame.actorsSummonState.get(actorId) !== false : actor?.initiallySpawned !== false;
+        wrapperEl.classList.remove("spawning", "despawning");
+        if (!isSpawned) wrapperEl.classList.add("unspawned");
+        else wrapperEl.classList.remove("unspawned");
+      }
+      if (!actor) return;
+      const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : currentHp <= 0;
+      if (fillEl && textEl && !actor.hideHp) {
+        const pct = currentHp / actor.maxHp * 100;
+        if (skipHpTransition) {
+          fillEl.style.transition = "none";
+          fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+          setTimeout(() => {
+            fillEl.style.transition = "";
+          }, 50);
+        } else {
+          fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+        }
+        textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
+        fillEl.classList.remove("warning", "danger");
+        if (currentHp > 0 && pct <= 25) {
+          fillEl.classList.add("danger");
+          if (wrapperEl && !isDead) wrapperEl.classList.add("danger-state");
+        } else if (currentHp > 0 && pct <= 50) {
+          fillEl.classList.add("warning");
+          if (wrapperEl) wrapperEl.classList.remove("danger-state");
+        } else {
+          if (wrapperEl) wrapperEl.classList.remove("danger-state");
+        }
+      }
+      actor.currentHp = currentHp;
+      if (isDead && wrapperEl) {
+        if (deferDeadClassForActorId !== actorId) {
+          wrapperEl.classList.add("dead");
+        }
+        wrapperEl.classList.remove("danger-state");
+      } else if (!isDead && wrapperEl) {
+        wrapperEl.classList.remove("dead");
       }
     });
   }
@@ -2983,47 +2992,162 @@
     const stateFrameIndex = Math.max(0, Math.min(frameIndex, engineState.frames.length - 1));
     const frame = engineState.frames[stateFrameIndex];
     if (!frame) return;
-    frame.actorsHpState.forEach((currentHp, actorId) => {
-      const actor = engineState.actors.get(actorId);
-      const fillEl = sr.getElementById(`hp-fill-${actorId}`);
-      const textEl = sr.getElementById(`hp-text-${actorId}`);
-      const wrapperEl = sr.getElementById(`actor-${actorId}`);
-      const isSpawned = frame.actorsSummonState ? frame.actorsSummonState.get(actorId) !== false : actor?.initiallySpawned !== false;
-      if (wrapperEl) {
-        wrapperEl.classList.remove("spawning", "despawning");
-        if (!isSpawned) wrapperEl.classList.add("unspawned");
-        else wrapperEl.classList.remove("unspawned");
-      }
-      if (actor) {
-        if (fillEl && textEl && !actor.hideHp) {
-          const pct = currentHp / actor.maxHp * 100;
-          fillEl.style.transition = "none";
-          fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-          setTimeout(() => {
-            fillEl.style.transition = "";
-          }, 50);
-          textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
-          fillEl.classList.remove("warning", "danger");
-          if (wrapperEl) wrapperEl.classList.remove("danger-state");
-          if (pct > 0 && pct <= 25) {
-            fillEl.classList.add("danger");
-            if (wrapperEl) wrapperEl.classList.add("danger-state");
-          } else if (pct > 0 && pct <= 50) {
-            fillEl.classList.add("warning");
-          }
-        }
-        actor.currentHp = currentHp;
-        const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : currentHp <= 0;
-        if (isDead && wrapperEl) {
-          wrapperEl.classList.add("dead");
-          wrapperEl.classList.remove("danger-state");
-        } else if (!isDead && wrapperEl) {
-          wrapperEl.classList.remove("dead");
-        }
-      }
+    syncActorHpAndDeathDOM(sr, frame, {
+      skipHpTransition: true,
+      syncSummonVisibility: true
     });
     syncActorBondVisuals(sr, frame.actorsBondState);
     updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
+  }
+
+  // src/stage.js
+  function createBattleStage() {
+    if (engineState.hostElement) engineState.hostElement.remove();
+    const host = document.createElement("div");
+    host.id = "mdbv-host";
+    host.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2147483647; background: #000;";
+    document.body.appendChild(host);
+    engineState.hostElement = host;
+    engineState.shadowRoot = host.attachShadow({ mode: "open" });
+    const style = document.createElement("style");
+    style.textContent = STAGE_STYLES;
+    engineState.shadowRoot.appendChild(style);
+    const stage = document.createElement("div");
+    stage.className = "stage";
+    const controls = document.createElement("div");
+    controls.className = "controls";
+    const playBtn = document.createElement("button");
+    playBtn.id = "btn-play";
+    playBtn.textContent = "\u66AB\u505C";
+    playBtn.onclick = () => {
+      if (!engineState.isPlaying) {
+        if (engineState.currentFrameIndex === 0 || engineState.currentFrameIndex >= engineState.frames.length) {
+          engineState.currentFrameIndex = 0;
+          armSpoilerGuard(0);
+          syncStageToAbsoluteState(0, true);
+        }
+        engineState.isPlaying = true;
+        playBtn.textContent = "\u66AB\u505C";
+        const token2 = nextPlaybackToken();
+        playbackLoop(token2);
+      } else {
+        engineState.isPlaying = false;
+        nextPlaybackToken();
+        playBtn.textContent = "\u64AD\u653E";
+      }
+    };
+    const speedBtn = document.createElement("button");
+    speedBtn.textContent = `\u901F\u5EA6: ${engineState.playbackSpeed}x`;
+    speedBtn.onclick = () => {
+      const currentIdx = PLAYBACK_SPEEDS.indexOf(engineState.playbackSpeed);
+      const nextIndex = (currentIdx === -1 ? 0 : currentIdx + 1) % PLAYBACK_SPEEDS.length;
+      engineState.playbackSpeed = PLAYBACK_SPEEDS[nextIndex];
+      speedBtn.textContent = `\u901F\u5EA6: ${engineState.playbackSpeed}x`;
+    };
+    const seekContainer = document.createElement("div");
+    seekContainer.className = "seek-container";
+    const seekLabel = document.createElement("span");
+    seekLabel.id = "seek-label";
+    seekLabel.textContent = `0 / ${engineState.frames.length}`;
+    const seekRange = document.createElement("input");
+    seekRange.type = "range";
+    seekRange.id = "seek-range";
+    seekRange.min = 0;
+    seekRange.max = Math.max(0, engineState.frames.length - 1);
+    seekRange.value = 0;
+    seekRange.oninput = (e) => {
+      const targetFrame = Number(e.target.value);
+      engineState.currentFrameIndex = targetFrame;
+      seekLabel.textContent = `${targetFrame} / ${engineState.frames.length}`;
+      engineState.currentCombo = createEmptyCombo();
+      const token2 = nextPlaybackToken();
+      syncStageToAbsoluteState(targetFrame, false);
+      if (engineState.isPlaying) {
+        playbackLoop(token2);
+      } else if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
+        playBtn.textContent = "\u64AD\u653E";
+      }
+    };
+    seekContainer.appendChild(seekRange);
+    seekContainer.appendChild(seekLabel);
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "danger";
+    closeBtn.textContent = "\u95DC\u9589\u6F14\u51FA";
+    closeBtn.onclick = () => {
+      engineState.isPlaying = false;
+      engineState.timeScale = 1;
+      nextPlaybackToken();
+      releaseSpoilerGuard();
+      if (engineState.hostElement) {
+        engineState.hostElement.remove();
+        engineState.hostElement = null;
+      }
+      document.querySelectorAll(`[data-mdbv-hidden-host], ${HOST_CONTENT_SELECTOR}`).forEach((el) => {
+        el.style.display = "";
+        el.removeAttribute("data-mdbv-hidden-host");
+      });
+    };
+    controls.appendChild(playBtn);
+    controls.appendChild(speedBtn);
+    controls.appendChild(seekContainer);
+    controls.appendChild(closeBtn);
+    const ctbBox = document.createElement("div");
+    ctbBox.className = "ctb-container";
+    ctbBox.innerHTML = `
+        <div class="ctb-track" id="ctb-track">
+            <div class="ctb-action-point">ACTION</div>
+        </div>
+    `;
+    const arena = document.createElement("div");
+    arena.className = "arena";
+    arena.id = "arena";
+    const leftTeam = document.createElement("div");
+    leftTeam.className = "team left-team";
+    const rightTeam = document.createElement("div");
+    rightTeam.className = "team right-team";
+    engineState.actors.forEach((actor) => {
+      const el = document.createElement("div");
+      const unspawnedClass = actor.initiallySpawned === false ? "unspawned" : "";
+      el.className = `actor ${actor.side} ${unspawnedClass}`.trim();
+      el.id = `actor-${actor.id}`;
+      const hpContainerStyle = actor.hideHp ? ' style="display: none;"' : "";
+      const hpTextContent = actor.hideHp ? "" : `${actor.maxHp}/${actor.maxHp}`;
+      el.innerHTML = `
+            <div class="actor-name">${escapeHtml(actor.name)}</div>
+            <div class="avatar-wrapper">
+                <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+            </div>
+            <div class="hp-container"${hpContainerStyle}>
+                <div class="hp-fill" id="hp-fill-${escapeHtml(actor.id)}"></div>
+                <div class="hp-text" id="hp-text-${escapeHtml(actor.id)}">${hpTextContent}</div>
+            </div>
+        `;
+      if (actor.side === "left") leftTeam.appendChild(el);
+      else rightTeam.appendChild(el);
+    });
+    arena.appendChild(leftTeam);
+    arena.appendChild(rightTeam);
+    const dialogBox = document.createElement("div");
+    dialogBox.className = "dialog-box";
+    dialogBox.id = "dialog-box";
+    const fatalityOverlay = document.createElement("div");
+    fatalityOverlay.id = "fatality-overlay";
+    fatalityOverlay.className = "fatality-overlay";
+    stage.appendChild(controls);
+    stage.appendChild(ctbBox);
+    stage.appendChild(arena);
+    stage.appendChild(dialogBox);
+    stage.appendChild(fatalityOverlay);
+    engineState.shadowRoot.appendChild(stage);
+    const originalContent = document.querySelector(HOST_CONTENT_SELECTOR);
+    if (originalContent) {
+      originalContent.setAttribute("data-mdbv-hidden-host", "true");
+      originalContent.style.display = "none";
+    }
+    engineState.isPlaying = true;
+    updateATBUI(0, true);
+    const token = nextPlaybackToken();
+    playbackLoop(token);
   }
   async function playbackLoop(token) {
     while (engineState.currentFrameIndex < engineState.frames.length && engineState.isPlaying && engineState.playbackToken === token) {
@@ -3072,7 +3196,9 @@
         summonedEl.classList.remove("unspawned", "despawning");
         summonedEl.classList.add("spawning");
         setTimeout(() => {
-          if (summonedEl.isConnected) summonedEl.classList.remove("spawning");
+          if (engineState.playbackToken === token && summonedEl.isConnected) {
+            summonedEl.classList.remove("spawning");
+          }
         }, 600 / getEffectiveSpeed());
       }
     }
@@ -3082,7 +3208,7 @@
         despawnedEl.classList.remove("spawning");
         despawnedEl.classList.add("despawning");
         setTimeout(() => {
-          if (despawnedEl.isConnected) {
+          if (engineState.playbackToken === token && despawnedEl.isConnected) {
             despawnedEl.classList.remove("despawning");
             despawnedEl.classList.add("unspawned");
           }
@@ -3146,8 +3272,10 @@
       if (targetEl) {
         targetEl.classList.add("blink-active");
         setTimeout(() => {
-          if (targetEl.isConnected) targetEl.classList.remove("blink-active");
-        }, 300);
+          if (engineState.playbackToken === token && targetEl.isConnected) {
+            targetEl.classList.remove("blink-active");
+          }
+        }, 300 / getEffectiveSpeed());
       }
     }
     if (frame.targetId) {
@@ -3160,7 +3288,7 @@
           targetEl.appendChild(dropEl);
           setTimeout(() => {
             if (dropEl.isConnected) dropEl.remove();
-          }, 1e3);
+          }, 1e3 / getEffectiveSpeed());
         }
         if (frame.vfx.includes("break-stamp")) {
           const breakEl = document.createElement("div");
@@ -3169,53 +3297,21 @@
           targetEl.appendChild(breakEl);
           setTimeout(() => {
             if (breakEl.isConnected) breakEl.remove();
-          }, 1200);
+          }, 1200 / getEffectiveSpeed());
           frameDuration = 1e3;
         }
       }
     }
     spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetDifferent);
-    let triggeredFatality = false;
-    let deadActorId = null;
-    if (frame.isDeathEvent) {
-      triggeredFatality = true;
-      deadActorId = frame.deadActorId;
-    }
-    frame.actorsHpState.forEach((currentHp, actorId) => {
-      const actor = engineState.actors.get(actorId);
-      const fillEl = sr.getElementById(`hp-fill-${actorId}`);
-      const textEl = sr.getElementById(`hp-text-${actorId}`);
-      const wrapperEl = sr.getElementById(`actor-${actorId}`);
-      const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : currentHp <= 0;
-      if (actor) {
-        if (fillEl && textEl && !actor.hideHp) {
-          const pct = currentHp / actor.maxHp * 100;
-          fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-          textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
-          fillEl.classList.remove("warning", "danger");
-          if (currentHp > 0 && pct <= 25) {
-            fillEl.classList.add("danger");
-            if (wrapperEl && !isDead) wrapperEl.classList.add("danger-state");
-          } else if (currentHp > 0 && pct <= 50) {
-            fillEl.classList.add("warning");
-            if (wrapperEl) wrapperEl.classList.remove("danger-state");
-          } else {
-            if (wrapperEl) wrapperEl.classList.remove("danger-state");
-          }
-        }
-        actor.currentHp = currentHp;
-        if (isDead && wrapperEl) {
-          if (!triggeredFatality || deadActorId !== actorId) {
-            wrapperEl.classList.add("dead");
-          }
-          wrapperEl.classList.remove("danger-state");
-        } else if (!isDead && wrapperEl) {
-          wrapperEl.classList.remove("dead");
-        }
-      }
+    const triggeredFatality = !!frame.isDeathEvent;
+    const deadActorId = frame.isDeathEvent ? frame.deadActorId : null;
+    syncActorHpAndDeathDOM(sr, frame, {
+      skipHpTransition: false,
+      syncSummonVisibility: false,
+      deferDeadClassForActorId: triggeredFatality ? deadActorId : null
     });
     if (triggeredFatality && deadActorId) {
-      await playFatalitySequence(sr, deadActorId);
+      await playFatalitySequence(sr, deadActorId, token);
       if (engineState.playbackToken !== token) return;
       const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
       if (deadWrapper) {
@@ -3227,7 +3323,6 @@
   }
 
   // src/index.js
-  var API_BASE = "https://mydoujin-backend.onrender.com";
   var originalFetch = window.fetch.bind(window);
   var lastAutoLaunchedReportId = null;
   function findBattlePayload(obj, depth = 0) {
@@ -3249,12 +3344,12 @@
     if (!p) return false;
     return Array.isArray(p.players) && p.players.length > 0 && p.players[0]?.stats?.hp != null;
   }
-  async function prepareAndInitVisualizer(rawBattleData) {
+  async function prepareAndInitVisualizer(rawBattleData, { force = false } = {}) {
     const battleData = findBattlePayload(rawBattleData);
-    if (!battleData) return;
+    if (!battleData) return false;
     const reportId = battleData.reportId != null ? String(battleData.reportId) : null;
-    if (reportId && reportId === lastAutoLaunchedReportId && engineState.hostElement) {
-      return;
+    if (!force && reportId && reportId === lastAutoLaunchedReportId && engineState.hostElement) {
+      return true;
     }
     if (reportId) {
       lastAutoLaunchedReportId = reportId;
@@ -3284,6 +3379,7 @@
       }
     }
     initVisualizer(finalReportData);
+    return true;
   }
   function initVisualizer(reportData) {
     engineState.lastReportData = reportData;
@@ -3297,7 +3393,7 @@
     engineState.totalTurns = 0;
     engineState.battleResult = reportData.result || "WIN";
     parseParticipants(reportData);
-    buildStateSnapshots(reportData.logs);
+    buildStateSnapshots(reportData.logs || []);
     engineState.actors.forEach((actor) => {
       actor.currentHp = actor.maxHp;
     });
@@ -3323,8 +3419,8 @@
           });
           if (response.ok) {
             const data = await response.json();
-            if (data && data.logs) initVisualizer(data);
-            else alert("\u7121\u6CD5\u89E3\u6790\u6230\u5831\u8CC7\u6599");
+            const launched = await prepareAndInitVisualizer(data, { force: true });
+            if (!launched) alert("\u7121\u6CD5\u89E3\u6790\u6230\u5831\u8CC7\u6599");
           } else {
             alert(`\u8B80\u53D6\u6230\u5831\u5931\u6557 (\u932F\u8AA4\u78BC: ${response.status})`);
           }
@@ -3346,7 +3442,7 @@
     window.fetch = async function(...args) {
       const input = args[0];
       const init = args[1];
-      const url = typeof input === "string" ? input : input?.url || "";
+      const url = typeof input === "string" ? input : input?.url || (input instanceof URL ? input.href : "");
       const method = String(init?.method || input?.method || "GET").toUpperCase();
       const isLiveBattlePost = method === "POST" && (/\/api\/dungeon\/challenge(?:[?#]|$)/.test(url) || /\/api\/players\/[^/]+\/[^/?#]+(?:[?#]|$)/.test(url));
       const isReportGet = method === "GET" && /\/api\/battle-reports\/\d+(?:[?#]|$)/.test(url);

@@ -1,8 +1,15 @@
 // ==========================================
 // FILE: src/mvp.js
 // ==========================================
+/**
+ * @fileoverview Post-battle JRPG-styled Victory/Defeat summary and MVP contribution overlay.
+ * Displays the party MVP portrait splash and animated damage output/taken bars for each member.
+ */
+
+import { DEFAULT_MVP_AVATAR_URL } from './constants.js';
 import { engineState } from './state.js';
 import { getConsolidatedStats } from './parser.js';
+import { escapeHtml } from './utils.js';
 
 /**
  * Renders the post-battle JRPG-styled Victory/Defeat summary and MVP contribution overlay.
@@ -72,7 +79,7 @@ export function showMVPPanel() {
         const mvpImg = document.createElement('img');
         mvpImg.className = 'mvp-avatar';
         mvpImg.src = mvp.avatar;
-        mvpImg.onerror = () => { mvpImg.src = 'https://via.placeholder.com/600'; };
+        mvpImg.onerror = () => { mvpImg.src = DEFAULT_MVP_AVATAR_URL; };
 
         mvpSplash.appendChild(mvpLabel);
         mvpSplash.appendChild(mvpImg);
@@ -142,19 +149,19 @@ export function showMVPPanel() {
         row.style.animationDelay = `${delayCounter}s`;
 
         row.innerHTML = `
-            <div class="stat-name">${actor.name}</div>
+            <div class="stat-name">${escapeHtml(actor.name)}</div>
             <div class="stat-bar-wrapper">
                 <div class="stat-bar-fill" style="--target-width: ${dmgPct}%; animation-delay: ${delayCounter + 0.2}s;"></div>
             </div>
             <div class="stat-numbers">
-                <div class="stat-dmg" id="dmg-${actor.id}">0</div>
+                <div class="stat-dmg">0</div>
                 <div class="stat-taken">TAKEN: ${formatNum(totalTaken)}</div>
             </div>
         `;
         statsContainer.appendChild(row);
 
         setTimeout(() => {
-            const dmgEl = row.querySelector(`#dmg-${actor.id}`);
+            const dmgEl = row.querySelector('.stat-dmg');
             if (dmgEl) animateValue(dmgEl, totalOutput, delayCounter + 0.2);
         }, 0);
 

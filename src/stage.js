@@ -1,10 +1,18 @@
 // ==========================================
 // FILE: src/stage.js
 // ==========================================
+/**
+ * @fileoverview Shadow DOM battle stage mounting, playback controls (Play/Pause, Speed, Seek, Close),
+ * and the main asynchronous frame execution pipeline (`playbackLoop` and `renderFrame`).
+ */
+
+import {
+    DEFAULT_AVATAR_URL,
+    HOST_CONTENT_SELECTOR,
+    PLAYBACK_SPEEDS
+} from './constants.js';
 import {
     getLuckDropEmoji,
-    CONTRACT_SKILL_PROFILES,
-    ULTIMATE_CUTIN_EXCLUDED_SKILLS,
     ULTIMATE_SUBFRAME_REGEX
 } from './profiles.js';
 import {
@@ -13,7 +21,7 @@ import {
     getEffectiveSpeed,
     nextPlaybackToken
 } from './state.js';
-import { formatLogMessage } from './utils.js';
+import { escapeHtml } from './utils.js';
 import { STAGE_STYLES } from './styles.js';
 import {
     playFatalitySequence,
@@ -31,41 +39,20 @@ import {
 import { spawnFloatingText } from './floatingText.js';
 import { showMVPPanel } from './mvp.js';
 import { armSpoilerGuard, releaseSpoilerGuard } from './spoilerGuard.js';
+import {
+    isPrimaryUltimateTriggerFrame,
+    createLogLineElement,
+    updateATBUI,
+    syncActorBondVisuals,
+    syncActorHpAndDeathDOM,
+    syncStageToAbsoluteState
+} from './timeline.js';
 
-/**
- * Evaluates whether a given frame should trigger a full-screen Ultimate Cut-In.
- * @param {object} frame - Combat frame to evaluate.
- * @returns {boolean} True if this frame initiates a primary ultimate skill cast.
- */
-function isPrimaryUltimateTriggerFrame(frame) {
-    if (
-        frame.skillTier !== 'ultimate' ||
-        !['SKILL_TEXT', 'TEXT', 'DAMAGE'].includes(frame.type) ||
-        frame.isNormalAttack ||
-        ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)
-    ) {
-        return false;
-    }
-    return true;
-}
-
-/**
- * Creates a formatted DOM element for a single combat log line in the bottom dialog box.
- * @param {object} frame - Combat frame containing the message and index.
- * @returns {HTMLDivElement} Constructed log line element.
- */
-function createLogLineElement(frame) {
-    const msgEl = document.createElement('div');
-    const isDialogue = frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE';
-    msgEl.className = `log-line ${isDialogue ? 'dialogue-log' : 'system-log'}`;
-    msgEl.dataset.frameIndex = String(frame.index);
-    const formattedMsg = formatLogMessage(frame.message, engineState.actors);
-    msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
-    return msgEl;
-}
+export { updateATBUI, syncStageToAbsoluteState };
 
 /**
  * Mounts the Shadow DOM battle stage, playback controls, ATB timeline, actor cards, and log box.
+ * Automatically starts playback from frame 0 upon mounting.
  */
 export function createBattleStage() {
     if (engineState.hostElement) engineState.hostElement.remove();
@@ -112,10 +99,9 @@ export function createBattleStage() {
     const speedBtn = document.createElement('button');
     speedBtn.textContent = `速度: ${engineState.playbackSpeed}x`;
     speedBtn.onclick = () => {
-        const speeds = [1, 2, 4, 8];
-        const currentIdx = speeds.indexOf(engineState.playbackSpeed);
-        const nextIndex = (currentIdx === -1 ? 0 : currentIdx + 1) % speeds.length;
-        engineState.playbackSpeed = speeds[nextIndex];
+        const currentIdx = PLAYBACK_SPEEDS.indexOf(engineState.playbackSpeed);
+        const nextIndex = (currentIdx === -1 ? 0 : currentIdx + 1) % PLAYBACK_SPEEDS.length;
+        engineState.playbackSpeed = PLAYBACK_SPEEDS[nextIndex];
         speedBtn.textContent = `速度: ${engineState.playbackSpeed}x`;
     };
 
@@ -162,8 +148,10 @@ export function createBattleStage() {
             engineState.hostElement.remove();
             engineState.hostElement = null;
         }
-        const originalContent = document.querySelector('.css-1svsvwq');
-        if (originalContent) originalContent.style.display = '';
+        document.querySelectorAll(`[data-mdbv-hidden-host], ${HOST_CONTENT_SELECTOR}`).forEach(el => {
+            el.style.display = '';
+            el.removeAttribute('data-mdbv-hidden-host');
+        });
     };
 
     controls.appendChild(playBtn);
@@ -197,13 +185,13 @@ export function createBattleStage() {
         const hpContainerStyle = actor.hideHp ? ' style="display: none;"' : '';
         const hpTextContent = actor.hideHp ? '' : `${actor.maxHp}/${actor.maxHp}`;
         el.innerHTML = `
-            <div class="actor-name">${actor.name}</div>
+            <div class="actor-name">${escapeHtml(actor.name)}</div>
             <div class="avatar-wrapper">
-                <img class="avatar" src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
+                <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
             </div>
             <div class="hp-container"${hpContainerStyle}>
-                <div class="hp-fill" id="hp-fill-${actor.id}"></div>
-                <div class="hp-text" id="hp-text-${actor.id}">${hpTextContent}</div>
+                <div class="hp-fill" id="hp-fill-${escapeHtml(actor.id)}"></div>
+                <div class="hp-text" id="hp-text-${escapeHtml(actor.id)}">${hpTextContent}</div>
             </div>
         `;
         if (actor.side === 'left') leftTeam.appendChild(el);
@@ -228,8 +216,11 @@ export function createBattleStage() {
     stage.appendChild(fatalityOverlay);
     engineState.shadowRoot.appendChild(stage);
 
-    const originalContent = document.querySelector('.css-1svsvwq');
-    if (originalContent) originalContent.style.display = 'none';
+    const originalContent = document.querySelector(HOST_CONTENT_SELECTOR);
+    if (originalContent) {
+        originalContent.setAttribute('data-mdbv-hidden-host', 'true');
+        originalContent.style.display = 'none';
+    }
 
     engineState.isPlaying = true;
     updateATBUI(0, true);
@@ -238,264 +229,9 @@ export function createBattleStage() {
 }
 
 /**
- * Updates actor icon positions along the top ATB/CTB action timeline bar.
- * @param {number} currentTurn - Active turn number.
- * @param {boolean} [skipTransition=false] - Whether to snap immediately without CSS transition.
- * @param {Map<string, boolean>|null} [summonStateMap=null] - Map of currently spawned actors.
- */
-export function updateATBUI(currentTurn, skipTransition = false, summonStateMap = null) {
-    const sr = engineState.shadowRoot;
-    if (!sr) return;
-    const track = sr.getElementById('ctb-track');
-    if (!track) return;
-
-    engineState.actors.forEach(actor => {
-        if (actor.currentHp <= 0 && actor.turnNumbers.length === 0) return;
-
-        const isSpawned = summonStateMap
-            ? summonStateMap.get(actor.id) !== false
-            : actor.initiallySpawned !== false;
-
-        let progress = 0;
-        const turns = actor.turnNumbers;
-
-        if (turns.length === 0) {
-            progress = 0;
-        } else if (currentTurn <= turns[0]) {
-            progress = turns[0] > 0 ? (currentTurn / turns[0]) * 100 : 100;
-        } else {
-            let prev = turns[0];
-            let next = null;
-            for (let i = 0; i < turns.length; i++) {
-                if (turns[i] === currentTurn) {
-                    progress = 100;
-                    prev = turns[i];
-                    next = turns[i];
-                    break;
-                } else if (turns[i] > currentTurn) {
-                    next = turns[i];
-                    break;
-                } else {
-                    prev = turns[i];
-                }
-            }
-
-            if (progress !== 100) {
-                if (next !== null) {
-                    progress = ((currentTurn - prev) / (next - prev)) * 100;
-                } else {
-                    const avgGap = turns.length > 1 ? (turns[turns.length - 1] - turns[0]) / (turns.length - 1) : 4;
-                    progress = ((currentTurn - prev) / avgGap) * 100;
-                    progress = Math.min(95, progress);
-                }
-            }
-        }
-
-        progress = Math.max(0, Math.min(100, progress));
-
-        let icon = sr.getElementById(`ctb-icon-${actor.id}`);
-        if (!icon) {
-            icon = document.createElement('div');
-            icon.id = `ctb-icon-${actor.id}`;
-            icon.className = `ctb-icon ${actor.side}`;
-            icon.innerHTML = `<img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">`;
-            track.appendChild(icon);
-        }
-
-        icon.style.zIndex = Math.round(progress);
-
-        const prevProgress = Number(icon.dataset.progress || 0);
-        if (skipTransition || progress < prevProgress - 20) {
-            icon.style.transition = 'none';
-            icon.style.left = `${progress}%`;
-            void icon.offsetHeight;
-        } else {
-            icon.style.transition = `left ${400 / getEffectiveSpeed()}ms linear`;
-            icon.style.left = `${progress}%`;
-        }
-
-        if (progress === 100) icon.classList.add('acting');
-        else icon.classList.remove('acting');
-
-        if (!isSpawned || (actor.currentHp <= 0 && progress !== 100)) {
-            icon.style.opacity = '0';
-        } else {
-            icon.style.opacity = '1';
-        }
-
-        icon.dataset.progress = progress;
-    });
-}
-
-/**
- * Synchronizes persistent contract/marriage aura and badge visuals across all actors.
- * @param {ShadowRoot} sr - Stage ShadowRoot instance.
- * @param {Map<string, {partnerId: string|null, skillId: string}>|null} bondStateMap - Active bond state map.
- */
-function syncActorBondVisuals(sr, bondStateMap = null) {
-    engineState.actors.forEach(actor => {
-        const wrapperEl = sr.getElementById(`actor-${actor.id}`);
-        if (!wrapperEl) return;
-
-        const bondInfo = bondStateMap ? bondStateMap.get(actor.id) : null;
-        const existingBadge = wrapperEl.querySelector('.bond-ring-badge');
-
-        if (bondInfo) {
-            const profile = CONTRACT_SKILL_PROFILES[bondInfo.skillId];
-            wrapperEl.classList.add('bond-active');
-            if (!existingBadge) {
-                const badge = document.createElement('div');
-                badge.className = 'bond-ring-badge';
-                const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
-                badge.textContent = partner
-                    ? `${profile?.badgeIcon || '💍'} ${partner.name}`
-                    : `${profile?.badgeIcon || '💍'} ${profile?.badgeText || '契約'}`;
-                wrapperEl.appendChild(badge);
-            }
-        } else {
-            wrapperEl.classList.remove('bond-active');
-            if (existingBadge) existingBadge.remove();
-        }
-    });
-}
-
-/**
- * Instantly synchronizes the entire stage DOM (HP bars, death states, summon visibility,
- * log history, and ATB icons) to any target frame index during timeline seeking or reset.
- * @param {number} frameIndex - Target frame index to synchronize to.
- * @param {boolean} [isInitialReset=false] - True when resetting back to pre-battle state.
- */
-export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
-    const sr = engineState.shadowRoot;
-    if (!sr) return;
-
-    engineState.timeScale = 1.0;
-    engineState.currentCombo = createEmptyCombo();
-    engineState.floatTracker.clear();
-
-    const mvpPanel = sr.getElementById('mdbv-mvp-panel');
-    if (mvpPanel) mvpPanel.remove();
-
-    const fatalityOverlay = sr.getElementById('fatality-overlay');
-    if (fatalityOverlay) fatalityOverlay.classList.remove('active');
-
-    sr.querySelectorAll(
-        '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text'
-    ).forEach(el => el.remove());
-
-    engineState.actors.forEach(actor => {
-        actor.lastUltimateTurn = null;
-        const el = sr.getElementById(`actor-${actor.id}`);
-        if (el) {
-            if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());
-            el.style.filter = '';
-            el.style.transform = '';
-            el.classList.remove('blink-active', 'spawning', 'despawning');
-        }
-    });
-
-    const dialog = sr.getElementById('dialog-box');
-    if (dialog) {
-        dialog.innerHTML = '';
-        if (!isInitialReset && frameIndex > 0) {
-            const fragment = document.createDocumentFragment();
-            const limit = Math.min(frameIndex, engineState.frames.length);
-            for (let i = 0; i < limit; i++) {
-                const f = engineState.frames[i];
-                if (isPrimaryUltimateTriggerFrame(f)) {
-                    const a = engineState.actors.get(f.actorId);
-                    if (a) a.lastUltimateTurn = f.turnNumber;
-                }
-                if (f.message) {
-                    fragment.appendChild(createLogLineElement(f));
-                }
-            }
-            dialog.appendChild(fragment);
-            dialog.scrollTop = dialog.scrollHeight;
-        }
-    }
-
-    if (isInitialReset || engineState.frames.length === 0) {
-        engineState.actors.forEach(actor => {
-            actor.currentHp = actor.maxHp;
-            const fillEl = sr.getElementById(`hp-fill-${actor.id}`);
-            const textEl = sr.getElementById(`hp-text-${actor.id}`);
-            const wrapperEl = sr.getElementById(`actor-${actor.id}`);
-            if (fillEl && textEl && !actor.hideHp) {
-                fillEl.style.transition = 'none';
-                fillEl.style.width = '100%';
-                setTimeout(() => { fillEl.style.transition = ''; }, 50);
-                textEl.textContent = `${actor.maxHp}/${actor.maxHp}`;
-                fillEl.classList.remove('warning', 'danger');
-            }
-            if (wrapperEl) {
-                wrapperEl.classList.remove('dead', 'danger-state', 'spawning', 'despawning');
-                if (actor.initiallySpawned === false) wrapperEl.classList.add('unspawned');
-                else wrapperEl.classList.remove('unspawned');
-            }
-        });
-        syncActorBondVisuals(sr, null);
-        updateATBUI(0, true);
-        return;
-    }
-
-    const stateFrameIndex = Math.max(0, Math.min(frameIndex, engineState.frames.length - 1));
-    const frame = engineState.frames[stateFrameIndex];
-    if (!frame) return;
-
-    frame.actorsHpState.forEach((currentHp, actorId) => {
-        const actor = engineState.actors.get(actorId);
-        const fillEl = sr.getElementById(`hp-fill-${actorId}`);
-        const textEl = sr.getElementById(`hp-text-${actorId}`);
-        const wrapperEl = sr.getElementById(`actor-${actorId}`);
-
-        const isSpawned = frame.actorsSummonState
-            ? frame.actorsSummonState.get(actorId) !== false
-            : actor?.initiallySpawned !== false;
-
-        if (wrapperEl) {
-            wrapperEl.classList.remove('spawning', 'despawning');
-            if (!isSpawned) wrapperEl.classList.add('unspawned');
-            else wrapperEl.classList.remove('unspawned');
-        }
-
-        if (actor) {
-            if (fillEl && textEl && !actor.hideHp) {
-                const pct = (currentHp / actor.maxHp) * 100;
-                fillEl.style.transition = 'none';
-                fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-                setTimeout(() => { fillEl.style.transition = ''; }, 50);
-
-                textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
-
-                fillEl.classList.remove('warning', 'danger');
-                if (wrapperEl) wrapperEl.classList.remove('danger-state');
-
-                if (pct > 0 && pct <= 25) {
-                    fillEl.classList.add('danger');
-                    if (wrapperEl) wrapperEl.classList.add('danger-state');
-                } else if (pct > 0 && pct <= 50) {
-                    fillEl.classList.add('warning');
-                }
-            }
-
-            actor.currentHp = currentHp;
-
-            const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : (currentHp <= 0);
-            if (isDead && wrapperEl) {
-                wrapperEl.classList.add('dead');
-                wrapperEl.classList.remove('danger-state');
-            } else if (!isDead && wrapperEl) {
-                wrapperEl.classList.remove('dead');
-            }
-        }
-    });
-    syncActorBondVisuals(sr, frame.actorsBondState);
-    updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
-}
-
-/**
  * Main asynchronous playback loop that steps through frames until paused, cancelled, or finished.
+ * Once the final frame finishes, releases the spoiler guard and displays the post-battle MVP overlay.
+ *
  * @param {number} token - Playback token bound to this loop invocation.
  * @returns {Promise<void>}
  */
@@ -539,8 +275,9 @@ export async function playbackLoop(token) {
 /**
  * Renders a single combat frame including log appending, summon spawns/despawns, dialogues,
  * ultimate cut-ins, physical combat choreography, floating numbers, HP bar updates, and K.O. sequences.
+ *
  * @param {object} frame - Frame snapshot to render.
- * @param {number} token - Active playback token.
+ * @param {number} token - Active playback token for cancellation checks across async steps.
  * @returns {Promise<void>}
  */
 export async function renderFrame(frame, token) {
@@ -551,6 +288,7 @@ export async function renderFrame(frame, token) {
     const dialog = sr.getElementById('dialog-box');
     let frameDuration = 600;
 
+    // 1. Append combat log line
     if (frame.message && dialog) {
         if (dialog.lastElementChild?.dataset?.frameIndex !== String(frame.index)) {
             const msgEl = createLogLineElement(frame);
@@ -559,13 +297,16 @@ export async function renderFrame(frame, token) {
         }
     }
 
+    // 2. Animate dynamic summon spawn or voluntary despawn
     if (frame.isSummonEvent && frame.summonedActorId) {
         const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
         if (summonedEl) {
             summonedEl.classList.remove('unspawned', 'despawning');
             summonedEl.classList.add('spawning');
             setTimeout(() => {
-                if (summonedEl.isConnected) summonedEl.classList.remove('spawning');
+                if (engineState.playbackToken === token && summonedEl.isConnected) {
+                    summonedEl.classList.remove('spawning');
+                }
             }, 600 / getEffectiveSpeed());
         }
     }
@@ -576,7 +317,7 @@ export async function renderFrame(frame, token) {
             despawnedEl.classList.remove('spawning');
             despawnedEl.classList.add('despawning');
             setTimeout(() => {
-                if (despawnedEl.isConnected) {
+                if (engineState.playbackToken === token && despawnedEl.isConnected) {
                     despawnedEl.classList.remove('despawning');
                     despawnedEl.classList.add('unspawned');
                 }
@@ -584,6 +325,7 @@ export async function renderFrame(frame, token) {
         }
     }
 
+    // 3. Render speech bubble for boss dialogue or spoken skill quotes
     const isSpokenSkillQuote =
         frame.type === 'SKILL_TEXT' &&
         /^[^：「\s]+：「.+」$/.test(frame.message.trim());
@@ -593,6 +335,7 @@ export async function renderFrame(frame, token) {
         frameDuration += isSpokenSkillQuote ? Math.min(readTime, 900) : readTime;
     }
 
+    // 4. Spawn overhead dice check or character flavor badges
     if (
         frame.diceCheck ||
         ['FATIGUE', 'FATIGUE_SKIP', 'SILENCED'].includes(frame.type) ||
@@ -602,9 +345,11 @@ export async function renderFrame(frame, token) {
         spawnStatusOrDiceBadge(frame, sr);
     }
 
+    // 5. Update ATB bar and persistent marriage/contract bond indicators
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
 
+    // 6. Play full-screen Contract Cut-In, Rosario Cross inscription, or Ultimate Cut-In
     if (frame.contractEvent === 'ACCEPT') {
         await playContractCutIn(frame, sr, token);
         if (engineState.playbackToken !== token) return;
@@ -631,6 +376,7 @@ export async function renderFrame(frame, token) {
         }
     }
 
+    // 7. Execute physical combat or cover guard choreography
     const {
         isNextFrameSameCombo,
         isNextTargetDifferent,
@@ -649,6 +395,7 @@ export async function renderFrame(frame, token) {
         );
     }
 
+    // 8. Trigger arena shake, dodge blink, luck drop, and BREAK! stamp VFX
     if (frame.vfx.includes('screen-shake') && arena) {
         arena.classList.remove('shake-active');
         void arena.offsetWidth;
@@ -661,8 +408,10 @@ export async function renderFrame(frame, token) {
         if (targetEl) {
             targetEl.classList.add('blink-active');
             setTimeout(() => {
-                if (targetEl.isConnected) targetEl.classList.remove('blink-active');
-            }, 300);
+                if (engineState.playbackToken === token && targetEl.isConnected) {
+                    targetEl.classList.remove('blink-active');
+                }
+            }, 300 / getEffectiveSpeed());
         }
     }
 
@@ -676,7 +425,7 @@ export async function renderFrame(frame, token) {
                 targetEl.appendChild(dropEl);
                 setTimeout(() => {
                     if (dropEl.isConnected) dropEl.remove();
-                }, 1000);
+                }, 1000 / getEffectiveSpeed());
             }
             if (frame.vfx.includes('break-stamp')) {
                 const breakEl = document.createElement('div');
@@ -685,64 +434,27 @@ export async function renderFrame(frame, token) {
                 targetEl.appendChild(breakEl);
                 setTimeout(() => {
                     if (breakEl.isConnected) breakEl.remove();
-                }, 1200);
+                }, 1200 / getEffectiveSpeed());
                 frameDuration = 1000;
             }
         }
     }
 
+    // 9. Spawn floating damage/heal numbers and cumulative combo counters
     spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetDifferent);
 
-    let triggeredFatality = false;
-    let deadActorId = null;
+    // 10. Synchronize HP bars and play K.O. fatality sequence on newly defeated units
+    const triggeredFatality = !!frame.isDeathEvent;
+    const deadActorId = frame.isDeathEvent ? frame.deadActorId : null;
 
-    if (frame.isDeathEvent) {
-        triggeredFatality = true;
-        deadActorId = frame.deadActorId;
-    }
-
-    frame.actorsHpState.forEach((currentHp, actorId) => {
-        const actor = engineState.actors.get(actorId);
-        const fillEl = sr.getElementById(`hp-fill-${actorId}`);
-        const textEl = sr.getElementById(`hp-text-${actorId}`);
-        const wrapperEl = sr.getElementById(`actor-${actorId}`);
-
-        const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : (currentHp <= 0);
-
-        if (actor) {
-            if (fillEl && textEl && !actor.hideHp) {
-                const pct = (currentHp / actor.maxHp) * 100;
-
-                fillEl.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-                textEl.textContent = `${Math.round(currentHp)}/${actor.maxHp}`;
-                fillEl.classList.remove('warning', 'danger');
-
-                if (currentHp > 0 && pct <= 25) {
-                    fillEl.classList.add('danger');
-                    if (wrapperEl && !isDead) wrapperEl.classList.add('danger-state');
-                } else if (currentHp > 0 && pct <= 50) {
-                    fillEl.classList.add('warning');
-                    if (wrapperEl) wrapperEl.classList.remove('danger-state');
-                } else {
-                    if (wrapperEl) wrapperEl.classList.remove('danger-state');
-                }
-            }
-
-            actor.currentHp = currentHp;
-
-            if (isDead && wrapperEl) {
-                if (!triggeredFatality || deadActorId !== actorId) {
-                    wrapperEl.classList.add('dead');
-                }
-                wrapperEl.classList.remove('danger-state');
-            } else if (!isDead && wrapperEl) {
-                wrapperEl.classList.remove('dead');
-            }
-        }
+    syncActorHpAndDeathDOM(sr, frame, {
+        skipHpTransition: false,
+        syncSummonVisibility: false,
+        deferDeadClassForActorId: triggeredFatality ? deadActorId : null
     });
 
     if (triggeredFatality && deadActorId) {
-        await playFatalitySequence(sr, deadActorId);
+        await playFatalitySequence(sr, deadActorId, token);
         if (engineState.playbackToken !== token) return;
         const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
         if (deadWrapper) {

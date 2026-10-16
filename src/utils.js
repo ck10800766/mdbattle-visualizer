@@ -1,6 +1,10 @@
 // ==========================================
 // FILE: src/utils.js
 // ==========================================
+/**
+ * @fileoverview String escaping utilities (`escapeRegExp`, `escapeHtml`) and single-pass
+ * combat log actor-name highlighting (`formatLogMessage`).
+ */
 
 /**
  * Escapes special characters in a string for safe interpolation inside a RegExp constructor.
