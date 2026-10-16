@@ -1,7 +1,21 @@
 // ==========================================
 // FILE: src/parser.js
 // ==========================================
+/**
+ * @fileoverview Deterministic combat log state machine (`buildStateSnapshots`).
+ * Transforms raw battle log entries into frame-by-frame snapshots of actor HP,
+ * death states, summon states, contract bonds, turn numbers, and VFX triggers,
+ * followed by HP anchor calibration and AOE wave grouping.
+ */
+
 import { engineState } from './state.js';
+import { DEFAULT_AVATAR_URL } from './constants.js';
+import {
+    createActorEntity,
+    inferSummonName,
+    parseParticipants,
+    getConsolidatedStats
+} from './participants.js';
 import { markAOEWaves, calibrateHpWithAnchors } from './calibrator.js';
 import {
     ENVIRONMENTAL_SKILLS,
@@ -10,170 +24,109 @@ import {
     SUMMON_DESPAWN_REGEX
 } from './profiles.js';
 
-const DEFAULT_AVATAR_URL = 'https://via.placeholder.com/150';
-const ASSET_HOST = 'https://mydoujin.online';
+export {
+    createActorEntity,
+    inferSummonName,
+    parseParticipants,
+    getConsolidatedStats
+};
 
 /**
- * Factory helper to create a standardized actor state entity.
- * @param {object} config - Actor configuration parameters.
- * @returns {object} Standardized actor entity.
+ * Checks whether a `COUNTER` log entry is merely a setup line that is immediately followed
+ * by a separate `DAMAGE` or `BLOCK` counter resolution entry within the next 5 logs.
+ * When true, HP deduction and physical animation are deferred to the resolution entry.
+ *
+ * @param {Array<object>} logs - Full combat log array.
+ * @param {number} index - Current log index.
+ * @param {object} log - Current log object (`log.type === 'COUNTER'`).
+ * @param {number} rawValue - Numeric value of the current log.
+ * @returns {boolean} True if this `COUNTER` log is a setup entry.
  */
-function createActorEntity({
-    id,
-    name = 'Unknown',
-    side = 'left',
-    maxHp = 1,
-    hideHp = false,
-    avatar = DEFAULT_AVATAR_URL,
-    isSummon = false,
-    ownerId = null,
-    initiallySpawned = true
-}) {
-    return {
-        id,
-        name,
-        side,
-        maxHp,
-        currentHp: maxHp,
-        hideHp,
-        avatar,
-        isSummon,
-        ownerId,
-        initiallySpawned,
-        turnNumbers: [],
-        totalDamageDealt: 0,
-        luckDamageDealt: 0,
-        totalDamageTaken: 0,
-        lastUltimateTurn: null
-    };
+function detectCounterSetup(logs, index, log, rawValue) {
+    if (log.type !== 'COUNTER') return false;
+    for (let j = index + 1; j < Math.min(logs.length, index + 6); j++) {
+        const nextLog = logs[j];
+        if (
+            nextLog &&
+            (nextLog.type === 'DAMAGE' || nextLog.type === 'BLOCK') &&
+            nextLog.isCounter &&
+            (Number(nextLog.value) === rawValue || nextLog.actorId === log.actorId)
+        ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
- * Infers the display name of a summoned unit by inspecting structured combat logs
- * (death, dialogue, actor prefix, damage target) before falling back to tokenizing the SUMMON message.
- * @param {Array<object>} logs - Raw combat log array.
- * @param {number} summonIndex - Index of the SUMMON log entry.
- * @param {string} summonId - Unique entity ID of the summoned unit.
- * @param {string} ownerName - Display name of the summoner.
- * @returns {string} Inferred display name for the summon.
+ * Evaluates whether the current frame initiates a new actor turn on the ATB timeline.
+ *
+ * Design Note:
+ * - Passive procs (`passiveId`), direct follow-ups (`source: 'DIRECT'`), damage reflections
+ *   (`source: 'REFLECTION'`), self-inflicted damage, environmental hazard pulses, and
+ *   reactive marriage cover lines do not consume a new turn.
+ * - For `COUNTER` frames, `targetId` represents the attacker whose action triggered the counter,
+ *   so turn ownership is attributed to `frame.targetId`.
+ *
+ * @param {object} frame - Current combat frame.
+ * @param {boolean} isReactiveCoverText - Whether this frame is a reactive contract cover message.
+ * @returns {{ isTurnAction: boolean, turnActorId: string|undefined }}
  */
-function inferSummonName(logs, summonIndex, summonId, ownerName) {
-    const summonLog = logs[summonIndex];
-    if (!summonLog) return 'Summon';
+function evaluateTurnOwnership(frame, isReactiveCoverText) {
+    let isTurnAction = false;
+    let turnActorId = frame.actorId;
 
-    const explicitName = summonLog.targetName || summonLog.summonName || summonLog.characterName || summonLog.name;
-    if (explicitName) return String(explicitName).trim();
-
-    // 1. Inspect subsequent structured logs involving this summonId
-    for (let i = summonIndex + 1; i < logs.length; i++) {
-        const log = logs[i];
-        if (!log || typeof log !== 'object') continue;
-        const msg = String(log.message || '');
-
-        if (log.actorId === summonId) {
-            if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(log.type)) {
-                const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
-                if (deathMatch) return deathMatch[1];
-            }
-            const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
-            if (dialogueMatch) return dialogueMatch[1];
-
-            const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
-            if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
-                return actorPrefixMatch[1];
-            }
-        }
-
-        if (log.targetId === summonId && ['DAMAGE', 'BLOCK', 'HEAL'].includes(log.type)) {
-            const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
-            if (targetMatch) return targetMatch[1];
-        }
+    if (frame.type === 'BOSS_DIALOGUE') {
+        isTurnAction = true;
+    } else if (
+        frame.type === 'SKILL_TEXT' &&
+        !frame.isCounter &&
+        !frame.passiveId &&
+        !isReactiveCoverText
+    ) {
+        isTurnAction = true;
+    } else if (
+        ['DAMAGE', 'MISS', 'BLOCK'].includes(frame.type) &&
+        !frame.isCounter &&
+        !frame.isSelfDamage &&
+        !frame.isEnvironmentalPulse &&
+        frame.source !== 'DIRECT' &&
+        frame.source !== 'REFLECTION'
+    ) {
+        isTurnAction = true;
+    } else if (frame.type === 'COUNTER' && frame.targetId) {
+        isTurnAction = true;
+        turnActorId = frame.targetId;
     }
 
-    // 2. Fallback: tokenize the SUMMON log message itself
-    const summonMsg = String(summonLog.message || '').trim();
-    const whitespaceTokens = summonMsg.split(/\s+/);
-    if (whitespaceTokens.length >= 3) {
-        const candidate = whitespaceTokens[whitespaceTokens.length - 2]
-            .split(/[，,。！!、的]/).pop();
-        if (candidate && candidate !== ownerName) {
-            return candidate;
-        }
-    }
-
-    return 'Summon';
+    return { isTurnAction, turnActorId };
 }
 
 /**
- * Parses report participants and pre-registers any dynamically summoned units into engineState.actors.
- * Dynamic summons always keep hideHp = true to prevent end-of-battle HP_REMAINING spoilers.
- * @param {object} reportData - Battle report payload.
+ * Processes explicit `SUMMON` logs, narrative summon appearances (e.g., Brick Kiln `mob_kiln_1`
+ * constructed mid-fight without a `SUMMON` log), and voluntary summon departures (e.g., Sleeping Knights).
+ *
+ * @param {object} log - Raw log entry.
+ * @param {number} index - Current log index.
+ * @param {Array<object>} logs - Full combat log array.
+ * @param {object} frame - Current combat frame being constructed.
+ * @param {Map<string, boolean>} actorsDeathState - Mutable per-actor death state map.
+ * @param {Map<string, boolean>} actorsSummonState - Mutable per-actor summon presence map.
+ * @param {Set<string>} explicitlySummonedIds - Set of actor IDs that have an explicit `SUMMON` log.
+ * @param {Set<string>} despawnedActors - Set of summon IDs that have voluntarily left the battlefield.
  */
-export function parseParticipants(reportData) {
-    engineState.actors.clear();
-    const p = reportData.participants || {};
-    const logs = reportData.logs || [];
-    const fallbackBossImage = reportData.boss ? reportData.boss.imagePath : null;
-
-    const summonedIds = new Set();
-    logs.forEach(log => {
-        if (log && log.type === 'SUMMON' && log.targetId) {
-            summonedIds.add(log.targetId);
-        }
-    });
-
-    (p.players || []).forEach(player => {
-        const id = player.userId || player.entityId || player._id;
-        const name = player.characterName || player.name || 'Unknown';
-        const rawHp = Number(player.stats?.hp);
-        const isSummon = !!player.summonerId || summonedIds.has(id);
-        const hideHp = isSummon && !(rawHp > 1);
-        const maxHp = rawHp > 0 ? rawHp : 1;
-        const avatarPath = player.imagePath;
-
-        engineState.actors.set(id, createActorEntity({
-            id,
-            name,
-            side: 'left',
-            maxHp,
-            hideHp,
-            avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
-            isSummon,
-            ownerId: player.summonerId || null,
-            initiallySpawned: !isSummon
-        }));
-    });
-
-    (p.enemies || []).forEach(enemy => {
-        const id = enemy.userId || enemy.entityId || enemy._id;
-        const name = enemy.characterName || enemy.name || 'Unknown';
-        const rawHp = Number(enemy.stats?.hp);
-        const isSummon = !!enemy.summonerId || summonedIds.has(id);
-        const hideHp = isSummon && !(rawHp > 1);
-        const maxHp = rawHp > 0 ? rawHp : 1;
-
-        let avatarPath = enemy.imagePath;
-        if ((!avatarPath || avatarPath.includes('default-boss.webp')) && fallbackBossImage) {
-            avatarPath = fallbackBossImage;
-        }
-
-        engineState.actors.set(id, createActorEntity({
-            id,
-            name,
-            side: 'right',
-            maxHp,
-            hideHp,
-            avatar: avatarPath ? `${ASSET_HOST}${avatarPath}` : DEFAULT_AVATAR_URL,
-            isSummon,
-            ownerId: enemy.summonerId || null,
-            initiallySpawned: !isSummon
-        }));
-    });
-
-    // Pre-register dynamic summons with hideHp: true so survival state is never spoiled
-    logs.forEach((log, index) => {
-        if (!log || log.type !== 'SUMMON' || !log.targetId) return;
-
+function processSummonLifecycle(
+    log,
+    index,
+    logs,
+    frame,
+    actorsDeathState,
+    actorsSummonState,
+    explicitlySummonedIds,
+    despawnedActors
+) {
+    // 1. Explicit SUMMON log entry (always keep hideHp: true for dynamic summons)
+    if (log.type === 'SUMMON' && log.targetId) {
         const owner = engineState.actors.get(log.actorId);
         const summonName = inferSummonName(logs, index, log.targetId, owner?.name || '');
 
@@ -186,17 +139,155 @@ export function parseParticipants(reportData) {
                 hideHp: true,
                 avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
                 isSummon: true,
-                ownerId: log.actorId || null,
+                ownerId: log.actorId,
                 initiallySpawned: false
             }));
+        } else {
+            const summonActor = engineState.actors.get(log.targetId);
+            summonActor.currentHp = summonActor.maxHp;
+            actorsDeathState.set(log.targetId, false);
         }
-    });
+        despawnedActors.delete(log.targetId);
+        actorsSummonState.set(log.targetId, true);
+        frame.isSummonEvent = true;
+        frame.summonedActorId = log.targetId;
+    }
+
+    // 2. Narrative summon spawn (units in participants with summonerId but no explicit SUMMON log)
+    if (
+        log.actorId &&
+        actorsSummonState.get(log.actorId) === false &&
+        !explicitlySummonedIds.has(log.actorId) &&
+        !despawnedActors.has(log.actorId) &&
+        !SUMMON_DESPAWN_REGEX.test(frame.message) &&
+        !['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(log.type)
+    ) {
+        const summonActor = engineState.actors.get(log.actorId);
+        if (summonActor && summonActor.isSummon) {
+            summonActor.currentHp = summonActor.maxHp;
+            actorsDeathState.set(log.actorId, false);
+            actorsSummonState.set(log.actorId, true);
+            frame.isSummonEvent = true;
+            frame.summonedActorId = log.actorId;
+        }
+    }
+
+    // 3. Summon voluntary despawn (e.g., Sleeping Knights waving goodbye and returning to party)
+    if (
+        log.actorId &&
+        (log.type === 'SKILL_TEXT' || log.type === 'TEXT') &&
+        SUMMON_DESPAWN_REGEX.test(frame.message)
+    ) {
+        const actingUnit = engineState.actors.get(log.actorId);
+        if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
+            actorsSummonState.set(log.actorId, false);
+            despawnedActors.add(log.actorId);
+            frame.isDespawnEvent = true;
+            frame.despawnedActorId = log.actorId;
+        }
+    }
+}
+
+/**
+ * Processes marriage/contract skill lifecycle events (`PROPOSE`, `ACCEPT`, `COVER`, `END`)
+ * on `SKILL_TEXT` frames, including backtracking up to 5 frames to hold the enemy attacker
+ * in position for a seamless guard interception clash.
+ *
+ * @param {object} frame - Current combat frame.
+ * @param {object} contractProfile - Matched entry from `CONTRACT_SKILL_PROFILES`.
+ * @param {string} msg - Raw log message text.
+ * @param {object|undefined} target - Actor entity for `log.actorId`.
+ * @param {Map<string, { partnerId: string|null, skillId: string }>} actorsBondState - Active bond state map.
+ * @param {Map<string, number>} contractCutInCount - Cast counter per contract skill ID.
+ * @param {(id: string, delta: number) => void} addHpDelta - Helper to record per-frame HP deltas.
+ */
+function processContractSkillLifecycle(
+    frame,
+    contractProfile,
+    msg,
+    target,
+    actorsBondState,
+    contractCutInCount,
+    addHpDelta
+) {
+    if (contractProfile.proposeRegex.test(msg)) {
+        frame.contractEvent = 'PROPOSE';
+    } else if (contractProfile.acceptRegex.test(msg)) {
+        frame.contractEvent = 'ACCEPT';
+        const prevCount = contractCutInCount.get(frame.skillId) || 0;
+        frame.isContractRepeat = prevCount > 0;
+        contractCutInCount.set(frame.skillId, prevCount + 1);
+
+        if (frame.actorId) {
+            actorsBondState.set(frame.actorId, {
+                partnerId: frame.targetId || null,
+                skillId: frame.skillId
+            });
+        }
+        if (frame.targetId) {
+            actorsBondState.set(frame.targetId, {
+                partnerId: frame.actorId || null,
+                skillId: frame.skillId
+            });
+        }
+    } else if (contractProfile.coverRegex.test(msg)) {
+        const coverMatch = msg.match(contractProfile.coverRegex);
+        const coverAmount = coverMatch ? Number(coverMatch[1]) : 0;
+        frame.contractEvent = 'COVER';
+        frame.isCoverEvent = true;
+        frame.coverDamage = coverAmount;
+
+        // Locate the enemy actor who triggered this cover event within the preceding 5 frames
+        let coverAttackerId = null;
+        for (let k = engineState.frames.length - 1; k >= Math.max(0, engineState.frames.length - 5); k--) {
+            const prev = engineState.frames[k];
+            if (
+                prev &&
+                ['DAMAGE', 'BLOCK', 'MISS', 'COUNTER'].includes(prev.type) &&
+                prev.actorId &&
+                prev.actorId !== frame.actorId &&
+                prev.actorId !== frame.targetId
+            ) {
+                coverAttackerId = prev.actorId;
+                if (prev.targetId === frame.targetId) {
+                    prev.holdPositionForCover = true;
+                }
+                break;
+            }
+        }
+
+        if (!coverAttackerId) {
+            const protectorSide = target?.side || 'left';
+            engineState.actors.forEach(a => {
+                if (!coverAttackerId && a.side !== protectorSide && a.currentHp > 0) {
+                    coverAttackerId = a.id;
+                }
+            });
+        }
+        frame.coverAttackerId = coverAttackerId;
+
+        if (target && coverAmount > 0) {
+            if (!target.hideHp) {
+                target.currentHp = Math.max(0, target.currentHp - coverAmount);
+                addHpDelta(target.id, -coverAmount);
+            }
+            target.totalDamageTaken += coverAmount;
+        }
+    } else if (contractProfile.endRegex.test(msg)) {
+        frame.contractEvent = 'END';
+        actorsBondState.forEach((bond, bondedActorId) => {
+            if (bondedActorId === frame.actorId || bond.partnerId === frame.actorId) {
+                actorsBondState.delete(bondedActorId);
+            }
+        });
+    }
 }
 
 /**
  * Builds deterministic frame-by-frame state snapshots from raw battle logs
- * and runs post-processing calibration passes.
- * @param {Array<object>} logs - Raw combat log entries.
+ * and runs post-processing calibration passes (`calibrateHpWithAnchors` and `markAOEWaves`).
+ *
+ * @param {Array<object>} logs - Raw combat log entries from the battle report.
  */
 export function buildStateSnapshots(logs) {
     engineState.frames = [];
@@ -209,8 +300,23 @@ export function buildStateSnapshots(logs) {
     const actorsSummonState = new Map();
     const actorsBondState = new Map();
     const contractCutInCount = new Map();
+    const despawnedActors = new Set();
 
+    const explicitlySummonedIds = new Set();
+    logs.forEach(log => {
+        if (log && log.type === 'SUMMON' && log.targetId) {
+            explicitlySummonedIds.add(log.targetId);
+        }
+    });
+
+    // Reset per-actor runtime and statistical counters so buildStateSnapshots is idempotent
     engineState.actors.forEach(actor => {
+        actor.currentHp = actor.maxHp;
+        actor.turnNumbers = [];
+        actor.totalDamageDealt = 0;
+        actor.luckDamageDealt = 0;
+        actor.totalDamageTaken = 0;
+        actor.lastUltimateTurn = null;
         actorsSummonState.set(actor.id, actor.initiallySpawned !== false);
     });
 
@@ -219,22 +325,7 @@ export function buildStateSnapshots(logs) {
 
         const rawValue = Number(log.value) || 0;
         const actualDamage = log.actualDamage != null ? Number(log.actualDamage) : rawValue;
-
-        let isCounterSetup = false;
-        if (log.type === 'COUNTER') {
-            for (let j = index + 1; j < Math.min(logs.length, index + 6); j++) {
-                const nextLog = logs[j];
-                if (
-                    nextLog &&
-                    (nextLog.type === 'DAMAGE' || nextLog.type === 'BLOCK') &&
-                    nextLog.isCounter &&
-                    (Number(nextLog.value) === rawValue || nextLog.actorId === log.actorId)
-                ) {
-                    isCounterSetup = true;
-                    break;
-                }
-            }
-        }
+        const isCounterSetup = detectCounterSetup(logs, index, log, rawValue);
 
         const isSelfDamage =
             log.type === 'DAMAGE' &&
@@ -305,33 +396,7 @@ export function buildStateSnapshots(logs) {
             contractProfile &&
             contractProfile.coverRegex.test(frame.message);
 
-        let isTurnAction = false;
-        let turnActorId = frame.actorId;
-
-        if (frame.type === 'BOSS_DIALOGUE') {
-            isTurnAction = true;
-        } else if (
-            frame.type === 'SKILL_TEXT' &&
-            !frame.isCounter &&
-            !frame.passiveId &&
-            !isReactiveCoverText
-        ) {
-            isTurnAction = true;
-        } else if (
-            ['DAMAGE', 'MISS', 'BLOCK'].includes(frame.type) &&
-            !frame.isCounter &&
-            !frame.isSelfDamage &&
-            !frame.isEnvironmentalPulse &&
-            frame.source !== 'DIRECT' &&
-            frame.source !== 'REFLECTION'
-        ) {
-            isTurnAction = true;
-        } else if (frame.type === 'COUNTER' && frame.targetId) {
-            // In a COUNTER log, targetId is the attacker who initiated the action that got countered
-            isTurnAction = true;
-            turnActorId = frame.targetId;
-        }
-
+        const { isTurnAction, turnActorId } = evaluateTurnOwnership(frame, isReactiveCoverText);
         if (isTurnAction && turnActorId) {
             if (lastTurnActorId !== turnActorId) {
                 currentTurn++;
@@ -342,63 +407,18 @@ export function buildStateSnapshots(logs) {
             }
         }
 
-        // 1. Explicit SUMMON log entry (always keep hideHp: true for dynamic summons)
-        if (log.type === 'SUMMON' && log.targetId) {
-            const owner = engineState.actors.get(log.actorId);
-            const summonName = inferSummonName(logs, index, log.targetId, owner?.name || '');
+        processSummonLifecycle(
+            log,
+            index,
+            logs,
+            frame,
+            actorsDeathState,
+            actorsSummonState,
+            explicitlySummonedIds,
+            despawnedActors
+        );
 
-            if (!engineState.actors.has(log.targetId)) {
-                engineState.actors.set(log.targetId, createActorEntity({
-                    id: log.targetId,
-                    name: summonName,
-                    side: owner ? owner.side : 'left',
-                    maxHp: 1,
-                    hideHp: true,
-                    avatar: owner ? owner.avatar : DEFAULT_AVATAR_URL,
-                    isSummon: true,
-                    ownerId: log.actorId,
-                    initiallySpawned: false
-                }));
-            } else {
-                const summonActor = engineState.actors.get(log.targetId);
-                summonActor.currentHp = summonActor.maxHp;
-                actorsDeathState.set(log.targetId, false);
-            }
-            actorsSummonState.set(log.targetId, true);
-            frame.isSummonEvent = true;
-            frame.summonedActorId = log.targetId;
-        }
-
-        // 2. Narrative summon spawn (e.g., Brick Kiln `mob_kiln_1` built mid-battle without a SUMMON log)
-        if (
-            log.actorId &&
-            actorsSummonState.get(log.actorId) === false &&
-            !['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(log.type)
-        ) {
-            const summonActor = engineState.actors.get(log.actorId);
-            if (summonActor && summonActor.isSummon) {
-                summonActor.currentHp = summonActor.maxHp;
-                actorsDeathState.set(log.actorId, false);
-                actorsSummonState.set(log.actorId, true);
-                frame.isSummonEvent = true;
-                frame.summonedActorId = log.actorId;
-            }
-        }
-
-        // 3. Summon voluntary despawn (Bug #8: e.g., Sleeping Knights waving goodbye and leaving)
-        if (
-            log.actorId &&
-            (log.type === 'SKILL_TEXT' || log.type === 'TEXT') &&
-            SUMMON_DESPAWN_REGEX.test(frame.message)
-        ) {
-            const actingUnit = engineState.actors.get(log.actorId);
-            if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-                actorsSummonState.set(log.actorId, false);
-                frame.isDespawnEvent = true;
-                frame.despawnedActorId = log.actorId;
-            }
-        }
-
+        // Track debuff application sources so subsequent DoT ticks can be attributed to the caster
         if (log.type === 'BUFF_APPLY') {
             const attacker = engineState.actors.get(log.actorId);
             const victim = engineState.actors.get(log.targetId);
@@ -413,6 +433,7 @@ export function buildStateSnapshots(logs) {
             }
         }
 
+        // Resolve direct combat damage, heals, luck events, and periodic buff effects
         if (['DAMAGE', 'BLOCK', 'COUNTER'].includes(log.type)) {
             if (!frame.isCounterSetup) {
                 const target = engineState.actors.get(log.targetId);
@@ -548,77 +569,15 @@ export function buildStateSnapshots(logs) {
 
             // Handle Contract Skill lifecycle (Propose / Accept / Cover / End)
             if (contractProfile && log.type === 'SKILL_TEXT') {
-                if (contractProfile.proposeRegex.test(msg)) {
-                    frame.contractEvent = 'PROPOSE';
-                } else if (contractProfile.acceptRegex.test(msg)) {
-                    frame.contractEvent = 'ACCEPT';
-                    const prevCount = contractCutInCount.get(frame.skillId) || 0;
-                    frame.isContractRepeat = prevCount > 0;
-                    contractCutInCount.set(frame.skillId, prevCount + 1);
-
-                    if (frame.actorId) {
-                        actorsBondState.set(frame.actorId, {
-                            partnerId: frame.targetId || null,
-                            skillId: frame.skillId
-                        });
-                    }
-                    if (frame.targetId) {
-                        actorsBondState.set(frame.targetId, {
-                            partnerId: frame.actorId || null,
-                            skillId: frame.skillId
-                        });
-                    }
-                } else if (contractProfile.coverRegex.test(msg)) {
-                    const coverMatch = msg.match(contractProfile.coverRegex);
-                    const coverAmount = coverMatch ? Number(coverMatch[1]) : 0;
-                    frame.contractEvent = 'COVER';
-                    frame.isCoverEvent = true;
-                    frame.coverDamage = coverAmount;
-
-                    // Locate the enemy actor who triggered this cover event
-                    let coverAttackerId = null;
-                    for (let k = engineState.frames.length - 1; k >= Math.max(0, engineState.frames.length - 5); k--) {
-                        const prev = engineState.frames[k];
-                        if (
-                            prev &&
-                            ['DAMAGE', 'BLOCK', 'MISS', 'COUNTER'].includes(prev.type) &&
-                            prev.actorId &&
-                            prev.actorId !== frame.actorId &&
-                            prev.actorId !== frame.targetId
-                        ) {
-                            coverAttackerId = prev.actorId;
-                            if (prev.targetId === frame.targetId) {
-                                prev.holdPositionForCover = true;
-                            }
-                            break;
-                        }
-                    }
-
-                    if (!coverAttackerId) {
-                        const protectorSide = target?.side || 'left';
-                        engineState.actors.forEach(a => {
-                            if (!coverAttackerId && a.side !== protectorSide && a.currentHp > 0) {
-                                coverAttackerId = a.id;
-                            }
-                        });
-                    }
-                    frame.coverAttackerId = coverAttackerId;
-
-                    if (target && coverAmount > 0) {
-                        if (!target.hideHp) {
-                            target.currentHp = Math.max(0, target.currentHp - coverAmount);
-                            addHpDelta(target.id, -coverAmount);
-                        }
-                        target.totalDamageTaken += coverAmount;
-                    }
-                } else if (contractProfile.endRegex.test(msg)) {
-                    frame.contractEvent = 'END';
-                    actorsBondState.forEach((bond, bondedActorId) => {
-                        if (bondedActorId === frame.actorId || bond.partnerId === frame.actorId) {
-                            actorsBondState.delete(bondedActorId);
-                        }
-                    });
-                }
+                processContractSkillLifecycle(
+                    frame,
+                    contractProfile,
+                    msg,
+                    target,
+                    actorsBondState,
+                    contractCutInCount,
+                    addHpDelta
+                );
             }
 
             // Handle Cross Finisher mid-skill inscription (e.g., Mother's Rosario 10-hit cross)
@@ -628,9 +587,9 @@ export function buildStateSnapshots(logs) {
             }
         }
 
-        // Tag Cross Finisher final piercing hit on DAMAGE frames
+        // Tag Cross Finisher final piercing hit on DAMAGE or BLOCK frames
         const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
-        if (crossProfile && log.type === 'DAMAGE' && crossProfile.pierceRegex.test(frame.message)) {
+        if (crossProfile && ['DAMAGE', 'BLOCK'].includes(log.type) && crossProfile.pierceRegex.test(frame.message)) {
             frame.rosarioEvent = 'PIERCE_CROSS';
         }
 
@@ -663,42 +622,4 @@ export function buildStateSnapshots(logs) {
         if (f.isAOE) f.holdPositionForCover = false;
     });
     engineState.totalTurns = currentTurn;
-}
-
-/**
- * Aggregates player and summon combat statistics to determine the party MVP.
- * @returns {{ consolidated: Map<string, object>, mvp: object|null, maxTotalDamage: number }}
- */
-export function getConsolidatedStats() {
-    let mvp = null;
-    let maxTotalDamage = 0;
-    const consolidated = new Map();
-
-    engineState.actors.forEach(actor => {
-        if (actor.side === 'left') {
-            const baseId = actor.isSummon ? actor.ownerId : actor.id;
-            const targetId = engineState.actors.has(baseId) ? baseId : actor.id;
-
-            if (!consolidated.has(targetId)) {
-                consolidated.set(targetId, {
-                    actor: engineState.actors.get(targetId),
-                    totalOutput: 0,
-                    totalTaken: 0
-                });
-            }
-
-            const stats = consolidated.get(targetId);
-            stats.totalOutput += (actor.totalDamageDealt || 0) + (actor.luckDamageDealt || 0);
-            stats.totalTaken += actor.totalDamageTaken || 0;
-        }
-    });
-
-    consolidated.forEach(stats => {
-        if (!stats.actor.isSummon && stats.totalOutput > maxTotalDamage) {
-            maxTotalDamage = stats.totalOutput;
-            mvp = stats.actor;
-        }
-    });
-
-    return { consolidated, mvp, maxTotalDamage };
 }

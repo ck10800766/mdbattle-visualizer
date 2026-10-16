@@ -1,17 +1,28 @@
-// build.mjs
+// ==========================================
+// FILE: build.mjs
+// ==========================================
+/**
+ * @fileoverview esbuild bundler and AI context generator for MDBattle-Visualizer.
+ * Bundles `src/index.js` into an IIFE Userscript (`dist/mdbv.bundle.user.js`) with
+ * Tampermonkey/Violentmonkey metadata headers, and generates `dist/ai-context.txt`
+ * containing concatenated raw source modules for AI code review.
+ */
 import * as esbuild from 'esbuild';
 import * as fs from 'fs';
 import * as path from 'path';
+
+const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+const VERSION = pkg.version || '7.4.0';
+const MAJOR_MINOR = VERSION.split('.').slice(0, 2).join('.');
 
 const GITHUB_USER = 'ck10800766';
 const GITHUB_REPO = 'mdbattle-visualizer';
 const RAW_BUNDLE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/dist/mdbv.bundle.user.js`;
 
-// build.mjs (Banner section)
 const USERSCRIPT_BANNER = `// ==UserScript==
-// @name         MDBattle-Visualizer (Ultimate Edition V7.4)
+// @name         MDBattle-Visualizer (Ultimate Edition V${MAJOR_MINOR})
 // @namespace    mydoujin-battle-vfx
-// @version      7.4.0
+// @version      ${VERSION}
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -22,8 +33,9 @@ const USERSCRIPT_BANNER = `// ==UserScript==
 `;
 
 /**
- * Generates a single concatenated text file containing all raw src/*.js files
- * with their original import/export statements intact for AI code review.
+ * Generates a single concatenated text file (`dist/ai-context.txt`) containing
+ * all raw `src/*.js` files with their original import/export statements intact
+ * for convenient AI code review and debugging.
  */
 function generateAIContextFile() {
     const srcDir = './src';
@@ -68,5 +80,5 @@ if (isWatch) {
     console.log('Watching src/ for changes (and updating dist/ai-context.txt)...');
 } else {
     await esbuild.build(buildOptions);
-    console.log('Production build complete: dist/mdbv.bundle.user.js & dist/ai-context.txt');
+    console.log(`Production build complete (v${VERSION}): dist/mdbv.bundle.user.js & dist/ai-context.txt`);
 }

@@ -1,6 +1,14 @@
 // ==========================================
 // FILE: src/calibrator.js
 // ==========================================
+/**
+ * @fileoverview Post-processing calibration passes executed after initial frame construction.
+ * 1. `markAOEWaves`: Detects multi-target or known AOE attack sequences so the stage choreographer
+ *    animates center-stage casting instead of sequential single-target lunges.
+ * 2. `calibrateHpWithAnchors`: Uses terminal `HP_REMAINING` or `DEATH` logs as ground-truth anchors
+ *    to backward-calculate hidden Boss Phase 2+ revival heals.
+ */
+
 import { engineState } from './state.js';
 import {
     KNOWN_AOE_SKILLS,
@@ -237,8 +245,10 @@ export function calibrateHpWithAnchors(frames) {
             if (healedAmount > 0) {
                 const rebirthFrame = frames[rIdx];
                 rebirthFrame.rebirthHeal = true;
-                rebirthFrame.isBeneficial = true;
-                rebirthFrame.value = healedAmount;
+                if (['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(rebirthFrame.type) || !rebirthFrame.value) {
+                    rebirthFrame.isBeneficial = true;
+                    rebirthFrame.value = healedAmount;
+                }
                 if (!rebirthFrame.vfx.includes('flash-green')) {
                     rebirthFrame.vfx.push('flash-green');
                 }

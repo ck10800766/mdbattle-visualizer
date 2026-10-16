@@ -1,12 +1,19 @@
 // ==========================================
 // FILE: src/index.js
 // ==========================================
+/**
+ * @fileoverview Userscript entry point.
+ * Intercepts `window.fetch` for live battle challenges and battle report loads,
+ * arms the anti-spoiler DOM observer, fetches supplementary participant metadata when needed,
+ * and mounts the manual bottom-right launch button.
+ */
+
+import { API_BASE } from './constants.js';
 import { engineState, createEmptyCombo, nextPlaybackToken } from './state.js';
 import { parseParticipants, buildStateSnapshots } from './parser.js';
 import { createBattleStage } from './stage.js';
 import { armSpoilerGuard, releaseSpoilerGuard, initSpoilerObserver } from './spoilerGuard.js';
 
-const API_BASE = 'https://mydoujin-backend.onrender.com';
 const originalFetch = window.fetch.bind(window);
 let lastAutoLaunchedReportId = null;
 
@@ -46,17 +53,18 @@ function hasValidParticipants(battleData) {
  * Ensures full report metadata (including participant maxHp and boss avatars) is present
  * before initializing the battle visualizer stage.
  * @param {object} rawBattleData - Intercepted battle response payload.
- * @returns {Promise<void>}
+ * @param {{ force?: boolean }} [options={}] - Optional launch flags (`force` bypasses duplicate reportId suppression).
+ * @returns {Promise<boolean>} True if a valid battle report was found and initialized.
  */
-async function prepareAndInitVisualizer(rawBattleData) {
+async function prepareAndInitVisualizer(rawBattleData, { force = false } = {}) {
     const battleData = findBattlePayload(rawBattleData);
-    if (!battleData) return;
+    if (!battleData) return false;
 
     const reportId = battleData.reportId != null ? String(battleData.reportId) : null;
 
     // Prevent duplicate stage initialization if both POST challenge and GET battle-reports fire for the same reportId
-    if (reportId && reportId === lastAutoLaunchedReportId && engineState.hostElement) {
-        return;
+    if (!force && reportId && reportId === lastAutoLaunchedReportId && engineState.hostElement) {
+        return true;
     }
     if (reportId) {
         lastAutoLaunchedReportId = reportId;
@@ -90,6 +98,7 @@ async function prepareAndInitVisualizer(rawBattleData) {
     }
 
     initVisualizer(finalReportData);
+    return true;
 }
 
 /**
@@ -112,7 +121,7 @@ export function initVisualizer(reportData) {
     engineState.battleResult = reportData.result || 'WIN';
 
     parseParticipants(reportData);
-    buildStateSnapshots(reportData.logs);
+    buildStateSnapshots(reportData.logs || []);
 
     engineState.actors.forEach(actor => {
         actor.currentHp = actor.maxHp;
@@ -148,8 +157,8 @@ function createToggleButton() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    if (data && data.logs) initVisualizer(data);
-                    else alert('無法解析戰報資料');
+                    const launched = await prepareAndInitVisualizer(data, { force: true });
+                    if (!launched) alert('無法解析戰報資料');
                 } else {
                     alert(`讀取戰報失敗 (錯誤碼: ${response.status})`);
                 }
@@ -177,7 +186,9 @@ function installFetchInterceptor() {
     window.fetch = async function (...args) {
         const input = args[0];
         const init = args[1];
-        const url = typeof input === 'string' ? input : (input?.url || '');
+        const url = typeof input === 'string'
+            ? input
+            : (input?.url || (input instanceof URL ? input.href : ''));
         const method = String(init?.method || input?.method || 'GET').toUpperCase();
 
         // Detect live battle initiation (Dungeon Boss challenge or Player duel/action)

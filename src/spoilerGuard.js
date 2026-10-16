@@ -1,6 +1,11 @@
 // ==========================================
 // FILE: src/spoilerGuard.js
 // ==========================================
+/**
+ * @fileoverview Anti-spoiler DOM observer and CSS masking module.
+ * Masks character death banners, party survival statuses, and native battle report outcome dialogs
+ * on the underlying host page while a live battle request is in flight or stage playback is active.
+ */
 
 const DEATH_BANNER_TEXT = '你的角色死亡了，請進行轉生';
 const PARTY_STATUS_REGEX = /^.+ · Lv\.\d+ · (死亡|存活)$/;
@@ -33,14 +38,14 @@ export function applySpoilerMask() {
     ensureSpoilerStyle();
 
     // 1. Hide top character death notification banner
-    document.querySelectorAll('div').forEach(div => {
+    document.querySelectorAll('div:not([data-mdbv-gone])').forEach(div => {
         if (div.childElementCount === 0 && div.textContent.trim() === DEATH_BANNER_TEXT) {
             div.setAttribute('data-mdbv-gone', '');
         }
     });
 
     // 2. Hide party member survival/death status lines
-    document.querySelectorAll('p').forEach(p => {
+    document.querySelectorAll('p:not([data-mdbv-hide])').forEach(p => {
         if (p.childElementCount === 0 && PARTY_STATUS_REGEX.test(p.textContent.trim())) {
             p.setAttribute('data-mdbv-hide', '');
         }
@@ -54,10 +59,14 @@ export function applySpoilerMask() {
         if (titleEl) {
             let sibling = titleEl.nextElementSibling;
             while (sibling) {
-                sibling.setAttribute('data-mdbv-hide', '');
+                if (!sibling.hasAttribute('data-mdbv-hide')) {
+                    sibling.setAttribute('data-mdbv-hide', '');
+                }
                 sibling = sibling.nextElementSibling;
             }
-            dlg.setAttribute('data-mdbv-dialog-pending', '');
+            if (!dlg.hasAttribute('data-mdbv-dialog-pending')) {
+                dlg.setAttribute('data-mdbv-dialog-pending', '');
+            }
         }
     });
 }

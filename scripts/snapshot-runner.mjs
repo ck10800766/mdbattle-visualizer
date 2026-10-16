@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 import { engineState, createEmptyCombo } from '../src/state.js';
 import { parseParticipants, buildStateSnapshots, getConsolidatedStats } from '../src/parser.js';
-import { lookaheadComboState } from '../src/choreography.js';
+import { lookaheadComboState, advanceComboState } from '../src/choreography.js';
 import { formatLogMessage } from '../src/utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -68,35 +68,7 @@ function simulateRuntimeTrace(frames) {
 
     frames.forEach((frame, idx) => {
         const lookahead = lookaheadComboState(idx, frame);
-
-        // Mirror the combo state update from playCombatAnimation for non-counter attacks
-        if (
-            frame.actorId &&
-            ['DAMAGE', 'MISS', 'COUNTER', 'BLOCK'].includes(frame.type) &&
-            !frame.isCounterSetup &&
-            !frame.isSelfDamage &&
-            !frame.isEnvironmentalPulse &&
-            !frame.isCounter &&
-            frame.type !== 'COUNTER'
-        ) {
-            const displayDamage = frame.value || frame.actualDamage || 0;
-            if (engineState.currentCombo.actorId === frame.actorId && engineState.currentCombo.keepAlive) {
-                engineState.currentCombo.count++;
-                engineState.currentCombo.totalDamage += displayDamage;
-                engineState.currentCombo.targetId = frame.targetId;
-            } else {
-                engineState.currentCombo = {
-                    ...createEmptyCombo(),
-                    actorId: frame.actorId,
-                    skillId: frame.skillId,
-                    targetId: frame.targetId,
-                    count: 1,
-                    totalDamage: displayDamage,
-                    lastFrameIndex: frame.index
-                };
-            }
-            engineState.currentCombo.keepAlive = lookahead.isNextFrameSameCombo;
-        }
+        advanceComboState(frame, lookahead.isNextFrameSameCombo);
 
         trace.push({
             index: frame.index,

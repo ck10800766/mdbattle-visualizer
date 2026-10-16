@@ -1,8 +1,15 @@
 // ==========================================
 // FILE: src/cinematics.js
 // ==========================================
+/**
+ * @fileoverview Cinematic overlays and narrative UI components.
+ * Includes slow-motion K.O. fatalities, full-screen Ultimate Cut-Ins, SAO-styled Contract Cut-Ins,
+ * Mother's Rosario cross emblems, typewriter speech bubbles, and overhead dice/status badges.
+ */
+
+import { DEFAULT_AVATAR_URL } from './constants.js';
 import { engineState, getEffectiveSpeed } from './state.js';
-import { escapeRegExp } from './utils.js';
+import { escapeRegExp, escapeHtml } from './utils.js';
 import { CONTRACT_SKILL_PROFILES, SPECIAL_SKILL_BADGE_RULES } from './profiles.js';
 
 /**
@@ -40,12 +47,13 @@ function stripCombatOutcomeText(rawText, actorName = '') {
  * Plays a slow-motion letterbox K.O. slash sequence on a defeated actor.
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
  * @param {string} actorId - ID of the defeated actor.
+ * @param {number} [token=engineState.playbackToken] - Active playback token for cancellation checks.
  * @returns {Promise<void>}
  */
-export async function playFatalitySequence(sr, actorId) {
+export async function playFatalitySequence(sr, actorId, token = engineState.playbackToken) {
     const overlay = sr.getElementById('fatality-overlay');
     const actorEl = sr.getElementById(`actor-${actorId}`);
-    if (!overlay || !actorEl) return;
+    if (!overlay || !actorEl || engineState.playbackToken !== token) return;
 
     engineState.timeScale = 0.25;
     try {
@@ -68,14 +76,18 @@ export async function playFatalitySequence(sr, actorId) {
 
         await new Promise(resolve => setTimeout(resolve, 600 / effectiveSpeed));
 
-        overlay.classList.remove('active');
+        if (engineState.playbackToken === token) {
+            overlay.classList.remove('active');
+        }
 
         setTimeout(() => {
             if (slash.isConnected) slash.remove();
             if (deathText.isConnected) deathText.remove();
         }, 1000);
     } finally {
-        engineState.timeScale = 1.0;
+        if (engineState.playbackToken === token) {
+            engineState.timeScale = 1.0;
+        }
     }
 }
 
@@ -363,36 +375,45 @@ export async function playContractCutIn(frame, sr, token) {
     overlay.style.setProperty('--contract-theme', profile.themeColor || '#f687b3');
     overlay.style.animationDuration = `${actualDuration}ms`;
 
+    const safeActorName = escapeHtml(actor.name);
+    const safeActorAvatar = escapeHtml(actor.avatar);
+    const safePartnerName = partner ? escapeHtml(partner.name) : '';
+    const safePartnerAvatar = partner ? escapeHtml(partner.avatar) : '';
+    const safeBadgeIcon = escapeHtml(profile.badgeIcon);
+    const safeBadgeText = escapeHtml(profile.badgeText);
+    const safeSystemTitle = escapeHtml(profile.systemTitle);
+    const safeSystemSubtitle = escapeHtml(profile.systemSubtitle);
+
     const portraitsHtml = isDual
         ? `
             <div class="contract-portrait left-partner">
-                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
-                <div class="contract-partner-name">${actor.name}</div>
+                <img src="${safeActorAvatar}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="contract-partner-name">${safeActorName}</div>
             </div>
             <div class="contract-portrait right-partner">
-                <img src="${partner.avatar}" onerror="this.src='https://via.placeholder.com/150'">
-                <div class="contract-partner-name">${partner.name}</div>
+                <img src="${safePartnerAvatar}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="contract-partner-name">${safePartnerName}</div>
             </div>
         `
         : `
             <div class="contract-portrait solo-partner">
-                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
-                <div class="contract-partner-name">${actor.name}</div>
+                <img src="${safeActorAvatar}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="contract-partner-name">${safeActorName}</div>
             </div>
         `;
 
     const headlineText = isDual
-        ? `${actor.name} <span>${profile.badgeIcon}</span> ${partner.name}`
-        : `${actor.name} <span>${profile.badgeIcon}</span> ${profile.badgeText}`;
+        ? `${safeActorName} <span>${safeBadgeIcon}</span> ${safePartnerName}`
+        : `${safeActorName} <span>${safeBadgeIcon}</span> ${safeBadgeText}`;
 
     overlay.innerHTML = `
         <div class="contract-backdrop"></div>
-        <div class="contract-Portraits-layer">${portraitsHtml}</div>
+        <div class="contract-portraits-layer contract-Portraits-layer">${portraitsHtml}</div>
         <div class="sao-modal-card">
-            <div class="sao-modal-header">${profile.systemTitle}</div>
+            <div class="sao-modal-header">${safeSystemTitle}</div>
             <div class="sao-modal-body">
                 <div class="sao-modal-couple">${headlineText}</div>
-                <div class="sao-modal-desc">${profile.systemSubtitle}</div>
+                <div class="sao-modal-desc">${safeSystemSubtitle}</div>
             </div>
             <div class="sao-modal-footer">
                 <div class="sao-btn sao-btn-accept">◯</div>

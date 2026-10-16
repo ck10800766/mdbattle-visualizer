@@ -1,6 +1,12 @@
 // ==========================================
 // FILE: src/profiles.js
 // ==========================================
+/**
+ * @fileoverview Declarative skill and character rule profiles.
+ * Centralizes AOE skill sets, environmental hazards, boss revival regexes, luck drop emojis,
+ * SAO marriage/contract skill lifecycles, Mother's Rosario cross-finisher patterns, and
+ * character-specific overhead status badges.
+ */
 
 /**
  * Known Area-of-Effect (AOE) skill identifiers that trigger center-stage casting animations.

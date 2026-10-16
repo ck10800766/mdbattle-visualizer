@@ -1,3 +1,6 @@
-tests/
-build.mjs
-.github/ISSUE_TEMPLATE/bug_report.yml
+# Exclude bundled outputs and large test fixtures/snapshots from AI context
+dist/
+tests/fixtures/
+tests/snapshots/
+package-lock.json
+repomix-output.xml
