@@ -1,7 +1,10 @@
 // ==========================================
 // FILE: src/stage.js
 // ==========================================
-import { getLuckDropEmoji } from './profiles.js';
+import { 
+    getLuckDropEmoji, 
+    CONTRACT_SKILL_PROFILES 
+} from './profiles.js';
 import {
     engineState,
     createEmptyCombo,
@@ -13,12 +16,15 @@ import { STAGE_STYLES } from './styles.js';
 import {
     playFatalitySequence,
     playUltimateCutIn,
+    playContractCutIn,
+    spawnRosarioCross,
     renderSpeechBubble,
     spawnStatusOrDiceBadge
 } from './cinematics.js';
 import {
     lookaheadComboState,
-    playCombatAnimation
+    playCombatAnimation,
+    playCoverAnimation
 } from './choreography.js';
 import { spawnFloatingText } from './floatingText.js';
 import { showMVPPanel } from './mvp.js';
@@ -303,6 +309,38 @@ export function updateATBUI(currentTurn, skipTransition = false, summonStateMap 
 }
 
 /**
+ * Synchronizes persistent contract/marriage aura and badge visuals across all actors.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {Map<string, {partnerId: string|null, skillId: string}>|null} bondStateMap - Active bond state map.
+ */
+function syncActorBondVisuals(sr, bondStateMap = null) {
+    engineState.actors.forEach(actor => {
+        const wrapperEl = sr.getElementById(`actor-${actor.id}`);
+        if (!wrapperEl) return;
+
+        const bondInfo = bondStateMap ? bondStateMap.get(actor.id) : null;
+        const existingBadge = wrapperEl.querySelector('.bond-ring-badge');
+
+        if (bondInfo) {
+            const profile = CONTRACT_SKILL_PROFILES[bondInfo.skillId];
+            wrapperEl.classList.add('bond-active');
+            if (!existingBadge) {
+                const badge = document.createElement('div');
+                badge.className = 'bond-ring-badge';
+                const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
+                badge.textContent = partner
+                    ? `${profile?.badgeIcon || '💍'} ${partner.name}`
+                    : `${profile?.badgeIcon || '💍'} ${profile?.badgeText || '契約'}`;
+                wrapperEl.appendChild(badge);
+            }
+        } else {
+            wrapperEl.classList.remove('bond-active');
+            if (existingBadge) existingBadge.remove();
+        }
+    });
+}
+
+/**
  * Instantly synchronizes the entire stage DOM (HP bars, death states, summon visibility,
  * log history, and ATB icons) to any target frame index during timeline seeking or reset.
  * @param {number} frameIndex - Target frame index to synchronize to.
@@ -323,7 +361,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
     if (fatalityOverlay) fatalityOverlay.classList.remove('active');
 
     sr.querySelectorAll(
-        '.ultimate-overlay, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text'
+        '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text'
     ).forEach(el => el.remove());
 
     engineState.actors.forEach(actor => {
@@ -377,6 +415,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
                 else wrapperEl.classList.remove('unspawned');
             }
         });
+        syncActorBondVisuals(sr, null);
         updateATBUI(0, true);
         return;
     }
@@ -431,7 +470,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
             }
         }
     });
-
+    syncActorBondVisuals(sr, frame.actorsBondState);
     updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
 }
 
@@ -511,23 +550,48 @@ export async function renderFrame(frame, token) {
         }
     }
 
-    if (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE') {
+    const isSpokenSkillQuote =
+        frame.type === 'SKILL_TEXT' &&
+        /^[^：「\s]+：「.+」$/.test(frame.message.trim());
+
+    if (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE' || isSpokenSkillQuote) {
         const readTime = renderSpeechBubble(frame, sr, token);
-        frameDuration += readTime;
+        frameDuration += isSpokenSkillQuote ? Math.min(readTime, 900) : readTime;
     }
 
-    if (frame.diceCheck || ['FATIGUE', 'FATIGUE_SKIP', 'SILENCED'].includes(frame.type)) {
+    if (
+        frame.diceCheck ||
+        ['FATIGUE', 'FATIGUE_SKIP', 'SILENCED'].includes(frame.type) ||
+        frame.type === 'SKILL_TEXT'
+    ) {
         spawnStatusOrDiceBadge(frame, sr);
     }
 
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
+    syncActorBondVisuals(sr, frame.actorsBondState);
+
+    if (frame.contractEvent === 'ACCEPT') {
+        await playContractCutIn(frame, sr, token);
+        if (engineState.playbackToken !== token) return;
+        frameDuration = 450;
+    }
+
+    if (frame.rosarioEvent === 'INSCRIBE_CROSS') {
+        spawnRosarioCross(frame, sr);
+        frameDuration = 520;
+    }
 
     if (frame.skillTier === 'ultimate' && ['SKILL_TEXT', 'TEXT', 'DAMAGE'].includes(frame.type) && !frame.isNormalAttack) {
         const actor = engineState.actors.get(frame.actorId);
-        if (actor && actor.lastUltimateTurn !== frame.turnNumber) {
+        // Prevent mid-combo ultimate hits (e.g., "第 1 劍" after an interleaved BOSS_DIALOGUE Switch)
+        // from re-triggering a duplicate Ultimate Cut-In.
+        const isMultiHitSubFrame = /^第\s*\d+\s*[劍擊發道]/.test(frame.message) || frame.rosarioEvent === 'INSCRIBE_CROSS';
+        if (actor && actor.lastUltimateTurn !== frame.turnNumber && !isMultiHitSubFrame) {
             actor.lastUltimateTurn = frame.turnNumber;
             await playUltimateCutIn(frame, sr, token);
             if (engineState.playbackToken !== token) return;
+        } else if (actor && isMultiHitSubFrame) {
+            actor.lastUltimateTurn = frame.turnNumber;
         }
     }
 
@@ -537,7 +601,9 @@ export async function renderFrame(frame, token) {
         shouldReturnToOrigin
     } = lookaheadComboState(engineState.currentFrameIndex, frame);
 
-    if (frame.actorId && ['DAMAGE', 'MISS', 'COUNTER', 'BLOCK'].includes(frame.type)) {
+    if (frame.isCoverEvent) {
+        frameDuration = playCoverAnimation(frame, sr);
+    } else if (frame.actorId && ['DAMAGE', 'MISS', 'COUNTER', 'BLOCK'].includes(frame.type)) {
         frameDuration = playCombatAnimation(
             frame,
             sr,
