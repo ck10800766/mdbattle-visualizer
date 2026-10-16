@@ -15,6 +15,7 @@
       "side": "right",
       "totalDamageDealt": 9827,
       "totalDamageTaken": 10604,
+      "totalHealingDealt": 0,
       "turnNumbers": [
         2,
         6,
@@ -36,6 +37,7 @@
       "side": "left",
       "totalDamageDealt": 15634,
       "totalDamageTaken": 9877,
+      "totalHealingDealt": 1694,
       "turnNumbers": [
         1,
         3,
@@ -58,6 +60,7 @@
       "side": "right",
       "totalDamageDealt": 0,
       "totalDamageTaken": 5030,
+      "totalHealingDealt": 544,
       "turnNumbers": [
         4
       ]
@@ -4185,6 +4188,7 @@
       {
         "actorId": "6ab150baad84d95a03db1ca4",
         "actorName": "源氏",
+        "totalHealing": 1694,
         "totalOutput": 15634,
         "totalTaken": 9877
       }

@@ -297,6 +297,8 @@ export function buildStateSnapshots(logs) {
 
     const buffSrc = {};
     const applyLog = [];
+    const prefixOwner = {};
+    const IGNORE_PREFIX = { basic: 1, imitated: 1, standard: 1 };
     const actorsDeathState = new Map();
     const actorsSummonState = new Map();
     const actorsBondState = new Map();
@@ -317,12 +319,20 @@ export function buildStateSnapshots(logs) {
         actor.totalDamageDealt = 0;
         actor.luckDamageDealt = 0;
         actor.totalDamageTaken = 0;
+        actor.totalHealingDealt = 0;
         actor.lastUltimateTurn = null;
         actorsSummonState.set(actor.id, actor.initiallySpawned !== false);
     });
 
     logs.forEach((log, index) => {
         if (!log || typeof log !== 'object') return;
+
+        if (log.actorId && log.skillId) {
+            const pre = String(log.skillId).split('_')[0];
+            if (!IGNORE_PREFIX[pre] && !prefixOwner[pre]) {
+                prefixOwner[pre] = log.actorId;
+            }
+        }
 
         const rawValue = Number(log.value) || 0;
         const actualDamage = log.actualDamage != null ? Number(log.actualDamage) : rawValue;
@@ -488,6 +498,12 @@ export function buildStateSnapshots(logs) {
                     actorsDeathState.set(target.id, false);
                 }
             }
+
+            const healer = engineState.actors.get(log.actorId);
+            const isDecayRestore = /離開毒氣|衰變的傷勢/.test(String(log.message || ''));
+            if (healer && !isDecayRestore && frame.value > 0) {
+                healer.totalHealingDealt += frame.value;
+            }
         } else if (log.type === 'HP_REMAINING') {
             const target = engineState.actors.get(log.actorId);
             // Do not unhide HP for dynamic summons at the end of the battle to prevent spoilers
@@ -517,6 +533,15 @@ export function buildStateSnapshots(logs) {
                     if (target.currentHp > 0) {
                         actorsDeathState.set(target.id, false);
                     }
+
+                    let healerId = null;
+                    if (log.buffId && buffSrc[target.id] && buffSrc[target.id][log.buffId]) {
+                        healerId = buffSrc[target.id][log.buffId];
+                    }
+                    const healer = healerId ? engineState.actors.get(healerId) : target;
+                    if (healer && frame.value > 0) {
+                        healer.totalHealingDealt += frame.value;
+                    }
                 } else {
                     if (!target.hideHp) {
                         target.currentHp = Math.max(0, target.currentHp - frame.value);
@@ -542,6 +567,24 @@ export function buildStateSnapshots(logs) {
                         }
                     }
 
+                    if (!sourceId && log.buffId) {
+                        const pre = String(log.buffId).split('_')[0];
+                        const preActorId = prefixOwner[pre];
+                        const preActor = preActorId ? engineState.actors.get(preActorId) : null;
+                        if (preActor && preActor.side !== target.side) {
+                            sourceId = preActorId;
+                        }
+                    }
+
+                    if (!sourceId) {
+                        const opposingUnits = Array.from(engineState.actors.values()).filter(
+                            u => u.side !== target.side && !u.isSummon
+                        );
+                        if (opposingUnits.length === 1) {
+                            sourceId = opposingUnits[0].id;
+                        }
+                    }
+
                     const sourceActor = engineState.actors.get(sourceId);
                     if (sourceActor) {
                         sourceActor.totalDamageDealt += frame.value;
@@ -559,12 +602,14 @@ export function buildStateSnapshots(logs) {
                     const amount = Number(healMatch[1]);
                     target.currentHp = Math.min(target.maxHp, target.currentHp + amount);
                     addHpDelta(target.id, amount);
+                    target.totalHealingDealt += amount;
                 }
                 const lossMatch = msg.match(/失去了\s*(\d+)\s*(?:HP|點生命)/);
                 if (lossMatch) {
                     const amount = Number(lossMatch[1]);
                     target.currentHp = Math.max(0, target.currentHp - amount);
                     addHpDelta(target.id, -amount);
+                    target.totalDamageTaken += amount;
                 }
             }
 

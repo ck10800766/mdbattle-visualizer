@@ -15,6 +15,7 @@
       "side": "left",
       "totalDamageDealt": 33735,
       "totalDamageTaken": 10040,
+      "totalHealingDealt": 0,
       "turnNumbers": [
         4,
         8,
@@ -57,6 +58,7 @@
       "side": "left",
       "totalDamageDealt": 44231,
       "totalDamageTaken": 11716,
+      "totalHealingDealt": 3826,
       "turnNumbers": [
         3,
         11,
@@ -104,6 +106,7 @@
       "side": "left",
       "totalDamageDealt": 31328,
       "totalDamageTaken": 14818,
+      "totalHealingDealt": 4158,
       "turnNumbers": [
         2,
         10,
@@ -146,6 +149,7 @@
       "side": "right",
       "totalDamageDealt": 32645,
       "totalDamageTaken": 71471,
+      "totalHealingDealt": 0,
       "turnNumbers": [
         1,
         7,
@@ -186,6 +190,7 @@
       "side": "right",
       "totalDamageDealt": 377,
       "totalDamageTaken": 15000,
+      "totalHealingDealt": 0,
       "turnNumbers": [
         6,
         9,
@@ -207,6 +212,7 @@
       "side": "right",
       "totalDamageDealt": 2591,
       "totalDamageTaken": 10000,
+      "totalHealingDealt": 0,
       "turnNumbers": [
         5,
         12,
@@ -228,6 +234,7 @@
       "side": "right",
       "totalDamageDealt": 1011,
       "totalDamageTaken": 10000,
+      "totalHealingDealt": 0,
       "turnNumbers": [
         24,
         29
@@ -248,6 +255,7 @@
       "side": "right",
       "totalDamageDealt": 0,
       "totalDamageTaken": 10000,
+      "totalHealingDealt": 0,
       "turnNumbers": [
         58,
         65
@@ -41021,18 +41029,21 @@
       {
         "actorId": "6aa81489d9da6b90dddeaefd",
         "actorName": "源氏",
+        "totalHealing": 3826,
         "totalOutput": 44231,
         "totalTaken": 11716
       },
       {
         "actorId": "6aa7fd0c7048ec08c9db2095",
         "actorName": "艾莉絲·伯雷亞斯·格雷拉特",
+        "totalHealing": 0,
         "totalOutput": 33888,
         "totalTaken": 10040
       },
       {
         "actorId": "6ab150baad84d95a03db1ca4",
         "actorName": "希露菲葉特",
+        "totalHealing": 4158,
         "totalOutput": 32452,
         "totalTaken": 14818
       }
