@@ -11,6 +11,7 @@ import { engineState, createEmptyCombo } from '../src/state.js';
 import { parseParticipants, buildStateSnapshots, getConsolidatedStats } from '../src/parser.js';
 import { lookaheadComboState, advanceComboState } from '../src/choreography.js';
 import { formatLogMessage } from '../src/utils.js';
+import { extractTimelineMarkers } from '../src/timeline.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -102,6 +103,7 @@ function generateEngineSnapshot(rawReport) {
 
     const mvpStats = getConsolidatedStats();
     const runtimeTrace = simulateRuntimeTrace(engineState.frames);
+    const timelineMarkers = extractTimelineMarkers(engineState.frames);
 
     return toSerializable({
         battleResult: engineState.battleResult,
@@ -118,6 +120,7 @@ function generateEngineSnapshot(rawReport) {
                 totalTaken: stat.totalTaken
             }))
         },
+        timelineMarkers,
         frames: engineState.frames,
         runtimeTrace
     });
@@ -130,7 +133,7 @@ function generateEngineSnapshot(rawReport) {
  * @param {object} expected - Stored golden snapshot.
  */
 function reportDetailedDiff(actual, expected) {
-    for (const topKey of ['battleResult', 'totalTurns', 'actors', 'mvpSummary']) {
+    for (const topKey of ['battleResult', 'totalTurns', 'actors', 'mvpSummary', 'timelineMarkers']) {
         if (!isDeepStrictEqual(actual[topKey], expected[topKey])) {
             console.error(`  -> Mismatch in top-level section: [${topKey}]`);
             assert.deepStrictEqual(actual[topKey], expected[topKey]);
@@ -201,7 +204,7 @@ function main() {
                 console.error(`\n[FAIL] ${file} diverged from golden snapshot!`);
                 reportDetailedDiff(currentSnapshot, expectedSnapshot);
             } else {
-                console.log(`[PASS] ${file} (${currentSnapshot.frames.length} frames, ${currentSnapshot.totalTurns} turns verified)`);
+                console.log(`[PASS] ${file} (${currentSnapshot.frames.length} frames, ${currentSnapshot.totalTurns} turns, ${currentSnapshot.timelineMarkers?.length || 0} milestone pins verified)`);
                 passed++;
             }
         } catch (err) {

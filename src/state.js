@@ -72,7 +72,9 @@ export const engineState = {
     hostElement: null,
     actors: new Map(),
     totalTurns: 0,
-    battleResult: 'WIN'
+    battleResult: 'WIN',
+    onImportReport: null,
+    activeKeydownHandler: null
 };
 
 /**

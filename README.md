@@ -15,14 +15,19 @@
 3. **兩階段解析與多錨點 HP 校正 (`Multi-Anchor HP Calibrator`)**
    * 將非結構化的系統與敘事文字（`logs`）解析為結構化、不可變（Immutable）的狀態快照序列（`frames`）。
    * 結合「戰報錨點」、「百分比變化推算」與「致死傷害回推」，精準還原未提供初始最大生命值的單位血量，並支援 **Boss 階段轉換／死後滿血復活（Phase-Transition Rebirth）** 與 **動態血量上限擴充（Dynamic Max HP Scaling）**。
-4. **高自由度時間軸控制 (`True ATB Timeline`)**
-   * 支援播放／暫停、單步前進／後退、上一回合／下一回合跳轉，以及點擊進度條任意位置即時跳轉（Time-Travel Scrubbing）。
-   * 提供 `0.5x`、`1x`、`2x`、`4x` 四段倍速切換（自動記憶於 `localStorage`）與一鍵跳至結算（`SKIP`）。
-5. **豐富舞台演出與專屬特效**
-   * **單體與 AOE 波次演出**：自動合併同一技能的多目標傷害為流暢的 AOE 扇形波次與飛彈／劍氣投射物。
+4. **高自由度時間軸控制 (`True ATB Timeline` & 懸浮感知標記 Pin)**
+   * **經典極簡控制列**：維持最純粹舒適的簡潔排版（`暫停`、`倍速`、`時間軸`、`跳過`），手機窄螢幕自動緊湊適配，杜絕過度擁擠與視覺負擔。
+   * **懸浮感知關鍵事件標記（Hover-Only Event Pins）**：平日播放時標記隱形，滑鼠移至時間軸時才優雅淡入 **🌟 角色奧義**、**💀 單位陣亡 (K.O.)**、**🔥 首領復活二階段**、**💍 契約締結** 與 **🌀 召喚登場**，點擊直接跳轉至該幀，資訊提示卡置頂防遮擋。
+   * **全鍵盤快捷鍵支援（Keyboard Shortcuts）**：桌面端無需額外按鈕即可透過鍵盤操作：`Space`（播放/暫停）、`← / →`（單步進退）、`Shift + ← / →` 或 `↑ / ↓`（上/下一回合）、`1 / 2 / 3 / 4`（`0.5x` ~ `4x` 倍速）、`S`（跳至結算）、`E / O`（匯出/載入）與 `Esc`（一鍵關閉舞台）。
+5. **戰報永久保存、離線載入重播與可自訂位置啟動鈕 (`Battle Report JSON I/O & Draggable Dock`)**
+   * **經典啟動按鈕＋無縫懸浮選單**：維持最耐看的經典按鈕外觀（`啟動視覺化演出`），滑鼠移上去時上方自然展出 `載入戰報` 與 `匯出戰報` 選項，游標可直接滑入選取；平時直接點擊按鈕亦可照常立即開啟回放。
+   * **自由拖曳調整位置**：按住主按鈕可自由拖曳至螢幕任意角落並自動持久化記錄於 `localStorage`，不變更游標形狀，避開其他瀏覽器外掛按鈕。
+   * 支援將當前戰報（含自動校正與補齊之角色最大生命值 `participants`）封裝為獨立 `.json` 檔案永久保存，亦可直接將 `.json` 檔案拖曳（Drag & Drop）至舞台視窗立即重播。
+6. **豐富舞台演出與專屬特效**
+   * **單體與 AOE 波次演出**：自動合併同一技能的多目標傷害為流暢的 AOE 扇形波次、半月衝擊波與飛彈／劍氣投射物齊射。
    * **特殊機制視覺化**：護衛代償（`COVER`）、反擊架勢與觸發（`COUNTER`）、交鋒火花（`CLASH`）、突破極限（`LIMIT_BREAK`）、召喚物登場／退場與主僕雙向靈魂連線（`Bond Line`）、契約發動與常駐增益徽章（`CONTRACT_INVOCATION`）。
    * **角色專屬奧義與處決（`Profiles & Cinematics`）**：可透過宣告式設定檔（`src/profiles.js`）配置全螢幕奧義立繪特寫（Cut-in）、專屬飛彈特效與 Boss 終結處決演出（Fatality）。
-6. **戰後 MVP 結算儀表板**
+7. **戰後 MVP 結算儀表板**
    * 自動將召喚物輸出歸戶至召喚主，統計並展示全隊總輸出、承受傷害占比與 MVP 特寫表揚。
 
 ---
@@ -46,8 +51,9 @@
 
 ```mermaid
 flowchart TD
-    subgraph Intercept ["1. 攔截與生命週期層 (src/index.js)"]
-        A["window.fetch / XHR 攔截"] --> B["findBattlePayload 深度搜尋戰報"]
+    subgraph Intercept ["1. 攔截與戰報 I/O 層 (src/index.js & src/reportIO.js)"]
+        A["window.fetch / XHR 攔截"] --> B["extractBattlePayload 深度搜尋戰報"]
+        IO["reportIO.js 戰報 JSON 匯出 / 離線載入 & 拖曳"] --> B
         B --> C["fetchMissingParticipants 補齊角色 HP"]
         C --> D["spoilerGuard.js 防劇透遮罩"]
     end
@@ -60,13 +66,13 @@ flowchart TD
     end
 
     subgraph Stage ["3. 舞台渲染與動畫編排層 (DOM & VFX)"]
-        H --> I["stage.js 舞台初始化與播放迴圈 (playbackLoop)"]
-        I <--> J["timeline.js 時間軸跳轉同步 (syncStageToAbsoluteState)"]
+        H --> I["stage.js 舞台初始化、快捷鍵與播放迴圈 (playbackLoop)"]
+        I <--> J["timeline.js 時間軸跳轉同步與關鍵事件標記 (extractTimelineMarkers)"]
         I --> FT["floatingText.js 防重疊浮動傷害與累積連段傷害"]
-        I --> K["choreography.js 攻擊/AOE/護衛動畫編排"]
+        I --> K["choreography.js 攻擊/AOE 波次/護衛動畫編排"]
         K <--> L["combo.js 連段預判 (lookahead) 與 Combo 橫幅"]
         I --> M["cinematics.js 奧義 Cut-in / 契約召喚 / 處決動畫"]
-        I --> N["mvp.js 戰後 MVP 與傷害歸戶統計面板"]
+        I --> N["mvp.js 戰後 MVP 統計面板與戰報保存"]
     end
 
     subgraph Config ["4. 宣告式配置與共用基礎"]
@@ -85,22 +91,23 @@ flowchart TD
 ```text
 mdbattle-visualizer/
 ├── src/                        # 核心原始碼 (ES Modules)
-│   ├── index.js                # 入口點：Fetch/XHR 攔截、手動切換按鈕、Vue SPA 換頁清理與啟動流程
+│   ├── index.js                # 入口點：Fetch/XHR 攔截、右下角啟動與載入戰報懸浮底座、SPA 換頁清理
+│   ├── reportIO.js             # 戰報 I/O：戰報 JSON 永久匯出備份、本地檔案選擇與舞台拖曳 (Drag & Drop) 載入
 │   ├── constants.js            # 全域常數：API 網址、預設頭像、宿主 DOM 選擇器、播放倍速表
 │   ├── state.js                # 單例狀態中心 (engineState)、倍速持久化、播放取消權杖 (playbackToken)
 │   ├── participants.js         # 參戰者解析、召喚物名稱推論 (inferSummonName)、MVP 傷害歸戶統計
 │   ├── parser.js               # 戰鬥紀錄解析器：正則匹配、回合歸屬推論、召喚/契約生命週期、快照建構
 │   ├── calibrator.js           # 多錨點 HP 校正器：根據錨點/百分比/致死量回推 Max HP 與 Boss 復活階段
-│   ├── stage.js                # 舞台渲染與主播放迴圈：DOM 骨架生成、控制列綁定、卡片狀態與特效觸發
-│   ├── timeline.js             # 時間軸同步與 UI：任意幀狀態瞬移 (syncStageToAbsoluteState)、ATB 進度條與日誌生成
+│   ├── stage.js                # 舞台渲染與主播放迴圈：DOM 骨架生成、控制列、鍵盤快捷鍵與 AOE 波次調度
+│   ├── timeline.js             # 時間軸同步與 UI：任意幀狀態瞬移、關鍵事件標記提取 (extractTimelineMarkers)、ATB 進度條
 │   ├── floatingText.js         # 浮動戰鬥數字：傷害/治療/格擋跳字、徑向防重疊碰撞迴避、單目標累積連段總傷害
-│   ├── choreography.js         # 戰鬥動作編排：單體連擊、AOE 波次合併、護衛代償移動、交鋒火花特效
+│   ├── choreography.js         # 戰鬥動作編排：單體連擊、AOE 波次齊射、護衛代償移動、交鋒火花特效
 │   ├── combo.js                # 連段系統：同回合連段預判 (lookaheadComboState)、連擊計數推進與 UI 橫幅
 │   ├── cinematics.js           # 全螢幕特寫演出：奧義 Cut-in、契約發動遮罩、Fatality 終結技序列
-│   ├── mvp.js                  # 戰後結算面板：勝利/敗北橫幅、MVP 立繪展示、傷害與承傷排行長條圖
+│   ├── mvp.js                  # 戰後結算面板：勝利/敗北橫幅、MVP 立繪展示、傷害排行與一鍵保存戰報 JSON
 │   ├── profiles.js             # 宣告式特效設定檔：契約技能、奧義立繪圖片、投射物特效類型對應表
 │   ├── spoilerGuard.js         # 防劇透系統：MutationObserver 監控並遮罩宿主網頁之勝負結果與獎勵
-│   ├── styles.js               # 樣式表注入：所有舞台排版、玻璃擬態 UI、CSS Keyframes 動畫與特效樣式
+│   ├── styles.js               # 樣式表注入：所有舞台排版、玻璃擬態 UI、進度條 Pin 標記與 CSS 動畫樣式
 │   └── utils.js                # 通用工具：HTML 跳脫 (escapeHtml 防止 XSS)、日誌語法高亮、倍率延遲計算
 ├── scripts/
 │   └── snapshot-runner.mjs     # 無頭 (Headless) 黃金快照回歸測試執行器
@@ -152,42 +159,46 @@ mdbattle-visualizer/
 
 ---
 
-## 🎨 擴充指南：如何新增角色專屬奧義與特效
+## 🎨 擴充指南：如何新增角色專屬技能、契約與特效
 
-所有角色專屬的視覺演出皆集中在 [`src/profiles.js`](file:///d:/games/mySame/mdbattle-visualizer/src/profiles.js)，無須修改核心引擎即可擴充：
+所有角色與 Boss 專屬的規則與視覺設定皆集中在 [`src/profiles.js`](file:///d:/games/mySame/mdbattle-visualizer/src/profiles.js)，可透過以下匯出結構快速擴充：
 
-### 1. 新增一般技能／奧義特寫 (`SKILL_PROFILES`)
-在 `SKILL_PROFILES` 陣列中加入設定物件：
+### 1. 註冊範圍技能 (`KNOWN_AOE_SKILLS` / `AOE_EXCLUDED_SKILLS`)
+* **`KNOWN_AOE_SKILLS`**：將 `skillId` 加入此 `Set`，即使場上僅剩單一目標，施展時也會觸發場中央蓄力、半月形扇形衝擊波與飛彈齊射。
+* **`AOE_EXCLUDED_SKILLS`**：若某多目標技能屬於「單體連續瞬移斬擊」（如源氏拔刀 `genji_dragonblade`），加入此 `Set` 可強制維持逐一衝刺至各目標身前的單體連段演出。
+
+### 2. 新增雙人／單人契約技能 (`CONTRACT_SKILL_PROFILES`)
+在 `CONTRACT_SKILL_PROFILES` 中以 `skillId` 為鍵值新增設定，即可支援契約申請、締結全螢幕特寫（`ACCEPT`）、常駐羈絆光環與護衛代償（`COVER`）：
 ```javascript
-{
-    match: ['技能關鍵字A', '技能關鍵字B'], // 只要戰報文字同時或任一符合（支援字串或陣列）
-    vfxType: 'BEAM',                      // 投射物特效：'SLASH' | 'THRUST' | 'PIERCE_CROSS' | 'PROJECTILE' | 'BEAM' | 'MAGIC_CIRCLE' | 'HEAVY_IMPACT' | 'SOUND_WAVE' | 'LIGHTNING_DROP' | 'MELEE'
-    soundType: 'BEAM',                    // 預留音效分類標籤
-    cinematic: {                          // (選填) 若設定此欄位，同回合首次觸發時將播放全螢幕奧義 Cut-in
-        image: 'https://.../cutin.png',   // 角色立繪或特寫圖片網址
-        title: '技能顯示名稱',
-        subtitle: 'ABILITY UNLEASHED',
-        style: 'GOLD_ASCENSION',          // 特寫風格：'SLIDE_GOLD' | 'DARK_SLASH' | 'CENTER_SLAM' | 'GOLD_ASCENSION' | 'VOID_RIFT' | 'DUAL_SLIDE' | 'ROSARIO_CROSS'
-        color: '#fbbf24'                  // 主題發光色彩
-    },
-    fatality: {                           // (選填) 當此技能擊殺全場最後一名敵人時觸發的終結處決演出
-        type: 'ROSARIO_CROSS',
-        color: '#f43f5e'
+export const CONTRACT_SKILL_PROFILES = {
+    my_contract_skill_id: {
+        systemTitle: 'SYSTEM ALERT // CONTRACT REQUEST',
+        systemSubtitle: '契約締結副標題',
+        badgeIcon: '💍',
+        badgeText: '契約徽章名稱',
+        endBadgeText: '💔 契約結束',
+        themeColor: '#f687b3',
+        proposeRegex: /發起契約的敘事正則/,
+        acceptRegex: /接受契約的敘事正則/,
+        coverRegex: /擋到.+?身前，替對方扛下了\s*(\d+)\s*點傷害/,
+        endRegex: /契約結束的敘事正則/
     }
-}
+};
 ```
 
-### 2. 新增契約技能 (`CONTRACT_PROFILES`)
-在 `CONTRACT_PROFILES` 陣列中加入契約設定，當戰報出現 `發動了契約『...』` 時，會自動播放契約召喚橫幅並在角色頭像旁掛載常駐契約徽章與提示框：
+### 3. 新增多段刻印終結技 (`CROSS_FINISHER_PROFILES`)
+針對先刻下印記、最後一擊貫穿引爆的技能（如聖母聖詠 `kibayuki_rosario` / `yuuki_rosario`），可在 `CROSS_FINISHER_PROFILES` 設定 `inscribeRegex` 與 `pierceRegex`。
+
+### 4. 新增角色專屬頭頂狀態徽章 (`SPECIAL_SKILL_BADGE_RULES`)
+在 `SPECIAL_SKILL_BADGE_RULES` 陣列中加入規則，當 `SKILL_TEXT` 或 `TEXT` 符合正則時，自動於施法者或目標頭頂彈出膠囊徽章與震動回饋：
 ```javascript
 {
-    match: ['契約名稱'],
-    partnerName: '契約夥伴名稱',
-    title: '契約名稱',
-    buffDesc: '常駐增益效果說明文字（支援 HTML 標籤如 <br>）',
-    icon: '🔥',
-    color: '#ef4444',
-    avatar: 'https://.../partner-avatar.png' // (選填) 契約夥伴頭像網址
+    skillId: 'character_skill_id', // 或 'default' 代表不限 skillId
+    regex: /觸發特定台詞或敘事的關鍵字/,
+    target: 'actor',               // 'actor' | 'target'
+    text: (match) => `✨ 狀態名稱 ${match[1] || ''}`,
+    styleClass: 'dice-pass',       // 'dice-pass' | 'dice-fail' | 'dice-roll' | 'dice-warn'
+    shakeTarget: false
 }
 ```
 

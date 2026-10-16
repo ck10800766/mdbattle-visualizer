@@ -45849,5 +45849,151 @@
       }
     }
   ],
+  "timelineMarkers": [
+    {
+      "category": "ultimate",
+      "detail": "希露菲葉特 閉上眼睛，耳邊又響起轉移那天的風聲，身體一直往下掉，地面越來越近。",
+      "frameIndex": 34,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：希露菲葉特",
+      "turnNumber": 10
+    },
+    {
+      "category": "ultimate",
+      "detail": "艾莉絲·伯雷亞斯·格雷拉特 沉腰握劍，全身的力氣收進一個呼吸裡——",
+      "frameIndex": 70,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：艾莉絲·伯雷亞斯·格雷拉特",
+      "turnNumber": 17
+    },
+    {
+      "category": "ultimate",
+      "detail": "源氏 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。",
+      "frameIndex": 81,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：源氏",
+      "turnNumber": 20
+    },
+    {
+      "category": "death",
+      "detail": "游擊隊盾衛 倒下了！",
+      "frameIndex": 85,
+      "icon": "💀",
+      "title": "💀 陣亡：游擊隊盾衛",
+      "turnNumber": 21
+    },
+    {
+      "category": "summon",
+      "detail": "愛國者 舉起長戟，游擊隊薩卡茲戰士 從風雪中趕到陣前！",
+      "frameIndex": 86,
+      "icon": "🌀",
+      "title": "🌀 召喚登場：游擊隊薩卡茲戰士",
+      "turnNumber": 21
+    },
+    {
+      "category": "death",
+      "detail": "游擊隊迫擊砲兵 倒下了！",
+      "frameIndex": 131,
+      "icon": "💀",
+      "title": "💀 陣亡：游擊隊迫擊砲兵",
+      "turnNumber": 27
+    },
+    {
+      "category": "death",
+      "detail": "游擊隊薩卡茲戰士 倒下了！",
+      "frameIndex": 170,
+      "icon": "💀",
+      "title": "💀 陣亡：游擊隊薩卡茲戰士",
+      "turnNumber": 35
+    },
+    {
+      "category": "summon",
+      "detail": "愛國者 舉起長戟，游擊隊薩卡茲戰士 從風雪中趕到陣前！",
+      "frameIndex": 243,
+      "icon": "🌀",
+      "title": "🌀 召喚登場：游擊隊薩卡茲戰士",
+      "turnNumber": 51
+    },
+    {
+      "category": "ultimate",
+      "detail": "希露菲葉特 閉上眼睛，耳邊又響起轉移那天的風聲，身體一直往下掉，地面越來越近。",
+      "frameIndex": 244,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：希露菲葉特",
+      "turnNumber": 52
+    },
+    {
+      "category": "ultimate",
+      "detail": "源氏 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。",
+      "frameIndex": 260,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：源氏",
+      "turnNumber": 53
+    },
+    {
+      "category": "death",
+      "detail": "游擊隊薩卡茲戰士 倒下了！",
+      "frameIndex": 313,
+      "icon": "💀",
+      "title": "💀 陣亡：游擊隊薩卡茲戰士",
+      "turnNumber": 67
+    },
+    {
+      "category": "rebirth",
+      "detail": "愛國者：「……進軍。」",
+      "frameIndex": 402,
+      "icon": "🔥",
+      "title": "🔥 二階段甦醒：愛國者",
+      "turnNumber": 81
+    },
+    {
+      "category": "ultimate",
+      "detail": "艾莉絲·伯雷亞斯·格雷拉特 沉腰握劍，全身的力氣收進一個呼吸裡——",
+      "frameIndex": 420,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：艾莉絲·伯雷亞斯·格雷拉特",
+      "turnNumber": 87
+    },
+    {
+      "category": "ultimate",
+      "detail": "艾莉絲·伯雷亞斯·格雷拉特 沉腰握劍，全身的力氣收進一個呼吸裡——",
+      "frameIndex": 429,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：艾莉絲·伯雷亞斯·格雷拉特",
+      "turnNumber": 89
+    },
+    {
+      "category": "death",
+      "detail": "艾莉絲·伯雷亞斯·格雷拉特 倒下了！",
+      "frameIndex": 437,
+      "icon": "💀",
+      "title": "💀 陣亡：艾莉絲·伯雷亞斯·格雷拉特",
+      "turnNumber": 91
+    },
+    {
+      "category": "ultimate",
+      "detail": "源氏 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。",
+      "frameIndex": 468,
+      "icon": "🌟",
+      "title": "🌟 奧義發動：源氏",
+      "turnNumber": 100
+    },
+    {
+      "category": "death",
+      "detail": "希露菲葉特 倒下了！",
+      "frameIndex": 494,
+      "icon": "💀",
+      "title": "💀 陣亡：希露菲葉特",
+      "turnNumber": 103
+    },
+    {
+      "category": "death",
+      "detail": "源氏 倒下了！",
+      "frameIndex": 529,
+      "icon": "💀",
+      "title": "💀 陣亡：源氏",
+      "turnNumber": 109
+    }
+  ],
   "totalTurns": 109
 }

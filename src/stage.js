@@ -48,26 +48,53 @@ import { showMVPPanel } from './mvp.js';
 import { armSpoilerGuard, releaseSpoilerGuard } from './spoilerGuard.js';
 import {
     isPrimaryUltimateTriggerFrame,
+    extractTimelineMarkers,
     createLogLineElement,
     updateATBUI,
     syncActorBondVisuals,
     syncActorHpAndDeathDOM,
     syncStageToAbsoluteState
 } from './timeline.js';
+import {
+    exportCurrentBattleReport,
+    promptImportBattleReport,
+    parseImportedReportText
+} from './reportIO.js';
 
 export { updateATBUI, syncStageToAbsoluteState };
 
 /**
- * Formats the timeline seek counter label with both current Turn and Frame index.
+ * Formats the timeline seek counter label (`current / total`).
  * @param {number} frameIndex - Current frame index.
  * @returns {string} Formatted label string.
  */
 function formatSeekLabelText(frameIndex) {
     const total = engineState.frames.length;
-    if (total === 0) return 'T0 ｜ 0 / 0';
-    const clamped = Math.max(0, Math.min(frameIndex, total - 1));
-    const turn = engineState.frames[clamped]?.turnNumber ?? 0;
-    return `T${turn} ｜ ${ Math.min(frameIndex, total) } / ${total}`;
+    if (total === 0) return '0 / 0';
+    return `${Math.min(frameIndex, total)} / ${total}`;
+}
+
+/**
+ * Cleanly unmounts the battle stage, stops active playback and keyboard listeners,
+ * releases the spoiler guard, and restores the original host page content.
+ */
+export function closeBattleStage() {
+    if (engineState.activeKeydownHandler) {
+        window.removeEventListener('keydown', engineState.activeKeydownHandler);
+        engineState.activeKeydownHandler = null;
+    }
+    engineState.isPlaying = false;
+    engineState.timeScale = 1.0;
+    nextPlaybackToken();
+    releaseSpoilerGuard();
+    if (engineState.hostElement) {
+        engineState.hostElement.remove();
+        engineState.hostElement = null;
+    }
+    document.querySelectorAll(`[data-mdbv-hidden-host], ${HOST_CONTENT_SELECTOR}`).forEach(el => {
+        el.style.display = '';
+        el.removeAttribute('data-mdbv-hidden-host');
+    });
 }
 
 /**
@@ -75,6 +102,10 @@ function formatSeekLabelText(frameIndex) {
  * Automatically starts playback from frame 0 upon mounting.
  */
 export function createBattleStage() {
+    if (engineState.activeKeydownHandler) {
+        window.removeEventListener('keydown', engineState.activeKeydownHandler);
+        engineState.activeKeydownHandler = null;
+    }
     if (engineState.hostElement) engineState.hostElement.remove();
 
     const host = document.createElement('div');
@@ -95,9 +126,6 @@ export function createBattleStage() {
     const controls = document.createElement('div');
     controls.className = 'controls';
 
-    const navGroup = document.createElement('div');
-    navGroup.className = 'control-group';
-
     const playBtn = document.createElement('button');
     playBtn.id = 'btn-play';
     playBtn.textContent = '暫停';
@@ -107,12 +135,19 @@ export function createBattleStage() {
     const seekLabel = document.createElement('span');
     seekLabel.id = 'seek-label';
     seekLabel.textContent = formatSeekLabelText(0);
+
+    const seekTrackWrapper = document.createElement('div');
+    seekTrackWrapper.className = 'seek-track-wrapper';
+
     const seekRange = document.createElement('input');
     seekRange.type = 'range';
     seekRange.id = 'seek-range';
     seekRange.min = 0;
     seekRange.max = Math.max(0, engineState.frames.length - 1);
     seekRange.value = 0;
+
+    const seekMarkersLayer = document.createElement('div');
+    seekMarkersLayer.className = 'seek-markers-layer';
 
     /**
      * Jumps to a specific frame index in paused inspection mode and renders its active combat situation.
@@ -130,11 +165,7 @@ export function createBattleStage() {
         syncStageToAbsoluteState(clamped, false, true);
     };
 
-    const prevTurnBtn = document.createElement('button');
-    prevTurnBtn.className = 'btn-nav';
-    prevTurnBtn.title = '跳至上一回合';
-    prevTurnBtn.textContent = '⏮ 回合';
-    prevTurnBtn.onclick = () => {
+    const jumpPrevTurn = () => {
         if (engineState.frames.length === 0) return;
         const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
         const curTurn = engineState.frames[curIdx]?.turnNumber ?? 1;
@@ -142,7 +173,6 @@ export function createBattleStage() {
         while (firstOfCurrentTurn > 0 && engineState.frames[firstOfCurrentTurn - 1]?.turnNumber === curTurn) {
             firstOfCurrentTurn--;
         }
-        // If we are mid-turn, jump to the start of the current turn; otherwise jump to the start of the previous turn
         if (curIdx > firstOfCurrentTurn) {
             jumpToFrame(firstOfCurrentTurn);
             return;
@@ -156,13 +186,50 @@ export function createBattleStage() {
         jumpToFrame(firstOfPrevTurn);
     };
 
-    const prevFrameBtn = document.createElement('button');
-    prevFrameBtn.className = 'btn-nav';
-    prevFrameBtn.title = '單步後退一幀';
-    prevFrameBtn.textContent = '⏪ 單步';
-    prevFrameBtn.onclick = () => {
-        jumpToFrame(engineState.currentFrameIndex - 1);
+    const jumpNextTurn = () => {
+        if (engineState.frames.length === 0) return;
+        const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
+        const curTurn = engineState.frames[curIdx]?.turnNumber ?? 0;
+        let nextIdx = curIdx + 1;
+        while (nextIdx < engineState.frames.length && engineState.frames[nextIdx]?.turnNumber <= curTurn) {
+            nextIdx++;
+        }
+        jumpToFrame(Math.min(nextIdx, engineState.frames.length - 1));
     };
+
+    const maxFrameIdx = Math.max(1, engineState.frames.length - 1);
+    const timelineMarkers = extractTimelineMarkers(engineState.frames);
+    timelineMarkers.forEach(marker => {
+        const pin = document.createElement('div');
+        pin.className = `seek-pin pin-${marker.category}`;
+        const pct = Math.max(0, Math.min(100, (marker.frameIndex / maxFrameIdx) * 100));
+        pin.style.left = `${pct}%`;
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'seek-pin-tooltip';
+        if (pct < 15) tooltip.classList.add('tooltip-align-left');
+        else if (pct > 85) tooltip.classList.add('tooltip-align-right');
+        const titleEl = document.createElement('span');
+        titleEl.className = 'seek-pin-tooltip-title';
+        titleEl.textContent = `T${marker.turnNumber} (#${marker.frameIndex + 1}) ｜ ${marker.title}`;
+        tooltip.appendChild(titleEl);
+        if (marker.detail) {
+            const detailEl = document.createElement('span');
+            detailEl.className = 'seek-pin-tooltip-detail';
+            detailEl.textContent = marker.detail;
+            tooltip.appendChild(detailEl);
+        }
+        pin.appendChild(tooltip);
+
+        pin.onclick = (e) => {
+            e.stopPropagation();
+            jumpToFrame(marker.frameIndex);
+        };
+        seekMarkersLayer.appendChild(pin);
+    });
+
+    seekTrackWrapper.appendChild(seekRange);
+    seekTrackWrapper.appendChild(seekMarkersLayer);
 
     playBtn.onclick = () => {
         if (!engineState.isPlaying) {
@@ -186,38 +253,8 @@ export function createBattleStage() {
         }
     };
 
-    const nextFrameBtn = document.createElement('button');
-    nextFrameBtn.className = 'btn-nav';
-    nextFrameBtn.title = '單步前進一幀';
-    nextFrameBtn.textContent = '單步 ⏩';
-    nextFrameBtn.onclick = () => {
-        jumpToFrame(engineState.currentFrameIndex + 1);
-    };
-
-    const nextTurnBtn = document.createElement('button');
-    nextTurnBtn.className = 'btn-nav';
-    nextTurnBtn.title = '跳至下一回合';
-    nextTurnBtn.textContent = '回合 ⏭';
-    nextTurnBtn.onclick = () => {
-        if (engineState.frames.length === 0) return;
-        const curIdx = Math.max(0, Math.min(engineState.currentFrameIndex, engineState.frames.length - 1));
-        const curTurn = engineState.frames[curIdx]?.turnNumber ?? 0;
-        let nextIdx = curIdx + 1;
-        while (nextIdx < engineState.frames.length && engineState.frames[nextIdx]?.turnNumber <= curTurn) {
-            nextIdx++;
-        }
-        jumpToFrame(Math.min(nextIdx, engineState.frames.length - 1));
-    };
-
-    navGroup.appendChild(prevTurnBtn);
-    navGroup.appendChild(prevFrameBtn);
-    navGroup.appendChild(playBtn);
-    navGroup.appendChild(nextFrameBtn);
-    navGroup.appendChild(nextTurnBtn);
-
     const speedBtn = document.createElement('button');
     speedBtn.id = 'btn-speed';
-    speedBtn.title = '切換播放倍速 (自動記憶於瀏覽器)';
     speedBtn.textContent = `速度: ${engineState.playbackSpeed}x`;
     speedBtn.onclick = () => {
         const currentIdx = PLAYBACK_SPEEDS.indexOf(engineState.playbackSpeed);
@@ -245,14 +282,13 @@ export function createBattleStage() {
         }
     };
 
-    seekContainer.appendChild(seekRange);
+    seekContainer.appendChild(seekTrackWrapper);
     seekContainer.appendChild(seekLabel);
 
     const skipBtn = document.createElement('button');
     skipBtn.id = 'btn-skip';
     skipBtn.className = 'btn-skip';
-    skipBtn.title = '跳過戰鬥過程，直接前往最終狀態與 MVP 結算面板';
-    skipBtn.textContent = '⏭ 跳至結算';
+    skipBtn.textContent = '跳過';
     skipBtn.onclick = () => {
         engineState.isPlaying = false;
         engineState.timeScale = 1.0;
@@ -267,29 +303,10 @@ export function createBattleStage() {
         showMVPPanel();
     };
 
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'danger';
-    closeBtn.textContent = '關閉演出';
-    closeBtn.onclick = () => {
-        engineState.isPlaying = false;
-        engineState.timeScale = 1.0;
-        nextPlaybackToken();
-        releaseSpoilerGuard();
-        if (engineState.hostElement) {
-            engineState.hostElement.remove();
-            engineState.hostElement = null;
-        }
-        document.querySelectorAll(`[data-mdbv-hidden-host], ${HOST_CONTENT_SELECTOR}`).forEach(el => {
-            el.style.display = '';
-            el.removeAttribute('data-mdbv-hidden-host');
-        });
-    };
-
-    controls.appendChild(navGroup);
+    controls.appendChild(playBtn);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
     controls.appendChild(skipBtn);
-    controls.appendChild(closeBtn);
 
     const ctbBox = document.createElement('div');
     ctbBox.className = 'ctb-container';
@@ -341,12 +358,120 @@ export function createBattleStage() {
     fatalityOverlay.id = 'fatality-overlay';
     fatalityOverlay.className = 'fatality-overlay';
 
+    const dragDropOverlay = document.createElement('div');
+    dragDropOverlay.className = 'drag-drop-overlay';
+    dragDropOverlay.innerHTML = `
+        <div class="drag-drop-box">
+            <div class="drag-drop-title">放開以載入戰報 JSON</div>
+            <div class="drag-drop-sub">支援匯出的 .json 戰報備份檔或原始 API JSON</div>
+        </div>
+    `;
+
+    stage.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+        dragDropOverlay.classList.add('active');
+    });
+
+    stage.addEventListener('dragleave', (e) => {
+        if (!stage.contains(e.relatedTarget)) {
+            dragDropOverlay.classList.remove('active');
+        }
+    });
+
+    stage.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        dragDropOverlay.classList.remove('active');
+        const file = e.dataTransfer?.files?.[0];
+        if (!file) return;
+        try {
+            const text = await file.text();
+            const parsed = parseImportedReportText(text);
+            if (typeof engineState.onImportReport === 'function') {
+                await engineState.onImportReport(parsed);
+            }
+        } catch (err) {
+            alert(`戰報拖曳載入失敗：${err.message || '檔案格式錯誤'}`);
+        }
+    });
+
     stage.appendChild(controls);
     stage.appendChild(ctbBox);
     stage.appendChild(arena);
     stage.appendChild(dialogBox);
     stage.appendChild(fatalityOverlay);
+    stage.appendChild(dragDropOverlay);
     engineState.shadowRoot.appendChild(stage);
+
+    const handleKeydown = (e) => {
+        if (!engineState.hostElement || !engineState.hostElement.isConnected) return;
+        if (e.ctrlKey || e.altKey || e.metaKey) return;
+        const activeTag = document.activeElement?.tagName;
+        if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
+
+        switch (e.key) {
+            case ' ':
+                e.preventDefault();
+                playBtn.click();
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                if (e.shiftKey) jumpPrevTurn();
+                else jumpToFrame(engineState.currentFrameIndex - 1);
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                if (e.shiftKey) jumpNextTurn();
+                else jumpToFrame(engineState.currentFrameIndex + 1);
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                jumpPrevTurn();
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                jumpNextTurn();
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4': {
+                e.preventDefault();
+                const idx = Number(e.key) - 1;
+                if (idx >= 0 && idx < PLAYBACK_SPEEDS.length) {
+                    const nextSpeed = setPlaybackSpeed(PLAYBACK_SPEEDS[idx]);
+                    speedBtn.textContent = `速度: ${nextSpeed}x`;
+                }
+                break;
+            }
+            case 's':
+            case 'S':
+                e.preventDefault();
+                skipBtn.click();
+                break;
+            case 'e':
+            case 'E':
+                e.preventDefault();
+                exportCurrentBattleReport();
+                break;
+            case 'o':
+            case 'O':
+                e.preventDefault();
+                if (typeof engineState.onImportReport === 'function') {
+                    promptImportBattleReport(engineState.onImportReport);
+                }
+                break;
+            case 'Escape':
+                e.preventDefault();
+                closeBattleStage();
+                break;
+            default:
+                break;
+        }
+    };
+
+    engineState.activeKeydownHandler = handleKeydown;
+    window.addEventListener('keydown', handleKeydown);
 
     const originalContent = document.querySelector(HOST_CONTENT_SELECTOR);
     if (originalContent) {
