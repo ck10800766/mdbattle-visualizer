@@ -6,6 +6,27 @@
  * Shared across both headless parsing modules and Shadow DOM rendering modules.
  */
 
+import { PLAYBACK_SPEEDS, SPEED_STORAGE_KEY } from './constants.js';
+
+/**
+ * Reads the persisted playback speed from `localStorage` if available and valid.
+ * Falls back to `1.0` in headless Node environments or when unset.
+ * @returns {number} Initial playback speed multiplier.
+ */
+function loadSavedPlaybackSpeed() {
+    try {
+        if (typeof localStorage !== 'undefined') {
+            const raw = Number(localStorage.getItem(SPEED_STORAGE_KEY));
+            if (PLAYBACK_SPEEDS.includes(raw)) {
+                return raw;
+            }
+        }
+    } catch {
+        // Ignore storage access errors in restricted/headless contexts
+    }
+    return 1.0;
+}
+
 /**
  * Creates a clean combo tracking state object with all geometric and hit-tracking fields initialized.
  * @returns {object} Initialized combo state.
@@ -42,7 +63,7 @@ export const engineState = {
     frames: [],
     currentFrameIndex: 0,
     isPlaying: false,
-    playbackSpeed: 1.0,
+    playbackSpeed: loadSavedPlaybackSpeed(),
     timeScale: 1.0,
     playbackToken: 0,
     currentCombo: createEmptyCombo(),
@@ -53,6 +74,24 @@ export const engineState = {
     totalTurns: 0,
     battleResult: 'WIN'
 };
+
+/**
+ * Updates the active playback speed multiplier and persists it to `localStorage`.
+ * @param {number} speed - Desired speed multiplier from `PLAYBACK_SPEEDS`.
+ * @returns {number} The updated playback speed.
+ */
+export function setPlaybackSpeed(speed) {
+    const validSpeed = PLAYBACK_SPEEDS.includes(speed) ? speed : 1.0;
+    engineState.playbackSpeed = validSpeed;
+    try {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem(SPEED_STORAGE_KEY, String(validSpeed));
+        }
+    } catch {
+        // Ignore storage write errors
+    }
+    return validSpeed;
+}
 
 /**
  * Calculates the effective playback speed combining user speed multiplier and cinematic slow-motion scale.

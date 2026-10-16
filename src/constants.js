@@ -40,5 +40,12 @@ export const HOST_CONTENT_SELECTOR = '.css-1svsvwq';
  * Available user-selectable playback speed multipliers cycled by the stage speed button.
  * @type {ReadonlyArray<number>}
  */
-export const PLAYBACK_SPEEDS = Object.freeze([1, 2, 4, 8]);
+export const PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
+
+/**
+ * LocalStorage key used to persist the user's preferred playback speed across battles.
+ * @type {string}
+ */
+export const SPEED_STORAGE_KEY = 'mdbv_playback_speed';
+
 

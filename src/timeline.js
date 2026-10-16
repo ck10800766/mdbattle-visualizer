@@ -17,6 +17,22 @@ import {
     getEffectiveSpeed
 } from './state.js';
 import { formatLogMessage, escapeHtml } from './utils.js';
+import {
+    lookaheadComboState,
+    advanceComboState,
+    renderComboBanner
+} from './combo.js';
+import { spawnFloatingText } from './floatingText.js';
+import {
+    renderSpeechBubble,
+    spawnStatusOrDiceBadge
+} from './cinematics.js';
+import {
+    spawnAOEFanWave,
+    spawnAOEProjectile,
+    triggerAOETargetImpact
+} from './choreography.js';
+
 
 /**
  * Evaluates whether a given frame should trigger a full-screen Ultimate Cut-In.
@@ -244,7 +260,11 @@ export function syncActorHpAndDeathDOM(
         actor.currentHp = currentHp;
 
         if (isDead && wrapperEl) {
-            if (deferDeadClassForActorId !== actorId) {
+            const shouldDefer =
+                deferDeadClassForActorId instanceof Set
+                    ? deferDeadClassForActorId.has(actorId)
+                    : deferDeadClassForActorId === actorId;
+            if (!shouldDefer) {
                 wrapperEl.classList.add('dead');
             }
             wrapperEl.classList.remove('danger-state');
@@ -255,13 +275,191 @@ export function syncActorHpAndDeathDOM(
 }
 
 /**
+ * Renders the active combat situation preview for a specific frame when timeline scrubbing or stepping:
+ * - Reconstructs current-turn combo counts and cumulative damage up to `frameIndex`
+ * - Displays a top Situation HUD Banner showing Turn, Action Type, Preceding Skill Quote, and Current Log
+ * - Positions acting and targeted units in their combat engagement poses (lunge, center-stage AOE, or cover)
+ * - Triggers floating damage/heal numbers, speech bubbles, overhead badges, and AOE wave VFX
+ *
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {number} frameIndex - Target frame index being previewed.
+ */
+function renderSeekPreviewState(sr, frameIndex) {
+    const arena = sr.getElementById('arena');
+    const frame = engineState.frames[frameIndex];
+    if (!arena || !frame) return;
+
+    const speed = getEffectiveSpeed();
+
+    // 1. Reconstruct combo state within the current turn up to frameIndex
+    engineState.currentCombo = createEmptyCombo();
+    let turnStartIdx = frameIndex;
+    while (
+        turnStartIdx > 0 &&
+        engineState.frames[turnStartIdx - 1]?.turnNumber === frame.turnNumber
+    ) {
+        turnStartIdx--;
+    }
+    for (let i = turnStartIdx; i <= frameIndex; i++) {
+        const f = engineState.frames[i];
+        if (f.actorId && ['DAMAGE', 'MISS', 'COUNTER', 'BLOCK'].includes(f.type) && !f.isCounterSetup) {
+            const lookahead = lookaheadComboState(i, f);
+            advanceComboState(f, lookahead.isNextFrameSameCombo);
+        }
+    }
+
+    if (
+        engineState.currentCombo.count > 1 &&
+        ['DAMAGE', 'MISS', 'BLOCK'].includes(frame.type) &&
+        !frame.isCounter
+    ) {
+        renderComboBanner(arena, frame, speed);
+    }
+
+    // 2. Locate preceding SKILL_TEXT context within the same turn for the active caster
+    const activeCasterId = frame.aoeCasterId || frame.actorId;
+    let skillContextFrame = null;
+    if (frame.type !== 'SKILL_TEXT') {
+        for (let i = frameIndex - 1; i >= Math.max(0, turnStartIdx - 1); i--) {
+            const prev = engineState.frames[i];
+            if (prev.turnNumber !== frame.turnNumber) break;
+            if (prev.type === 'SKILL_TEXT' && (!activeCasterId || prev.actorId === activeCasterId)) {
+                skillContextFrame = prev;
+                break;
+            }
+        }
+    }
+
+    // 3. Render top Situation HUD Banner
+    let actionLabel = '📜 戰況紀錄';
+    if (frame.isAOE) actionLabel = '💥 範圍攻擊 (AOE)';
+    else if (frame.isCoverEvent) actionLabel = '🛡️ 護衛代償 (COVER)';
+    else if (frame.type === 'COUNTER' || frame.isCounter) actionLabel = '⚡ 反擊交鋒 (COUNTER)';
+    else if (frame.skillTier === 'ultimate') actionLabel = '✨ 奧義發動 (ULTIMATE)';
+    else if (frame.type === 'HEAL' || frame.isBeneficial) actionLabel = '💚 恢復 / 增益';
+    else if (frame.type === 'SUMMON' || frame.isSummonEvent) actionLabel = '🌀 召喚登場';
+    else if (frame.type === 'SKILL_TEXT') actionLabel = '🔮 技能施展';
+    else if (['DAMAGE', 'BLOCK', 'MISS'].includes(frame.type)) actionLabel = '⚔️ 戰鬥交鋒';
+
+    const actorObj = activeCasterId ? engineState.actors.get(activeCasterId) : null;
+    const targetObj = frame.targetId ? engineState.actors.get(frame.targetId) : null;
+    let engagementHtml = '';
+    if (actorObj && frame.isAOE) {
+        engagementHtml = `<span>${escapeHtml(actorObj.name)} ➔ 全體範圍目標</span>`;
+    } else if (actorObj && targetObj && actorObj.id !== targetObj.id) {
+        engagementHtml = `<span>${escapeHtml(actorObj.name)} ➔ ${escapeHtml(targetObj.name)}</span>`;
+    } else if (actorObj) {
+        engagementHtml = `<span>${escapeHtml(actorObj.name)}</span>`;
+    }
+
+    const bannerEl = document.createElement('div');
+    bannerEl.className = 'seek-situation-banner';
+    const contextHtml = skillContextFrame?.message
+        ? `<div class="seek-skill-context">▸ ${formatLogMessage(skillContextFrame.message, engineState.actors)}</div>`
+        : '';
+    const bodyHtml = frame.message
+        ? `<div class="seek-banner-body">${formatLogMessage(frame.message, engineState.actors)}</div>`
+        : '';
+    bannerEl.innerHTML = `
+        <div class="seek-banner-header">
+            <span class="seek-turn-pill">TURN ${frame.turnNumber}</span>
+            <span class="seek-skill-pill">${actionLabel}</span>
+            ${engagementHtml}
+        </div>
+        ${contextHtml}
+        ${bodyHtml}
+    `;
+    arena.appendChild(bannerEl);
+
+    // 4. Position actors in active combat engagement poses instead of standing idle at origin
+    const arenaRect = arena.getBoundingClientRect();
+    const actorEl = activeCasterId ? sr.getElementById(`actor-${activeCasterId}`) : null;
+    const targetEl = frame.targetId ? sr.getElementById(`actor-${frame.targetId}`) : null;
+
+    if (actorEl) actorEl.classList.add('seek-acting');
+    if (targetEl && targetEl !== actorEl) targetEl.classList.add('seek-targeted');
+
+    if (frame.isAOE && actorEl && arenaRect.width > 0) {
+        const aRect = actorEl.getBoundingClientRect();
+        const cMoveX = (arenaRect.left + arenaRect.width / 2) - (aRect.left + aRect.width / 2);
+        const cDeltaY = (arenaRect.top + arenaRect.height / 2) - (aRect.top + aRect.height / 2);
+        const side = actorObj?.side || 'left';
+        const targetSide = targetObj?.side || (side === 'left' ? 'right' : 'left');
+        const shadowColor = side === 'left' ? '#63b3ed' : '#fc8181';
+
+        actorEl.style.zIndex = '10';
+        actorEl.style.transform = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.2)`;
+        actorEl.style.filter = `drop-shadow(0 0 14px ${shadowColor})`;
+
+        const centerStageX = arenaRect.width / 2;
+        const centerStageY = arenaRect.height / 2;
+        spawnAOEFanWave(arena, centerStageX, centerStageY, targetSide, shadowColor, speed);
+        if (targetEl) {
+            spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, 0, 140, speed);
+            triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
+        }
+    } else if (frame.isCoverEvent && actorEl) {
+        const protectedEl = frame.coverProtectedId ? sr.getElementById(`actor-${frame.coverProtectedId}`) : null;
+        if (protectedEl) {
+            const gRect = actorEl.getBoundingClientRect();
+            const pRect = protectedEl.getBoundingClientRect();
+            const gSide = actorObj?.side || 'left';
+            const guardOffsetX = (pRect.left - gRect.left) + (gSide === 'left' ? 55 : -55);
+            const guardOffsetY = pRect.top - gRect.top;
+            actorEl.style.zIndex = '15';
+            actorEl.style.transform = `translate(${guardOffsetX}px, ${guardOffsetY}px) scale(1.12)`;
+            actorEl.style.filter = 'drop-shadow(0 0 16px #f687b3)';
+        }
+    } else if (
+        actorEl &&
+        targetEl &&
+        actorEl !== targetEl &&
+        ['DAMAGE', 'MISS', 'COUNTER', 'BLOCK'].includes(frame.type) &&
+        !frame.isSelfDamage &&
+        !frame.isEnvironmentalPulse
+    ) {
+        const aRect = actorEl.getBoundingClientRect();
+        const tRect = targetEl.getBoundingClientRect();
+        const side = actorObj?.side || 'left';
+        const targetSide = targetObj?.side || (side === 'left' ? 'right' : 'left');
+        const shadowColor = side === 'left' ? '#63b3ed' : '#fc8181';
+        const moveX = (tRect.left - aRect.left) + (side === 'left' ? -60 : 60);
+        const deltaY = tRect.top - aRect.top;
+
+        actorEl.style.zIndex = '10';
+        actorEl.style.transform = `translate(${moveX}px, ${deltaY}px) scale(1.1)`;
+        actorEl.style.filter = `drop-shadow(0 0 12px ${shadowColor})`;
+
+        triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
+    }
+
+    // 5. Render speech bubbles, overhead status/dice badges, and floating combat numbers for this frame
+    const isSpokenSkillQuote =
+        frame.type === 'SKILL_TEXT' &&
+        /^[^：「\s]+：「.+」$/.test(frame.message.trim());
+    if (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE' || isSpokenSkillQuote) {
+        renderSpeechBubble(frame, sr, engineState.playbackToken);
+    }
+
+    if (
+        frame.diceCheck ||
+        ['FATIGUE', 'FATIGUE_SKIP', 'SILENCED', 'SKILL_TEXT', 'TEXT'].includes(frame.type)
+    ) {
+        spawnStatusOrDiceBadge(frame, sr);
+    }
+
+    spawnFloatingText(frame, sr, false, false);
+}
+
+/**
  * Instantly synchronizes the entire stage DOM (HP bars, death states, summon visibility,
  * log history, contract bonds, and ATB icons) to any target frame index during timeline seeking or reset.
  *
  * @param {number} frameIndex - Target frame index to synchronize to.
  * @param {boolean} [isInitialReset=false] - True when resetting back to pre-battle state (frame 0).
+ * @param {boolean} [showActivePreview=false] - When true, renders the active skill HUD, combat poses, and floating numbers for `frameIndex`.
  */
-export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
+export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, showActivePreview = false) {
     const sr = engineState.shadowRoot;
     if (!sr) return;
 
@@ -277,7 +475,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
 
     // Remove all transient overlays, badges, and floating combat effects
     sr.querySelectorAll(
-        '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text'
+        '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile'
     ).forEach(el => el.remove());
 
     // Cancel active Web Animations and reset actor transforms
@@ -288,17 +486,22 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
             if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());
             el.style.filter = '';
             el.style.transform = '';
-            el.classList.remove('blink-active', 'spawning', 'despawning');
+            el.style.zIndex = '';
+            el.classList.remove('blink-active', 'spawning', 'despawning', 'seek-acting', 'seek-targeted');
         }
     });
 
-    // Rebuild combat log history up to frameIndex
+    const stateFrameIndex = Math.max(0, Math.min(frameIndex, engineState.frames.length - 1));
+
+    // Rebuild combat log history up to frameIndex (inclusive when previewing a paused/stepped frame)
     const dialog = sr.getElementById('dialog-box');
     if (dialog) {
         dialog.innerHTML = '';
-        if (!isInitialReset && frameIndex > 0) {
+        if (!isInitialReset && engineState.frames.length > 0) {
             const fragment = document.createDocumentFragment();
-            const limit = Math.min(frameIndex, engineState.frames.length);
+            const limit = showActivePreview
+                ? Math.min(stateFrameIndex + 1, engineState.frames.length)
+                : Math.min(frameIndex, engineState.frames.length);
             for (let i = 0; i < limit; i++) {
                 const f = engineState.frames[i];
                 if (isPrimaryUltimateTriggerFrame(f)) {
@@ -306,7 +509,11 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
                     if (a) a.lastUltimateTurn = f.turnNumber;
                 }
                 if (f.message) {
-                    fragment.appendChild(createLogLineElement(f));
+                    const lineEl = createLogLineElement(f);
+                    if (showActivePreview && i === stateFrameIndex) {
+                        lineEl.classList.add('current-frame-log');
+                    }
+                    fragment.appendChild(lineEl);
                 }
             }
             dialog.appendChild(fragment);
@@ -328,7 +535,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
                 fillEl.classList.remove('warning', 'danger');
             }
             if (wrapperEl) {
-                wrapperEl.classList.remove('dead', 'danger-state', 'spawning', 'despawning');
+                wrapperEl.classList.remove('dead', 'danger-state', 'spawning', 'despawning', 'seek-acting', 'seek-targeted');
                 if (actor.initiallySpawned === false) wrapperEl.classList.add('unspawned');
                 else wrapperEl.classList.remove('unspawned');
             }
@@ -338,7 +545,6 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
         return;
     }
 
-    const stateFrameIndex = Math.max(0, Math.min(frameIndex, engineState.frames.length - 1));
     const frame = engineState.frames[stateFrameIndex];
     if (!frame) return;
 
@@ -348,5 +554,10 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
     });
     syncActorBondVisuals(sr, frame.actorsBondState);
     updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
+
+    if (showActivePreview) {
+        renderSeekPreviewState(sr, stateFrameIndex);
+    }
 }
+
 

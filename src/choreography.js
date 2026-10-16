@@ -46,6 +46,216 @@ function spawnClashSpark(arena, anchorEl, delay = 120, color = '#f6e05e', speed 
 }
 
 /**
+ * Spawns a sweeping crescent AOE shockwave arc that expands from the caster toward the target team.
+ *
+ * @param {HTMLElement} arena - Stage `#arena` element.
+ * @param {number} startX - Origin X coordinate relative to `#arena`.
+ * @param {number} startY - Origin Y coordinate relative to `#arena`.
+ * @param {'left'|'right'} targetSide - Side of the team being swept by the wave.
+ * @param {string} color - Primary glow color of the shockwave.
+ * @param {number} speed - Effective playback speed multiplier.
+ */
+export function spawnAOEFanWave(arena, startX, startY, targetSide, color = '#fc8181', speed = 1) {
+    if (!arena || !arena.isConnected) return;
+    const waveEl = document.createElement('div');
+    const dirClass = targetSide === 'right' ? 'wave-right' : 'wave-left';
+    waveEl.className = `aoe-fan-wave ${dirClass}`;
+    waveEl.style.setProperty('--wave-color', color);
+    waveEl.style.left = `${startX}px`;
+    waveEl.style.top = `${startY}px`;
+    arena.appendChild(waveEl);
+
+    const arenaRect = arena.getBoundingClientRect();
+    const sweepDist = (targetSide === 'right' ? 1 : -1) * Math.max(220, arenaRect.width * 0.34);
+
+    const anim = waveEl.animate([
+        { transform: 'translate(-50%, -50%) scale(0.3, 0.45)', opacity: 0.95 },
+        { transform: `translate(calc(-50% + ${sweepDist * 0.55}px), -50%) scale(1.25, 1.15)`, opacity: 1, offset: 0.45 },
+        { transform: `translate(calc(-50% + ${sweepDist}px), -50%) scale(1.75, 1.45)`, opacity: 0, offset: 1 }
+    ], {
+        duration: 420 / speed,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+    });
+    anim.onfinish = () => waveEl.remove();
+}
+
+/**
+ * Spawns a directed energy projectile / sword beam flying from the caster to a target card.
+ *
+ * @param {HTMLElement} arena - Stage `#arena` element.
+ * @param {number} startX - Origin X coordinate relative to `#arena`.
+ * @param {number} startY - Origin Y coordinate relative to `#arena`.
+ * @param {HTMLElement} targetEl - Target actor card element.
+ * @param {string} color - Primary projectile glow color.
+ * @param {number} delayMs - Unscaled launch delay in milliseconds.
+ * @param {number} flightMs - Unscaled flight duration in milliseconds.
+ * @param {number} speed - Effective playback speed multiplier.
+ */
+export function spawnAOEProjectile(arena, startX, startY, targetEl, color = '#fc8181', delayMs = 0, flightMs = 150, speed = 1) {
+    setTimeout(() => {
+        if (!arena.isConnected || !targetEl || !targetEl.isConnected) return;
+        const aRect = arena.getBoundingClientRect();
+        const tRect = targetEl.getBoundingClientRect();
+        const endX = (tRect.left - aRect.left) + tRect.width / 2;
+        const endY = (tRect.top - aRect.top) + tRect.height / 2;
+
+        const angleDeg = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI);
+        const projEl = document.createElement('div');
+        projEl.className = 'aoe-projectile';
+        projEl.style.setProperty('--proj-color', color);
+        projEl.style.left = '0px';
+        projEl.style.top = '0px';
+        arena.appendChild(projEl);
+
+        const anim = projEl.animate([
+            {
+                transform: `translate(calc(${startX}px - 50%), calc(${startY}px - 50%)) rotate(${angleDeg}deg) scaleX(0.4)`,
+                opacity: 0.9
+            },
+            {
+                transform: `translate(calc(${(startX + endX) / 2}px - 50%), calc(${(startY + endY) / 2}px - 50%)) rotate(${angleDeg}deg) scaleX(1.35)`,
+                opacity: 1,
+                offset: 0.5
+            },
+            {
+                transform: `translate(calc(${endX}px - 50%), calc(${endY}px - 50%)) rotate(${angleDeg}deg) scaleX(0.7)`,
+                opacity: 0,
+                offset: 1
+            }
+        ], {
+            duration: flightMs / speed,
+            easing: 'cubic-bezier(0.2, 0.8, 0.4, 1)'
+        });
+        anim.onfinish = () => projEl.remove();
+    }, delayMs / speed);
+}
+
+/**
+ * Triggers the target impact recoil, shield block flash, or dodge blur and clash spark for an AOE hit.
+ *
+ * @param {object} frame - Combat frame for the hit target.
+ * @param {HTMLElement} arena - Stage `#arena` element.
+ * @param {HTMLElement} targetEl - Target actor card element.
+ * @param {'left'|'right'} targetSide - Target unit's team side.
+ * @param {string} shadowColor - Caster's team-colored glow hex string.
+ * @param {number} speed - Effective playback speed multiplier.
+ */
+export function triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed) {
+    if (!targetEl || !targetEl.isConnected) return;
+    if (targetEl.getAnimations) targetEl.getAnimations().forEach(anim => anim.cancel());
+
+    const dodgeDir = targetSide === 'left' ? -24 : 24;
+    if (frame.type === 'MISS') {
+        targetEl.animate([
+            { transform: 'translate(0,0) scale(1)', filter: 'blur(0px)' },
+            { transform: `translate(${dodgeDir}px, 0) scale(0.88)`, filter: 'blur(2px) brightness(1.5)', offset: 0.35 },
+            { transform: 'translate(0,0) scale(1)', filter: 'blur(0px)', offset: 1 }
+        ], { duration: 320 / speed, easing: 'ease-out' });
+    } else if (frame.type === 'BLOCK' || frame.blocked) {
+        targetEl.animate([
+            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)' },
+            { transform: `translate(${dodgeDir * 0.3}px, 2px) scale(0.96)`, filter: 'brightness(1.4) drop-shadow(0 0 10px #63b3ed)', offset: 0.35 },
+            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)', offset: 1 }
+        ], { duration: 240 / speed, easing: 'ease-out' });
+        spawnClashSpark(arena, targetEl, 20, '#63b3ed', speed);
+    } else {
+        targetEl.animate([
+            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)' },
+            { transform: `translate(${dodgeDir * 0.55}px, 0) scale(0.92)`, filter: 'brightness(1.85) contrast(1.3)', offset: 0.3 },
+            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)', offset: 1 }
+        ], { duration: 260 / speed, easing: 'ease-out' });
+        spawnClashSpark(arena, targetEl, 20, shadowColor, speed);
+    }
+}
+
+/**
+ * Orchestrates a unified multi-target AOE wave barrage across a batch of consecutive AOE frames.
+ * The caster dashes to center stage once and unleashes a sweeping crescent shockwave plus
+ * a rapid staggered fan of projectiles that strike all targets in a fluid ripple.
+ *
+ * @param {Array<object>} waveFrames - Consecutive AOE hit frames belonging to the current wave burst.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @returns {{ staggerMs: number, impactDelayMs: number, totalDurationMs: number, shadowColor: string }}
+ */
+export function playAOEWaveBatchChoreography(waveFrames, sr) {
+    const firstFrame = waveFrames[0];
+    const lastFrame = waveFrames[waveFrames.length - 1];
+    const speed = getEffectiveSpeed();
+    const arena = sr.getElementById('arena');
+    const casterId = firstFrame.aoeCasterId || firstFrame.actorId;
+    const actorEl = sr.getElementById(`actor-${casterId}`);
+    const side = engineState.actors.get(casterId)?.side || 'left';
+    const firstTargetSide = engineState.actors.get(firstFrame.targetId)?.side || (side === 'left' ? 'right' : 'left');
+    const shadowColor = side === 'left' ? '#63b3ed' : '#fc8181';
+
+    const staggerMs = 65;
+    const impactDelayMs = 135;
+    const waveSweepMs = impactDelayMs + Math.max(0, waveFrames.length - 1) * staggerMs + 280;
+
+    if (!arena || !actorEl) {
+        return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
+    }
+
+    if (actorEl.getAnimations) actorEl.getAnimations().forEach(anim => anim.cancel());
+
+    const arenaRect = arena.getBoundingClientRect();
+    if (engineState.currentCombo.aoeCenterX === undefined || firstFrame.isAOEFirst) {
+        const cleanActorRect = actorEl.getBoundingClientRect();
+        engineState.currentCombo.aoeCenterX =
+            (arenaRect.left + arenaRect.width / 2) - (cleanActorRect.left + cleanActorRect.width / 2);
+        engineState.currentCombo.aoeCenterY =
+            (arenaRect.top + arenaRect.height / 2) - (cleanActorRect.top + cleanActorRect.height / 2);
+    }
+
+    const cMoveX = engineState.currentCombo.aoeCenterX || 0;
+    const cDeltaY = engineState.currentCombo.aoeCenterY || 0;
+    const p0 = 'translate(0px, 0px) scale(1)';
+    const pCenter = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.22)`;
+    const pCenterPulse = `translate(${cMoveX}px, ${cDeltaY}px) scale(1.32)`;
+
+    const startTransform = engineState.currentCombo.atCenterStage ? pCenter : p0;
+    if (lastFrame.isAOELast) {
+        actorEl.animate([
+            { transform: startTransform, zIndex: 10 },
+            { transform: pCenterPulse, filter: `brightness(1.3) drop-shadow(0 0 18px ${shadowColor})`, zIndex: 10, offset: 0.22 },
+            { transform: pCenter, filter: `drop-shadow(0 0 14px ${shadowColor})`, zIndex: 10, offset: 0.72 },
+            { transform: p0, filter: 'none', zIndex: 1, offset: 1 }
+        ], {
+            duration: waveSweepMs / speed,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            fill: 'none'
+        });
+        engineState.currentCombo.atCenterStage = false;
+        engineState.currentCombo.knockedBack = true;
+    } else {
+        actorEl.animate([
+            { transform: startTransform, zIndex: 10 },
+            { transform: pCenterPulse, filter: `brightness(1.3) drop-shadow(0 0 18px ${shadowColor})`, zIndex: 10, offset: 0.3 },
+            { transform: pCenter, filter: `drop-shadow(0 0 14px ${shadowColor})`, zIndex: 10, offset: 1 }
+        ], {
+            duration: waveSweepMs / speed,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            fill: 'forwards'
+        });
+        engineState.currentCombo.atCenterStage = true;
+    }
+
+    const centerStageX = arenaRect.width / 2;
+    const centerStageY = arenaRect.height / 2;
+
+    // Launch sweeping crescent shockwave and staggered projectiles toward every target in the wave
+    spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
+    waveFrames.forEach((wf, idx) => {
+        const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+        if (targetEl) {
+            spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, idx * staggerMs, impactDelayMs, speed);
+        }
+    });
+
+    return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
+}
+
+/**
  * Animates center-stage Area-of-Effect (AOE) casting waves and mid-wave counterattacks.
  * The caster moves to the center of the arena on `isAOEFirst`, pulses on each wave target,
  * and returns to origin on `isAOELast`.
@@ -114,7 +324,7 @@ function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSi
         return 520;
     }
 
-    // Standard AOE hit: actorEl is the AOE caster, targetEl is the current wave target
+    // Standard single-frame AOE hit: actorEl is the AOE caster, targetEl is the current wave target
     if (engineState.currentCombo.aoeCenterX === undefined || frame.isAOEFirst) {
         const cleanActorRect = actorEl.getBoundingClientRect();
         engineState.currentCombo.aoeCenterX =
@@ -168,28 +378,13 @@ function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSi
 
     actorEl.animate(actorKeyframes, actorAnimConfig);
 
-    const dodgeDir = targetSide === 'left' ? -24 : 24;
-    if (frame.type === 'MISS') {
-        targetEl.animate([
-            { transform: 'translate(0,0) scale(1)', filter: 'blur(0px)' },
-            { transform: `translate(${dodgeDir}px, 0) scale(0.88)`, filter: 'blur(2px) brightness(1.5)', offset: 0.35 },
-            { transform: 'translate(0,0) scale(1)', filter: 'blur(0px)', offset: 1 }
-        ], { duration: 320 / speed, easing: 'ease-out' });
-    } else if (frame.type === 'BLOCK' || frame.blocked) {
-        targetEl.animate([
-            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)' },
-            { transform: `translate(${dodgeDir * 0.3}px, 2px) scale(0.96)`, filter: 'brightness(1.4) drop-shadow(0 0 10px #63b3ed)', offset: 0.35 },
-            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)', offset: 1 }
-        ], { duration: 240 / speed, easing: 'ease-out' });
-        spawnClashSpark(arena, targetEl, 40, '#63b3ed', speed);
-    } else {
-        targetEl.animate([
-            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)' },
-            { transform: `translate(${dodgeDir * 0.5}px, 0) scale(0.94)`, filter: 'brightness(1.8) contrast(1.3)', offset: 0.3 },
-            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)', offset: 1 }
-        ], { duration: 240 / speed, easing: 'ease-out' });
-        spawnClashSpark(arena, targetEl, 40, shadowColor, speed);
+    const centerStageX = arenaRect.width / 2;
+    const centerStageY = arenaRect.height / 2;
+    if (frame.isAOEFirst) {
+        spawnAOEFanWave(arena, centerStageX, centerStageY, targetSide, shadowColor, speed);
     }
+    spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, 0, 120, speed);
+    triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
 
     return frameDuration;
 }
