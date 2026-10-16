@@ -2,8 +2,12 @@
 // FILE: src/parser.js
 // ==========================================
 import { engineState } from './state.js';
-import { ENVIRONMENTAL_SKILLS } from './profiles.js';
 import { markAOEWaves, calibrateHpWithAnchors } from './calibrator.js';
+import {
+    ENVIRONMENTAL_SKILLS,
+    CONTRACT_SKILL_PROFILES,
+    CROSS_FINISHER_PROFILES
+} from './profiles.js';
 
 const DEFAULT_AVATAR_URL = 'https://via.placeholder.com/150';
 const ASSET_HOST = 'https://mydoujin.online';
@@ -204,6 +208,8 @@ export function buildStateSnapshots(logs) {
     const applyLog = [];
     const actorsDeathState = new Map();
     const actorsSummonState = new Map();
+    const actorsBondState = new Map();
+    const contractCutInCount = new Map();
 
     engineState.actors.forEach(actor => {
         actorsSummonState.set(actor.id, actor.initiallySpawned !== false);
@@ -276,7 +282,15 @@ export function buildStateSnapshots(logs) {
             isDeathEvent: false,
             deadActorId: null,
             isSummonEvent: false,
-            summonedActorId: null
+            summonedActorId: null,
+            actorsBondState: new Map(),
+            contractEvent: null,
+            isContractRepeat: false,
+            isCoverEvent: false,
+            coverDamage: 0,
+            coverAttackerId: null,
+            holdPositionForCover: false,
+            rosarioEvent: null
         };
 
         const addHpDelta = (id, delta) => {
@@ -477,6 +491,95 @@ export function buildStateSnapshots(logs) {
                     addHpDelta(target.id, -amount);
                 }
             }
+
+            // Handle Contract Skill lifecycle (Propose / Accept / Cover / End)
+            const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
+            if (contractProfile && log.type === 'SKILL_TEXT') {
+                if (contractProfile.proposeRegex.test(msg)) {
+                    frame.contractEvent = 'PROPOSE';
+                } else if (contractProfile.acceptRegex.test(msg)) {
+                    frame.contractEvent = 'ACCEPT';
+                    const prevCount = contractCutInCount.get(frame.skillId) || 0;
+                    frame.isContractRepeat = prevCount > 0;
+                    contractCutInCount.set(frame.skillId, prevCount + 1);
+
+                    if (frame.actorId) {
+                        actorsBondState.set(frame.actorId, {
+                            partnerId: frame.targetId || null,
+                            skillId: frame.skillId
+                        });
+                    }
+                    if (frame.targetId) {
+                        actorsBondState.set(frame.targetId, {
+                            partnerId: frame.actorId || null,
+                            skillId: frame.skillId
+                        });
+                    }
+                } else if (contractProfile.coverRegex.test(msg)) {
+                    const coverMatch = msg.match(contractProfile.coverRegex);
+                    const coverAmount = coverMatch ? Number(coverMatch[1]) : 0;
+                    frame.contractEvent = 'COVER';
+                    frame.isCoverEvent = true;
+                    frame.coverDamage = coverAmount;
+
+                    // Locate the enemy actor who triggered this cover event
+                    let coverAttackerId = null;
+                    for (let k = engineState.frames.length - 1; k >= Math.max(0, engineState.frames.length - 5); k--) {
+                        const prev = engineState.frames[k];
+                        if (
+                            prev &&
+                            ['DAMAGE', 'BLOCK', 'MISS', 'COUNTER'].includes(prev.type) &&
+                            prev.actorId &&
+                            prev.actorId !== frame.actorId &&
+                            prev.actorId !== frame.targetId
+                        ) {
+                            coverAttackerId = prev.actorId;
+                            // Keep the attacker in front of the ally on the preceding hit so the cover clash connects seamlessly
+                            if (prev.targetId === frame.targetId) {
+                                prev.holdPositionForCover = true;
+                            }
+                            break;
+                        }
+                    }
+
+                    if (!coverAttackerId) {
+                        const protectorSide = target?.side || 'left';
+                        engineState.actors.forEach(a => {
+                            if (!coverAttackerId && a.side !== protectorSide && a.currentHp > 0) {
+                                coverAttackerId = a.id;
+                            }
+                        });
+                    }
+                    frame.coverAttackerId = coverAttackerId;
+
+                    if (target && coverAmount > 0) {
+                        if (!target.hideHp) {
+                            target.currentHp = Math.max(0, target.currentHp - coverAmount);
+                            addHpDelta(target.id, -coverAmount);
+                        }
+                        target.totalDamageTaken += coverAmount;
+                    }
+                } else if (contractProfile.endRegex.test(msg)) {
+                    frame.contractEvent = 'END';
+                    actorsBondState.forEach((bond, bondedActorId) => {
+                        if (bondedActorId === frame.actorId || bond.partnerId === frame.actorId) {
+                            actorsBondState.delete(bondedActorId);
+                        }
+                    });
+                }
+            }
+
+            // Handle Cross Finisher mid-skill inscription (e.g., Mother's Rosario 10-hit cross)
+            const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
+            if (crossProfile && log.type === 'SKILL_TEXT' && crossProfile.inscribeRegex.test(msg)) {
+                frame.rosarioEvent = 'INSCRIBE_CROSS';
+            }
+        }
+
+        // Tag Cross Finisher final piercing hit on DAMAGE frames
+        const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
+        if (crossProfile && log.type === 'DAMAGE' && crossProfile.pierceRegex.test(frame.message)) {
+            frame.rosarioEvent = 'PIERCE_CROSS';
         }
 
         if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(log.type)) {
@@ -498,11 +601,15 @@ export function buildStateSnapshots(logs) {
 
         frame.actorsDeathState = new Map(actorsDeathState);
         frame.actorsSummonState = new Map(actorsSummonState);
+        frame.actorsBondState = new Map(actorsBondState);
         engineState.frames.push(frame);
     });
 
     calibrateHpWithAnchors(engineState.frames);
     markAOEWaves(engineState.frames);
+    engineState.frames.forEach(f => {
+        if (f.isAOE) f.holdPositionForCover = false;
+    });
     engineState.totalTurns = currentTurn;
 }
 

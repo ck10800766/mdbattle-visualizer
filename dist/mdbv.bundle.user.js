@@ -111,6 +111,52 @@
     }
     return DEFAULT_LUCK_EMOJI;
   }
+  var CONTRACT_SKILL_PROFILES = {
+    kibayuki_trial_marriage: {
+      systemTitle: "SYSTEM ALERT // MARRIAGE REQUEST",
+      systemSubtitle: "\u5169\u4EBA\u7684\u9053\u5177\u6B04\u5408\u5728\u4E86\u4E00\u8D77",
+      badgeIcon: "\u{1F48D}",
+      badgeText: "\u8A66\u5A5A\u5951\u7D04",
+      endBadgeText: "\u{1F494} \u8A66\u5A5A\u7D50\u675F",
+      themeColor: "#f687b3",
+      proposeRegex: /有人要跟.+?結婚嗎/,
+      acceptRegex: /系統跳出了結婚申請|道具欄合在了一起/,
+      coverRegex: /擋到.+?身前，替對方扛下了\s*(\d+)\s*點傷害/,
+      endRegex: /把婚紗還回了店裡|試婚到此結束/
+    }
+  };
+  var CROSS_FINISHER_PROFILES = {
+    kibayuki_rosario: {
+      inscribeRegex: /十字刻下了\s*(\d+)\s*道劍痕/,
+      pierceRegex: /貫穿十字的正中央/,
+      crossColor: "#f687b3",
+      glowColor: "#b794f4"
+    }
+  };
+  var SPECIAL_SKILL_BADGE_RULES = [
+    {
+      skillId: "kibayuki_demand",
+      regex: /被罵得抬不起頭|出手都心虛了/,
+      target: "target",
+      text: () => "\u{1F4A6} \u5FC3\u865B",
+      styleClass: "dice-warn",
+      shakeTarget: true
+    },
+    {
+      skillId: "kibayuki_zekken",
+      regex: /接下這一劍，第\s*(\d+)\s*勝/,
+      target: "actor",
+      text: (m) => `\u2694\uFE0F \u7D55\u528D ${m[1]} \u52DD!`,
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "kibayuki_zekken",
+      regex: /連勝停在第\s*(\d+)\s*勝/,
+      target: "actor",
+      text: (m) => `\u{1F494} \u9023\u52DD\u4E2D\u65B7 (${m[1]}\u52DD)`,
+      styleClass: "dice-fail"
+    }
+  ];
 
   // src/calibrator.js
   function markAOEWaves(frames) {
@@ -435,6 +481,8 @@
     const applyLog = [];
     const actorsDeathState = /* @__PURE__ */ new Map();
     const actorsSummonState = /* @__PURE__ */ new Map();
+    const actorsBondState = /* @__PURE__ */ new Map();
+    const contractCutInCount = /* @__PURE__ */ new Map();
     engineState.actors.forEach((actor) => {
       actorsSummonState.set(actor.id, actor.initiallySpawned !== false);
     });
@@ -493,7 +541,15 @@
         isDeathEvent: false,
         deadActorId: null,
         isSummonEvent: false,
-        summonedActorId: null
+        summonedActorId: null,
+        actorsBondState: /* @__PURE__ */ new Map(),
+        contractEvent: null,
+        isContractRepeat: false,
+        isCoverEvent: false,
+        coverDamage: 0,
+        coverAttackerId: null,
+        holdPositionForCover: false,
+        rosarioEvent: null
       };
       const addHpDelta = (id, delta) => {
         if (!id || !delta) return;
@@ -675,6 +731,77 @@
             addHpDelta(target.id, -amount);
           }
         }
+        const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
+        if (contractProfile && log.type === "SKILL_TEXT") {
+          if (contractProfile.proposeRegex.test(msg)) {
+            frame.contractEvent = "PROPOSE";
+          } else if (contractProfile.acceptRegex.test(msg)) {
+            frame.contractEvent = "ACCEPT";
+            const prevCount = contractCutInCount.get(frame.skillId) || 0;
+            frame.isContractRepeat = prevCount > 0;
+            contractCutInCount.set(frame.skillId, prevCount + 1);
+            if (frame.actorId) {
+              actorsBondState.set(frame.actorId, {
+                partnerId: frame.targetId || null,
+                skillId: frame.skillId
+              });
+            }
+            if (frame.targetId) {
+              actorsBondState.set(frame.targetId, {
+                partnerId: frame.actorId || null,
+                skillId: frame.skillId
+              });
+            }
+          } else if (contractProfile.coverRegex.test(msg)) {
+            const coverMatch = msg.match(contractProfile.coverRegex);
+            const coverAmount = coverMatch ? Number(coverMatch[1]) : 0;
+            frame.contractEvent = "COVER";
+            frame.isCoverEvent = true;
+            frame.coverDamage = coverAmount;
+            let coverAttackerId = null;
+            for (let k = engineState.frames.length - 1; k >= Math.max(0, engineState.frames.length - 5); k--) {
+              const prev = engineState.frames[k];
+              if (prev && ["DAMAGE", "BLOCK", "MISS", "COUNTER"].includes(prev.type) && prev.actorId && prev.actorId !== frame.actorId && prev.actorId !== frame.targetId) {
+                coverAttackerId = prev.actorId;
+                if (prev.targetId === frame.targetId) {
+                  prev.holdPositionForCover = true;
+                }
+                break;
+              }
+            }
+            if (!coverAttackerId) {
+              const protectorSide = target?.side || "left";
+              engineState.actors.forEach((a) => {
+                if (!coverAttackerId && a.side !== protectorSide && a.currentHp > 0) {
+                  coverAttackerId = a.id;
+                }
+              });
+            }
+            frame.coverAttackerId = coverAttackerId;
+            if (target && coverAmount > 0) {
+              if (!target.hideHp) {
+                target.currentHp = Math.max(0, target.currentHp - coverAmount);
+                addHpDelta(target.id, -coverAmount);
+              }
+              target.totalDamageTaken += coverAmount;
+            }
+          } else if (contractProfile.endRegex.test(msg)) {
+            frame.contractEvent = "END";
+            actorsBondState.forEach((bond, bondedActorId) => {
+              if (bondedActorId === frame.actorId || bond.partnerId === frame.actorId) {
+                actorsBondState.delete(bondedActorId);
+              }
+            });
+          }
+        }
+        const crossProfile2 = CROSS_FINISHER_PROFILES[frame.skillId];
+        if (crossProfile2 && log.type === "SKILL_TEXT" && crossProfile2.inscribeRegex.test(msg)) {
+          frame.rosarioEvent = "INSCRIBE_CROSS";
+        }
+      }
+      const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
+      if (crossProfile && log.type === "DAMAGE" && crossProfile.pierceRegex.test(frame.message)) {
+        frame.rosarioEvent = "PIERCE_CROSS";
       }
       if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
         const alreadyDead = !!actorsDeathState.get(log.actorId);
@@ -691,10 +818,14 @@
       });
       frame.actorsDeathState = new Map(actorsDeathState);
       frame.actorsSummonState = new Map(actorsSummonState);
+      frame.actorsBondState = new Map(actorsBondState);
       engineState.frames.push(frame);
     });
     calibrateHpWithAnchors(engineState.frames);
     markAOEWaves(engineState.frames);
+    engineState.frames.forEach((f) => {
+      if (f.isAOE) f.holdPositionForCover = false;
+    });
     engineState.totalTurns = currentTurn;
   }
   function getConsolidatedStats() {
@@ -878,6 +1009,49 @@
 
     .shake-active { animation: shake 0.3s ease-in-out; }
     .blink-active { animation: blink 0.3s ease-in-out; }
+
+    /* SAO Contract Cut-In & Bond System */
+    .contract-cutin-overlay { position: absolute; inset: 0; z-index: 1800; display: flex; align-items: center; justify-content: center; pointer-events: none; overflow: hidden; animation: contract-overlay-fade ease-out forwards; }
+    @keyframes contract-overlay-fade { 0% { opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+    .contract-backdrop { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(20, 10, 28, 0.85) 0%, rgba(246, 135, 179, 0.28) 50%, rgba(15, 23, 42, 0.88) 100%); backdrop-filter: blur(4px); }
+    .contract-Portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
+    .contract-cutin-overlay.solo-mode .contract-Portraits-layer { justify-content: center; }
+    .contract-portrait { display: flex; flex-direction: column; align-items: center; gap: 8px; filter: drop-shadow(0 0 24px rgba(246, 135, 179, 0.7)); }
+    .contract-portrait img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #fbb6ce; background: #1a202c; }
+    .contract-portrait.left-partner { animation: slide-in-left-partner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .contract-portrait.right-partner { animation: slide-in-right-partner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes slide-in-left-partner { from { transform: translateX(-120px) scale(0.85); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+    @keyframes slide-in-right-partner { from { transform: translateX(120px) scale(0.85); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+    .contract-partner-name { background: rgba(26, 32, 44, 0.9); color: #fff5f7; padding: 4px 14px; border-radius: 999px; font-size: 15px; font-weight: 700; border: 1px solid #f687b3; }
+
+    .sao-modal-card { position: relative; z-index: 2; width: min(420px, 82vw); background: rgba(245, 247, 250, 0.95); border: 2px solid #cbd5e0; border-radius: 6px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 30px rgba(246, 135, 179, 0.55); color: #2d3748; overflow: hidden; animation: sao-modal-pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes sao-modal-pop { 0% { transform: scaleY(0.05) scaleX(0.6); opacity: 0; } 60% { transform: scaleY(1.04) scaleX(1.02); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+    .sao-modal-header { background: linear-gradient(90deg, #4a5568, #2d3748); color: #edf2f7; font-size: 12px; font-weight: 800; letter-spacing: 1.5px; padding: 8px 14px; text-align: center; border-bottom: 2px solid #f687b3; }
+    .sao-modal-body { padding: 18px 20px 14px; text-align: center; }
+    .sao-modal-couple { font-size: 20px; font-weight: 900; color: #1a202c; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .sao-modal-desc { font-size: 14px; color: #4a5568; font-weight: 600; }
+    .sao-modal-footer { display: flex; justify-content: center; gap: 36px; padding: 10px 0 16px; background: rgba(237, 242, 247, 0.8); border-top: 1px solid #e2e8f0; }
+    .sao-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; border: 2px solid #a0aec0; background: #fff; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease; }
+    .sao-btn-accept { color: #ed8936; border-color: #ed8936; }
+    .sao-btn-accept.pressed { background: #ed8936; color: #fff; transform: scale(1.25); box-shadow: 0 0 20px #f6ad55, 0 0 35px #f687b3; }
+    .sao-btn-cancel { color: #718096; }
+
+    /* Persistent Marriage Bond Aura & Cover Shield */
+    .actor.bond-active .avatar { border-color: #f687b3; box-shadow: 0 0 16px rgba(246, 135, 179, 0.85); }
+    .bond-ring-badge { position: absolute; top: -10px; right: -12px; background: linear-gradient(135deg, #d53f8c, #b83280); color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1.5px solid #fbb6ce; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 30; white-space: nowrap; pointer-events: none; }
+    .bridal-cover-shield { position: absolute; inset: -10px; border: 3px solid #fbb6ce; border-radius: 14px; background: radial-gradient(circle, rgba(246, 135, 179, 0.35) 0%, transparent 75%); box-shadow: 0 0 20px #f687b3; display: flex; align-items: flex-start; justify-content: center; z-index: 20; pointer-events: none; }
+    .bridal-cover-shield span { margin-top: -12px; background: #d53f8c; color: #fff; font-size: 11px; font-weight: 900; padding: 1px 8px; border-radius: 999px; border: 1px solid #fff; }
+
+    /* Mother's Rosario 10-Hit Cross Emblem */
+    .rosario-cross-mark { position: absolute; inset: -15px; z-index: 35; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+    .rosario-line { position: absolute; width: 140%; height: 5px; background: linear-gradient(90deg, transparent, #fff, #f687b3, #fff, transparent); box-shadow: 0 0 14px #f687b3, 0 0 24px #b794f4; border-radius: 999px; }
+    .rosario-line.line-1 { transform: rotate(38deg); animation: rosario-slash-in 0.22s ease-out forwards; }
+    .rosario-line.line-2 { transform: rotate(-38deg); animation: rosario-slash-in 0.22s 0.08s ease-out backwards; }
+    .rosario-core { width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px #fff, 0 0 35px #f687b3; animation: rosario-core-pulse 0.4s infinite alternate; }
+    .rosario-cross-mark.shatter { animation: rosario-shatter 0.4s ease-out forwards; }
+    @keyframes rosario-slash-in { from { transform: scaleX(0) rotate(38deg); opacity: 0; } to { opacity: 1; } }
+    @keyframes rosario-core-pulse { from { transform: scale(0.85); } to { transform: scale(1.35); } }
+    @keyframes rosario-shatter { 0% { transform: scale(1); filter: brightness(2); opacity: 1; } 100% { transform: scale(2.1); filter: brightness(3) blur(4px); opacity: 0; } }
 `;
 
   // src/cinematics.js
@@ -1070,6 +1244,124 @@
         if (badge.isConnected) badge.remove();
       }, 1200 / getEffectiveSpeed());
     }
+    if (frame.contractEvent === "END") {
+      const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+      const actorOnlyEl = sr.getElementById(`actor-${frame.actorId}`);
+      if (actorOnlyEl && profile) {
+        const badge = document.createElement("div");
+        badge.className = "dice-badge dice-warn";
+        badge.textContent = profile.endBadgeText || "\u5951\u7D04\u7D50\u675F";
+        actorOnlyEl.appendChild(badge);
+        setTimeout(() => {
+          if (badge.isConnected) badge.remove();
+        }, 1200 / getEffectiveSpeed());
+      }
+      return;
+    }
+    for (const rule of SPECIAL_SKILL_BADGE_RULES) {
+      if (frame.skillId === rule.skillId && frame.message) {
+        const match = frame.message.match(rule.regex);
+        if (match) {
+          const badgeTargetId = rule.target === "actor" ? frame.actorId : frame.targetId || frame.actorId;
+          const badgeTargetEl = sr.getElementById(`actor-${badgeTargetId}`);
+          if (!badgeTargetEl) return;
+          const badge = document.createElement("div");
+          badge.className = `dice-badge ${rule.styleClass}`;
+          badge.textContent = rule.text(match);
+          badgeTargetEl.appendChild(badge);
+          if (rule.shakeTarget) {
+            badgeTargetEl.animate([
+              { transform: "translateX(0)" },
+              { transform: "translateX(-6px) rotate(-2deg)", offset: 0.25 },
+              { transform: "translateX(6px) rotate(2deg)", offset: 0.5 },
+              { transform: "translateX(-4px)", offset: 0.75 },
+              { transform: "translateX(0)" }
+            ], { duration: 360 / getEffectiveSpeed() });
+          }
+          setTimeout(() => {
+            if (badge.isConnected) badge.remove();
+          }, 1300 / getEffectiveSpeed());
+          return;
+        }
+      }
+    }
+  }
+  async function playContractCutIn(frame, sr, token) {
+    const actor = engineState.actors.get(frame.actorId);
+    const partner = frame.targetId ? engineState.actors.get(frame.targetId) : null;
+    const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+    if (!actor || !profile || engineState.playbackToken !== token) return;
+    const arena = sr.getElementById("arena");
+    if (!arena) return;
+    const isDual = !!partner && partner.id !== actor.id;
+    const baseDuration = frame.isContractRepeat ? 1050 : 1750;
+    const actualDuration = baseDuration / getEffectiveSpeed();
+    const overlay = document.createElement("div");
+    overlay.className = `contract-cutin-overlay ${isDual ? "dual-mode" : "solo-mode"}`;
+    overlay.style.setProperty("--contract-theme", profile.themeColor || "#f687b3");
+    overlay.style.animationDuration = `${actualDuration}ms`;
+    const portraitsHtml = isDual ? `
+            <div class="contract-portrait left-partner">
+                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
+                <div class="contract-partner-name">${actor.name}</div>
+            </div>
+            <div class="contract-portrait right-partner">
+                <img src="${partner.avatar}" onerror="this.src='https://via.placeholder.com/150'">
+                <div class="contract-partner-name">${partner.name}</div>
+            </div>
+        ` : `
+            <div class="contract-portrait solo-partner">
+                <img src="${actor.avatar}" onerror="this.src='https://via.placeholder.com/150'">
+                <div class="contract-partner-name">${actor.name}</div>
+            </div>
+        `;
+    const headlineText = isDual ? `${actor.name} <span>${profile.badgeIcon}</span> ${partner.name}` : `${actor.name} <span>${profile.badgeIcon}</span> ${profile.badgeText}`;
+    overlay.innerHTML = `
+        <div class="contract-backdrop"></div>
+        <div class="contract-Portraits-layer">${portraitsHtml}</div>
+        <div class="sao-modal-card">
+            <div class="sao-modal-header">${profile.systemTitle}</div>
+            <div class="sao-modal-body">
+                <div class="sao-modal-couple">${headlineText}</div>
+                <div class="sao-modal-desc">${profile.systemSubtitle}</div>
+            </div>
+            <div class="sao-modal-footer">
+                <div class="sao-btn sao-btn-accept">\u25EF</div>
+                <div class="sao-btn sao-btn-cancel">\u2715</div>
+            </div>
+        </div>
+    `;
+    arena.appendChild(overlay);
+    const acceptBtn = overlay.querySelector(".sao-btn-accept");
+    setTimeout(() => {
+      if (acceptBtn && acceptBtn.isConnected) {
+        acceptBtn.classList.add("pressed");
+      }
+    }, actualDuration * 0.38);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (overlay.isConnected) overlay.remove();
+        resolve();
+      }, actualDuration);
+    });
+  }
+  function spawnRosarioCross(frame, sr) {
+    const targetId = frame.targetId || frame.actorId;
+    const targetEl = sr.getElementById(`actor-${targetId}`);
+    if (!targetEl) return;
+    const existing = targetEl.querySelector(".rosario-cross-mark");
+    if (existing) existing.remove();
+    const crossEl = document.createElement("div");
+    crossEl.className = "rosario-cross-mark";
+    crossEl.innerHTML = `
+        <div class="rosario-line line-1"></div>
+        <div class="rosario-line line-2"></div>
+        <div class="rosario-core"></div>
+    `;
+    targetEl.appendChild(crossEl);
+    setTimeout(() => {
+      if (crossEl.isConnected) crossEl.remove();
+    }, 1800 / getEffectiveSpeed());
   }
 
   // src/choreography.js
@@ -1086,8 +1378,15 @@
         continue;
       }
       if (lookahead.turnNumber !== frame.turnNumber) break;
-      if (["HEAL", "SP_RECOVER", "SKILL_TEXT", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type)) {
+      if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type)) {
         shouldReturnToOrigin = true;
+        continue;
+      }
+      if (lookahead.type === "SKILL_TEXT") {
+        const isSameSkillBridgeText = lookahead.actorId === frame.actorId && activeSkillId && lookahead.skillId === activeSkillId && !lookahead.isCoverEvent;
+        if (!isSameSkillBridgeText) {
+          shouldReturnToOrigin = true;
+        }
         continue;
       }
       if (lookahead.type === "TEXT" && lookahead.skillTier === "ultimate") {
@@ -1384,8 +1683,11 @@
       if (!frame.isCounter && frame.type !== "COUNTER") {
         engineState.currentCombo.knockedBack = false;
       }
-      const stayAtTarget = isNextFrameSameCombo && !isNextTargetDifferent && !shouldReturnToOrigin;
-      if ((shouldReturnToOrigin || isNextTargetDifferent) && !frame.isCounter && frame.type !== "COUNTER") {
+      const isFollowedByCover = !!frame.holdPositionForCover;
+      const stayAtTarget = isNextFrameSameCombo && !isNextTargetDifferent && !shouldReturnToOrigin || isFollowedByCover;
+      if (isFollowedByCover) {
+        engineState.currentCombo.heldForCoverActorId = frame.actorId;
+      } else if ((shouldReturnToOrigin || isNextTargetDifferent) && !frame.isCounter && frame.type !== "COUNTER") {
         engineState.currentCombo.knockedBack = true;
       }
       const isFirstHit = startsFromOrigin && stayAtTarget;
@@ -1590,12 +1892,150 @@
       if (!frame.isCounter && frame.type !== "COUNTER") {
         engineState.currentCombo.keepAlive = isNextFrameSameCombo;
       }
+      if (frame.skillId === "kibayuki_demand" && frame.type === "DAMAGE") {
+        targetKeyframes = [
+          { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)" },
+          { transform: "translate(-12px, -4px) rotate(-6deg)", filter: "brightness(1.6)", offset: 0.2 },
+          { transform: "translate(10px, 2px) rotate(5deg)", offset: 0.4 },
+          { transform: "translate(-10px, -2px) rotate(-5deg)", offset: 0.6 },
+          { transform: "translate(8px, 0) rotate(3deg)", offset: 0.8 },
+          { transform: "translate(0, 0) rotate(0deg)", filter: "brightness(1)", offset: 1 }
+        ];
+        targetAnimConfig.duration = 420 / speed;
+      }
+      if (frame.rosarioEvent === "PIERCE_CROSS") {
+        triggerClashSpark(60, "#f687b3");
+        triggerClashSpark(140, "#b794f4");
+        const crossEl = targetEl.querySelector(".rosario-cross-mark");
+        if (crossEl) {
+          crossEl.classList.add("shatter");
+          setTimeout(() => {
+            if (crossEl.isConnected) crossEl.remove();
+          }, 450 / speed);
+        }
+      }
       actorEl.animate(actorKeyframes, actorAnimConfig);
       if (targetKeyframes.length > 0) {
         targetEl.animate(targetKeyframes, targetAnimConfig);
       }
     }
     return frameDuration;
+  }
+  function playCoverAnimation(frame, sr) {
+    const speed = getEffectiveSpeed();
+    const arena = sr.getElementById("arena");
+    const actorEl = sr.getElementById(`actor-${frame.actorId}`);
+    const targetEl = frame.targetId ? sr.getElementById(`actor-${frame.targetId}`) : null;
+    const attackerEl = frame.coverAttackerId ? sr.getElementById(`actor-${frame.coverAttackerId}`) : null;
+    if (!actorEl || !targetEl || actorEl === targetEl) return 500;
+    const wasHeldAtTarget = !!frame.coverAttackerId && engineState.currentCombo.heldForCoverActorId === frame.coverAttackerId;
+    engineState.currentCombo.heldForCoverActorId = null;
+    engineState.currentCombo.knockedBack = true;
+    engineState.currentCombo.keepAlive = false;
+    if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
+    if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
+    if (attackerEl && attackerEl.getAnimations) {
+      attackerEl.getAnimations().forEach((anim) => anim.cancel());
+    }
+    const side = engineState.actors.get(frame.actorId)?.side || "left";
+    const actorRect = actorEl.getBoundingClientRect();
+    const targetRect = targetEl.getBoundingClientRect();
+    const frontOffsetX = side === "left" ? 44 : -44;
+    const moveX = targetRect.left - actorRect.left + frontOffsetX;
+    const deltaY = targetRect.top - actorRect.top;
+    const shieldRing = document.createElement("div");
+    shieldRing.className = "bridal-cover-shield";
+    shieldRing.innerHTML = "<span>\u{1F48D} GUARD</span>";
+    actorEl.appendChild(shieldRing);
+    if (frame.coverDamage > 0) {
+      const dmgEl = document.createElement("div");
+      dmgEl.className = "floating-text";
+      dmgEl.style.color = "#fbb6ce";
+      dmgEl.textContent = `-${frame.coverDamage}`;
+      actorEl.appendChild(dmgEl);
+      setTimeout(() => {
+        if (dmgEl.isConnected) dmgEl.remove();
+      }, 850 / speed);
+    }
+    if (attackerEl) {
+      const attackerSide = engineState.actors.get(frame.coverAttackerId)?.side || (side === "left" ? "right" : "left");
+      const attackerRect = attackerEl.getBoundingClientRect();
+      const enemyHeldX = targetRect.left - attackerRect.left + (attackerSide === "left" ? -60 : 60);
+      const enemyHeldY = targetRect.top - attackerRect.top;
+      const enemyClashX = targetRect.left - attackerRect.left + (attackerSide === "left" ? -78 : 78);
+      const enemyRecoilX = enemyClashX + (attackerSide === "left" ? -28 : 28);
+      const pEnemyStart = wasHeldAtTarget ? `translate(${enemyHeldX}px, ${enemyHeldY}px) scale(1.15)` : "translate(0, 0) scale(1)";
+      attackerEl.animate([
+        { transform: pEnemyStart, zIndex: 14 },
+        {
+          transform: `translate(${enemyClashX}px, ${enemyHeldY}px) scale(1.22)`,
+          filter: "brightness(1.45)",
+          zIndex: 14,
+          offset: 0.25
+        },
+        {
+          transform: `translate(${enemyRecoilX}px, ${enemyHeldY}px) scale(1.06)`,
+          filter: "brightness(1.8) drop-shadow(0 0 12px #f687b3)",
+          zIndex: 14,
+          offset: 0.45
+        },
+        { transform: "translate(0, 0) scale(1)", filter: "none", zIndex: 1, offset: 1 }
+      ], {
+        duration: 640 / speed,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+      });
+      if (arena) {
+        setTimeout(() => {
+          if (!actorEl.isConnected || !arena.isConnected) return;
+          const sparkEl = document.createElement("div");
+          sparkEl.style.cssText = "position: absolute; width: 80px; height: 80px; background: radial-gradient(circle, #ffffff 25%, #f687b3 55%, transparent 80%); border-radius: 50%; z-index: 25; transform: translate(-50%, -50%) scale(0); pointer-events: none; mix-blend-mode: screen; box-shadow: 0 0 24px #f687b3;";
+          const aRect = actorEl.getBoundingClientRect();
+          const arRect = arena.getBoundingClientRect();
+          const sparkOffsetX = side === "left" ? aRect.width * 0.85 : aRect.width * 0.15;
+          sparkEl.style.left = `${aRect.left - arRect.left + sparkOffsetX}px`;
+          sparkEl.style.top = `${aRect.top - arRect.top + aRect.height / 2}px`;
+          arena.appendChild(sparkEl);
+          const sparkAnim = sparkEl.animate([
+            { transform: "translate(-50%, -50%) scale(0) rotate(0deg)", opacity: 1 },
+            { transform: "translate(-50%, -50%) scale(3.2) rotate(45deg)", opacity: 1, offset: 0.3 },
+            { transform: "translate(-50%, -50%) scale(4.5) rotate(90deg)", opacity: 0, offset: 1 }
+          ], { duration: 320 / speed });
+          sparkAnim.onfinish = () => sparkEl.remove();
+        }, 140 / speed);
+      }
+    }
+    actorEl.animate([
+      { transform: "translate(0, 0) scale(1)", zIndex: 15 },
+      {
+        transform: `translate(${moveX}px, ${deltaY}px) scale(1.14)`,
+        filter: "brightness(1.35) drop-shadow(0 0 14px #f687b3)",
+        zIndex: 15,
+        offset: 0.23
+      },
+      {
+        transform: `translate(${moveX - (side === "left" ? 12 : -12)}px, ${deltaY}px) scale(1.08)`,
+        filter: "brightness(1.6) drop-shadow(0 0 22px #fbb6ce)",
+        zIndex: 15,
+        offset: 0.52
+      },
+      { transform: "translate(0, 0) scale(1)", filter: "none", zIndex: 1, offset: 1 }
+    ], {
+      duration: 640 / speed,
+      easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+    });
+    targetEl.animate([
+      { transform: "translate(0, 0) scale(1)" },
+      { transform: `translate(${side === "left" ? -14 : 14}px, 0) scale(0.95)`, offset: 0.3 },
+      { transform: `translate(${side === "left" ? -14 : 14}px, 0) scale(0.95)`, offset: 0.55 },
+      { transform: "translate(0, 0) scale(1)", offset: 1 }
+    ], {
+      duration: 580 / speed,
+      easing: "ease-out"
+    });
+    setTimeout(() => {
+      if (shieldRing.isConnected) shieldRing.remove();
+    }, 620 / speed);
+    return 660;
   }
 
   // src/floatingText.js
@@ -2264,6 +2704,28 @@
       icon.dataset.progress = progress;
     });
   }
+  function syncActorBondVisuals(sr, bondStateMap = null) {
+    engineState.actors.forEach((actor) => {
+      const wrapperEl = sr.getElementById(`actor-${actor.id}`);
+      if (!wrapperEl) return;
+      const bondInfo = bondStateMap ? bondStateMap.get(actor.id) : null;
+      const existingBadge = wrapperEl.querySelector(".bond-ring-badge");
+      if (bondInfo) {
+        const profile = CONTRACT_SKILL_PROFILES[bondInfo.skillId];
+        wrapperEl.classList.add("bond-active");
+        if (!existingBadge) {
+          const badge = document.createElement("div");
+          badge.className = "bond-ring-badge";
+          const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
+          badge.textContent = partner ? `${profile?.badgeIcon || "\u{1F48D}"} ${partner.name}` : `${profile?.badgeIcon || "\u{1F48D}"} ${profile?.badgeText || "\u5951\u7D04"}`;
+          wrapperEl.appendChild(badge);
+        }
+      } else {
+        wrapperEl.classList.remove("bond-active");
+        if (existingBadge) existingBadge.remove();
+      }
+    });
+  }
   function syncStageToAbsoluteState(frameIndex, isInitialReset = false) {
     const sr = engineState.shadowRoot;
     if (!sr) return;
@@ -2275,7 +2737,7 @@
     const fatalityOverlay = sr.getElementById("fatality-overlay");
     if (fatalityOverlay) fatalityOverlay.classList.remove("active");
     sr.querySelectorAll(
-      ".ultimate-overlay, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text"
+      ".ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text"
     ).forEach((el) => el.remove());
     engineState.actors.forEach((actor) => {
       actor.lastUltimateTurn = null;
@@ -2328,6 +2790,7 @@
           else wrapperEl.classList.remove("unspawned");
         }
       });
+      syncActorBondVisuals(sr, null);
       updateATBUI(0, true);
       return;
     }
@@ -2372,6 +2835,7 @@
         }
       }
     });
+    syncActorBondVisuals(sr, frame.actorsBondState);
     updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
   }
   async function playbackLoop(token) {
@@ -2425,20 +2889,34 @@
         }, 600);
       }
     }
-    if (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE") {
+    const isSpokenSkillQuote = frame.type === "SKILL_TEXT" && /^[^：「\s]+：「.+」$/.test(frame.message.trim());
+    if (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE" || isSpokenSkillQuote) {
       const readTime = renderSpeechBubble(frame, sr, token);
-      frameDuration += readTime;
+      frameDuration += isSpokenSkillQuote ? Math.min(readTime, 900) : readTime;
     }
-    if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED"].includes(frame.type)) {
+    if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED"].includes(frame.type) || frame.type === "SKILL_TEXT") {
       spawnStatusOrDiceBadge(frame, sr);
     }
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
+    syncActorBondVisuals(sr, frame.actorsBondState);
+    if (frame.contractEvent === "ACCEPT") {
+      await playContractCutIn(frame, sr, token);
+      if (engineState.playbackToken !== token) return;
+      frameDuration = 450;
+    }
+    if (frame.rosarioEvent === "INSCRIBE_CROSS") {
+      spawnRosarioCross(frame, sr);
+      frameDuration = 520;
+    }
     if (frame.skillTier === "ultimate" && ["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) && !frame.isNormalAttack) {
       const actor = engineState.actors.get(frame.actorId);
-      if (actor && actor.lastUltimateTurn !== frame.turnNumber) {
+      const isMultiHitSubFrame = /^第\s*\d+\s*[劍擊發道]/.test(frame.message) || frame.rosarioEvent === "INSCRIBE_CROSS";
+      if (actor && actor.lastUltimateTurn !== frame.turnNumber && !isMultiHitSubFrame) {
         actor.lastUltimateTurn = frame.turnNumber;
         await playUltimateCutIn(frame, sr, token);
         if (engineState.playbackToken !== token) return;
+      } else if (actor && isMultiHitSubFrame) {
+        actor.lastUltimateTurn = frame.turnNumber;
       }
     }
     const {
@@ -2446,7 +2924,9 @@
       isNextTargetDifferent,
       shouldReturnToOrigin
     } = lookaheadComboState(engineState.currentFrameIndex, frame);
-    if (frame.actorId && ["DAMAGE", "MISS", "COUNTER", "BLOCK"].includes(frame.type)) {
+    if (frame.isCoverEvent) {
+      frameDuration = playCoverAnimation(frame, sr);
+    } else if (frame.actorId && ["DAMAGE", "MISS", "COUNTER", "BLOCK"].includes(frame.type)) {
       frameDuration = playCombatAnimation(
         frame,
         sr,
