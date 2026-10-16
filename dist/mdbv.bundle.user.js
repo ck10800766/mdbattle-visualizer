@@ -517,6 +517,75 @@
       target: "actor",
       text: () => "\u{1F5E1}\uFE0F \u6536\u5200\u5165\u9798",
       styleClass: "dice-warn"
+    },
+    // Patriot & Guerrilla squad skills
+    {
+      skillId: "patriot_dust",
+      regex: /結晶從他的鎧甲縫隙崩落，化作一陣源石塵暴/,
+      target: "actor",
+      text: () => "\u{1F32A}\uFE0F \u6E90\u77F3\u5875\u66B4",
+      styleClass: "dice-warn",
+      shakeTarget: true
+    },
+    {
+      skillId: "patriot_march",
+      regex: /頂著塔盾向前壓進/,
+      target: "actor",
+      text: () => "\u{1F6E1}\uFE0F \u76FE\u7246\u63A8\u9032",
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "patriot_javelin",
+      regex: /舉起一支長槍，越過前排/,
+      target: "actor",
+      text: () => "\u{1F531} \u6A19\u69CD\u9396\u5B9A",
+      styleClass: "dice-warn"
+    },
+    {
+      skillId: "patriot_sacrifice",
+      regex: /身軀燃起源石的紅光|灼熱的脈動/,
+      target: "actor",
+      text: () => "\u{1F525} \u6368\u8EAB\u71C3\u71D2",
+      styleClass: "dice-warn",
+      shakeTarget: true
+    },
+    {
+      skillId: "patriot_ruin",
+      regex: /雙手握戟，一步一步逼向/,
+      target: "actor",
+      text: () => "\u26A1 \u96D9\u624B\u6BC0\u6EC5\u621F",
+      styleClass: "dice-fail"
+    },
+    // Oripathy & Environmental Debuffs
+    {
+      skillId: "oripathy",
+      regex: /吸進了源石粉塵|長出了成片的結晶|半邊身體都被結晶覆蓋/,
+      target: "actor",
+      text: () => "\u{1F48E} \u7926\u77F3\u75C5\u4FB5\u8755",
+      styleClass: "dice-warn"
+    },
+    // Eris & Sylphy
+    {
+      skillId: "sylphy_white_hair",
+      regex: /硬是撐住了最後一口氣/,
+      target: "actor",
+      text: () => "\u{1F4A8} \u5B88\u8B77\u98A8\u7246",
+      styleClass: "dice-pass"
+    },
+    {
+      skillId: "eris_deprivation",
+      regex: /武器被挑偏，握不穩了/,
+      target: "target",
+      text: () => "\u2694\uFE0F \u6B66\u5668\u6311\u504F",
+      styleClass: "dice-fail",
+      shakeTarget: true
+    },
+    {
+      skillId: "eris_silent_sword",
+      regex: /露出了破綻/,
+      target: "actor",
+      text: () => "\u26A0\uFE0F \u67B6\u52E2\u7834\u7DBB",
+      styleClass: "dice-warn"
     }
   ];
   var BENEFICIAL_BUFF_SKILLS = /* @__PURE__ */ new Set([
@@ -925,7 +994,7 @@
       const actualDamage = log.actualDamage != null ? Number(log.actualDamage) : rawValue;
       const isCounterSetup = detectCounterSetup(logs, index, log, rawValue);
       const isSelfDamage = log.type === "DAMAGE" && log.actorId && log.actorId === log.targetId;
-      const isEnvironmentalPulse = ENVIRONMENTAL_SKILLS.has(log.skillId);
+      const isEnvironmentalPulse = ENVIRONMENTAL_SKILLS.has(log.skillId) || /脈衝波掃過/i.test(log.message || "");
       const frame = {
         index,
         type: log.type,
@@ -1049,7 +1118,7 @@
           }
         }
         frame.vfx.push("luck-drop");
-        if (frame.actionCancelled) frame.vfx.push("break-stamp");
+        frame.vfx.push("flash-purple");
       } else if (log.type === "HEAL") {
         const target = engineState.actors.get(log.targetId || log.actorId);
         if (target) {
@@ -1246,6 +1315,11 @@
       return `<span class="${nameClass}">${match}</span>`;
     });
   }
+  function getMessageReadingDuration(message = "") {
+    if (!message) return 600;
+    const len = message.trim().length;
+    return Math.max(1e3, Math.min(4500, 650 + len * 75));
+  }
 
   // src/styles.js
   var STAGE_STYLES = `
@@ -1311,6 +1385,7 @@
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; }
     .log-line.system-log { background: rgba(255, 255, 255, 0.03); }
     .log-line.dialogue-log { background: rgba(79, 209, 197, 0.1); border-left: 3px solid #4fd1c5; color: #e2e8f0; font-weight: 500; }
+    .log-line.narrative-log { background: rgba(255, 255, 255, 0.04); border-left: 3px solid #718096; color: #f1f5f9; font-style: italic; }
     .actor-name-left { font-weight: bold; color: #90cdf4; }
     .actor-name-right { font-weight: bold; color: #feb2b2; }
 
@@ -1441,6 +1516,16 @@
     .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
     .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
 
+    /* Environmental Battlefield Hazard Wave & Scene Narration Subtitle Banner */
+    .arena-field-wave { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 38; background: radial-gradient(circle at 50% 50%, rgba(229, 62, 62, 0.45) 0%, rgba(183, 28, 28, 0.22) 50%, transparent 80%); opacity: 0; animation: arenaFieldPulse 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes arenaFieldPulse { 0% { opacity: 0; transform: scale(0.65); } 30% { opacity: 1; transform: scale(1.04); } 70% { opacity: 0.85; transform: scale(1); } 100% { opacity: 0; transform: scale(1.15); filter: blur(4px); } }
+
+    .scene-narration-banner { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); max-width: 86%; padding: 8px 20px; background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(226, 232, 240, 0.25); border-radius: 8px; color: #f1f5f9; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: 14px; font-style: italic; line-height: 1.6; text-align: center; letter-spacing: 0.5px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); pointer-events: none; z-index: 55; animation: narrationFadeIn 0.35s ease-out forwards; white-space: pre-line; }
+    .scene-narration-banner.fade-out { animation: narrationFadeOut 0.4s ease-in forwards; }
+    @keyframes narrationFadeIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    @keyframes narrationFadeOut { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -8px); } }
+
+
     /* Timeline Milestone Event Pins & Tooltips */
     .seek-track-wrapper { position: relative; flex: 1; display: flex; align-items: center; height: 32px; }
     .seek-track-wrapper input[type="range"] { width: 100%; margin: 0; position: relative; z-index: 2; }
@@ -1487,7 +1572,7 @@
       const escapedActorName = escapeRegExp(actorName);
       text = text.replace(new RegExp(`^${escapedActorName}[\uFF1A:]?\\s*(\u7684\\s*)?`), "");
     }
-    text = text.replace(/[，,、]?\s*會心一擊[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*造成了?\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, "").replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?受到\s*\d+\s*點傷害[！!]?/g, "").replace(/[，,、]?\s*(?:對\s*.+?\s*)?造成了?\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, "").replace(/[—─ー―-]+$/g, "").replace(/^[，,、：:\s]+/, "").replace(/[，,、\s]+$/, "").trim();
+    text = text.replace(/^[第輪次]\s*\d+\s*[擊輪次劍枚][，,、\s]*/g, "").replace(/[，,、]?\s*(?:會心一擊|精準劃過要害|正中要害)[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, "").replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*(?:(?:對|在)\s*.+?\s*|(?:[^\s，,。]+?\s*))?(?:命中並\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, "").replace(/[—─ー―-]+$/g, "").replace(/^[，,、：:\s]+/, "").replace(/[，,、\s]+$/, "").trim();
     if (text.length > 0 && !/[。！!?.」…]$/.test(text)) {
       text += "\u2026\u2026";
     }
@@ -1564,14 +1649,16 @@
       }
       if (extractedSkillName) {
         mainText = extractedSkillName;
+        const rawRemaining = frame.message.replace(new RegExp(`\u4F7F\u51FA\u4E86\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
+        subText = stripCombatOutcomeText(rawRemaining, actor.name);
       } else {
         let rawSkillId = frame.skillId || "ULTIMATE_SKILL";
         if (rawSkillId.includes("_")) {
           rawSkillId = rawSkillId.substring(rawSkillId.indexOf("_") + 1);
         }
         mainText = rawSkillId.replace(/_/g, " ").toUpperCase();
+        subText = stripCombatOutcomeText(frame.message, actor.name);
       }
-      subText = stripCombatOutcomeText(frame.message, actor.name);
     }
     const isEnglish = /[A-Za-z]/.test(mainText);
     const quoteEl = document.createElement("div");
@@ -1603,21 +1690,76 @@
       }, actualDuration);
     });
   }
+  function resolveDialogueSpeaker(frame) {
+    if (!frame || !frame.message) return null;
+    const msg = frame.message.trim();
+    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
+    if (disembodiedPattern.test(msg)) {
+      return null;
+    }
+    const switchMatch = msg.match(/^[「『"“]Switch[！!]?[」』"”]\s*([^\s，,。]+)/i);
+    if (switchMatch) {
+      const candidateName = switchMatch[1].trim();
+      if (frame.targetId) {
+        const targetActor = engineState.actors.get(frame.targetId);
+        if (targetActor && (candidateName.startsWith(targetActor.name) || targetActor.name.startsWith(candidateName))) {
+          return { actorId: targetActor.id, quote: "Switch\uFF01" };
+        }
+      }
+      for (const [id, actor] of engineState.actors.entries()) {
+        if (candidateName.startsWith(actor.name) || actor.name.startsWith(candidateName)) {
+          return { actorId: id, quote: "Switch\uFF01" };
+        }
+      }
+      return null;
+    }
+    const colonQuoteMatch = msg.match(/^([^\n：:]{1,25})[：:]\s*[「『"“]([^」』"”]+)[」』"”]/);
+    if (colonQuoteMatch) {
+      const speakerPrefix = colonQuoteMatch[1].trim();
+      const quote = `\u300C${colonQuoteMatch[2].trim()}\u300D`;
+      if (disembodiedPattern.test(speakerPrefix)) {
+        return null;
+      }
+      if (frame.actorId) {
+        const frameActor = engineState.actors.get(frame.actorId);
+        if (frameActor && (speakerPrefix.startsWith(frameActor.name) || speakerPrefix.includes(frameActor.name))) {
+          return { actorId: frameActor.id, quote };
+        }
+      }
+      for (const [id, actor] of engineState.actors.entries()) {
+        if (speakerPrefix.startsWith(actor.name) || speakerPrefix.includes(actor.name)) {
+          return { actorId: id, quote };
+        }
+      }
+      return null;
+    }
+    const standaloneQuoteMatch = msg.match(/[「『"“]([^」』"”]+)[」』"”]/);
+    if (standaloneQuoteMatch && (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE")) {
+      if (frame.actorId) {
+        const frameActor = engineState.actors.get(frame.actorId);
+        if (frameActor && msg.includes(frameActor.name) && !msg.startsWith("\u300CSwitch")) {
+          return { actorId: frameActor.id, quote: `\u300C${standaloneQuoteMatch[1].trim()}\u300D` };
+        }
+      }
+    }
+    return null;
+  }
   function renderSpeechBubble(frame, sr, token) {
-    const actorEl = sr.getElementById(`actor-${frame.actorId}`);
-    const actor = engineState.actors.get(frame.actorId);
+    const speaker = resolveDialogueSpeaker(frame);
+    if (!speaker) return 0;
+    const actorEl = sr.getElementById(`actor-${speaker.actorId}`);
+    const actor = engineState.actors.get(speaker.actorId);
     if (!actorEl || !actor) return 0;
     const existingBubble = actorEl.querySelector(".speech-bubble");
     if (existingBubble) existingBubble.remove();
     const bubble = document.createElement("div");
     bubble.className = `speech-bubble ${actor.side === "left" ? "left-bubble" : "right-bubble"}`;
-    const textContent = frame.message.replace(/^.+?[：:]\s*/, "");
     const textSpan = document.createElement("span");
     textSpan.className = "typewriter-text";
     bubble.appendChild(textSpan);
     actorEl.appendChild(bubble);
-    const textLength = textContent.length;
-    const readTime = Math.max(2e3, 1e3 + textLength * 100);
+    const textContent = speaker.quote;
+    const readTime = getMessageReadingDuration(textContent);
     let charIndex = 0;
     function typeChar() {
       if (engineState.playbackToken !== token || !bubble.isConnected) return;
@@ -1634,6 +1776,65 @@
       if (bubble.isConnected) bubble.remove();
     }, (readTime + 500) / getEffectiveSpeed());
     return readTime;
+  }
+  function renderSceneNarrationBanner(frame, sr, token) {
+    const arena = sr.getElementById("arena");
+    if (!arena || !frame.message) return 0;
+    const existingBanner = arena.querySelector(".scene-narration-banner");
+    if (existingBanner) existingBanner.remove();
+    const banner = document.createElement("div");
+    banner.className = "scene-narration-banner";
+    banner.innerHTML = escapeHtml(frame.message).replace(/\n/g, "<br>");
+    arena.appendChild(banner);
+    const speed = getEffectiveSpeed();
+    const displayDuration = getMessageReadingDuration(frame.message);
+    setTimeout(() => {
+      if (banner.isConnected && engineState.playbackToken === token) {
+        banner.classList.add("fade-out");
+        setTimeout(() => {
+          if (banner.isConnected) banner.remove();
+        }, 400 / speed);
+      }
+    }, displayDuration / speed);
+    return displayDuration;
+  }
+  function isSceneNarrationFrame(frame) {
+    if (!frame || !frame.message) return false;
+    if (frame.diceCheck || frame.isEnvironmentalPulse) return false;
+    if (["DAMAGE", "BLOCK", "MISS", "HEAL", "LUCK_EVENT", "COUNTER"].includes(frame.type)) return false;
+    if (frame.value != null && frame.value > 0) return false;
+    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
+    if (disembodiedPattern.test(frame.message)) return true;
+    if (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE") {
+      return !resolveDialogueSpeaker(frame);
+    }
+    if (frame.type === "TEXT") {
+      return frame.message.trim().length >= 15 || /風雪|斗篷|跪了|站了起來|每走一步|踩碎|咳出|結晶|軍刀|柴犬|敬禮|畢業/.test(frame.message);
+    }
+    return false;
+  }
+  function playEnvironmentalFieldPulse(frame, sr) {
+    const arena = sr.getElementById("arena");
+    if (!arena) return;
+    const existingWave = arena.querySelector(".arena-field-wave");
+    if (existingWave) existingWave.remove();
+    const wave = document.createElement("div");
+    wave.className = "arena-field-wave";
+    arena.appendChild(wave);
+    const speed = getEffectiveSpeed();
+    engineState.actors.forEach((actor) => {
+      const el = sr.getElementById(`actor-${actor.id}`);
+      if (el && el.animate) {
+        el.animate([
+          { filter: "brightness(1)" },
+          { filter: "brightness(1.4) drop-shadow(0 0 10px rgba(229, 62, 62, 0.75))", offset: 0.3 },
+          { filter: "brightness(1)", offset: 1 }
+        ], { duration: 550 / speed, easing: "ease-out" });
+      }
+    });
+    setTimeout(() => {
+      if (wave.isConnected) wave.remove();
+    }, 950 / speed);
   }
   function spawnStatusOrDiceBadge(frame, sr) {
     const targetId = frame.targetId || frame.actorId;
@@ -2788,8 +2989,9 @@
       } else if (frame.vfx.includes("flash-blue")) {
         floatEl.style.color = "#90cdf4";
         floatEl.style.textShadow = "0 0 10px rgba(99, 179, 237, 0.8)";
-      } else if (frame.vfx.includes("flash-purple")) {
+      } else if (frame.type === "LUCK_EVENT" || frame.vfx.includes("flash-purple")) {
         floatEl.style.color = "#b794f4";
+        floatEl.style.textShadow = "0 0 10px rgba(183, 148, 244, 0.8)";
       } else if (frame.isCrit) {
         floatEl.style.color = "#f6ad55";
         floatEl.style.textShadow = "0 0 10px rgba(221, 107, 32, 1)";
@@ -3133,8 +3335,16 @@
   // src/stageSync.js
   function createLogLineElement(frame) {
     const msgEl = document.createElement("div");
-    const isDialogue = frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE";
-    msgEl.className = `log-line ${isDialogue ? "dialogue-log" : "system-log"}`;
+    const speaker = resolveDialogueSpeaker(frame);
+    const isDialogue = Boolean(speaker) || frame.type === "DIALOGUE" && /[「『"“]/.test(frame.message);
+    const isNarrative = !isDialogue && isSceneNarrationFrame(frame);
+    let logClass = "system-log";
+    if (isDialogue) {
+      logClass = "dialogue-log";
+    } else if (isNarrative) {
+      logClass = "narrative-log";
+    }
+    msgEl.className = `log-line ${logClass}`;
     msgEl.dataset.frameIndex = String(frame.index);
     const formattedMsg = formatLogMessage(frame.message, engineState.actors);
     msgEl.innerHTML = `<span style="color:#718096; margin-right:8px;">[${frame.index + 1}]</span> ${formattedMsg}`;
@@ -3328,9 +3538,11 @@
       actorEl.style.filter = `drop-shadow(0 0 12px ${shadowColor})`;
       triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
     }
-    const isSpokenSkillQuote = frame.type === "SKILL_TEXT" && /^[^：「\s]+：「.+」$/.test(frame.message.trim());
-    if (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE" || isSpokenSkillQuote) {
+    const speaker = resolveDialogueSpeaker(frame);
+    if (speaker) {
       renderSpeechBubble(frame, sr, engineState.playbackToken);
+    } else if (isSceneNarrationFrame(frame)) {
+      renderSceneNarrationBanner(frame, sr, engineState.playbackToken);
     }
     if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED", "SKILL_TEXT", "TEXT"].includes(frame.type)) {
       spawnStatusOrDiceBadge(frame, sr);
@@ -3347,7 +3559,7 @@
     const fatalityOverlay = sr.getElementById("fatality-overlay");
     if (fatalityOverlay) fatalityOverlay.classList.remove("active");
     sr.querySelectorAll(
-      ".ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile"
+      ".ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile, .arena-field-wave, .scene-narration-banner"
     ).forEach((el) => el.remove());
     engineState.actors.forEach((actor) => {
       actor.lastUltimateTurn = null;
@@ -4237,10 +4449,19 @@
         }, 450 / getEffectiveSpeed());
       }
     }
-    const isSpokenSkillQuote = frame.type === "SKILL_TEXT" && /^[^：「\s]+：「.+」$/.test(frame.message.trim());
-    if (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE" || isSpokenSkillQuote) {
+    const speaker = resolveDialogueSpeaker(frame);
+    if (speaker) {
       const readTime = renderSpeechBubble(frame, sr, token);
-      frameDuration += isSpokenSkillQuote ? Math.min(readTime, 900) : readTime;
+      const textDuration = getMessageReadingDuration(speaker.quote);
+      frameDuration = Math.max(frameDuration, textDuration, readTime);
+    } else if (isSceneNarrationFrame(frame)) {
+      const readTime = renderSceneNarrationBanner(frame, sr, token);
+      const textDuration = getMessageReadingDuration(frame.message);
+      frameDuration = Math.max(frameDuration, textDuration, readTime);
+    }
+    if (frame.isEnvironmentalPulse && frame.type === "TEXT") {
+      playEnvironmentalFieldPulse(frame, sr);
+      frameDuration = Math.max(frameDuration, 1100);
     }
     if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED"].includes(frame.type) || frame.type === "SKILL_TEXT" || frame.type === "TEXT") {
       spawnStatusOrDiceBadge(frame, sr);
@@ -4311,6 +4532,7 @@
           setTimeout(() => {
             if (dropEl.isConnected) dropEl.remove();
           }, 1e3 / getEffectiveSpeed());
+          frameDuration = Math.max(frameDuration, 750);
         }
         if (frame.vfx.includes("break-stamp")) {
           const breakEl = document.createElement("div");

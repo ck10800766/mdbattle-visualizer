@@ -146,8 +146,9 @@ export function spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetD
         } else if (frame.vfx.includes('flash-blue')) {
             floatEl.style.color = '#90cdf4';
             floatEl.style.textShadow = '0 0 10px rgba(99, 179, 237, 0.8)';
-        } else if (frame.vfx.includes('flash-purple')) {
+        } else if (frame.type === 'LUCK_EVENT' || frame.vfx.includes('flash-purple')) {
             floatEl.style.color = '#b794f4';
+            floatEl.style.textShadow = '0 0 10px rgba(183, 148, 244, 0.8)';
         } else if (frame.isCrit) {
             floatEl.style.color = '#f6ad55';
             floatEl.style.textShadow = '0 0 10px rgba(221, 107, 32, 1)';

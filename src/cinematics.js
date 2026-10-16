@@ -9,7 +9,7 @@
 
 import { DEFAULT_AVATAR_URL } from './constants.js';
 import { engineState, getEffectiveSpeed } from './state.js';
-import { escapeRegExp, escapeHtml } from './utils.js';
+import { escapeRegExp, escapeHtml, getMessageReadingDuration } from './utils.js';
 import {
     getContractSkillProfile,
     matchesSkill,
@@ -32,11 +32,12 @@ function stripCombatOutcomeText(rawText, actorName = '') {
     }
 
     text = text
-        .replace(/[，,、]?\s*會心一擊[！!]?/g, '')
-        .replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*造成了?\s*\d+\s*點(?:真實)?傷害[！!]?/g, '')
+        .replace(/^[第輪次]\s*\d+\s*[擊輪次劍枚][，,、\s]*/g, '')
+        .replace(/[，,、]?\s*(?:會心一擊|精準劃過要害|正中要害)[！!]?/g, '')
+        .replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, '')
         .replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, '')
-        .replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?受到\s*\d+\s*點傷害[！!]?/g, '')
-        .replace(/[，,、]?\s*(?:對\s*.+?\s*)?造成了?\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, '')
+        .replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, '')
+        .replace(/[，,、]?\s*(?:(?:對|在)\s*.+?\s*|(?:[^\s，,。]+?\s*))?(?:命中並\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, '')
         .replace(/[—─ー―-]+$/g, '')
         .replace(/^[，,、：:\s]+/, '')
         .replace(/[，,、\s]+$/, '')
@@ -156,15 +157,18 @@ export async function playUltimateCutIn(frame, sr, token) {
 
         if (extractedSkillName) {
             mainText = extractedSkillName;
+            const rawRemaining = frame.message
+                .replace(new RegExp(`使出了\\s*${escapeRegExp(extractedSkillName)}[，,、\\s]*`), ' ')
+                .trim();
+            subText = stripCombatOutcomeText(rawRemaining, actor.name);
         } else {
             let rawSkillId = frame.skillId || 'ULTIMATE_SKILL';
             if (rawSkillId.includes('_')) {
                 rawSkillId = rawSkillId.substring(rawSkillId.indexOf('_') + 1);
             }
             mainText = rawSkillId.replace(/_/g, ' ').toUpperCase();
+            subText = stripCombatOutcomeText(frame.message, actor.name);
         }
-
-        subText = stripCombatOutcomeText(frame.message, actor.name);
     }
 
     const isEnglish = /[A-Za-z]/.test(mainText);
@@ -213,9 +217,95 @@ export async function playUltimateCutIn(frame, sr, token) {
  * @param {number} token - Active playback token.
  * @returns {number} Additional reading duration in milliseconds.
  */
+/**
+ * Resolves the actual speaking actor from a frame's message and metadata.
+ * Returns null if the voice is disembodied, an off-screen entity, or narrative text without quotes.
+ *
+ * @param {object} frame - Combat frame.
+ * @returns {{ actorId: string, quote: string } | null} Resolved speaker actor ID and quote, or null.
+ */
+export function resolveDialogueSpeaker(frame) {
+    if (!frame || !frame.message) return null;
+    const msg = frame.message.trim();
+
+    // 1. Disembodied, mysterious, or off-field voice markers
+    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
+    if (disembodiedPattern.test(msg)) {
+        return null;
+    }
+
+    // 2. Switch dialogue pattern: 「Switch！」<actorName> 從...
+    const switchMatch = msg.match(/^[「『"“]Switch[！!]?[」』"”]\s*([^\s，,。]+)/i);
+    if (switchMatch) {
+        const candidateName = switchMatch[1].trim();
+        if (frame.targetId) {
+            const targetActor = engineState.actors.get(frame.targetId);
+            if (targetActor && (candidateName.startsWith(targetActor.name) || targetActor.name.startsWith(candidateName))) {
+                return { actorId: targetActor.id, quote: 'Switch！' };
+            }
+        }
+        for (const [id, actor] of engineState.actors.entries()) {
+            if (candidateName.startsWith(actor.name) || actor.name.startsWith(candidateName)) {
+                return { actorId: id, quote: 'Switch！' };
+            }
+        }
+        return null;
+    }
+
+    // 3. Colon quote pattern: <SpeakerName>：[「『"“]<Quote>[」』"”]
+    const colonQuoteMatch = msg.match(/^([^\n：:]{1,25})[：:]\s*[「『"“]([^」』"”]+)[」』"”]/);
+    if (colonQuoteMatch) {
+        const speakerPrefix = colonQuoteMatch[1].trim();
+        const quote = `「${colonQuoteMatch[2].trim()}」`;
+
+        if (disembodiedPattern.test(speakerPrefix)) {
+            return null;
+        }
+
+        if (frame.actorId) {
+            const frameActor = engineState.actors.get(frame.actorId);
+            if (frameActor && (speakerPrefix.startsWith(frameActor.name) || speakerPrefix.includes(frameActor.name))) {
+                return { actorId: frameActor.id, quote };
+            }
+        }
+
+        for (const [id, actor] of engineState.actors.entries()) {
+            if (speakerPrefix.startsWith(actor.name) || speakerPrefix.includes(actor.name)) {
+                return { actorId: id, quote };
+            }
+        }
+        return null;
+    }
+
+    // 4. Standalone quote if message contains actor name followed by colon/quote or quote followed by actor
+    const standaloneQuoteMatch = msg.match(/[「『"“]([^」』"”]+)[」』"”]/);
+    if (standaloneQuoteMatch && (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE')) {
+        if (frame.actorId) {
+            const frameActor = engineState.actors.get(frame.actorId);
+            if (frameActor && msg.includes(frameActor.name) && !msg.startsWith('「Switch')) {
+                return { actorId: frameActor.id, quote: `「${standaloneQuoteMatch[1].trim()}」` };
+            }
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Spawns a typewriter-animated speech bubble next to a speaking actor on the battlefield.
+ * If the speaker is off-field or disembodied, does nothing on stage (the dialogue is
+ * displayed cleanly in the bottom combat log box or scene narration subtitle banner).
+ * @param {object} frame - Current dialogue frame.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {number} token - Active playback token.
+ * @returns {number} Additional reading duration in milliseconds.
+ */
 export function renderSpeechBubble(frame, sr, token) {
-    const actorEl = sr.getElementById(`actor-${frame.actorId}`);
-    const actor = engineState.actors.get(frame.actorId);
+    const speaker = resolveDialogueSpeaker(frame);
+    if (!speaker) return 0;
+
+    const actorEl = sr.getElementById(`actor-${speaker.actorId}`);
+    const actor = engineState.actors.get(speaker.actorId);
     if (!actorEl || !actor) return 0;
 
     const existingBubble = actorEl.querySelector('.speech-bubble');
@@ -224,14 +314,13 @@ export function renderSpeechBubble(frame, sr, token) {
     const bubble = document.createElement('div');
     bubble.className = `speech-bubble ${actor.side === 'left' ? 'left-bubble' : 'right-bubble'}`;
 
-    const textContent = frame.message.replace(/^.+?[：:]\s*/, '');
     const textSpan = document.createElement('span');
     textSpan.className = 'typewriter-text';
     bubble.appendChild(textSpan);
     actorEl.appendChild(bubble);
 
-    const textLength = textContent.length;
-    const readTime = Math.max(2000, 1000 + (textLength * 100));
+    const textContent = speaker.quote;
+    const readTime = getMessageReadingDuration(textContent);
 
     let charIndex = 0;
     function typeChar() {
@@ -253,6 +342,107 @@ export function renderSpeechBubble(frame, sr, token) {
 
     return readTime;
 }
+
+/**
+ * Renders an atmospheric scene narration subtitle at the bottom center of the arena.
+ * Used for battle prologues, boss phase transitions, off-screen disembodied quotes,
+ * and descriptive environmental storytelling.
+ * @param {object} frame - Current narrative frame.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {number} token - Active playback token.
+ * @returns {number} Additional reading duration in milliseconds.
+ */
+export function renderSceneNarrationBanner(frame, sr, token) {
+    const arena = sr.getElementById('arena');
+    if (!arena || !frame.message) return 0;
+
+    const existingBanner = arena.querySelector('.scene-narration-banner');
+    if (existingBanner) existingBanner.remove();
+
+    const banner = document.createElement('div');
+    banner.className = 'scene-narration-banner';
+    banner.innerHTML = escapeHtml(frame.message).replace(/\n/g, '<br>');
+    arena.appendChild(banner);
+
+    const speed = getEffectiveSpeed();
+    const displayDuration = getMessageReadingDuration(frame.message);
+
+    setTimeout(() => {
+        if (banner.isConnected && engineState.playbackToken === token) {
+            banner.classList.add('fade-out');
+            setTimeout(() => {
+                if (banner.isConnected) banner.remove();
+            }, 400 / speed);
+        }
+    }, displayDuration / speed);
+
+    return displayDuration;
+}
+
+/**
+ * Checks whether a frame is a scene narration or disembodied narrative frame.
+ * @param {object} frame - Combat frame.
+ * @returns {boolean} True if frame should be displayed in the scene narration subtitle banner.
+ */
+export function isSceneNarrationFrame(frame) {
+    if (!frame || !frame.message) return false;
+    if (frame.diceCheck || frame.isEnvironmentalPulse) return false;
+    if (['DAMAGE', 'BLOCK', 'MISS', 'HEAL', 'LUCK_EVENT', 'COUNTER'].includes(frame.type)) return false;
+    if (frame.value != null && frame.value > 0) return false;
+
+    // Disembodied or off-field voice markers
+    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
+    if (disembodiedPattern.test(frame.message)) return true;
+
+    // BOSS_DIALOGUE or DIALOGUE without an on-field speaker is always scene narration
+    if (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE') {
+        return !resolveDialogueSpeaker(frame);
+    }
+
+    // Story narrative TEXT frames
+    if (frame.type === 'TEXT') {
+        return frame.message.trim().length >= 15 || /風雪|斗篷|跪了|站了起來|每走一步|踩碎|咳出|結晶|軍刀|柴犬|敬禮|畢業/.test(frame.message);
+    }
+
+    return false;
+}
+
+/**
+ * Spawns an environmental dark red pulse shockwave sweeping across the entire battlefield.
+ * Triggered on environmental hazard events such as Originium Altar pulses.
+ * @param {object} frame - Current environmental frame.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ */
+export function playEnvironmentalFieldPulse(frame, sr) {
+    const arena = sr.getElementById('arena');
+    if (!arena) return;
+
+    const existingWave = arena.querySelector('.arena-field-wave');
+    if (existingWave) existingWave.remove();
+
+    const wave = document.createElement('div');
+    wave.className = 'arena-field-wave';
+    arena.appendChild(wave);
+
+    const speed = getEffectiveSpeed();
+
+    // Trigger subtle screen rumble and atmospheric combatant reaction
+    engineState.actors.forEach(actor => {
+        const el = sr.getElementById(`actor-${actor.id}`);
+        if (el && el.animate) {
+            el.animate([
+                { filter: 'brightness(1)' },
+                { filter: 'brightness(1.4) drop-shadow(0 0 10px rgba(229, 62, 62, 0.75))', offset: 0.3 },
+                { filter: 'brightness(1)', offset: 1 }
+            ], { duration: 550 / speed, easing: 'ease-out' });
+        }
+    });
+
+    setTimeout(() => {
+        if (wave.isConnected) wave.remove();
+    }, 950 / speed);
+}
+
 
 /**
  * Spawns an overhead pill badge for dice checks (threshold, opposed, roll) or status ailments.

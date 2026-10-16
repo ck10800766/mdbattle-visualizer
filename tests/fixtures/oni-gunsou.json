@@ -1,0 +1,2110 @@
+{
+  "participants": {
+    "players": [
+      {
+        "userId": "6ab150baad84d95a03db1ca4",
+        "characterId": "6ac341b3c96fee279c8bbef3",
+        "name": "E14112067",
+        "characterName": "源氏",
+        "imagePath": "/images/characters/genji.webp",
+        "title": "側襲者",
+        "level": 100,
+        "stats": {
+          "hp": 9120,
+          "atk": 501,
+          "def": 198,
+          "sta": 438,
+          "agi": 291,
+          "spd": 503,
+          "tec": 680,
+          "int": 334,
+          "luk": 286
+        },
+        "_id": "6ad216adca2116267e9f4014"
+      },
+      {
+        "userId": "6aad1668c3b16affe1e05794",
+        "characterId": "6acfbc17051fbeaaac33d05b",
+        "name": "帕塔之友",
+        "characterName": "有紀",
+        "imagePath": "/images/characters/kibayuki-yuuki.webp",
+        "title": "婚紗絕劍",
+        "level": 100,
+        "stats": {
+          "hp": 9390,
+          "atk": 609,
+          "def": 219,
+          "sta": 313,
+          "agi": 260,
+          "spd": 360,
+          "tec": 482,
+          "int": 95,
+          "luk": 161
+        },
+        "_id": "6ad216adca2116267e9f4015"
+      },
+      {
+        "userId": "6aae431b231156aca1a3bb98",
+        "characterId": "6ad0d45d53b9639c219130ef",
+        "name": "黑色尼可三槍送給喜特勒",
+        "characterName": "木之本櫻",
+        "imagePath": "/images/characters/kinomoto-sakura.webp",
+        "title": "魔卡少女",
+        "level": 90,
+        "stats": {
+          "hp": 11750,
+          "atk": 40,
+          "def": 355,
+          "sta": 375,
+          "agi": 183,
+          "spd": 218,
+          "tec": 451,
+          "int": 1320,
+          "luk": 369
+        },
+        "isAssist": true,
+        "_id": "6ad216adca2116267e9f4016"
+      }
+    ],
+    "enemies": [
+      {
+        "entityId": "mob_0_oni_gunsou",
+        "monsterId": "oni_gunsou",
+        "name": "殉國禁獄鬼軍曹",
+        "imagePath": "/images/boss/oni-gunsou.webp",
+        "title": "畢業生",
+        "floor": 50,
+        "level": 150,
+        "stats": {
+          "hp": 14000,
+          "atk": 2400,
+          "def": 300,
+          "sta": 500,
+          "agi": 200,
+          "spd": 320,
+          "tec": 400,
+          "int": 300,
+          "luk": 200
+        },
+        "_id": "6ad216adca2116267e9f4017"
+      }
+    ]
+  },
+  "_id": "6ad216adca2116267e9f4013",
+  "reportId": 214534,
+  "userIds": [
+    "6ab150baad84d95a03db1ca4",
+    "6aad1668c3b16affe1e05794",
+    "6aae431b231156aca1a3bb98"
+  ],
+  "battleType": "BOSS",
+  "boss": {
+    "floorNumber": 50,
+    "name": "殉國禁獄鬼軍曹",
+    "title": "畢業生",
+    "imagePath": "/images/boss/oni-gunsou.webp"
+  },
+  "result": "WIN",
+  "outcomes": [
+    {
+      "userId": "6ab150baad84d95a03db1ca4",
+      "name": "源氏",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 51
+    },
+    {
+      "userId": "6aad1668c3b16affe1e05794",
+      "name": "有紀",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 51
+    }
+  ],
+  "createdAt": "2026-10-16T12:21:01.586Z",
+  "__v": 0,
+  "logs": [
+    {
+      "type": "BATTLE_START",
+      "message": "戰鬥開始！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "結訓場空無一人。司令台前的地上，擺著一隻背著包袱巾的柴犬布偶。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "不知道從哪裡傳來一個小女孩的聲音：「散華して。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "包袱巾鬆開了。一名穿著舊式軍服、腰間掛著軍刀的士官站在布偶原本的位置，渾身是傷，傷口還冒著煙。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹：「……又是戰場啊。」"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹：「來吧。拿出全力，殺了我。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_release",
+      "message": "木之本櫻 從脖子上取下鑰匙形狀的墜子，舉到面前。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_release",
+      "message": "木之本櫻：「封印解除！」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_release",
+      "message": "鑰匙在光芒裡伸長，變成了一根封印之杖。書包的拉鍊縫裡，一顆黃色的小腦袋探了出來。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_release",
+      "message": "小可：「小櫻，上吧！」"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "opponentId": "6ab150baad84d95a03db1ca4",
+      "value": 226,
+      "actionCancelled": true,
+      "eventId": "red_5",
+      "message": "一顆雄三飛彈把 殉國禁獄鬼軍曹 的頭頂當作降落點，造成 226 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 307,
+      "actualDamage": 307,
+      "isCrit": false,
+      "blocked": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 殉國禁獄鬼軍曹，對 殉國禁獄鬼軍曹 造成了 307 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 181,
+      "actualDamage": 181,
+      "isCrit": false,
+      "blocked": false,
+      "message": "手腕一翻，第 2 輪緊跟著射出，對 殉國禁獄鬼軍曹 造成了 181 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 499,
+      "actualDamage": 499,
+      "isCrit": true,
+      "blocked": false,
+      "message": "前一輪還沒落地，第 3 輪已經出手，會心一擊！對 殉國禁獄鬼軍曹 造成了 499 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_convert",
+      "message": "木之本櫻 手裡的封印之杖亮了起來，杖頭的鳥喙褪去，換成了一顆星星。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_convert",
+      "message": "木之本櫻 用自己的星之力，把「風」轉換成了小櫻牌。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1276,
+      "actualDamage": 1276,
+      "isCrit": false,
+      "blocked": false,
+      "message": "木之本櫻 舉起法杖點向「風」，一陣旋風捲向 殉國禁獄鬼軍曹，對 殉國禁獄鬼軍曹 造成了 1276 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 59,
+      "actualDamage": 59,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 1 劍，對 殉國禁獄鬼軍曹 造成了 59 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 52,
+      "actualDamage": 52,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 劍，對 殉國禁獄鬼軍曹 造成了 52 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 56,
+      "actualDamage": 56,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 3 劍，對 殉國禁獄鬼軍曹 造成了 56 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 52,
+      "actualDamage": 52,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 劍，對 殉國禁獄鬼軍曹 造成了 52 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 199,
+      "actualDamage": 199,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 5 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 199 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 57,
+      "actualDamage": 57,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 6 劍，對 殉國禁獄鬼軍曹 造成了 57 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 55,
+      "actualDamage": 55,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 7 劍，對 殉國禁獄鬼軍曹 造成了 55 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 191,
+      "actualDamage": 191,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 8 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 191 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 211,
+      "actualDamage": 211,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 9 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 211 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 218,
+      "actualDamage": 218,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 10 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 218 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "message": "殉國禁獄鬼軍曹 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_oni_gunsou"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 2024,
+      "actualDamage": 2024,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 11 劍，會心一擊！貫穿十字的正中央，對 殉國禁獄鬼軍曹 造成 2024 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_tough",
+      "message": "殉國禁獄鬼軍曹 晃了一下，又站穩了。換作別人早就倒下的傷，他只是皺了皺眉。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 163,
+      "actualDamage": 163,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 攻擊，會心一擊！對 殉國禁獄鬼軍曹 造成了 163 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_convert",
+      "message": "木之本櫻 用自己的星之力，把「雷」轉換成了小櫻牌。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_thunder",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 7116,
+      "actualDamage": 7116,
+      "isCrit": true,
+      "blocked": false,
+      "message": "木之本櫻 使出了 雷之牌，一頭雷獸從牌面竄出，撲向 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 7116 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 144,
+      "actualDamage": 144,
+      "isCrit": true,
+      "blocked": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 144 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 19,
+      "actualDamage": 19,
+      "isCrit": false,
+      "blocked": false,
+      "message": "手腕一翻，第 2 輪緊跟著射出，對 殉國禁獄鬼軍曹 造成了 19 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_prayer",
+      "message": "殉國禁獄鬼軍曹 拔出軍刀，腳下展開一道眼睛形狀的陣，悶熱潮濕的空氣壓了下來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "oni_gunsou_prayer",
+      "value": 109,
+      "actualDamage": 109,
+      "message": "源氏 身上裂開了不知從哪來的傷口，受到 109 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aae431b231156aca1a3bb98",
+      "skillId": "oni_gunsou_prayer",
+      "value": 141,
+      "actualDamage": 141,
+      "message": "木之本櫻 身上裂開了不知從哪來的傷口，受到 141 點傷害。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "message": "殉國禁獄鬼軍曹 踏前一步，軍刀由上往下劈向 源氏，但是被 源氏 躲開了！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "opponentId": "6ab150baad84d95a03db1ca4",
+      "value": 94,
+      "actionCancelled": true,
+      "eventId": "purple_2",
+      "message": "殉國禁獄鬼軍曹 踩到香蕉皮摔倒受到 94 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 884,
+      "actualDamage": 884,
+      "isCrit": true,
+      "blocked": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 884 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "message": "手腕一翻，第 2 輪緊跟著射出，但是被 殉國禁獄鬼軍曹 躲開了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_fall",
+      "message": "殉國禁獄鬼軍曹 倒了下去。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_revive",
+      "message": "數百個看不清臉的兵的影子從地底爬了上來，抓住倒下的他，把他拖了起來。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹：「還不夠。這樣還死不了。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_revive",
+      "message": "殉國禁獄鬼軍曹 站了起來，傷口全部合上了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_convert",
+      "message": "木之本櫻 用自己的星之力，把「火」轉換成了小櫻牌。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "木之本櫻 把「火」拋向半空，雙手握緊法杖，用力敲了下去。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "木之本櫻 使出了 火之牌，牌面燃起，化成一個渾身是火的少年，張開火翼橫掃過去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 653,
+      "actualDamage": 653,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 殉國禁獄鬼軍曹 造成了 653 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "火翼一收，又一次撲了下來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 708,
+      "actualDamage": 708,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 殉國禁獄鬼軍曹 造成了 708 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 380,
+      "actualDamage": 380,
+      "isCrit": false,
+      "blocked": false,
+      "message": "有紀 攻擊，對 殉國禁獄鬼軍曹 造成了 380 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_fan_of_blades",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "源氏 橫手一揮，三枚手裏劍呈扇形散開！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_fan_of_blades",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 160,
+      "actualDamage": 160,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 殉國禁獄鬼軍曹 造成了 160 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_prayer",
+      "message": "殉國禁獄鬼軍曹 舉起步槍，眼形陣往兩側撐開，泥濘和雨水漫進了陣裡——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "oni_gunsou_prayer",
+      "value": 109,
+      "actualDamage": 109,
+      "message": "源氏 身上裂開了不知從哪來的傷口，受到 109 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "oni_gunsou_prayer",
+      "value": 112,
+      "actualDamage": 112,
+      "message": "有紀 身上裂開了不知從哪來的傷口，受到 112 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aae431b231156aca1a3bb98",
+      "skillId": "oni_gunsou_prayer",
+      "value": 141,
+      "actualDamage": 141,
+      "message": "木之本櫻 身上裂開了不知從哪來的傷口，受到 141 點傷害。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_shot",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "message": "殉國禁獄鬼軍曹 單膝跪下，拉動槍機，朝 源氏 開了一槍，但是被 源氏 躲開了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_fan_of_blades",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "源氏 橫手一揮，三枚手裏劍呈扇形散開！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_fan_of_blades",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 174,
+      "actualDamage": 174,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 殉國禁獄鬼軍曹 造成了 174 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1587,
+      "actualDamage": 1587,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 攻擊，會心一擊！對 殉國禁獄鬼軍曹 造成了 1587 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 4382,
+      "actualDamage": 4382,
+      "isCrit": true,
+      "blocked": false,
+      "message": "木之本櫻 舉起法杖點向「風」，一陣旋風捲向 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 4382 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1680,
+      "actualDamage": 1680,
+      "isCrit": true,
+      "blocked": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 1680 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 195,
+      "actualDamage": 195,
+      "isCrit": false,
+      "blocked": false,
+      "message": "手腕一翻，第 2 輪緊跟著射出，對 殉國禁獄鬼軍曹 造成了 195 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 494,
+      "actualDamage": 494,
+      "isCrit": true,
+      "blocked": false,
+      "message": "前一輪還沒落地，第 3 輪已經出手，會心一擊！對 殉國禁獄鬼軍曹 造成了 494 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 70,
+      "actualDamage": 70,
+      "isCrit": false,
+      "blocked": false,
+      "message": "手裏劍連珠般飛出，第 4 輪，對 殉國禁獄鬼軍曹 造成了 70 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_swift_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 623,
+      "actualDamage": 623,
+      "isCrit": false,
+      "blocked": false,
+      "message": "源氏 使出了 迅影襲，化作一道綠影從 殉國禁獄鬼軍曹 身邊穿過，對 殉國禁獄鬼軍曹 造成了 623 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "message": "源氏 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "message": "源氏 拔出了龍一文字，迅影襲的冷卻也跟著轉好了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1184,
+      "actualDamage": 1184,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 攻擊，會心一擊！對 殉國禁獄鬼軍曹 造成了 1184 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_tough",
+      "message": "殉國禁獄鬼軍曹 晃了一下，又站穩了。換作別人早就倒下的傷，他只是皺了皺眉。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_prayer",
+      "message": "陣裡的雨下個不停，腳下的泥越陷越深——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "oni_gunsou_prayer",
+      "value": 109,
+      "actualDamage": 109,
+      "message": "源氏 身上裂開了不知從哪來的傷口，受到 109 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "oni_gunsou_prayer",
+      "value": 112,
+      "actualDamage": 112,
+      "message": "有紀 身上裂開了不知從哪來的傷口，受到 112 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aae431b231156aca1a3bb98",
+      "skillId": "oni_gunsou_prayer",
+      "value": 141,
+      "actualDamage": 141,
+      "message": "木之本櫻 身上裂開了不知從哪來的傷口，受到 141 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_bayonet",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 4921,
+      "actualDamage": 4921,
+      "isCrit": true,
+      "blocked": false,
+      "message": "殉國禁獄鬼軍曹 挺著上了刺刀的步槍直衝過來，一槍刺向 有紀，會心一擊！對 有紀 造成了 4921 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_oni_gunsou",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 33,
+          "modifier": 0,
+          "baseText": "技巧（482 → 33）",
+          "roll": 70,
+          "total": 103
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 28,
+          "modifier": 0,
+          "baseText": "技巧（400 → 28）",
+          "roll": 77,
+          "total": 105
+        },
+        "winner": "RIGHT"
+      },
+      "message": "絕劍判定：有紀 技巧（482 → 33） + 骰出 70 = 103，殉國禁獄鬼軍曹 技巧（400 → 28） + 骰出 77 = 105。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "木之本櫻 把「火」拋向半空，雙手握緊法杖，用力敲了下去。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "木之本櫻 使出了 火之牌，牌面燃起，化成一個渾身是火的少年，張開火翼橫掃過去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 666,
+      "actualDamage": 666,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 殉國禁獄鬼軍曹 造成了 666 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "火翼一收，又一次撲了下來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_firey",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1211,
+      "actualDamage": 1211,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 殉國禁獄鬼軍曹 造成了 1211 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_fall",
+      "message": "殉國禁獄鬼軍曹 倒了下去。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_revive",
+      "message": "影子又抓住了他。纏在他身上的怨靈少了一些，剩下的抓得更緊。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹：「再來。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_revive",
+      "message": "殉國禁獄鬼軍曹 站了起來，傷口全部合上了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_prayer",
+      "message": "殉國禁獄鬼軍曹 咬掉手榴彈的插銷，陣變成一個圓，罩住了整片戰場。陣裡沒有人倒得下去——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "oni_gunsou_prayer",
+      "value": 351,
+      "actualDamage": 351,
+      "message": "源氏 身上裂開了不知從哪來的傷口，受到 351 點傷害，體力被抽走 4 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "oni_gunsou_prayer",
+      "value": 169,
+      "actualDamage": 169,
+      "message": "有紀 身上裂開了不知從哪來的傷口，受到 169 點傷害，體力被抽走 3 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aae431b231156aca1a3bb98",
+      "skillId": "oni_gunsou_prayer",
+      "value": 453,
+      "actualDamage": 453,
+      "message": "木之本櫻 身上裂開了不知從哪來的傷口，受到 453 點傷害，體力被抽走 3 點。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_grenade",
+      "message": "殉國禁獄鬼軍曹 把手榴彈往鋼盔上一敲，扔進了人群裡——"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "oni_gunsou_grenade",
+      "value": 271,
+      "isCrit": false,
+      "message": "但是遭源氏反擊，受到 271 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "oni_gunsou_grenade",
+      "value": 332,
+      "isCrit": false,
+      "message": "但是遭有紀反擊，受到 332 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_grenade",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae431b231156aca1a3bb98",
+      "value": 557,
+      "actualDamage": 557,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 木之本櫻 造成了 557 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 618,
+      "actualDamage": 618,
+      "isCrit": false,
+      "blocked": false,
+      "message": "源氏 揮下龍一文字，刀光斬向 殉國禁獄鬼軍曹，對 殉國禁獄鬼軍曹 造成了 618 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 351,
+      "actualDamage": 351,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀勢未收，反手又是第 2 刀，對 殉國禁獄鬼軍曹 造成了 351 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "源氏 的義體發出提示音：次要特殊能力「龍魂之渴望」已啟用。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "summon_1",
+      "skillId": "yuuki_sleeping_knights",
+      "isNormalAttack": false,
+      "message": "有紀 發出公會訊號，沉睡騎士的 帖奇 趕來助陣！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "summon_1",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "帖奇：「我來擋。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 567,
+      "actualDamage": 567,
+      "isCrit": false,
+      "blocked": false,
+      "message": "源氏 揮下龍一文字，刀光斬向 殉國禁獄鬼軍曹，對 殉國禁獄鬼軍曹 造成了 567 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1695,
+      "actualDamage": 1695,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀勢未收，反手又是第 2 刀，會心一擊！對 殉國禁獄鬼軍曹 造成了 1695 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 199,
+      "actualDamage": 199,
+      "isCrit": false,
+      "blocked": false,
+      "message": "綠光連閃，第 3 刀接著斬落，對 殉國禁獄鬼軍曹 造成了 199 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 516,
+      "message": "龍魂渴飲著刀下的鮮血，順著刀身流回 源氏 體內，回復了 516 HP。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_prayer",
+      "message": "圓形陣裡的祈禱沒有停過——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "oni_gunsou_prayer",
+      "value": 358,
+      "actualDamage": 358,
+      "message": "源氏 身上裂開了不知從哪來的傷口，受到 358 點傷害，體力被抽走 4 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "oni_gunsou_prayer",
+      "value": 163,
+      "actualDamage": 163,
+      "message": "有紀 身上裂開了不知從哪來的傷口，受到 163 點傷害，體力被抽走 3 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aae431b231156aca1a3bb98",
+      "skillId": "oni_gunsou_prayer",
+      "value": 412,
+      "actualDamage": 412,
+      "message": "木之本櫻 身上裂開了不知從哪來的傷口，受到 412 點傷害，體力被抽走 3 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "summon_1",
+      "skillId": "oni_gunsou_prayer",
+      "value": 338,
+      "actualDamage": 338,
+      "message": "帖奇 身上裂開了不知從哪來的傷口，受到 338 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_bayonet",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 1240,
+      "actualDamage": 1240,
+      "isCrit": false,
+      "blocked": false,
+      "message": "殉國禁獄鬼軍曹 挺著上了刺刀的步槍直衝過來，一槍刺向 帖奇，對 帖奇 造成了 1240 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 589,
+      "actualDamage": 589,
+      "isCrit": false,
+      "blocked": false,
+      "message": "源氏 揮下龍一文字，刀光斬向 殉國禁獄鬼軍曹，對 殉國禁獄鬼軍曹 造成了 589 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 338,
+      "actualDamage": 338,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀勢未收，反手又是第 2 刀，對 殉國禁獄鬼軍曹 造成了 338 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 198,
+      "actualDamage": 198,
+      "isCrit": false,
+      "blocked": false,
+      "message": "綠光連閃，第 3 刀接著斬落，對 殉國禁獄鬼軍曹 造成了 198 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 122,
+      "actualDamage": 122,
+      "isCrit": false,
+      "blocked": false,
+      "message": "一刀快過一刀，第 4 刀，對 殉國禁獄鬼軍曹 造成了 122 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 347,
+      "actualDamage": 347,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀勢未收，反手又是第 5 刀，會心一擊！對 殉國禁獄鬼軍曹 造成了 347 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 334,
+      "message": "龍魂渴飲著刀下的鮮血，順著刀身流回 源氏 體內，回復了 334 HP。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1275,
+      "actualDamage": 1275,
+      "isCrit": false,
+      "blocked": false,
+      "message": "木之本櫻 舉起法杖點向「風」，一陣旋風捲向 殉國禁獄鬼軍曹，對 殉國禁獄鬼軍曹 造成了 1275 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_prayer",
+      "message": "圓形陣裡的祈禱沒有停過——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "oni_gunsou_prayer",
+      "value": 357,
+      "actualDamage": 357,
+      "message": "源氏 身上裂開了不知從哪來的傷口，受到 357 點傷害，體力被抽走 4 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "oni_gunsou_prayer",
+      "value": 156,
+      "actualDamage": 156,
+      "message": "有紀 身上裂開了不知從哪來的傷口，受到 156 點傷害，體力被抽走 3 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aae431b231156aca1a3bb98",
+      "skillId": "oni_gunsou_prayer",
+      "value": 396,
+      "actualDamage": 396,
+      "message": "木之本櫻 身上裂開了不知從哪來的傷口，受到 396 點傷害，體力被抽走 3 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "summon_1",
+      "skillId": "oni_gunsou_prayer",
+      "value": 274,
+      "actualDamage": 274,
+      "message": "帖奇 身上裂開了不知從哪來的傷口，受到 274 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_shot",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 955,
+      "actualDamage": 955,
+      "isCrit": false,
+      "blocked": false,
+      "message": "殉國禁獄鬼軍曹 單膝跪下，拉動槍機，朝 帖奇 開了一槍，對 帖奇 造成了 955 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 430,
+      "actualDamage": 430,
+      "isCrit": true,
+      "blocked": false,
+      "message": "源氏 揮下龍一文字，刀光斬向 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 430 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 35,
+      "actualDamage": 35,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀勢未收，反手又是第 2 刀，對 殉國禁獄鬼軍曹 造成了 35 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 99,
+      "actualDamage": 99,
+      "isCrit": true,
+      "blocked": false,
+      "message": "綠光連閃，第 3 刀接著斬落，會心一擊！對 殉國禁獄鬼軍曹 造成了 99 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 12,
+      "actualDamage": 12,
+      "isCrit": false,
+      "blocked": false,
+      "message": "一刀快過一刀，第 4 刀，對 殉國禁獄鬼軍曹 造成了 12 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_dragonblade",
+      "skillTier": "ultimate",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 35,
+      "actualDamage": 35,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀勢未收，反手又是第 5 刀，會心一擊！對 殉國禁獄鬼軍曹 造成了 35 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 128,
+      "message": "龍魂渴飲著刀下的鮮血，順著刀身流回 源氏 體內，回復了 128 HP。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "源氏 收刀入鞘，綠光熄了。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_tough",
+      "message": "殉國禁獄鬼軍曹 晃了一下，又站穩了。換作別人早就倒下的傷，他只是皺了皺眉。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 4885,
+      "actualDamage": 4885,
+      "isCrit": true,
+      "blocked": false,
+      "message": "木之本櫻 舉起法杖點向「風」，一陣旋風捲向 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 4885 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1769,
+      "actualDamage": 1769,
+      "isCrit": true,
+      "blocked": false,
+      "message": "木之本櫻 舉起法杖點向「風」，一陣旋風捲向 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 1769 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_fall",
+      "message": "殉國禁獄鬼軍曹 倒了下去。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_revive",
+      "message": "最後一批影子也鬆開了手，散進了風裡。他站在原地，身上已經沒有東西拉著他了。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹：「……這一刀，是我自己的。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_revive",
+      "message": "殉國禁獄鬼軍曹 站了起來，傷口全部合上了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1646,
+      "actualDamage": 1646,
+      "isCrit": true,
+      "blocked": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 1646 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 177,
+      "actualDamage": 177,
+      "isCrit": false,
+      "blocked": false,
+      "message": "手腕一翻，第 2 輪緊跟著射出，對 殉國禁獄鬼軍曹 造成了 177 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 534,
+      "actualDamage": 534,
+      "isCrit": true,
+      "blocked": false,
+      "message": "前一輪還沒落地，第 3 輪已經出手，會心一擊！對 殉國禁獄鬼軍曹 造成了 534 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 65,
+      "actualDamage": 65,
+      "isCrit": false,
+      "blocked": false,
+      "message": "手裏劍連珠般飛出，第 4 輪，對 殉國禁獄鬼軍曹 造成了 65 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 362,
+      "actualDamage": 362,
+      "isCrit": false,
+      "blocked": false,
+      "message": "有紀 攻擊，對 殉國禁獄鬼軍曹 造成了 362 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae431b231156aca1a3bb98",
+      "value": 1052,
+      "actualDamage": 1052,
+      "isCrit": false,
+      "blocked": false,
+      "message": "殉國禁獄鬼軍曹 踏前一步，軍刀由上往下劈向 木之本櫻，對 木之本櫻 造成了 1052 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "yuuki_tecchi_mace",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 125,
+      "actualDamage": 125,
+      "isCrit": false,
+      "blocked": false,
+      "message": "帖奇 頂著大盾往前推，順手一錘，對 殉國禁獄鬼軍曹 造成了 125 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 1197,
+      "actualDamage": 1197,
+      "isCrit": false,
+      "blocked": false,
+      "message": "殉國禁獄鬼軍曹 踏前一步，軍刀由上往下劈向 帖奇，對 帖奇 造成了 1197 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 50,
+      "actualDamage": 50,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 1 劍，對 殉國禁獄鬼軍曹 造成了 50 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 203,
+      "actualDamage": 203,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 203 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 222,
+      "actualDamage": 222,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 222 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 54,
+      "actualDamage": 54,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 劍，對 殉國禁獄鬼軍曹 造成了 54 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 222,
+      "actualDamage": 222,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 5 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 222 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 58,
+      "actualDamage": 58,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 6 劍，對 殉國禁獄鬼軍曹 造成了 58 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 207,
+      "actualDamage": 207,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 7 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 207 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 199,
+      "actualDamage": 199,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 8 劍，會心一擊！對 殉國禁獄鬼軍曹 造成了 199 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 54,
+      "actualDamage": 54,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 9 劍，對 殉國禁獄鬼軍曹 造成了 54 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 25,
+      "actualDamage": 25,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 10 劍，對 殉國禁獄鬼軍曹 造成了 25 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "message": "殉國禁獄鬼軍曹 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_oni_gunsou"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 335,
+      "actualDamage": 335,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 11 劍，會心一擊！貫穿十字的正中央，對 殉國禁獄鬼軍曹 造成 335 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_tough",
+      "message": "殉國禁獄鬼軍曹 晃了一下，又站穩了。換作別人早就倒下的傷，他只是皺了皺眉。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "message": "木之本櫻 舉起法杖點向「風」，一陣旋風捲向 殉國禁獄鬼軍曹，但是被 殉國禁獄鬼軍曹 躲開了！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "summon_1",
+      "skillId": "yuuki_tecchi_mace",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "message": "帖奇 頂著大盾往前推，順手一錘，但是被 殉國禁獄鬼軍曹 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 32,
+      "actualDamage": 32,
+      "isCrit": false,
+      "blocked": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 殉國禁獄鬼軍曹，對 殉國禁獄鬼軍曹 造成了 32 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 93,
+      "actualDamage": 93,
+      "isCrit": true,
+      "blocked": false,
+      "message": "手腕一翻，第 2 輪緊跟著射出，會心一擊！對 殉國禁獄鬼軍曹 造成了 93 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 49,
+      "actualDamage": 49,
+      "isCrit": true,
+      "blocked": false,
+      "message": "前一輪還沒落地，第 3 輪已經出手，會心一擊！對 殉國禁獄鬼軍曹 造成了 49 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 32,
+      "actualDamage": 32,
+      "isCrit": true,
+      "blocked": false,
+      "message": "手裏劍連珠般飛出，第 4 輪，會心一擊！對 殉國禁獄鬼軍曹 造成了 32 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 4,
+      "actualDamage": 4,
+      "isCrit": false,
+      "blocked": false,
+      "message": "手腕一翻，第 5 輪緊跟著射出，對 殉國禁獄鬼軍曹 造成了 4 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "yuuki_tecchi_mace",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 123,
+      "actualDamage": 123,
+      "isCrit": false,
+      "blocked": false,
+      "message": "帖奇 頂著大盾往前推，順手一錘，對 殉國禁獄鬼軍曹 造成了 123 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "summon_1",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "帖奇 揮了揮手，回到沉睡騎士的隊伍裡。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "summon_2",
+      "skillId": "yuuki_sleeping_knights",
+      "isNormalAttack": false,
+      "message": "有紀 發出公會訊號，沉睡騎士的 帖奇 趕來助陣！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "summon_2",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "帖奇：「我來擋。」"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_regen",
+      "value": 84,
+      "message": "殉國禁獄鬼軍曹 身上的傷口冒著煙合了起來，恢復了 84 點 HP。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_sheathe",
+      "message": "殉國禁獄鬼軍曹 把軍刀收回鞘裡，壓低了身子。四周殘留的祈禱一道一道往刀鞘裡收了進去。"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "targetId": "mob_0_oni_gunsou",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "oni_gunsou_slash",
+      "value": 18,
+      "isCrit": false,
+      "message": "殉國禁獄鬼軍曹 踏前一步，軍刀由上往下劈向 木之本櫻，但是遭木之本櫻反擊，受到 18 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 1543,
+      "actualDamage": 1543,
+      "isCrit": true,
+      "blocked": false,
+      "message": "源氏 甩手射出三枚手裏劍，直取 殉國禁獄鬼軍曹，會心一擊！對 殉國禁獄鬼軍曹 造成了 1543 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 940,
+      "actualDamage": 940,
+      "isCrit": true,
+      "blocked": false,
+      "message": "手腕一翻，第 2 輪緊跟著射出，會心一擊！對 殉國禁獄鬼軍曹 造成了 940 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 543,
+      "actualDamage": 543,
+      "isCrit": true,
+      "blocked": false,
+      "message": "前一輪還沒落地，第 3 輪已經出手，會心一擊！對 殉國禁獄鬼軍曹 造成了 543 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_shuriken",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 347,
+      "actualDamage": 347,
+      "isCrit": true,
+      "blocked": false,
+      "message": "手裏劍連珠般飛出，第 4 輪，會心一擊！對 殉國禁獄鬼軍曹 造成了 347 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_oni_gunsou",
+      "targetId": "6aae431b231156aca1a3bb98",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "sakura_windy",
+      "value": 1190,
+      "isCrit": false,
+      "message": "木之本櫻 舉起法杖點向「風」，一陣旋風捲向 殉國禁獄鬼軍曹，但是遭殉國禁獄鬼軍曹反擊，受到 1190 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "genji_swift_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_oni_gunsou",
+      "value": 651,
+      "actualDamage": 390,
+      "isCrit": false,
+      "blocked": false,
+      "message": "源氏 使出了 迅影襲，化作一道綠影從 殉國禁獄鬼軍曹 身邊穿過，對 殉國禁獄鬼軍曹 造成了 651 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹 倒下了！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹：「……這樣，就好。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_ending",
+      "message": "殉國禁獄鬼軍曹 的軍刀從手裡滑落。他沒有再站起來。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_oni_gunsou",
+      "message": "殉國禁獄鬼軍曹：「……謝謝。我終於，可以畢業了。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_ending",
+      "message": "他的身影像花瓣一樣散開，被風帶走了。原地只剩下一隻背著包袱巾的柴犬布偶。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_oni_gunsou",
+      "skillId": "oni_gunsou_ending",
+      "message": "遠處，四名軍官排成一列，朝著那個方向舉手敬禮。"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "value": 8705,
+      "maxHp": 9120,
+      "message": "源氏 剩餘 8705 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "value": 3757,
+      "maxHp": 9390,
+      "message": "有紀 剩餘 3757 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6aae431b231156aca1a3bb98",
+      "value": 7267,
+      "maxHp": 11750,
+      "message": "木之本櫻 剩餘 7267 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "summon_2",
+      "value": 8451,
+      "maxHp": 8451,
+      "message": "帖奇 剩餘 8451 HP"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "value": 0,
+      "message": "源氏 獲得了 0 點經驗值"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "value": 0,
+      "message": "有紀 獲得了 0 點經驗值"
+    }
+  ],
+  "_mdbvMeta": {
+    "exportedAt": "2026-10-16T22:54:04.050Z",
+    "totalTurns": 48,
+    "frameCount": 200
+  }
+}
+

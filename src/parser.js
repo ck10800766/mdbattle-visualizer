@@ -342,7 +342,9 @@ export function buildStateSnapshots(logs) {
             log.type === 'DAMAGE' &&
             log.actorId &&
             log.actorId === log.targetId;
-        const isEnvironmentalPulse = ENVIRONMENTAL_SKILLS.has(log.skillId);
+        const isEnvironmentalPulse =
+            ENVIRONMENTAL_SKILLS.has(log.skillId) ||
+            /脈衝波掃過/i.test(log.message || '');
 
         const frame = {
             index,
@@ -482,7 +484,7 @@ export function buildStateSnapshots(logs) {
             }
 
             frame.vfx.push('luck-drop');
-            if (frame.actionCancelled) frame.vfx.push('break-stamp');
+            frame.vfx.push('flash-purple');
         } else if (log.type === 'HEAL') {
             const target = engineState.actors.get(log.targetId || log.actorId);
             if (target) {

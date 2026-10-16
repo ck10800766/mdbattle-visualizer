@@ -64,3 +64,16 @@ export function formatLogMessage(rawMessage, actorsMap) {
         return `<span class="${nameClass}">${match}</span>`;
     });
 }
+
+/**
+ * Calculates a comfortable reading duration based on character count.
+ * Base 650ms + 75ms per character, clamped between 1000ms and 4500ms.
+ *
+ * @param {string} [message=''] - Combat log or dialogue text.
+ * @returns {number} Duration in milliseconds.
+ */
+export function getMessageReadingDuration(message = '') {
+    if (!message) return 600;
+    const len = message.trim().length;
+    return Math.max(1000, Math.min(4500, 650 + len * 75));
+}
