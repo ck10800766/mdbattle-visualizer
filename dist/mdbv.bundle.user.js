@@ -120,6 +120,7 @@
       totalDamageDealt: 0,
       luckDamageDealt: 0,
       totalDamageTaken: 0,
+      totalHealingDealt: 0,
       lastUltimateTurn: null
     };
   }
@@ -249,12 +250,14 @@
           consolidated.set(targetId, {
             actor: engineState.actors.get(targetId),
             totalOutput: 0,
-            totalTaken: 0
+            totalTaken: 0,
+            totalHealing: 0
           });
         }
         const stats = consolidated.get(targetId);
         stats.totalOutput += (actor.totalDamageDealt || 0) + (actor.luckDamageDealt || 0);
         stats.totalTaken += actor.totalDamageTaken || 0;
+        stats.totalHealing += actor.totalHealingDealt || 0;
       }
     });
     consolidated.forEach((stats) => {
@@ -850,6 +853,7 @@
       actor.totalDamageDealt = 0;
       actor.luckDamageDealt = 0;
       actor.totalDamageTaken = 0;
+      actor.totalHealingDealt = 0;
       actor.lastUltimateTurn = null;
       actorsSummonState.set(actor.id, actor.initiallySpawned !== false);
     });
@@ -1005,6 +1009,11 @@
             actorsDeathState.set(target.id, false);
           }
         }
+        const healer = engineState.actors.get(log.actorId);
+        const isDecayRestore = /離開毒氣|衰變的傷勢/.test(String(log.message || ""));
+        if (healer && !isDecayRestore && frame.value > 0) {
+          healer.totalHealingDealt += frame.value;
+        }
       } else if (log.type === "HP_REMAINING") {
         const target = engineState.actors.get(log.actorId);
         if (target && log.maxHp && !target.isSummon) {
@@ -1032,6 +1041,14 @@
             frame.isBeneficial = true;
             if (target.currentHp > 0) {
               actorsDeathState.set(target.id, false);
+            }
+            let healerId = null;
+            if (log.buffId && buffSrc[target.id] && buffSrc[target.id][log.buffId]) {
+              healerId = buffSrc[target.id][log.buffId];
+            }
+            const healer = healerId ? engineState.actors.get(healerId) : target;
+            if (healer && frame.value > 0) {
+              healer.totalHealingDealt += frame.value;
             }
           } else {
             if (!target.hideHp) {
@@ -1089,6 +1106,7 @@
             const amount = Number(healMatch[1]);
             target.currentHp = Math.min(target.maxHp, target.currentHp + amount);
             addHpDelta(target.id, amount);
+            target.totalHealingDealt += amount;
           }
           const lossMatch = msg.match(/失去了\s*(\d+)\s*(?:HP|點生命)/);
           if (lossMatch) {
@@ -2899,7 +2917,7 @@
     headerRow.innerHTML = `
         <div style="width: 120px;">MEMBER</div>
         <div style="flex: 1; margin: 0 20px;">CONTRIBUTION</div>
-        <div style="width: 140px; text-align: right;">OUTPUT / TAKEN</div>
+        <div style="width: 140px; text-align: right;">OUTPUT / STATS</div>
     `;
     statsContainer.appendChild(headerRow);
     const animateValue = (element, endValue, delay) => {
@@ -2924,9 +2942,12 @@
     let delayCounter = 0.4;
     consolidated.forEach((stats) => {
       if (stats.actor.isSummon) return;
-      const { actor, totalOutput, totalTaken } = stats;
+      const { actor, totalOutput, totalTaken, totalHealing = 0 } = stats;
       const dmgPct = maxTotalDamage > 0 ? totalOutput / maxTotalDamage * 100 : 0;
       const formatNum = (num) => Math.round(num).toLocaleString("en-US");
+      const isHealHigher = totalHealing > totalTaken;
+      const subLabel = isHealHigher ? "HEAL" : "TAKEN";
+      const subValue = isHealHigher ? totalHealing : totalTaken;
       const row = document.createElement("div");
       row.className = "stat-row";
       row.style.animationDelay = `${delayCounter}s`;
@@ -2937,7 +2958,7 @@
             </div>
             <div class="stat-numbers">
                 <div class="stat-dmg">0</div>
-                <div class="stat-taken">TAKEN: ${formatNum(totalTaken)}</div>
+                <div class="stat-taken">${subLabel}: ${formatNum(subValue)}</div>
             </div>
         `;
       statsContainer.appendChild(row);

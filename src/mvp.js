@@ -106,7 +106,7 @@ export function showMVPPanel() {
     headerRow.innerHTML = `
         <div style="width: 120px;">MEMBER</div>
         <div style="flex: 1; margin: 0 20px;">CONTRIBUTION</div>
-        <div style="width: 140px; text-align: right;">OUTPUT / TAKEN</div>
+        <div style="width: 140px; text-align: right;">OUTPUT / STATS</div>
     `;
     statsContainer.appendChild(headerRow);
 
@@ -141,9 +141,13 @@ export function showMVPPanel() {
     consolidated.forEach(stats => {
         if (stats.actor.isSummon) return;
 
-        const { actor, totalOutput, totalTaken } = stats;
+        const { actor, totalOutput, totalTaken, totalHealing = 0 } = stats;
         const dmgPct = maxTotalDamage > 0 ? (totalOutput / maxTotalDamage) * 100 : 0;
         const formatNum = (num) => Math.round(num).toLocaleString('en-US');
+
+        const isHealHigher = totalHealing > totalTaken;
+        const subLabel = isHealHigher ? 'HEAL' : 'TAKEN';
+        const subValue = isHealHigher ? totalHealing : totalTaken;
 
         const row = document.createElement('div');
         row.className = 'stat-row';
@@ -156,7 +160,7 @@ export function showMVPPanel() {
             </div>
             <div class="stat-numbers">
                 <div class="stat-dmg">0</div>
-                <div class="stat-taken">TAKEN: ${formatNum(totalTaken)}</div>
+                <div class="stat-taken">${subLabel}: ${formatNum(subValue)}</div>
             </div>
         `;
         statsContainer.appendChild(row);

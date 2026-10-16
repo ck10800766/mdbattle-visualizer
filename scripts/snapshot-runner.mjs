@@ -117,7 +117,8 @@ function generateEngineSnapshot(rawReport) {
                 actorId,
                 actorName: stat.actor.name,
                 totalOutput: stat.totalOutput,
-                totalTaken: stat.totalTaken
+                totalTaken: stat.totalTaken,
+                totalHealing: stat.totalHealing || 0
             }))
         },
         timelineMarkers,

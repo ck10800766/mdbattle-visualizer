@@ -49,6 +49,7 @@ export function createActorEntity({
         totalDamageDealt: 0,
         luckDamageDealt: 0,
         totalDamageTaken: 0,
+        totalHealingDealt: 0,
         lastUltimateTurn: null
     };
 }
@@ -236,13 +237,15 @@ export function getConsolidatedStats() {
                 consolidated.set(targetId, {
                     actor: engineState.actors.get(targetId),
                     totalOutput: 0,
-                    totalTaken: 0
+                    totalTaken: 0,
+                    totalHealing: 0
                 });
             }
 
             const stats = consolidated.get(targetId);
             stats.totalOutput += (actor.totalDamageDealt || 0) + (actor.luckDamageDealt || 0);
             stats.totalTaken += actor.totalDamageTaken || 0;
+            stats.totalHealing += actor.totalHealingDealt || 0;
         }
     });
 
