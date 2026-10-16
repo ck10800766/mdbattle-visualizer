@@ -19,10 +19,10 @@ import {
 import { markAOEWaves, calibrateHpWithAnchors } from './calibrator.js';
 import {
     ENVIRONMENTAL_SKILLS,
-    CONTRACT_SKILL_PROFILES,
-    CROSS_FINISHER_PROFILES,
+    getContractSkillProfile,
+    getCrossFinisherProfile,
     SUMMON_DESPAWN_REGEX,
-    BENEFICIAL_BUFF_SKILLS
+    isBeneficialBuffSkill
 } from './profiles.js';
 
 export {
@@ -401,7 +401,7 @@ export function buildStateSnapshots(logs) {
             frame.hpDeltas.set(id, (frame.hpDeltas.get(id) || 0) + delta);
         };
 
-        const contractProfile = CONTRACT_SKILL_PROFILES[frame.skillId];
+        const contractProfile = getContractSkillProfile(frame.skillId);
         const isReactiveCoverText =
             frame.type === 'SKILL_TEXT' &&
             contractProfile &&
@@ -438,7 +438,7 @@ export function buildStateSnapshots(logs) {
                 buffSrc[victim.id][log.buffId || log.skillId || ''] = attacker.id;
                 applyLog.push({ victim: victim.id, actor: attacker.id, msg: String(log.message || '') });
             }
-            if (BENEFICIAL_BUFF_SKILLS.has(frame.skillId) && log.targetId) {
+            if (isBeneficialBuffSkill(frame.skillId) && log.targetId) {
                 frame.vfx.push('flash-blue');
                 frame.isBeneficial = true;
             }
@@ -627,14 +627,14 @@ export function buildStateSnapshots(logs) {
             }
 
             // Handle Cross Finisher mid-skill inscription (e.g., Mother's Rosario 10-hit cross)
-            const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
+            const crossProfile = getCrossFinisherProfile(frame.skillId);
             if (crossProfile && log.type === 'SKILL_TEXT' && crossProfile.inscribeRegex.test(msg)) {
                 frame.rosarioEvent = 'INSCRIBE_CROSS';
             }
         }
 
         // Tag Cross Finisher final piercing hit on DAMAGE or BLOCK frames
-        const crossProfile = CROSS_FINISHER_PROFILES[frame.skillId];
+        const crossProfile = getCrossFinisherProfile(frame.skillId);
         if (crossProfile && ['DAMAGE', 'BLOCK'].includes(log.type) && crossProfile.pierceRegex.test(frame.message)) {
             frame.rosarioEvent = 'PIERCE_CROSS';
         }

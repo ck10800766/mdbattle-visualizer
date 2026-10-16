@@ -8,7 +8,7 @@
  */
 
 import { DEFAULT_AVATAR_URL } from './constants.js';
-import { CONTRACT_SKILL_PROFILES } from './profiles.js';
+import { getContractSkillProfile } from './profiles.js';
 import {
     engineState,
     createEmptyCombo,
@@ -63,7 +63,7 @@ export function syncActorBondVisuals(sr, bondStateMap = null) {
         const existingBadge = wrapperEl.querySelector('.bond-ring-badge');
 
         if (bondInfo) {
-            const profile = CONTRACT_SKILL_PROFILES[bondInfo.skillId];
+            const profile = getContractSkillProfile(bondInfo.skillId);
             wrapperEl.classList.add('bond-active');
             if (!existingBadge) {
                 const badge = document.createElement('div');

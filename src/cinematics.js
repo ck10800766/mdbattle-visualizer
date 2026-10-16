@@ -11,9 +11,10 @@ import { DEFAULT_AVATAR_URL } from './constants.js';
 import { engineState, getEffectiveSpeed } from './state.js';
 import { escapeRegExp, escapeHtml } from './utils.js';
 import {
-    CONTRACT_SKILL_PROFILES,
-    SPECIAL_SKILL_BADGE_RULES,
-    CROSS_FINISHER_PROFILES
+    getContractSkillProfile,
+    matchesSkill,
+    getCrossFinisherProfile,
+    SPECIAL_SKILL_BADGE_RULES
 } from './profiles.js';
 
 /**
@@ -307,7 +308,7 @@ export function spawnStatusOrDiceBadge(frame, sr) {
     }
 
     if (frame.contractEvent === 'END') {
-        const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+        const profile = getContractSkillProfile(frame.skillId);
         const actorOnlyEl = sr.getElementById(`actor-${frame.actorId}`);
         if (actorOnlyEl && profile) {
             const badge = document.createElement('div');
@@ -322,7 +323,7 @@ export function spawnStatusOrDiceBadge(frame, sr) {
     }
 
     for (const rule of SPECIAL_SKILL_BADGE_RULES) {
-        if (frame.skillId === rule.skillId && frame.message) {
+        if (matchesSkill(rule, frame.skillId) && frame.message) {
             const match = frame.message.match(rule.regex);
             if (match) {
                 const badgeTargetId = rule.target === 'actor' ? frame.actorId : (frame.targetId || frame.actorId);
@@ -364,7 +365,7 @@ export function spawnStatusOrDiceBadge(frame, sr) {
 export async function playContractCutIn(frame, sr, token) {
     const actor = engineState.actors.get(frame.actorId);
     const partner = frame.targetId ? engineState.actors.get(frame.targetId) : null;
-    const profile = CONTRACT_SKILL_PROFILES[frame.skillId];
+    const profile = getContractSkillProfile(frame.skillId);
     if (!actor || !profile || engineState.playbackToken !== token) return;
 
     const arena = sr.getElementById('arena');
@@ -459,7 +460,7 @@ export function spawnRosarioCross(frame, sr) {
 
     const crossEl = document.createElement('div');
     crossEl.className = 'rosario-cross-mark';
-    const profile = CROSS_FINISHER_PROFILES[frame.skillId];
+    const profile = getCrossFinisherProfile(frame.skillId);
     if (profile?.crossColor) crossEl.style.setProperty('--cross-color', profile.crossColor);
     if (profile?.glowColor) crossEl.style.setProperty('--glow-color', profile.glowColor);
     crossEl.innerHTML = `
