@@ -63,3 +63,48 @@
 1. **左側我方召喚物**：自螢幕左側外緣（`translateX(-180px)`）帶淡藍光暈滑入戰場；退場時向左側邊緣滑出淡出。
 2. **右側敵方召喚物**：自螢幕右側外緣（`translateX(180px)`）帶灰霧緋紅光暈滑入戰場；退場時向右側邊緣滑出淡出。
 3. 確保召喚進退場影格給予至少 `650ms` 展示時長，使連續換人具備明確的「向外退場、自外入場」方向軌跡。
+
+---
+
+## ADR-005: 護盾狀態與狀態列排版架構 (Shield & Status Tray Layout)
+
+### 背景 (Context)
+原本角色血條高度有限且四周有傷害跳字與連段統計。如果將 Buff/Debuff 圖示硬塞在血條下方或置中，會與血量文字互相遮擋；若在血條內部硬擠一條細護盾條，容易在受到大額傷害時產生鋸齒或不易看清。
+
+### 決策 (Decision)
+1. **狀態列外置於頭像側邊**：
+   - 左側角色狀態列靠頭像左方（`right: calc(100% + 6px)`）。
+   - 右側角色狀態列靠頭像右方（`left: calc(100% + 6px)`）。
+   - 垂直由上至下排列，與血條完全脫鉤，確保血量動態清晰可見。
+2. **護盾採用卡片發光外框 (`shield-active`)**：
+   - 當單位持有有效護盾或防護罩時，卡片容器邊框呈現水藍色呼吸光暈（`border-color: #63b3ed; box-shadow: 0 0 8px #63b3ed`），直觀而不佔用內部排版空間。
+3. **多重狀態交替閃爍光暈**：
+   - 當角色身上有多個 Buff/Debuff 時，頭像輪廓採用漸層交替閃爍色光，提示玩家該單位帶有多重特殊增減益效果。
+
+---
+
+## ADR-006: 離線戰報可攜性與血量內聯 (Offline Report Portability & HP Inlining)
+
+### 背景 (Context)
+伺服器回傳的文字戰報（`logs[]`）本身往往缺少 `participants` 陣列（包含各角色初始最大血量 `hp.max` 與頭像網址）。當前腳本雖能在線上透過 API 平行補齊，但如果使用者下載原始戰報 JSON，在離線或伺服器紀錄過期後載入，血量校正將失去基準。
+
+### 決策 (Decision)
+1. 在 `reportIO.js` 執行 `exportCurrentBattleReport` 時，必須將執行期已校正與補齊的 `engineState.actors` 資料**內聯封裝至 JSON 頂層的 `participants` 陣列**。
+2. 匯出的戰報檔名規範為 `mdbattle-<leftRep>-vs-<rightRep>-<timestamp>.json`，方便玩家歸檔與辨識。
+3. 脫機載入時優先讀取內聯的 `participants`，達成 **100% 離線免連網完整回放**。
+
+---
+
+## ADR-007: 嚴格無頭黃金快照回歸測試 (Headless Golden Snapshot Testing)
+
+### 背景 (Context)
+戰鬥視覺化涉及複雜的正則解析、回合推論、多段連段預判、血量回推與狀態機。任何一行程式碼修改（如前瞻判斷或正則微調）極易引發非預期的連鎖副作用，而在瀏覽器中手動測試 500 幀戰報極為費時且容易遺漏。
+
+### 決策 (Decision)
+1. **脫離瀏覽器環境的純 Node.js 快照管線**：
+   - 透過 `scripts/snapshot-runner.mjs`，在不啟動瀏覽器的情況下直接執行 `parseParticipants`、`buildStateSnapshots`、`simulateRuntimeTrace` 與 `extractTimelineMarkers`。
+2. **ES6 集合正規化序列化**：
+   - 透過 `toSerializable` 將 `Map` / `Set` 依 Key 字母排序轉化為確定性的純 JSON，杜絕物件迭代順序造成的偽陽性差異。
+3. **提交前一致性檢查門禁 (`npm run check`)**：
+   - 自動串聯快照測試、`esbuild` 打包與 `git diff --exit-code dist/`，並整合於 GitHub Actions CI，確保任何 PR 都不會帶入回歸破壞或未編譯的成品。
+
