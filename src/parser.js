@@ -22,6 +22,7 @@ import {
     getContractSkillProfile,
     getCrossFinisherProfile,
     SUMMON_DESPAWN_REGEX,
+    REBIRTH_RULES,
     isBeneficialBuffSkill
 } from './profiles.js';
 
@@ -124,7 +125,8 @@ function processSummonLifecycle(
     actorsDeathState,
     actorsSummonState,
     explicitlySummonedIds,
-    despawnedActors
+    despawnedActors,
+    structuralDepartures
 ) {
     // 1. Explicit SUMMON log entry (always keep hideHp: true for dynamic summons)
     if (log.type === 'SUMMON' && log.targetId) {
@@ -143,6 +145,7 @@ function processSummonLifecycle(
                 ownerId: log.actorId,
                 initiallySpawned: false
             }));
+            actorsDeathState.set(log.targetId, false);
         } else {
             const summonActor = engineState.actors.get(log.targetId);
             summonActor.currentHp = summonActor.maxHp;
@@ -173,14 +176,26 @@ function processSummonLifecycle(
         }
     }
 
-    // 3. Summon voluntary despawn (generalized across all summons, projections, and skills)
+    // 3. Summon voluntary despawn (structural heuristic + semantic fallback)
+    let candidateId = null;
+
+    // 3a. Check pre-computed structural departure heuristic
+    if (structuralDepartures) {
+        for (const [sId, depIdx] of structuralDepartures.entries()) {
+            if (depIdx === index && actorsSummonState.get(sId) !== false && !despawnedActors.has(sId)) {
+                candidateId = sId;
+                break;
+            }
+        }
+    }
+
+    // 3b. Semantic despawn check (fallback or direct match via SUMMON_DESPAWN_REGEX)
     if (
+        !candidateId &&
         (log.type === 'SKILL_TEXT' || log.type === 'TEXT' || log.type === 'BOSS_DIALOGUE') &&
         SUMMON_DESPAWN_REGEX.test(frame.message)
     ) {
-        let candidateId = null;
-
-        // 3a. Direct actorId check (active summon taking a voluntary departure/fading action)
+        // Direct actorId check (active summon taking a voluntary departure/fading action)
         if (log.actorId) {
             const actingUnit = engineState.actors.get(log.actorId);
             if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
@@ -188,7 +203,7 @@ function processSummonLifecycle(
             }
         }
 
-        // 3b. Direct targetId check (e.g. unsummon/recall target)
+        // Direct targetId check (e.g. unsummon/recall target)
         if (!candidateId && log.targetId) {
             const targetUnit = engineState.actors.get(log.targetId);
             if (targetUnit && targetUnit.isSummon && actorsSummonState.get(log.targetId) !== false) {
@@ -196,7 +211,7 @@ function processSummonLifecycle(
             }
         }
 
-        // 3c. Contextual resolution by matching active summon names in the narrative message
+        // Contextual resolution by matching active summon names in the narrative message
         if (!candidateId && frame.message) {
             for (const [id, actor] of engineState.actors.entries()) {
                 if (actor.isSummon && actorsSummonState.get(id) !== false && actor.name) {
@@ -207,13 +222,13 @@ function processSummonLifecycle(
                 }
             }
         }
+    }
 
-        if (candidateId) {
-            actorsSummonState.set(candidateId, false);
-            despawnedActors.add(candidateId);
-            frame.isDespawnEvent = true;
-            frame.despawnedActorId = candidateId;
-        }
+    if (candidateId) {
+        actorsSummonState.set(candidateId, false);
+        despawnedActors.add(candidateId);
+        frame.isDespawnEvent = true;
+        frame.despawnedActorId = candidateId;
     }
 }
 
@@ -527,6 +542,181 @@ function computeActiveStatusAndShieldIntervals(logs) {
 }
 
 /**
+ * Structurally detects voluntary summon departures across the entire combat log.
+ * Invariant: A summon voluntarily departs if:
+ * 1. It is a summon unit.
+ * 2. It did not have an end-of-battle HP_REMAINING log (meaning it did not survive to the end).
+ * 3. It did not suffer an un-revived terminal DEATH log.
+ * 4. It has a narrative text/skill/dialogue log at or after its last combat event,
+ *    and NEVER participates in combat again for the rest of the battle.
+ *
+ * @param {Array<object>} logs - Raw combat logs.
+ * @param {Map<string, object>} actorsMap - Registered actors map.
+ * @returns {Map<string, number>} Map from summonId to departure log index.
+ */
+function computeStructuralSummonDepartures(logs, actorsMap) {
+    const departures = new Map();
+    const summonIds = new Set();
+    const summonNames = new Map();
+
+    actorsMap.forEach((actor, id) => {
+        if (actor.isSummon) {
+            summonIds.add(id);
+            if (actor.name) summonNames.set(id, actor.name);
+        }
+    });
+
+    logs.forEach(l => {
+        if (!l) return;
+        if (l.type === 'SUMMON' && l.targetId) {
+            summonIds.add(l.targetId);
+        }
+    });
+
+    summonIds.forEach(id => {
+        const name = summonNames.get(id);
+        let lastCombatIdx = -1;
+        let lastDeathIdx = -1;
+        let hasHpRemaining = false;
+
+        logs.forEach((l, idx) => {
+            if (!l) return;
+            const isActor = l.actorId === id;
+            const isTarget = l.targetId === id;
+            const isOpponent = l.opponentId === id;
+
+            if (l.type === 'HP_REMAINING' && (isActor || isTarget)) {
+                hasHpRemaining = true;
+            }
+
+            if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(l.type) && (isActor || isTarget)) {
+                lastDeathIdx = idx;
+            }
+
+            if (['DAMAGE', 'BLOCK', 'MISS', 'COUNTER', 'HEAL', 'LUCK_EVENT', 'BUFF_EFFECT'].includes(l.type)) {
+                if (isActor || isTarget || isOpponent) {
+                    lastCombatIdx = Math.max(lastCombatIdx, idx);
+                }
+            }
+        });
+
+        if (hasHpRemaining) return;
+        if (lastDeathIdx > lastCombatIdx) return;
+
+        let candidateNarrativeIdx = -1;
+        for (let idx = Math.max(0, lastCombatIdx); idx < logs.length; idx++) {
+            const l = logs[idx];
+            if (!l) continue;
+            const msg = l.message || '';
+            const isActor = l.actorId === id;
+            const isTarget = l.targetId === id;
+            const nameMentioned = name && msg.includes(name);
+
+            if (['TEXT', 'SKILL_TEXT', 'BOSS_DIALOGUE'].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+                let futureCombat = false;
+                for (let k = idx + 1; k < logs.length; k++) {
+                    const fl = logs[k];
+                    if (!fl) continue;
+                    if (fl.actorId === id || fl.targetId === id || fl.opponentId === id) {
+                        if (['DAMAGE', 'BLOCK', 'MISS', 'COUNTER', 'HEAL', 'LUCK_EVENT', 'BUFF_EFFECT', 'DEATH'].includes(fl.type)) {
+                            futureCombat = true;
+                            break;
+                        }
+                    }
+                }
+                if (!futureCombat) {
+                    candidateNarrativeIdx = idx;
+                    break;
+                }
+            }
+        }
+
+        if (candidateNarrativeIdx !== -1) {
+            departures.set(id, candidateNarrativeIdx);
+        }
+    });
+
+    return departures;
+}
+
+/**
+ * Structurally detects actor revivals from death.
+ * Invariant: If an actor suffered a DEATH / PLAYER_DEATH, but subsequently participates
+ * in combat (takes/deals damage, blocks, counters, heals, has HP_REMAINING > 0, or dies again),
+ * the actor structurally revived between death and combat resumption.
+ *
+ * @param {Array<object>} logs - Raw combat logs.
+ * @param {Map<string, object>} actorsMap - Registered actors map.
+ * @returns {Map<number, Set<string>>} Map from revival log index to set of reviving actor IDs.
+ */
+function computeStructuralRevivals(logs, actorsMap) {
+    const revivals = new Map();
+    const deathsByActor = new Map();
+
+    logs.forEach((l, idx) => {
+        if (!l) return;
+        if (['DEATH', 'PLAYER_DEATH'].includes(l.type) && l.actorId) {
+            if (!deathsByActor.has(l.actorId)) deathsByActor.set(l.actorId, []);
+            deathsByActor.get(l.actorId).push(idx);
+        }
+    });
+
+    deathsByActor.forEach((deathIndices, actorId) => {
+        const actor = actorsMap.get(actorId);
+        const actorName = actor?.name;
+
+        deathIndices.forEach((deathIdx, i) => {
+            const nextDeathIdx = i + 1 < deathIndices.length ? deathIndices[i + 1] : logs.length;
+
+            let resumeCombatIdx = -1;
+            for (let k = deathIdx + 1; k < nextDeathIdx; k++) {
+                const l = logs[k];
+                if (!l) continue;
+                const isActor = l.actorId === actorId;
+                const isTarget = l.targetId === actorId;
+                const isOpponent = l.opponentId === actorId;
+
+                if (['DAMAGE', 'BLOCK', 'MISS', 'COUNTER', 'HEAL'].includes(l.type)) {
+                    if (isActor || isTarget || isOpponent) {
+                        resumeCombatIdx = k;
+                        break;
+                    }
+                }
+                if (l.type === 'HP_REMAINING' && (isActor || isTarget)) {
+                    resumeCombatIdx = k;
+                    break;
+                }
+                if (['DEATH', 'PLAYER_DEATH'].includes(l.type) && (isActor || isTarget)) {
+                    resumeCombatIdx = k;
+                    break;
+                }
+            }
+
+            if (resumeCombatIdx !== -1) {
+                let revivalIdx = resumeCombatIdx;
+                for (let k = deathIdx + 1; k <= resumeCombatIdx; k++) {
+                    const l = logs[k];
+                    if (!l) continue;
+                    const msg = l.message || '';
+                    const isActor = l.actorId === actorId;
+                    const isTarget = l.targetId === actorId;
+                    const nameMentioned = actorName && msg.includes(actorName);
+
+                    if (['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+                        revivalIdx = k;
+                    }
+                }
+
+                if (!revivals.has(revivalIdx)) revivals.set(revivalIdx, new Set());
+                revivals.get(revivalIdx).add(actorId);
+            }
+        });
+    });
+
+    return revivals;
+}
+
+/**
  * Builds deterministic frame-by-frame state snapshots from raw battle logs
  * and runs post-processing calibration passes (`calibrateHpWithAnchors` and `markAOEWaves`).
  *
@@ -547,6 +737,8 @@ export function buildStateSnapshots(logs) {
     const contractCutInCount = new Map();
     const despawnedActors = new Set();
     const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
+    const structuralDepartures = computeStructuralSummonDepartures(logs, engineState.actors);
+    const structuralRevivals = computeStructuralRevivals(logs, engineState.actors);
 
     const explicitlySummonedIds = new Set();
     logs.forEach(log => {
@@ -673,7 +865,8 @@ export function buildStateSnapshots(logs) {
             actorsDeathState,
             actorsSummonState,
             explicitlySummonedIds,
-            despawnedActors
+            despawnedActors,
+            structuralDepartures
         );
 
         // Track debuff application sources so subsequent DoT ticks can be attributed to the caster
@@ -886,6 +1079,71 @@ export function buildStateSnapshots(logs) {
             frame.rosarioEvent = 'PIERCE_CROSS';
         }
 
+        // 1. Structural unit revival (Bosses, players, and multi-phase summons)
+        const revivingActors = structuralRevivals.get(index);
+        if (revivingActors) {
+            revivingActors.forEach(revivingActorId => {
+                if (actorsDeathState.get(revivingActorId)) {
+                    actorsDeathState.set(revivingActorId, false);
+                    const revivingActor = engineState.actors.get(revivingActorId);
+                    if (revivingActor) {
+                        revivingActor.currentHp = revivingActor.maxHp;
+                    }
+                }
+            });
+        }
+
+        // 2. Semantic unit revival / standing back up
+        if (
+            ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(log.type) &&
+            REBIRTH_RULES.dialogueRegex.test(frame.message)
+        ) {
+            let revivingActorId = null;
+            if (log.actorId && engineState.actors.has(log.actorId)) {
+                revivingActorId = log.actorId;
+            } else if (log.targetId && engineState.actors.has(log.targetId)) {
+                revivingActorId = log.targetId;
+            } else {
+                for (const [id, a] of engineState.actors.entries()) {
+                    if (a.name && frame.message.includes(a.name) && actorsDeathState.get(id)) {
+                        revivingActorId = id;
+                        break;
+                    }
+                }
+            }
+            if (revivingActorId && actorsDeathState.get(revivingActorId)) {
+                actorsDeathState.set(revivingActorId, false);
+                const revivingActor = engineState.actors.get(revivingActorId);
+                if (revivingActor) {
+                    revivingActor.currentHp = revivingActor.maxHp;
+                }
+            }
+        }
+
+        // 3. Safety nets: an actor actively acting or targeted in combat cannot remain dead
+        if (
+            log.actorId &&
+            actorsDeathState.get(log.actorId) &&
+            ['DAMAGE', 'MISS', 'COUNTER', 'HEAL', 'SKILL_TEXT', 'BUFF_APPLY'].includes(log.type)
+        ) {
+            actorsDeathState.set(log.actorId, false);
+            const actingActor = engineState.actors.get(log.actorId);
+            if (actingActor && actingActor.currentHp <= 0) {
+                actingActor.currentHp = actingActor.maxHp;
+            }
+        }
+        if (
+            log.targetId &&
+            actorsDeathState.get(log.targetId) &&
+            ['DAMAGE', 'BLOCK', 'MISS', 'COUNTER', 'HEAL'].includes(log.type)
+        ) {
+            actorsDeathState.set(log.targetId, false);
+            const targetedActor = engineState.actors.get(log.targetId);
+            if (targetedActor && targetedActor.currentHp <= 0) {
+                targetedActor.currentHp = targetedActor.maxHp;
+            }
+        }
+
         if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(log.type)) {
             const alreadyDead = !!actorsDeathState.get(log.actorId);
             actorsDeathState.set(log.actorId, true);
@@ -896,7 +1154,9 @@ export function buildStateSnapshots(logs) {
             }
 
             const deadActor = engineState.actors.get(log.actorId);
-            if (deadActor) deadActor.currentHp = 0;
+            if (deadActor) {
+                deadActor.currentHp = 0;
+            }
         }
 
         engineState.actors.forEach(actor => {

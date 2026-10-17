@@ -98,6 +98,82 @@ export async function playFatalitySequence(sr, actorId, token = engineState.play
 }
 
 /**
+ * Generic extraction of skill name from a combat log frame message.
+ * Utilizes the structural invariant in MD templates:
+ * Skill invocations follow `<verb>了 <SkillName>` or `進入 <SkillName>` with an ASCII space
+ * following the verb/keyword, whereas standard narrative descriptions attach "了" directly
+ * to actions without whitespace.
+ *
+ * Excludes numerical damage/healing resolutions and actions targeting other actors.
+ *
+ * @param {string} message - Frame message text.
+ * @returns {string|null} Extracted skill name or null.
+ */
+export function extractSkillFromMessage(message) {
+    if (!message) return null;
+    const pattern = /(?:(?!(?:造成|受到|回復|恢復|損失|失去|衝向|飛向|瞄準|盯上|閃過|躲過|看見|附上|燒掉)了)(?:[^\s，,。！!：:]{1,4}了|進入))\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+    let m;
+    while ((m = pattern.exec(message)) !== null) {
+        const token = m[1].replace(/^[「『\[【](.*?)[」』\]】]$/, '$1');
+        const isActor = engineState?.actors ? Array.from(engineState.actors.values()).some(a => a.name === token) : false;
+        if (!isActor) {
+            return token;
+        }
+    }
+    return null;
+}
+
+/**
+ * Evaluates whether an ultimate frame should defer its full-screen Cut-In presentation
+ * to a subsequent frame in the same turn.
+ *
+ * For multi-line ultimates (e.g. character monologue, prologue actions, or dramatic build-up lines
+ * before the climactic skill execution), playback allows character speech bubbles and actions to play
+ * on stage first, triggering the Cut-In when the actual skill invocation or chant climax frame is reached.
+ *
+ * @param {object} frame - Current combat frame.
+ * @returns {boolean} True if cut-in presentation should defer to a subsequent climax frame.
+ */
+export function shouldDeferUltimateCutIn(frame) {
+    if (!engineState.frames || !frame || frame.index == null) return false;
+
+    // If current frame has a spoken chant quote (<= 20 chars) or explicit skill cast, it IS the climax!
+    const currentMsg = String(frame.message || '');
+    const currentQuote = currentMsg.match(/[：:]\s*「([^」]+)」/);
+    if (currentQuote && currentQuote[1].length <= 20) {
+        return false;
+    }
+    if (extractSkillFromMessage(currentMsg)) {
+        return false;
+    }
+
+    // Otherwise, check if a subsequent frame in the same turn for this actor contains the climax cast
+    for (let i = frame.index + 1; i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+        const candidate = engineState.frames[i];
+        if (
+            candidate &&
+            candidate.turnNumber === frame.turnNumber &&
+            candidate.actorId === frame.actorId &&
+            candidate.skillTier === 'ultimate'
+        ) {
+            const candMsg = String(candidate.message || '');
+            const candQuote = candMsg.match(/[：:]\s*「([^」]+)」/);
+            if (candQuote && candQuote[1].length <= 20) {
+                return true;
+            }
+            if (extractSkillFromMessage(candMsg)) {
+                return true;
+            }
+            if (/把「([^」]+)」拋向/.test(candMsg)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
  * Renders a full-screen vertical-text Ultimate skill cut-in animation.
  * Extracts either a spoken quote (preceded by a colon) or the skill name along with cleaned flavor text.
  * @param {object} frame - Current combat frame.
@@ -135,7 +211,7 @@ export async function playUltimateCutIn(frame, sr, token) {
     // preventing inline object quotes like 把「火」拋向半空 from being hollowed out.
     const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
 
-    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 15) {
+    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 20) {
         mainText = spokenQuoteMatch[1];
         const rawRemainingText = frame.message
             .replace(actor.name, '')
@@ -144,21 +220,58 @@ export async function playUltimateCutIn(frame, sr, token) {
         subText = stripCombatOutcomeText(rawRemainingText, actor.name);
     } else {
         let extractedSkillName = null;
-        const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
-        if (skillMatchCurrent) {
-            extractedSkillName = skillMatchCurrent[1];
-        } else {
-            const nextFrame = engineState.frames[frame.index + 1];
-            if (nextFrame && nextFrame.actorId === frame.actorId && nextFrame.skillId === frame.skillId) {
-                const skillMatchNext = String(nextFrame.message || '').match(/使出了\s*([^，,。！!—\s]+)/);
-                if (skillMatchNext) extractedSkillName = skillMatchNext[1];
+        let skillSourceFrame = frame;
+
+        // 1. Direct match on current frame
+        extractedSkillName = extractSkillFromMessage(frame.message);
+        if (!extractedSkillName) {
+            // 2. Scan nearby frames within the same turn for the primary cast frame of this skill
+            for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+                const candidate = engineState.frames[i];
+                if (
+                    candidate &&
+                    candidate.turnNumber === frame.turnNumber &&
+                    candidate.actorId === frame.actorId
+                ) {
+                    const candidateSkill = extractSkillFromMessage(candidate.message);
+                    if (candidateSkill) {
+                        extractedSkillName = candidateSkill;
+                        skillSourceFrame = candidate;
+                        break;
+                    }
+                }
             }
+        }
+
+        // 3. Fallback: bracketed card invocation in message, e.g. 把「火」拋向半空 -> 火之牌
+        if (!extractedSkillName) {
+            for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+                const candidate = engineState.frames[i];
+                if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
+                    const cardMatch = String(candidate.message || '').match(/把「([^」]+)」拋向/);
+                    if (cardMatch) {
+                        extractedSkillName = `${cardMatch[1]}之牌`;
+                        skillSourceFrame = candidate;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 4. Fallback: frame.skillName if available from parser
+        if (!extractedSkillName && frame.skillName) {
+            extractedSkillName = frame.skillName;
         }
 
         if (extractedSkillName) {
             mainText = extractedSkillName;
-            const rawRemaining = frame.message
-                .replace(new RegExp(`使出了\\s*${escapeRegExp(extractedSkillName)}[，,、\\s]*`), ' ')
+            // Prefer narrative casting description over pure damage/block resolution lines
+            let narrativeMsg = frame.message;
+            if (!narrativeMsg || /造成了|受到|點傷害|會心一擊|防禦|閃避/.test(narrativeMsg)) {
+                narrativeMsg = skillSourceFrame?.message || '';
+            }
+            const rawRemaining = narrativeMsg
+                .replace(new RegExp(`(?:[^\\s，,。！!：:]{1,4}了|進入)\\s*${escapeRegExp(extractedSkillName)}[，,、\\s]*`), ' ')
                 .trim();
             subText = stripCombatOutcomeText(rawRemaining, actor.name);
         } else {
@@ -174,7 +287,7 @@ export async function playUltimateCutIn(frame, sr, token) {
     const isEnglish = /[A-Za-z]/.test(mainText);
 
     const quoteEl = document.createElement('div');
-    quoteEl.className = `ult-quote ${isEnglish ? 'lang-en' : 'lang-zh'}`;
+    quoteEl.className = `ult-quote ${isEnglish ? 'lang-en' : 'lang-zh'}${mainText.length > 12 ? ' long-quote' : ''}`;
     quoteEl.textContent = mainText;
 
     const flavorEl = document.createElement('div');

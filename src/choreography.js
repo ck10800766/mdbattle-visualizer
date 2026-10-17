@@ -203,12 +203,27 @@ export function playAOEWaveBatchChoreography(waveFrames, sr) {
     if (actorEl.getAnimations) actorEl.getAnimations().forEach(anim => anim.cancel());
 
     const arenaRect = arena.getBoundingClientRect();
-    if (engineState.currentCombo.aoeCenterX === undefined || firstFrame.isAOEFirst) {
+    const aoeCasterId = firstFrame.aoeCasterId || firstFrame.actorId;
+    if (
+        engineState.currentCombo.aoeCenterX === undefined ||
+        firstFrame.isAOEFirst ||
+        engineState.currentCombo.aoeCasterId !== aoeCasterId
+    ) {
         const cleanActorRect = actorEl.getBoundingClientRect();
-        engineState.currentCombo.aoeCenterX =
+        let calculatedMoveX =
             (arenaRect.left + arenaRect.width / 2) - (cleanActorRect.left + cleanActorRect.width / 2);
-        engineState.currentCombo.aoeCenterY =
+        const calculatedDeltaY =
             (arenaRect.top + arenaRect.height / 2) - (cleanActorRect.top + cleanActorRect.height / 2);
+
+        const side = engineState.actors.get(firstFrame.actorId)?.side || 'left';
+        if (side === 'right' && calculatedMoveX > 0) calculatedMoveX = -Math.abs(calculatedMoveX);
+        else if (side === 'left' && calculatedMoveX < 0) calculatedMoveX = Math.abs(calculatedMoveX);
+        const maxDist = arenaRect.width * 0.48;
+        calculatedMoveX = Math.max(-maxDist, Math.min(maxDist, calculatedMoveX));
+
+        engineState.currentCombo.aoeCenterX = calculatedMoveX;
+        engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+        engineState.currentCombo.aoeCasterId = aoeCasterId;
     }
 
     const cMoveX = engineState.currentCombo.aoeCenterX || 0;
@@ -231,6 +246,9 @@ export function playAOEWaveBatchChoreography(waveFrames, sr) {
         });
         engineState.currentCombo.atCenterStage = false;
         engineState.currentCombo.knockedBack = true;
+        engineState.currentCombo.aoeCenterX = undefined;
+        engineState.currentCombo.aoeCenterY = undefined;
+        engineState.currentCombo.aoeCasterId = null;
     } else {
         actorEl.animate([
             { transform: startTransform, zIndex: 10 },
@@ -282,16 +300,33 @@ function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSi
 
     // Counterattack against an AOE wave: actorEl is the defender, targetEl is the AOE caster
     if (frame.isCounter || frame.type === 'COUNTER') {
-        const tRect = targetEl.getBoundingClientRect();
-        const cMoveX =
-            engineState.currentCombo.aoeCenterX ??
-            ((arenaRect.left + arenaRect.width / 2) - (tRect.left + tRect.width / 2));
-        const cDeltaY =
-            engineState.currentCombo.aoeCenterY ??
-            ((arenaRect.top + arenaRect.height / 2) - (tRect.top + tRect.height / 2));
+        const aoeCasterId = frame.targetId;
+        const needsRecalculate =
+            frame.isAOEFirst ||
+            engineState.currentCombo.aoeCasterId !== aoeCasterId ||
+            engineState.currentCombo.aoeCenterX === undefined;
 
-        engineState.currentCombo.aoeCenterX = cMoveX;
-        engineState.currentCombo.aoeCenterY = cDeltaY;
+        if (needsRecalculate) {
+            const tRect = targetEl.getBoundingClientRect();
+            let calculatedMoveX = (arenaRect.left + arenaRect.width / 2) - (tRect.left + tRect.width / 2);
+            const calculatedDeltaY = (arenaRect.top + arenaRect.height / 2) - (tRect.top + tRect.height / 2);
+
+            // Boundary clamping: ensure targetEl moves inwards toward center stage, never outwards off-screen
+            if (targetSide === 'right' && calculatedMoveX > 0) {
+                calculatedMoveX = -Math.abs(calculatedMoveX);
+            } else if (targetSide === 'left' && calculatedMoveX < 0) {
+                calculatedMoveX = Math.abs(calculatedMoveX);
+            }
+            const maxDisplacement = arenaRect.width * 0.48;
+            calculatedMoveX = Math.max(-maxDisplacement, Math.min(maxDisplacement, calculatedMoveX));
+
+            engineState.currentCombo.aoeCenterX = calculatedMoveX;
+            engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+            engineState.currentCombo.aoeCasterId = aoeCasterId;
+        }
+
+        const cMoveX = engineState.currentCombo.aoeCenterX;
+        const cDeltaY = engineState.currentCombo.aoeCenterY;
 
         const aRect = actorEl.getBoundingClientRect();
         const defToCenterX = (arenaRect.left + arenaRect.width / 2) - (aRect.left + aRect.width / 2) + (side === 'left' ? -45 : 45);
@@ -315,6 +350,9 @@ function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSi
             ], { duration: 480 / speed, easing: 'ease-out', fill: 'none' });
             engineState.currentCombo.atCenterStage = false;
             engineState.currentCombo.knockedBack = true;
+            engineState.currentCombo.aoeCenterX = undefined;
+            engineState.currentCombo.aoeCenterY = undefined;
+            engineState.currentCombo.aoeCasterId = null;
         } else {
             targetEl.animate([
                 { transform: engineState.currentCombo.atCenterStage ? pCasterCenter : 'translate(0,0) scale(1)', zIndex: 10 },
@@ -329,12 +367,27 @@ function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSi
     }
 
     // Standard single-frame AOE hit: actorEl is the AOE caster, targetEl is the current wave target
-    if (engineState.currentCombo.aoeCenterX === undefined || frame.isAOEFirst) {
+    const aoeCasterId = frame.aoeCasterId || frame.actorId;
+    const needsRecalculate =
+        frame.isAOEFirst ||
+        engineState.currentCombo.aoeCasterId !== aoeCasterId ||
+        engineState.currentCombo.aoeCenterX === undefined;
+
+    if (needsRecalculate) {
         const cleanActorRect = actorEl.getBoundingClientRect();
-        engineState.currentCombo.aoeCenterX =
+        let calculatedMoveX =
             (arenaRect.left + arenaRect.width / 2) - (cleanActorRect.left + cleanActorRect.width / 2);
-        engineState.currentCombo.aoeCenterY =
+        const calculatedDeltaY =
             (arenaRect.top + arenaRect.height / 2) - (cleanActorRect.top + cleanActorRect.height / 2);
+
+        if (side === 'right' && calculatedMoveX > 0) calculatedMoveX = -Math.abs(calculatedMoveX);
+        else if (side === 'left' && calculatedMoveX < 0) calculatedMoveX = Math.abs(calculatedMoveX);
+        const maxDist = arenaRect.width * 0.48;
+        calculatedMoveX = Math.max(-maxDist, Math.min(maxDist, calculatedMoveX));
+
+        engineState.currentCombo.aoeCenterX = calculatedMoveX;
+        engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+        engineState.currentCombo.aoeCasterId = aoeCasterId;
     }
 
     const cMoveX = engineState.currentCombo.aoeCenterX;
@@ -378,6 +431,9 @@ function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSi
         ];
         engineState.currentCombo.atCenterStage = false;
         engineState.currentCombo.knockedBack = true;
+        engineState.currentCombo.aoeCenterX = undefined;
+        engineState.currentCombo.aoeCenterY = undefined;
+        engineState.currentCombo.aoeCasterId = null;
     }
 
     actorEl.animate(actorKeyframes, actorAnimConfig);

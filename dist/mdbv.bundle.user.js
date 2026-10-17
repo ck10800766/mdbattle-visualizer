@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.2
+// @version      7.5.4
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.2";
+  var APP_VERSION = "7.5.4";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -53,6 +53,7 @@
       prevDeltaY: 0,
       aoeCenterX: void 0,
       aoeCenterY: void 0,
+      aoeCasterId: null,
       atCenterStage: false,
       lastFrameIndex: -1
     };
@@ -296,6 +297,12 @@
   var ULTIMATE_CUTIN_EXCLUDED_SKILLS = /* @__PURE__ */ new Set([
     "genji_dragonblade_sweep"
   ]);
+  function isPrimaryUltimateTriggerFrame(frame) {
+    if (!frame || frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
+      return false;
+    }
+    return true;
+  }
   var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字|身上的十字刻下了|還沒完|最後一台車/;
   var SUMMON_DESPAWN_REGEX = /(?:淡去|散回|散去|消散|消逝|消失|退場|離場|脫離戰場|離開(?:了?戰場)?|離去|撤退|隱沒|揮了揮手，回到|回到.+?(?:隊伍|身邊|身旁|空間|法陣|歸處|冥界|灰霧|陰影|原處|手牌|卡組|召喚)|返回.+?(?:隊伍|身邊|身旁|空間|法陣|冥界|界)|化(?:作|為).*(?:白煙|青煙|黑煙|煙霧|塵埃|光點|虛無|泡影|灰燼)|時間(?:結束|已到|用盡|到了)|解除.*召喚|召喚.*解除|召喚結束)/;
   var ENVIRONMENTAL_SKILLS = /* @__PURE__ */ new Set([
@@ -304,7 +311,7 @@
     "oni_gunsou_prayer"
   ]);
   var REBIRTH_RULES = {
-    dialogueRegex: /站了起來|進軍|重生|甦醒|恢復|第二階段/,
+    dialogueRegex: /站了起來|再次站起|重新站起|進軍|重生|甦醒|恢復|第二階段|第三階段|爬了過來|蠕動的血肉|傷口全部合上/,
     blockKeyword: "\u91CD\u751F"
   };
   var LUCK_DROP_EMOJI_RULES = [
@@ -784,6 +791,14 @@
             break;
           }
         }
+        if (fallbackIdx === -1) {
+          for (let i = lowHpStartIndex + 1; i < searchLimit; i++) {
+            const f = frames[i];
+            if (f && (f.actorId === actor.id || f.targetId === actor.id) && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type)) {
+              fallbackIdx = i;
+            }
+          }
+        }
         rebirthIndices.push(fallbackIdx !== -1 ? fallbackIdx : searchLimit);
       }
       for (let s = 0; s < rebirthIndices.length; s++) {
@@ -811,7 +826,11 @@
           }
         }
         for (let i = rIdx; i <= segEnd; i++) {
-          frames[i].actorsHpState.set(actor.id, backwardHp[i - rIdx]);
+          const hp = backwardHp[i - rIdx];
+          frames[i].actorsHpState.set(actor.id, hp);
+          if (hp > 0 || i === rIdx) {
+            frames[i].actorsDeathState.set(actor.id, false);
+          }
         }
       }
       for (let i = anchorIndex + 1; i < frames.length; i++) {
@@ -846,7 +865,7 @@
     }
     return { isTurnAction, turnActorId };
   }
-  function processSummonLifecycle(log, index, logs, frame, actorsDeathState, actorsSummonState, explicitlySummonedIds, despawnedActors) {
+  function processSummonLifecycle(log, index, logs, frame, actorsDeathState, actorsSummonState, explicitlySummonedIds, despawnedActors, structuralDepartures) {
     if (log.type === "SUMMON" && log.targetId) {
       const owner = engineState.actors.get(log.actorId);
       const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
@@ -862,6 +881,7 @@
           ownerId: log.actorId,
           initiallySpawned: false
         }));
+        actorsDeathState.set(log.targetId, false);
       } else {
         const summonActor = engineState.actors.get(log.targetId);
         summonActor.currentHp = summonActor.maxHp;
@@ -882,8 +902,16 @@
         frame.summonedActorId = log.actorId;
       }
     }
-    if ((log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
-      let candidateId = null;
+    let candidateId = null;
+    if (structuralDepartures) {
+      for (const [sId, depIdx] of structuralDepartures.entries()) {
+        if (depIdx === index && actorsSummonState.get(sId) !== false && !despawnedActors.has(sId)) {
+          candidateId = sId;
+          break;
+        }
+      }
+    }
+    if (!candidateId && (log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
       if (log.actorId) {
         const actingUnit = engineState.actors.get(log.actorId);
         if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
@@ -906,12 +934,12 @@
           }
         }
       }
-      if (candidateId) {
-        actorsSummonState.set(candidateId, false);
-        despawnedActors.add(candidateId);
-        frame.isDespawnEvent = true;
-        frame.despawnedActorId = candidateId;
-      }
+    }
+    if (candidateId) {
+      actorsSummonState.set(candidateId, false);
+      despawnedActors.add(candidateId);
+      frame.isDespawnEvent = true;
+      frame.despawnedActorId = candidateId;
     }
   }
   function processContractSkillLifecycle(frame, contractProfile, msg, target, actorsBondState, contractCutInCount, addHpDelta) {
@@ -1158,6 +1186,135 @@
     });
     return { statusIntervals, shieldIntervals };
   }
+  function computeStructuralSummonDepartures(logs, actorsMap) {
+    const departures = /* @__PURE__ */ new Map();
+    const summonIds = /* @__PURE__ */ new Set();
+    const summonNames = /* @__PURE__ */ new Map();
+    actorsMap.forEach((actor, id) => {
+      if (actor.isSummon) {
+        summonIds.add(id);
+        if (actor.name) summonNames.set(id, actor.name);
+      }
+    });
+    logs.forEach((l) => {
+      if (!l) return;
+      if (l.type === "SUMMON" && l.targetId) {
+        summonIds.add(l.targetId);
+      }
+    });
+    summonIds.forEach((id) => {
+      const name = summonNames.get(id);
+      let lastCombatIdx = -1;
+      let lastDeathIdx = -1;
+      let hasHpRemaining = false;
+      logs.forEach((l, idx) => {
+        if (!l) return;
+        const isActor = l.actorId === id;
+        const isTarget = l.targetId === id;
+        const isOpponent = l.opponentId === id;
+        if (l.type === "HP_REMAINING" && (isActor || isTarget)) {
+          hasHpRemaining = true;
+        }
+        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(l.type) && (isActor || isTarget)) {
+          lastDeathIdx = idx;
+        }
+        if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL", "LUCK_EVENT", "BUFF_EFFECT"].includes(l.type)) {
+          if (isActor || isTarget || isOpponent) {
+            lastCombatIdx = Math.max(lastCombatIdx, idx);
+          }
+        }
+      });
+      if (hasHpRemaining) return;
+      if (lastDeathIdx > lastCombatIdx) return;
+      let candidateNarrativeIdx = -1;
+      for (let idx = Math.max(0, lastCombatIdx); idx < logs.length; idx++) {
+        const l = logs[idx];
+        if (!l) continue;
+        const msg = l.message || "";
+        const isActor = l.actorId === id;
+        const isTarget = l.targetId === id;
+        const nameMentioned = name && msg.includes(name);
+        if (["TEXT", "SKILL_TEXT", "BOSS_DIALOGUE"].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+          let futureCombat = false;
+          for (let k = idx + 1; k < logs.length; k++) {
+            const fl = logs[k];
+            if (!fl) continue;
+            if (fl.actorId === id || fl.targetId === id || fl.opponentId === id) {
+              if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL", "LUCK_EVENT", "BUFF_EFFECT", "DEATH"].includes(fl.type)) {
+                futureCombat = true;
+                break;
+              }
+            }
+          }
+          if (!futureCombat) {
+            candidateNarrativeIdx = idx;
+            break;
+          }
+        }
+      }
+      if (candidateNarrativeIdx !== -1) {
+        departures.set(id, candidateNarrativeIdx);
+      }
+    });
+    return departures;
+  }
+  function computeStructuralRevivals(logs, actorsMap) {
+    const revivals = /* @__PURE__ */ new Map();
+    const deathsByActor = /* @__PURE__ */ new Map();
+    logs.forEach((l, idx) => {
+      if (!l) return;
+      if (["DEATH", "PLAYER_DEATH"].includes(l.type) && l.actorId) {
+        if (!deathsByActor.has(l.actorId)) deathsByActor.set(l.actorId, []);
+        deathsByActor.get(l.actorId).push(idx);
+      }
+    });
+    deathsByActor.forEach((deathIndices, actorId) => {
+      const actor = actorsMap.get(actorId);
+      const actorName = actor?.name;
+      deathIndices.forEach((deathIdx, i) => {
+        const nextDeathIdx = i + 1 < deathIndices.length ? deathIndices[i + 1] : logs.length;
+        let resumeCombatIdx = -1;
+        for (let k = deathIdx + 1; k < nextDeathIdx; k++) {
+          const l = logs[k];
+          if (!l) continue;
+          const isActor = l.actorId === actorId;
+          const isTarget = l.targetId === actorId;
+          const isOpponent = l.opponentId === actorId;
+          if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL"].includes(l.type)) {
+            if (isActor || isTarget || isOpponent) {
+              resumeCombatIdx = k;
+              break;
+            }
+          }
+          if (l.type === "HP_REMAINING" && (isActor || isTarget)) {
+            resumeCombatIdx = k;
+            break;
+          }
+          if (["DEATH", "PLAYER_DEATH"].includes(l.type) && (isActor || isTarget)) {
+            resumeCombatIdx = k;
+            break;
+          }
+        }
+        if (resumeCombatIdx !== -1) {
+          let revivalIdx = resumeCombatIdx;
+          for (let k = deathIdx + 1; k <= resumeCombatIdx; k++) {
+            const l = logs[k];
+            if (!l) continue;
+            const msg = l.message || "";
+            const isActor = l.actorId === actorId;
+            const isTarget = l.targetId === actorId;
+            const nameMentioned = actorName && msg.includes(actorName);
+            if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+              revivalIdx = k;
+            }
+          }
+          if (!revivals.has(revivalIdx)) revivals.set(revivalIdx, /* @__PURE__ */ new Set());
+          revivals.get(revivalIdx).add(actorId);
+        }
+      });
+    });
+    return revivals;
+  }
   function buildStateSnapshots(logs) {
     engineState.frames = [];
     let currentTurn = 0;
@@ -1172,6 +1329,8 @@
     const contractCutInCount = /* @__PURE__ */ new Map();
     const despawnedActors = /* @__PURE__ */ new Set();
     const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
+    const structuralDepartures = computeStructuralSummonDepartures(logs, engineState.actors);
+    const structuralRevivals = computeStructuralRevivals(logs, engineState.actors);
     const explicitlySummonedIds = /* @__PURE__ */ new Set();
     logs.forEach((log) => {
       if (log && log.type === "SUMMON" && log.targetId) {
@@ -1278,7 +1437,8 @@
         actorsDeathState,
         actorsSummonState,
         explicitlySummonedIds,
-        despawnedActors
+        despawnedActors,
+        structuralDepartures
       );
       if (log.type === "BUFF_APPLY") {
         const attacker = engineState.actors.get(log.actorId);
@@ -1469,6 +1629,54 @@
       if (crossProfile && ["DAMAGE", "BLOCK"].includes(log.type) && crossProfile.pierceRegex.test(frame.message)) {
         frame.rosarioEvent = "PIERCE_CROSS";
       }
+      const revivingActors = structuralRevivals.get(index);
+      if (revivingActors) {
+        revivingActors.forEach((revivingActorId) => {
+          if (actorsDeathState.get(revivingActorId)) {
+            actorsDeathState.set(revivingActorId, false);
+            const revivingActor = engineState.actors.get(revivingActorId);
+            if (revivingActor) {
+              revivingActor.currentHp = revivingActor.maxHp;
+            }
+          }
+        });
+      }
+      if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(log.type) && REBIRTH_RULES.dialogueRegex.test(frame.message)) {
+        let revivingActorId = null;
+        if (log.actorId && engineState.actors.has(log.actorId)) {
+          revivingActorId = log.actorId;
+        } else if (log.targetId && engineState.actors.has(log.targetId)) {
+          revivingActorId = log.targetId;
+        } else {
+          for (const [id, a] of engineState.actors.entries()) {
+            if (a.name && frame.message.includes(a.name) && actorsDeathState.get(id)) {
+              revivingActorId = id;
+              break;
+            }
+          }
+        }
+        if (revivingActorId && actorsDeathState.get(revivingActorId)) {
+          actorsDeathState.set(revivingActorId, false);
+          const revivingActor = engineState.actors.get(revivingActorId);
+          if (revivingActor) {
+            revivingActor.currentHp = revivingActor.maxHp;
+          }
+        }
+      }
+      if (log.actorId && actorsDeathState.get(log.actorId) && ["DAMAGE", "MISS", "COUNTER", "HEAL", "SKILL_TEXT", "BUFF_APPLY"].includes(log.type)) {
+        actorsDeathState.set(log.actorId, false);
+        const actingActor = engineState.actors.get(log.actorId);
+        if (actingActor && actingActor.currentHp <= 0) {
+          actingActor.currentHp = actingActor.maxHp;
+        }
+      }
+      if (log.targetId && actorsDeathState.get(log.targetId) && ["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL"].includes(log.type)) {
+        actorsDeathState.set(log.targetId, false);
+        const targetedActor = engineState.actors.get(log.targetId);
+        if (targetedActor && targetedActor.currentHp <= 0) {
+          targetedActor.currentHp = targetedActor.maxHp;
+        }
+      }
       if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
         const alreadyDead = !!actorsDeathState.get(log.actorId);
         actorsDeathState.set(log.actorId, true);
@@ -1477,7 +1685,9 @@
           frame.deadActorId = log.actorId;
         }
         const deadActor = engineState.actors.get(log.actorId);
-        if (deadActor) deadActor.currentHp = 0;
+        if (deadActor) {
+          deadActor.currentHp = 0;
+        }
       }
       engineState.actors.forEach((actor) => {
         frame.actorsHpState.set(actor.id, actor.currentHp);
@@ -1675,6 +1885,7 @@
     .ult-text-wrapper.right-side { left: 8%; }
     .ult-quote { display: inline-block; margin-left: 2vw; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8), -3px 3px 0px #000, -8px 8px 0px rgba(180, 0, 0, 0.9); animation: ult-stamp 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
     .ult-quote.lang-zh { font-size: clamp(30px, 7vh, 70px); text-orientation: mixed; letter-spacing: 1vh; }
+    .ult-quote.lang-zh.long-quote { font-size: clamp(22px, 5vh, 48px); letter-spacing: 0.6vh; }
     .ult-quote.lang-en { font-size: clamp(24px, 6vh, 60px); text-orientation: mixed; letter-spacing: 4px; }
     .ult-flavor { display: inline-block; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: clamp(14px, 2.5vh, 22px); color: #e2e8f0; text-shadow: -2px 2px 4px #000; text-orientation: mixed; letter-spacing: 0.5vh; animation: ult-stamp-delay 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
 
@@ -1809,8 +2020,8 @@
     .seek-track-wrapper input[type="range"] { width: 100%; margin: 0; position: relative; z-index: 2; }
     .seek-markers-layer { position: absolute; left: 7px; right: 7px; top: 0; height: 100%; pointer-events: none; z-index: 3; }
     .seek-pin { position: absolute; top: 1px; transform: translateX(-50%) scale(0.6); width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #fff; cursor: pointer; pointer-events: none; opacity: 0; padding: 0; transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease; z-index: 4; }
-    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
-    .seek-container:hover .seek-pin:hover, .seek-track-wrapper:hover .seek-pin:hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
+    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; transform: translateX(-50%) scale(1); }
+    .seek-pin.pin-hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
     .seek-pin.pin-ultimate { background: #f6e05e; box-shadow: 0 0 8px #f6e05e; }
     .seek-pin.pin-death { background: #fc8181; box-shadow: 0 0 8px #e53e3e; }
     .seek-pin.pin-rebirth { background: #48bb78; box-shadow: 0 0 10px #48bb78; }
@@ -1819,11 +2030,15 @@
     .seek-pin-tooltip { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-4px); background: rgba(15, 23, 42, 0.98); color: #f8fafc; border: 1px solid #4fd1c5; border-radius: 6px; padding: 6px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s ease, transform 0.15s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9); z-index: 9999; text-align: left; }
     .seek-pin-tooltip.tooltip-align-left { left: 0; transform: translateY(-4px); }
     .seek-pin-tooltip.tooltip-align-right { left: auto; right: 0; transform: translateY(-4px); }
-    .seek-pin:hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .seek-pin:hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
-    .seek-pin:hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
     .seek-pin-tooltip-title { color: #f6e05e; font-weight: 800; margin-bottom: 2px; display: block; }
     .seek-pin-tooltip-detail { color: #cbd5e1; font-size: 11px; font-weight: 500; display: block; max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Timeline Seek Frame Hover Tooltip */
+    .seek-hover-tooltip { position: absolute; bottom: 26px; left: 0; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); color: #e2e8f0; border: 1px solid rgba(79, 209, 197, 0.6); border-radius: 5px; padding: 3px 8px; font-size: 11px; font-weight: 700; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.1s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7); z-index: 100; letter-spacing: 0.3px; }
+    .seek-hover-tooltip.active { opacity: 1; visibility: visible; }
 
     /* Report Export/Import Buttons, Hotkey Popover & Drag-Drop Overlay */
     button.btn-io { background: #2b6cb0; border-color: #63b3ed; padding: 6px 10px; color: #ebf8ff; }
@@ -1890,6 +2105,47 @@
       }
     }
   }
+  function extractSkillFromMessage(message) {
+    if (!message) return null;
+    const pattern = /(?:(?!(?:造成|受到|回復|恢復|損失|失去|衝向|飛向|瞄準|盯上|閃過|躲過|看見|附上|燒掉)了)(?:[^\s，,。！!：:]{1,4}了|進入))\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+    let m;
+    while ((m = pattern.exec(message)) !== null) {
+      const token = m[1].replace(/^[「『\[【](.*?)[」』\]】]$/, "$1");
+      const isActor = engineState?.actors ? Array.from(engineState.actors.values()).some((a) => a.name === token) : false;
+      if (!isActor) {
+        return token;
+      }
+    }
+    return null;
+  }
+  function shouldDeferUltimateCutIn(frame) {
+    if (!engineState.frames || !frame || frame.index == null) return false;
+    const currentMsg = String(frame.message || "");
+    const currentQuote = currentMsg.match(/[：:]\s*「([^」]+)」/);
+    if (currentQuote && currentQuote[1].length <= 20) {
+      return false;
+    }
+    if (extractSkillFromMessage(currentMsg)) {
+      return false;
+    }
+    for (let i = frame.index + 1; i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+      const candidate = engineState.frames[i];
+      if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId && candidate.skillTier === "ultimate") {
+        const candMsg = String(candidate.message || "");
+        const candQuote = candMsg.match(/[：:]\s*「([^」]+)」/);
+        if (candQuote && candQuote[1].length <= 20) {
+          return true;
+        }
+        if (extractSkillFromMessage(candMsg)) {
+          return true;
+        }
+        if (/把「([^」]+)」拋向/.test(candMsg)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
   async function playUltimateCutIn(frame, sr, token) {
     const actor = engineState.actors.get(frame.actorId);
     if (!actor || engineState.playbackToken !== token) return;
@@ -1909,25 +2165,50 @@
     let mainText = "";
     let subText = "";
     const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
-    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 15) {
+    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 20) {
       mainText = spokenQuoteMatch[1];
       const rawRemainingText = frame.message.replace(actor.name, "").replace(/[：:]\s*「[^」]+」\s*/, " ").trim();
       subText = stripCombatOutcomeText(rawRemainingText, actor.name);
     } else {
       let extractedSkillName = null;
-      const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
-      if (skillMatchCurrent) {
-        extractedSkillName = skillMatchCurrent[1];
-      } else {
-        const nextFrame = engineState.frames[frame.index + 1];
-        if (nextFrame && nextFrame.actorId === frame.actorId && nextFrame.skillId === frame.skillId) {
-          const skillMatchNext = String(nextFrame.message || "").match(/使出了\s*([^，,。！!—\s]+)/);
-          if (skillMatchNext) extractedSkillName = skillMatchNext[1];
+      let skillSourceFrame = frame;
+      extractedSkillName = extractSkillFromMessage(frame.message);
+      if (!extractedSkillName) {
+        for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+          const candidate = engineState.frames[i];
+          if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
+            const candidateSkill = extractSkillFromMessage(candidate.message);
+            if (candidateSkill) {
+              extractedSkillName = candidateSkill;
+              skillSourceFrame = candidate;
+              break;
+            }
+          }
         }
+      }
+      if (!extractedSkillName) {
+        for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+          const candidate = engineState.frames[i];
+          if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
+            const cardMatch = String(candidate.message || "").match(/把「([^」]+)」拋向/);
+            if (cardMatch) {
+              extractedSkillName = `${cardMatch[1]}\u4E4B\u724C`;
+              skillSourceFrame = candidate;
+              break;
+            }
+          }
+        }
+      }
+      if (!extractedSkillName && frame.skillName) {
+        extractedSkillName = frame.skillName;
       }
       if (extractedSkillName) {
         mainText = extractedSkillName;
-        const rawRemaining = frame.message.replace(new RegExp(`\u4F7F\u51FA\u4E86\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
+        let narrativeMsg = frame.message;
+        if (!narrativeMsg || /造成了|受到|點傷害|會心一擊|防禦|閃避/.test(narrativeMsg)) {
+          narrativeMsg = skillSourceFrame?.message || "";
+        }
+        const rawRemaining = narrativeMsg.replace(new RegExp(`(?:[^\\s\uFF0C,\u3002\uFF01!\uFF1A:]{1,4}\u4E86|\u9032\u5165)\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
         subText = stripCombatOutcomeText(rawRemaining, actor.name);
       } else {
         let rawSkillId = frame.skillId || "ULTIMATE_SKILL";
@@ -1940,7 +2221,7 @@
     }
     const isEnglish = /[A-Za-z]/.test(mainText);
     const quoteEl = document.createElement("div");
-    quoteEl.className = `ult-quote ${isEnglish ? "lang-en" : "lang-zh"}`;
+    quoteEl.className = `ult-quote ${isEnglish ? "lang-en" : "lang-zh"}${mainText.length > 12 ? " long-quote" : ""}`;
     quoteEl.textContent = mainText;
     const flavorEl = document.createElement("div");
     flavorEl.className = "ult-flavor";
@@ -2572,10 +2853,19 @@
     }
     if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
     const arenaRect = arena.getBoundingClientRect();
-    if (engineState.currentCombo.aoeCenterX === void 0 || firstFrame.isAOEFirst) {
+    const aoeCasterId = firstFrame.aoeCasterId || firstFrame.actorId;
+    if (engineState.currentCombo.aoeCenterX === void 0 || firstFrame.isAOEFirst || engineState.currentCombo.aoeCasterId !== aoeCasterId) {
       const cleanActorRect = actorEl.getBoundingClientRect();
-      engineState.currentCombo.aoeCenterX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
-      engineState.currentCombo.aoeCenterY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      let calculatedMoveX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
+      const calculatedDeltaY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      const side2 = engineState.actors.get(firstFrame.actorId)?.side || "left";
+      if (side2 === "right" && calculatedMoveX > 0) calculatedMoveX = -Math.abs(calculatedMoveX);
+      else if (side2 === "left" && calculatedMoveX < 0) calculatedMoveX = Math.abs(calculatedMoveX);
+      const maxDist = arenaRect.width * 0.48;
+      calculatedMoveX = Math.max(-maxDist, Math.min(maxDist, calculatedMoveX));
+      engineState.currentCombo.aoeCenterX = calculatedMoveX;
+      engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+      engineState.currentCombo.aoeCasterId = aoeCasterId;
     }
     const cMoveX = engineState.currentCombo.aoeCenterX || 0;
     const cDeltaY = engineState.currentCombo.aoeCenterY || 0;
@@ -2596,6 +2886,9 @@
       });
       engineState.currentCombo.atCenterStage = false;
       engineState.currentCombo.knockedBack = true;
+      engineState.currentCombo.aoeCenterX = void 0;
+      engineState.currentCombo.aoeCenterY = void 0;
+      engineState.currentCombo.aoeCasterId = null;
     } else {
       actorEl.animate([
         { transform: startTransform, zIndex: 10 },
@@ -2624,11 +2917,25 @@
     if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
     const arenaRect = arena.getBoundingClientRect();
     if (frame.isCounter || frame.type === "COUNTER") {
-      const tRect = targetEl.getBoundingClientRect();
-      const cMoveX2 = engineState.currentCombo.aoeCenterX ?? arenaRect.left + arenaRect.width / 2 - (tRect.left + tRect.width / 2);
-      const cDeltaY2 = engineState.currentCombo.aoeCenterY ?? arenaRect.top + arenaRect.height / 2 - (tRect.top + tRect.height / 2);
-      engineState.currentCombo.aoeCenterX = cMoveX2;
-      engineState.currentCombo.aoeCenterY = cDeltaY2;
+      const aoeCasterId2 = frame.targetId;
+      const needsRecalculate2 = frame.isAOEFirst || engineState.currentCombo.aoeCasterId !== aoeCasterId2 || engineState.currentCombo.aoeCenterX === void 0;
+      if (needsRecalculate2) {
+        const tRect = targetEl.getBoundingClientRect();
+        let calculatedMoveX = arenaRect.left + arenaRect.width / 2 - (tRect.left + tRect.width / 2);
+        const calculatedDeltaY = arenaRect.top + arenaRect.height / 2 - (tRect.top + tRect.height / 2);
+        if (targetSide === "right" && calculatedMoveX > 0) {
+          calculatedMoveX = -Math.abs(calculatedMoveX);
+        } else if (targetSide === "left" && calculatedMoveX < 0) {
+          calculatedMoveX = Math.abs(calculatedMoveX);
+        }
+        const maxDisplacement = arenaRect.width * 0.48;
+        calculatedMoveX = Math.max(-maxDisplacement, Math.min(maxDisplacement, calculatedMoveX));
+        engineState.currentCombo.aoeCenterX = calculatedMoveX;
+        engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+        engineState.currentCombo.aoeCasterId = aoeCasterId2;
+      }
+      const cMoveX2 = engineState.currentCombo.aoeCenterX;
+      const cDeltaY2 = engineState.currentCombo.aoeCenterY;
       const aRect = actorEl.getBoundingClientRect();
       const defToCenterX = arenaRect.left + arenaRect.width / 2 - (aRect.left + aRect.width / 2) + (side === "left" ? -45 : 45);
       const defToCenterY = arenaRect.top + arenaRect.height / 2 - (aRect.top + aRect.height / 2);
@@ -2648,6 +2955,9 @@
         ], { duration: 480 / speed, easing: "ease-out", fill: "none" });
         engineState.currentCombo.atCenterStage = false;
         engineState.currentCombo.knockedBack = true;
+        engineState.currentCombo.aoeCenterX = void 0;
+        engineState.currentCombo.aoeCenterY = void 0;
+        engineState.currentCombo.aoeCasterId = null;
       } else {
         targetEl.animate([
           { transform: engineState.currentCombo.atCenterStage ? pCasterCenter : "translate(0,0) scale(1)", zIndex: 10 },
@@ -2659,10 +2969,19 @@
       spawnClashSpark(arena, targetEl, 80, "#f6e05e", speed);
       return 520;
     }
-    if (engineState.currentCombo.aoeCenterX === void 0 || frame.isAOEFirst) {
+    const aoeCasterId = frame.aoeCasterId || frame.actorId;
+    const needsRecalculate = frame.isAOEFirst || engineState.currentCombo.aoeCasterId !== aoeCasterId || engineState.currentCombo.aoeCenterX === void 0;
+    if (needsRecalculate) {
       const cleanActorRect = actorEl.getBoundingClientRect();
-      engineState.currentCombo.aoeCenterX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
-      engineState.currentCombo.aoeCenterY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      let calculatedMoveX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
+      const calculatedDeltaY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      if (side === "right" && calculatedMoveX > 0) calculatedMoveX = -Math.abs(calculatedMoveX);
+      else if (side === "left" && calculatedMoveX < 0) calculatedMoveX = Math.abs(calculatedMoveX);
+      const maxDist = arenaRect.width * 0.48;
+      calculatedMoveX = Math.max(-maxDist, Math.min(maxDist, calculatedMoveX));
+      engineState.currentCombo.aoeCenterX = calculatedMoveX;
+      engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+      engineState.currentCombo.aoeCasterId = aoeCasterId;
     }
     const cMoveX = engineState.currentCombo.aoeCenterX;
     const cDeltaY = engineState.currentCombo.aoeCenterY;
@@ -2703,6 +3022,9 @@
       ];
       engineState.currentCombo.atCenterStage = false;
       engineState.currentCombo.knockedBack = true;
+      engineState.currentCombo.aoeCenterX = void 0;
+      engineState.currentCombo.aoeCenterY = void 0;
+      engineState.currentCombo.aoeCasterId = null;
     }
     actorEl.animate(actorKeyframes, actorAnimConfig);
     const centerStageX = arenaRect.width / 2;
@@ -3958,6 +4280,14 @@
     ).forEach((el) => el.remove());
     engineState.actors.forEach((actor) => {
       actor.lastUltimateTurn = null;
+      if (!isInitialReset) {
+        for (let i = 0; i < frameIndex; i++) {
+          const f = engineState.frames[i];
+          if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f) && !shouldDeferUltimateCutIn(f)) {
+            actor.lastUltimateTurn = f.turnNumber;
+          }
+        }
+      }
       const el = sr.getElementById(`actor-${actor.id}`);
       if (el) {
         if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
@@ -4029,26 +4359,25 @@
   }
 
   // src/timeline.js
-  function isPrimaryUltimateTriggerFrame(frame) {
-    if (frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
-      return false;
-    }
-    return true;
-  }
   function extractTimelineMarkers(frames) {
     if (!Array.isArray(frames) || frames.length === 0) return [];
     const markers = [];
     const lastUltTurnByActor = /* @__PURE__ */ new Map();
+    const rebirthCountByActor = /* @__PURE__ */ new Map();
     frames.forEach((f, idx) => {
       const events = [];
       if (f.rebirthHeal) {
         const targetId = f.targetId || f.actorId;
         const actorName = engineState.actors.get(targetId)?.name || "Boss";
+        const count = (rebirthCountByActor.get(targetId) || 0) + 1;
+        rebirthCountByActor.set(targetId, count);
+        const ordinals = ["", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u4E03", "\u516B", "\u4E5D", "\u5341"];
+        const phaseStr = ordinals[count] || `${count + 1}`;
         events.push({
           priority: 5,
           category: "rebirth",
           icon: "\u{1F525}",
-          title: `\u{1F525} \u4E8C\u968E\u6BB5\u7526\u9192\uFF1A${actorName}`
+          title: `\u{1F525} ${phaseStr}\u968E\u6BB5\u7526\u9192\uFF1A${actorName}`
         });
       }
       if (f.isDeathEvent && f.deadActorId) {
@@ -4419,6 +4748,8 @@
       pin.className = `seek-pin pin-${marker.category}`;
       const pct = Math.max(0, Math.min(100, marker.frameIndex / maxFrameIdx * 100));
       pin.style.left = `${pct}%`;
+      pin.dataset.frameIndex = marker.frameIndex;
+      pin.dataset.pct = pct;
       const tooltip = document.createElement("div");
       tooltip.className = "seek-pin-tooltip";
       if (pct < 15) tooltip.classList.add("tooltip-align-left");
@@ -4434,14 +4765,90 @@
         tooltip.appendChild(detailEl);
       }
       pin.appendChild(tooltip);
-      pin.onclick = (e) => {
-        e.stopPropagation();
-        jumpToFrame(marker.frameIndex);
-      };
       seekMarkersLayer.appendChild(pin);
     });
+    const seekHoverTooltip = document.createElement("div");
+    seekHoverTooltip.className = "seek-hover-tooltip";
     seekTrackWrapper.appendChild(seekRange);
     seekTrackWrapper.appendChild(seekMarkersLayer);
+    seekTrackWrapper.appendChild(seekHoverTooltip);
+    let activeHoverPin = null;
+    let isDraggingSeek = false;
+    seekRange.addEventListener("pointerdown", () => {
+      isDraggingSeek = true;
+      if (activeHoverPin) {
+        activeHoverPin.classList.remove("pin-hover");
+        activeHoverPin = null;
+      }
+      seekHoverTooltip.classList.remove("active");
+    });
+    const onPointerUpGlobal = () => {
+      isDraggingSeek = false;
+    };
+    window.addEventListener("pointerup", onPointerUpGlobal);
+    seekTrackWrapper.onpointermove = (e) => {
+      if (isDraggingSeek || engineState.frames.length === 0) return;
+      const rect = seekMarkersLayer.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const mouseX = e.clientX - rect.left;
+      const clampedMouseX = Math.max(0, Math.min(mouseX, rect.width));
+      const pct = clampedMouseX / rect.width;
+      const hoverFrameIdx = Math.round(pct * (engineState.frames.length - 1));
+      const frame = engineState.frames[hoverFrameIdx];
+      let closestPin = null;
+      let minPixelDist = Infinity;
+      const pinElements = seekMarkersLayer.querySelectorAll(".seek-pin");
+      pinElements.forEach((pinEl) => {
+        const pinPct = parseFloat(pinEl.dataset.pct);
+        const pinX = pinPct / 100 * rect.width;
+        const dist = Math.abs(pinX - mouseX);
+        if (dist < minPixelDist) {
+          minPixelDist = dist;
+          closestPin = pinEl;
+        }
+      });
+      const PIN_SNAP_DISTANCE = 11;
+      if (closestPin && minPixelDist <= PIN_SNAP_DISTANCE) {
+        if (activeHoverPin !== closestPin) {
+          if (activeHoverPin) activeHoverPin.classList.remove("pin-hover");
+          closestPin.classList.add("pin-hover");
+          activeHoverPin = closestPin;
+        }
+        seekHoverTooltip.classList.remove("active");
+      } else {
+        if (activeHoverPin) {
+          activeHoverPin.classList.remove("pin-hover");
+          activeHoverPin = null;
+        }
+        const turnNum = frame?.turnNumber ?? 1;
+        seekHoverTooltip.textContent = `\u7B2C ${hoverFrameIdx + 1} \u5E40 (T${turnNum})`;
+        seekHoverTooltip.style.left = `${clampedMouseX + 7}px`;
+        if (clampedMouseX < 45) {
+          seekHoverTooltip.style.transform = "translateX(0)";
+        } else if (rect.width - clampedMouseX < 45) {
+          seekHoverTooltip.style.transform = "translateX(-100%)";
+        } else {
+          seekHoverTooltip.style.transform = "translateX(-50%)";
+        }
+        seekHoverTooltip.classList.add("active");
+      }
+    };
+    seekTrackWrapper.onpointerleave = () => {
+      if (activeHoverPin) {
+        activeHoverPin.classList.remove("pin-hover");
+        activeHoverPin = null;
+      }
+      seekHoverTooltip.classList.remove("active");
+    };
+    seekTrackWrapper.addEventListener("click", (e) => {
+      if (activeHoverPin) {
+        const frameIdx = parseInt(activeHoverPin.dataset.frameIndex, 10);
+        if (!isNaN(frameIdx)) {
+          e.stopPropagation();
+          jumpToFrame(frameIdx);
+        }
+      }
+    }, true);
     playBtn.onclick = () => {
       if (!engineState.isPlaying) {
         if (engineState.currentFrameIndex === 0 || engineState.currentFrameIndex >= engineState.frames.length) {
@@ -4471,19 +4878,39 @@
       const nextSpeed = setPlaybackSpeed(PLAYBACK_SPEEDS[nextIndex]);
       speedBtn.textContent = `\u901F\u5EA6: ${nextSpeed}x`;
     };
+    let wasPlayingBeforeDrag = false;
+    seekRange.onpointerdown = () => {
+      wasPlayingBeforeDrag = engineState.isPlaying;
+      if (engineState.isPlaying) {
+        engineState.isPlaying = false;
+        nextPlaybackToken();
+        playBtn.textContent = "\u64AD\u653E";
+      }
+    };
     seekRange.oninput = (e) => {
       const targetFrame = Number(e.target.value);
       engineState.currentFrameIndex = targetFrame;
       seekLabel.textContent = formatSeekLabelText(targetFrame);
       engineState.currentCombo = createEmptyCombo();
-      const token2 = nextPlaybackToken();
-      if (engineState.isPlaying) {
+      nextPlaybackToken();
+      if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
+        playBtn.textContent = "\u64AD\u653E";
+      }
+      syncStageToAbsoluteState(targetFrame, false, true);
+    };
+    seekRange.onchange = (e) => {
+      const targetFrame = Number(e.target.value);
+      engineState.currentFrameIndex = targetFrame;
+      seekLabel.textContent = formatSeekLabelText(targetFrame);
+      engineState.currentCombo = createEmptyCombo();
+      if (wasPlayingBeforeDrag) {
+        wasPlayingBeforeDrag = false;
         syncStageToAbsoluteState(targetFrame, false, false);
+        engineState.isPlaying = true;
+        playBtn.textContent = "\u66AB\u505C";
+        const token2 = nextPlaybackToken();
         playbackLoop(token2);
       } else {
-        if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
-          playBtn.textContent = "\u64AD\u653E";
-        }
         syncStageToAbsoluteState(targetFrame, false, true);
       }
     };
@@ -4716,9 +5143,11 @@
       const actor = engineState.actors.get(firstFrame.actorId);
       const isMultiHitSubFrame = ULTIMATE_SUBFRAME_REGEX.test(firstFrame.message.trim()) || firstFrame.rosarioEvent === "INSCRIBE_CROSS";
       if (actor && actor.lastUltimateTurn !== firstFrame.turnNumber && !isMultiHitSubFrame) {
-        actor.lastUltimateTurn = firstFrame.turnNumber;
-        await playUltimateCutIn(firstFrame, sr, token);
-        if (engineState.playbackToken !== token) return;
+        if (!shouldDeferUltimateCutIn(firstFrame)) {
+          actor.lastUltimateTurn = firstFrame.turnNumber;
+          await playUltimateCutIn(firstFrame, sr, token);
+          if (engineState.playbackToken !== token) return;
+        }
       } else if (actor && isMultiHitSubFrame) {
         actor.lastUltimateTurn = firstFrame.turnNumber;
       }
@@ -4843,7 +5272,7 @@
     if (frame.isSummonEvent && frame.summonedActorId) {
       const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
       if (summonedEl) {
-        summonedEl.classList.remove("unspawned", "despawning");
+        summonedEl.classList.remove("unspawned", "despawning", "dead");
         summonedEl.classList.add("spawning");
         setTimeout(() => {
           if (engineState.playbackToken === token && summonedEl.isConnected) {
@@ -4909,9 +5338,11 @@
       const actor = engineState.actors.get(frame.actorId);
       const isMultiHitSubFrame = ULTIMATE_SUBFRAME_REGEX.test(frame.message.trim()) || frame.rosarioEvent === "INSCRIBE_CROSS";
       if (actor && actor.lastUltimateTurn !== frame.turnNumber && !isMultiHitSubFrame) {
-        actor.lastUltimateTurn = frame.turnNumber;
-        await playUltimateCutIn(frame, sr, token);
-        if (engineState.playbackToken !== token) return;
+        if (!shouldDeferUltimateCutIn(frame)) {
+          actor.lastUltimateTurn = frame.turnNumber;
+          await playUltimateCutIn(frame, sr, token);
+          if (engineState.playbackToken !== token) return;
+        }
       } else if (actor && isMultiHitSubFrame) {
         actor.lastUltimateTurn = frame.turnNumber;
       }
