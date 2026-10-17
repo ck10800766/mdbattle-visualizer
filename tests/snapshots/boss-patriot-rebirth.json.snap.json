@@ -54288,7 +54288,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -54297,7 +54297,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -54315,7 +54315,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -54349,8 +54349,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 頂著塔盾向前壓進，長戟從盾緣連刺擋在前面的 <span class=\"actor-name-left\">艾莉絲·伯雷亞斯·格雷拉特</span>！",
       "index": 18,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54493,8 +54493,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">希露菲葉特</span> 閉上眼睛，耳邊又響起轉移那天的風聲，身體一直往下掉，地面越來越近。",
       "index": 34,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54502,8 +54502,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">希露菲葉特</span> 使出了 那天的風，風從她腳下一圈一圈捲起，越轉越急，化成一道貫穿戰場的龍捲——",
       "index": 35,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54538,8 +54538,8 @@
       "formattedHtml": "龍捲將眾人衝上高空又整個砸了回來——",
       "index": 39,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54583,8 +54583,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 44,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54621,7 +54621,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -54763,8 +54763,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 64,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54808,17 +54808,17 @@
       "formattedHtml": "<span class=\"actor-name-left\">艾莉絲·伯雷亞斯·格雷拉特</span> 劍勢還沒收穩，露出了破綻。",
       "index": 69,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">艾莉絲·伯雷亞斯·格雷拉特</span> 沉腰握劍，全身的力氣收進一個呼吸裡——",
       "index": 70,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54880,8 +54880,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 77,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -54918,7 +54918,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -54954,7 +54954,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55008,7 +55008,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55026,7 +55026,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55042,9 +55042,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 吸進了源石粉塵，傷口邊緣泛起細小的黑色結晶。",
       "index": 95,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55062,7 +55062,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55080,7 +55080,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55089,7 +55089,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -55152,7 +55152,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55350,7 +55350,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55530,7 +55530,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55539,25 +55539,25 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 收刀入鞘，綠光熄了。",
       "index": 151,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 的義體發出提示音：次要特殊能力「快速斬擊」已啟用。",
       "index": 152,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55638,7 +55638,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55647,7 +55647,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55663,8 +55663,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 頂著塔盾向前壓進，長戟從盾緣連刺擋在前面的 <span class=\"actor-name-left\">源氏</span>！",
       "index": 164,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -55827,7 +55827,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55915,8 +55915,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 192,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -55951,8 +55951,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 196,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -55987,8 +55987,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 將長戟重重插進地面，結晶從他的鎧甲縫隙崩落，化作一陣源石塵暴！",
       "index": 200,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -56115,7 +56115,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -56149,8 +56149,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 頂著塔盾向前壓進，長戟從盾緣連刺擋在前面的 <span class=\"actor-name-left\">艾莉絲·伯雷亞斯·格雷拉特</span>！",
       "index": 218,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -56257,8 +56257,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 230,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -56383,8 +56383,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">希露菲葉特</span> 閉上眼睛，耳邊又響起轉移那天的風聲，身體一直往下掉，地面越來越近。",
       "index": 244,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -56392,8 +56392,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">希露菲葉特</span> 使出了 那天的風，風從她腳下一圈一圈捲起，越轉越急，化成一道貫穿戰場的龍捲——",
       "index": 245,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -56419,8 +56419,8 @@
       "formattedHtml": "龍捲將眾人衝上高空又整個砸了回來——",
       "index": 248,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -56455,18 +56455,18 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 抽身繞到邊線，抓起一個醫療包。",
       "index": 252,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 回復了 1459 HP。",
       "index": 253,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -56529,7 +56529,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -56572,8 +56572,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 頂著塔盾向前壓進，長戟從盾緣連刺擋在前面的 <span class=\"actor-name-left\">希露菲葉特</span>！",
       "index": 265,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -56619,16 +56619,16 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 的武器被挑偏，握不穩了！",
       "index": 271,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -56961,7 +56961,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57006,7 +57006,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57015,7 +57015,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57040,9 +57040,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 開始有點喘",
       "index": 317,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57132,7 +57132,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57213,7 +57213,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57240,7 +57240,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -57321,7 +57321,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57339,7 +57339,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57364,9 +57364,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">艾莉絲·伯雷亞斯·格雷拉特</span> 開始有點喘",
       "index": 353,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57445,8 +57445,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 的身軀燃起源石的紅光，灼熱的脈動一圈圈擴散出去！",
       "index": 362,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -57483,7 +57483,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57492,7 +57492,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57501,7 +57501,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57706,8 +57706,8 @@
       "formattedHtml": "紅光又一次脈動，熱浪撲過每個人的臉！",
       "index": 391,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -57742,8 +57742,8 @@
       "formattedHtml": "紅光又一次脈動，熱浪撲過每個人的臉！",
       "index": 395,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -57778,8 +57778,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 399,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -57789,7 +57789,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -57861,7 +57861,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57870,7 +57870,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57967,8 +57967,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">艾莉絲·伯雷亞斯·格雷拉特</span> 沉腰握劍，全身的力氣收進一個呼吸裡——",
       "index": 420,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -57987,7 +57987,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58005,7 +58005,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58048,8 +58048,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">艾莉絲·伯雷亞斯·格雷拉特</span> 沉腰握劍，全身的力氣收進一個呼吸裡——",
       "index": 429,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58228,8 +58228,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 449,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58273,8 +58273,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 雙手握戟，一步一步逼向 <span class=\"actor-name-left\">希露菲葉特</span>！",
       "index": 454,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58320,15 +58320,15 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 將長戟重重插進地面，結晶從他的鎧甲縫隙崩落，化作一陣源石塵暴！",
       "index": 460,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58365,7 +58365,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58399,17 +58399,17 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 握住背上的刀柄低喝：「龍神の剣を喰らえ！」綠光沿著刀身亮起，龍神之劍出鞘了。",
       "index": 468,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 拔出了龍一文字，迅影襲的冷卻也跟著轉好了。",
       "index": 469,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58527,7 +58527,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58572,7 +58572,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58599,7 +58599,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58608,15 +58608,15 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 雙手握戟，一步一步逼向 <span class=\"actor-name-left\">希露菲葉特</span>！",
       "index": 492,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58635,16 +58635,16 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 咳出一口帶著結晶的血，握戟的手卻更穩了。",
       "index": 495,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58660,8 +58660,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">愛國者</span> 將長戟重重插進地面，結晶從他的鎧甲縫隙崩落，化作一陣源石塵暴！",
       "index": 497,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58680,7 +58680,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58707,16 +58707,16 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 收刀入鞘，綠光熄了。",
       "index": 503,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58788,7 +58788,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58858,8 +58858,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 519,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -58887,7 +58887,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58896,16 +58896,16 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 半邊身體都被結晶覆蓋了。",
       "index": 524,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58950,7 +58950,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {

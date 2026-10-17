@@ -12,7 +12,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-const VERSION = pkg.version || '7.4.0';
+const VERSION = pkg.version || '7.5.1';
 const MAJOR_MINOR = VERSION.split('.').slice(0, 2).join('.');
 
 const GITHUB_USER = 'ck10800766';

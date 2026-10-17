@@ -7,6 +7,7 @@
  */
 
 import {
+    APP_VERSION,
     DEFAULT_AVATAR_URL,
     HOST_CONTENT_SELECTOR,
     PLAYBACK_SPEEDS
@@ -310,10 +311,16 @@ export function createBattleStage() {
         showMVPPanel();
     };
 
+    const versionTag = document.createElement('span');
+    versionTag.className = 'version-tag';
+    versionTag.textContent = `v${APP_VERSION}`;
+    versionTag.title = `MDBattle-Visualizer v${APP_VERSION}`;
+
     controls.appendChild(playBtn);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
     controls.appendChild(skipBtn);
+    controls.appendChild(versionTag);
 
     const ctbBox = document.createElement('div');
     ctbBox.className = 'ctb-container';
@@ -752,7 +759,7 @@ export async function renderFrame(frame, token) {
                 if (engineState.playbackToken === token && summonedEl.isConnected) {
                     summonedEl.classList.remove('spawning');
                 }
-            }, 600 / getEffectiveSpeed());
+            }, 550 / getEffectiveSpeed());
         }
     }
 
@@ -770,6 +777,10 @@ export async function renderFrame(frame, token) {
         }
     }
 
+    if (frame.isSummonEvent || frame.isDespawnEvent) {
+        frameDuration = Math.max(frameDuration, 650);
+    }
+
     // 3. Render speech bubble for dialogue (only on resolved on-field speaker) OR scene narration subtitle banner
     const speaker = resolveDialogueSpeaker(frame);
     if (speaker) {
@@ -777,6 +788,15 @@ export async function renderFrame(frame, token) {
         const textDuration = getMessageReadingDuration(speaker.quote);
         frameDuration = Math.max(frameDuration, textDuration, readTime);
     } else if (isSceneNarrationFrame(frame)) {
+        // Ensure all combatants are in their home positions during scene narration
+        engineState.actors.forEach(actor => {
+            if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
+                const el = sr.getElementById(`actor-${actor.id}`);
+                if (el && el.getAnimations) {
+                    el.getAnimations().forEach(anim => anim.cancel());
+                }
+            }
+        });
         const readTime = renderSceneNarrationBanner(frame, sr, token);
         const textDuration = getMessageReadingDuration(frame.message);
         frameDuration = Math.max(frameDuration, textDuration, readTime);

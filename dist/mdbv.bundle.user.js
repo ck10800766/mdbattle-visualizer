@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.0
+// @version      7.5.2
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,6 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
+  var APP_VERSION = "7.5.2";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -295,8 +296,8 @@
   var ULTIMATE_CUTIN_EXCLUDED_SKILLS = /* @__PURE__ */ new Set([
     "genji_dragonblade_sweep"
   ]);
-  var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字/;
-  var SUMMON_DESPAWN_REGEX = /揮了揮手，回到.+?的隊伍裡|離開了戰場|消失在戰場/;
+  var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字|身上的十字刻下了|還沒完|最後一台車/;
+  var SUMMON_DESPAWN_REGEX = /(?:淡去|散回|散去|消散|消逝|消失|退場|離場|脫離戰場|離開(?:了?戰場)?|離去|撤退|隱沒|揮了揮手，回到|回到.+?(?:隊伍|身邊|身旁|空間|法陣|歸處|冥界|灰霧|陰影|原處|手牌|卡組|召喚)|返回.+?(?:隊伍|身邊|身旁|空間|法陣|冥界|界)|化(?:作|為).*(?:白煙|青煙|黑煙|煙霧|塵埃|光點|虛無|泡影|灰燼)|時間(?:結束|已到|用盡|到了)|解除.*召喚|召喚.*解除|召喚結束)/;
   var ENVIRONMENTAL_SKILLS = /* @__PURE__ */ new Set([
     "originium_altar",
     "undead_chef_karma",
@@ -881,13 +882,35 @@
         frame.summonedActorId = log.actorId;
       }
     }
-    if (log.actorId && (log.type === "SKILL_TEXT" || log.type === "TEXT") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
-      const actingUnit = engineState.actors.get(log.actorId);
-      if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-        actorsSummonState.set(log.actorId, false);
-        despawnedActors.add(log.actorId);
+    if ((log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
+      let candidateId = null;
+      if (log.actorId) {
+        const actingUnit = engineState.actors.get(log.actorId);
+        if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
+          candidateId = log.actorId;
+        }
+      }
+      if (!candidateId && log.targetId) {
+        const targetUnit = engineState.actors.get(log.targetId);
+        if (targetUnit && targetUnit.isSummon && actorsSummonState.get(log.targetId) !== false) {
+          candidateId = log.targetId;
+        }
+      }
+      if (!candidateId && frame.message) {
+        for (const [id, actor] of engineState.actors.entries()) {
+          if (actor.isSummon && actorsSummonState.get(id) !== false && actor.name) {
+            if (frame.message.includes(actor.name)) {
+              candidateId = id;
+              break;
+            }
+          }
+        }
+      }
+      if (candidateId) {
+        actorsSummonState.set(candidateId, false);
+        despawnedActors.add(candidateId);
         frame.isDespawnEvent = true;
-        frame.despawnedActorId = log.actorId;
+        frame.despawnedActorId = candidateId;
       }
     }
   }
@@ -1546,11 +1569,13 @@
     button:active { transform: scale(0.97); }
     button.btn-skip, button.danger { background: #9b2c2c; border-color: #fc8181; color: #fff; }
     button.btn-skip:hover, button.danger:hover { background: #c53030; }
+    .version-tag { font-size: 11px; color: #718096; font-family: monospace; padding: 2px 6px; background: rgba(255, 255, 255, 0.05); border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); user-select: none; white-space: nowrap; }
     @media (max-width: 640px) {
         .controls { padding: 8px 10px; gap: 6px; }
         .seek-container { gap: 6px; font-size: 12px; }
         #seek-label { min-width: 52px; }
         button { padding: 5px 9px; font-size: 12px; }
+        .version-tag { display: none; }
     }
 
     /* ATB / CTB Timeline Track */
@@ -1570,8 +1595,13 @@
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
     .actor.unspawned { display: none !important; }
-    .actor.spawning { animation: summonSpawn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .actor.despawning { animation: summonDespawn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.spawning, .actor.despawning { transition: none !important; z-index: 50; }
+    .actor.left.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.left.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.right.spawning { animation: summonSpawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.right.despawning { animation: summonDespawnRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; width: 80px; height: 80px; }
@@ -1667,8 +1697,28 @@
     @keyframes text-pop { 0% { transform: translate(-50%, -50%) skewX(-15deg) scale(2); opacity: 0; } 15% { transform: translate(-50%, -50%) skewX(-15deg) scale(1); opacity: 1; } 80% { transform: translate(-50%, -50%) skewX(-15deg) scale(1); opacity: 1; } 100% { transform: translate(-50%, -50%) skewX(-15deg) scale(0.9); opacity: 0; } }
 
     /* Keyframe Animations */
-    @keyframes summonSpawn { 0% { opacity: 0; transform: scale(0.3) translateY(-30px); filter: brightness(3) drop-shadow(0 0 20px #fc8181); } 100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } }
-    @keyframes summonDespawn { 0% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } 100% { opacity: 0; transform: scale(0.4) translateY(-25px); filter: brightness(2.5) blur(3px); } }
+    @keyframes summonSpawnLeft {
+        0% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #63b3ed); }
+        60% { opacity: 1; filter: blur(1px) brightness(1.3) drop-shadow(0 0 10px #63b3ed); }
+        100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonDespawnLeft {
+        0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); }
+        35% { filter: blur(2px) brightness(1.7) drop-shadow(0 0 14px #63b3ed); }
+        100% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonSpawnRight {
+        0% { opacity: 0; transform: translate3d(180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #fc8181); }
+        60% { opacity: 1; filter: blur(1px) brightness(1.3) drop-shadow(0 0 10px #fc8181); }
+        100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonDespawnRight {
+        0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); }
+        35% { filter: blur(2px) brightness(1.7) drop-shadow(0 0 14px #fc8181); }
+        100% { opacity: 0; transform: translate3d(180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonSpawn { 0% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #63b3ed); } 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } }
+    @keyframes summonDespawn { 0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } 100% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
     @keyframes ult-bg-zoom { 0% { transform: scale(1.15); filter: grayscale(0%) contrast(100%) brightness(0.9); } 10% { filter: grayscale(70%) contrast(160%) brightness(0.55); } 100% { transform: scale(1); filter: grayscale(70%) contrast(160%) brightness(0.55); } }
@@ -2241,31 +2291,34 @@
 
   // src/combo.js
   function lookaheadComboState(currentIndex, frame) {
+    if (!frame.actorId || !["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(frame.type)) {
+      return { isNextFrameSameCombo: false, isNextTargetDifferent: false, shouldReturnToOrigin: false };
+    }
     let isNextFrameSameCombo = false;
     let isNextTargetDifferent = false;
     let shouldReturnToOrigin = false;
-    const activeSkillId = frame.source === "DIRECT" && engineState.currentCombo.actorId === frame.actorId ? engineState.currentCombo.skillId : frame.skillId;
     for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
       const lookahead = engineState.frames[i];
+      if (lookahead.turnNumber !== frame.turnNumber) break;
       if (lookahead.type === "LUCK_EVENT") {
         shouldReturnToOrigin = true;
-        if (lookahead.turnNumber !== frame.turnNumber) break;
         continue;
       }
-      if (lookahead.turnNumber !== frame.turnNumber) break;
-      if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type)) {
+      if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type) || isSceneNarrationFrame(lookahead) || lookahead.diceCheck) {
         shouldReturnToOrigin = true;
         continue;
       }
-      if (lookahead.type === "SKILL_TEXT") {
-        const isSameSkillBridgeText = lookahead.actorId === frame.actorId && activeSkillId && lookahead.skillId === activeSkillId && !lookahead.isCoverEvent;
-        if (!isSameSkillBridgeText) {
+      if (lookahead.type === "TEXT") {
+        const isMidComboConnector = lookahead.actorId === frame.actorId && ULTIMATE_SUBFRAME_REGEX.test(lookahead.message || "");
+        if (!isMidComboConnector) {
           shouldReturnToOrigin = true;
         }
         continue;
       }
-      if (lookahead.type === "TEXT" && lookahead.skillTier === "ultimate") {
-        shouldReturnToOrigin = true;
+      if (lookahead.type === "SKILL_TEXT") {
+        if (lookahead.isCoverEvent || isSceneNarrationFrame(lookahead)) {
+          shouldReturnToOrigin = true;
+        }
         continue;
       }
       if (lookahead.type === "BUFF_APPLY" && !lookahead.passiveId && lookahead.targetId === lookahead.actorId) {
@@ -2287,12 +2340,11 @@
         }
         if (lookahead.actorId === frame.actorId) {
           isNextFrameSameCombo = true;
+          if (!frame.isAOE && lookahead.isAOE) {
+            shouldReturnToOrigin = true;
+          }
           if (lookahead.targetId !== frame.targetId) {
             isNextTargetDifferent = true;
-          }
-          const isDirectProc = lookahead.source === "DIRECT";
-          if (!isDirectProc && lookahead.skillId !== activeSkillId) {
-            shouldReturnToOrigin = true;
           }
         }
         break;
@@ -4454,10 +4506,15 @@
       playBtn.textContent = "\u91CD\u65B0\u64AD\u653E";
       showMVPPanel();
     };
+    const versionTag = document.createElement("span");
+    versionTag.className = "version-tag";
+    versionTag.textContent = `v${APP_VERSION}`;
+    versionTag.title = `MDBattle-Visualizer v${APP_VERSION}`;
     controls.appendChild(playBtn);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
     controls.appendChild(skipBtn);
+    controls.appendChild(versionTag);
     const ctbBox = document.createElement("div");
     ctbBox.className = "ctb-container";
     ctbBox.innerHTML = `
@@ -4792,7 +4849,7 @@
           if (engineState.playbackToken === token && summonedEl.isConnected) {
             summonedEl.classList.remove("spawning");
           }
-        }, 600 / getEffectiveSpeed());
+        }, 550 / getEffectiveSpeed());
       }
     }
     if (frame.isDespawnEvent && frame.despawnedActorId) {
@@ -4808,12 +4865,23 @@
         }, 450 / getEffectiveSpeed());
       }
     }
+    if (frame.isSummonEvent || frame.isDespawnEvent) {
+      frameDuration = Math.max(frameDuration, 650);
+    }
     const speaker = resolveDialogueSpeaker(frame);
     if (speaker) {
       const readTime = renderSpeechBubble(frame, sr, token);
       const textDuration = getMessageReadingDuration(speaker.quote);
       frameDuration = Math.max(frameDuration, textDuration, readTime);
     } else if (isSceneNarrationFrame(frame)) {
+      engineState.actors.forEach((actor) => {
+        if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
+          const el = sr.getElementById(`actor-${actor.id}`);
+          if (el && el.getAnimations) {
+            el.getAnimations().forEach((anim) => anim.cancel());
+          }
+        }
+      });
       const readTime = renderSceneNarrationBanner(frame, sr, token);
       const textDuration = getMessageReadingDuration(frame.message);
       frameDuration = Math.max(frameDuration, textDuration, readTime);

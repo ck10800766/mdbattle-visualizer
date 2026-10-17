@@ -7,67 +7,107 @@
  */
 
 import { engineState, createEmptyCombo } from './state.js';
+import { isSceneNarrationFrame } from './cinematics.js';
+import { ULTIMATE_SUBFRAME_REGEX } from './profiles.js';
 
 /**
- * Inspects upcoming frames within the same turn to decouple combo hit accumulation
- * (`isNextFrameSameCombo`) from physical actor positioning (`shouldReturnToOrigin`).
+ * Determines whether two skill IDs belong to the same multi-hit attack combo chain
+ * (e.g., diluc_onslaught_1 -> diluc_onslaught_2 -> diluc_onslaught_3,
+ *  diluc_sword_1 -> diluc_sword_2, diluc_dawn_slash -> diluc_dawn_phoenix).
+ * @param {string|null|undefined} skillA - First skill ID.
+ * @param {string|null|undefined} skillB - Second skill ID.
+ * @returns {boolean} True if both skills belong to the same combo sequence.
+ */
+export function isSameSkillCombo(skillA, skillB) {
+    if (!skillA || !skillB) return false;
+    if (skillA === skillB) return true;
+
+    // Strip trailing numeric stage suffixes (_1, _2, _3, etc.)
+    const rootA = skillA.replace(/_\d+$/, '');
+    const rootB = skillB.replace(/_\d+$/, '');
+    if (rootA === rootB) return true;
+
+    // Strip sub-hit suffixes (_slash, _phoenix, _burst, _finish, _hit, _strike, _flurry)
+    const familyA = rootA.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, '');
+    const familyB = rootB.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, '');
+    if (familyA && familyA === familyB) return true;
+
+    return false;
+}
+
+/**
+ * Inspects upcoming frames within the same turn to evaluate combo continuation
+ * and physical actor positioning (refer to docs/DECISIONS.md ADR-001).
  *
- * Why these two flags are decoupled:
- * - An actor may chain Skill A into Skill B (or trigger a heal / buff / speech bubble in between)
- *   during the same turn. In that case, `isNextFrameSameCombo` remains `true` so the HIT and
- *   DMG counters keep accumulating, while `shouldReturnToOrigin` becomes `true` so the actor
- *   returns home before launching the new skill instead of hovering in front of the target.
+ * Architecture Rule (ADR-001):
+ * - Uninterrupted combo on the same target = attacker stays in position (`stayAtTarget = true`).
+ * - Attacker ONLY returns to origin if:
+ *   1. Switching to an AOE skill (`lookahead.isAOE`).
+ *   2. Switching to a different target (`lookahead.targetId !== frame.targetId`).
+ *   3. Interrupted by non-combat cinematic pauses (heals, summons, scene narration banners,
+ *      dice checks, falling luck objects, dialogues, or counter pushback).
  *
  * @param {number} currentIndex - Index of the active frame in `engineState.frames`.
  * @param {object} frame - Active combat frame object.
  * @returns {{ isNextFrameSameCombo: boolean, isNextTargetDifferent: boolean, shouldReturnToOrigin: boolean }}
  */
 export function lookaheadComboState(currentIndex, frame) {
+    if (!frame.actorId || !['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(frame.type)) {
+        return { isNextFrameSameCombo: false, isNextTargetDifferent: false, shouldReturnToOrigin: false };
+    }
+
     let isNextFrameSameCombo = false;
     let isNextTargetDifferent = false;
     let shouldReturnToOrigin = false;
 
-    const activeSkillId =
-        frame.source === 'DIRECT' && engineState.currentCombo.actorId === frame.actorId
-            ? engineState.currentCombo.skillId
-            : frame.skillId;
-
     for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
         const lookahead = engineState.frames[i];
 
-        // Force attacker back to origin before a LUCK_EVENT so they do not overlap the target during BREAK!
-        if (lookahead.type === 'LUCK_EVENT') {
-            shouldReturnToOrigin = true;
-            if (lookahead.turnNumber !== frame.turnNumber) break;
-            continue;
-        }
-
+        // 1. Turn boundary: combos cannot cross turn boundaries
         if (lookahead.turnNumber !== frame.turnNumber) break;
 
-        if (['HEAL', 'SP_RECOVER', 'BOSS_DIALOGUE', 'SUMMON'].includes(lookahead.type)) {
+        // 2. Interruption: Luck Event (falling object) forces attacker home to avoid overlapping target
+        if (lookahead.type === 'LUCK_EVENT') {
             shouldReturnToOrigin = true;
             continue;
         }
-        if (lookahead.type === 'SKILL_TEXT') {
-            const isSameSkillBridgeText =
+
+        // 3. Interruption: Non-combat cinematic events (heals, dialogues, summons, scene narration, dice checks)
+        if (
+            ['HEAL', 'SP_RECOVER', 'BOSS_DIALOGUE', 'SUMMON'].includes(lookahead.type) ||
+            isSceneNarrationFrame(lookahead) ||
+            lookahead.diceCheck
+        ) {
+            shouldReturnToOrigin = true;
+            continue;
+        }
+
+        // 4. Interruption: Dialogue text or third-party narrative TEXT frames
+        if (lookahead.type === 'TEXT') {
+            const isMidComboConnector =
                 lookahead.actorId === frame.actorId &&
-                activeSkillId &&
-                lookahead.skillId === activeSkillId &&
-                !lookahead.isCoverEvent;
-            if (!isSameSkillBridgeText) {
+                ULTIMATE_SUBFRAME_REGEX.test(lookahead.message || '');
+            if (!isMidComboConnector) {
                 shouldReturnToOrigin = true;
             }
             continue;
         }
-        if (lookahead.type === 'TEXT' && lookahead.skillTier === 'ultimate') {
-            shouldReturnToOrigin = true;
+
+        // 5. Interruption: Skill text that breaks flow (cover guard, etc.)
+        if (lookahead.type === 'SKILL_TEXT') {
+            if (lookahead.isCoverEvent || isSceneNarrationFrame(lookahead)) {
+                shouldReturnToOrigin = true;
+            }
             continue;
         }
+
+        // 6. Interruption: Non-passive self buffs
         if (lookahead.type === 'BUFF_APPLY' && !lookahead.passiveId && lookahead.targetId === lookahead.actorId) {
             shouldReturnToOrigin = true;
             continue;
         }
 
+        // 7. Combat resolution frames
         if (['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(lookahead.type)) {
             if (lookahead.isCounter || lookahead.type === 'COUNTER') {
                 const counteredAttackerId = lookahead.counterSource?.targetId || lookahead.targetId;
@@ -82,14 +122,14 @@ export function lookaheadComboState(currentIndex, frame) {
                 continue;
             }
 
+            // Same attacker continuing in the same turn
             if (lookahead.actorId === frame.actorId) {
                 isNextFrameSameCombo = true;
+                if (!frame.isAOE && lookahead.isAOE) {
+                    shouldReturnToOrigin = true;
+                }
                 if (lookahead.targetId !== frame.targetId) {
                     isNextTargetDifferent = true;
-                }
-                const isDirectProc = lookahead.source === 'DIRECT';
-                if (!isDirectProc && lookahead.skillId !== activeSkillId) {
-                    shouldReturnToOrigin = true;
                 }
             }
             break;

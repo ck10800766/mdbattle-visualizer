@@ -26299,7 +26299,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26344,7 +26344,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -26362,7 +26362,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26371,7 +26371,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26387,8 +26387,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 扭轉巨軀，大太刀掃出一道弧月",
       "index": 11,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26416,7 +26416,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26432,18 +26432,18 @@
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span>：「有人要跟<span class=\"actor-name-left\">牙紀</span>結婚嗎？今天七夕！」",
       "index": 16,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "系統跳出了結婚申請，<span class=\"actor-name-left\">同人</span> 按下了接受。兩人的道具欄合在了一起。",
       "index": 17,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26468,8 +26468,8 @@
       "formattedHtml": "纏繞在 <span class=\"actor-name-right\">武士領主卡嘉奇</span> 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動",
       "index": 20,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26497,7 +26497,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26506,7 +26506,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26533,15 +26533,15 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span>：「封弊者都給我把道具交出來！」",
       "index": 28,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26551,16 +26551,16 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 身上什麼都沒有，卻被罵得抬不起頭，出手都心虛了。",
       "index": 30,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26578,7 +26578,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26614,7 +26614,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26677,7 +26677,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26686,7 +26686,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26765,8 +26765,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 扭轉巨軀，大太刀掃出一道弧月",
       "index": 53,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26794,7 +26794,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26812,7 +26812,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -26846,8 +26846,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">同人</span> 雙膝一夾擺出內八，全身的超能力一口氣湧了上來。他抬起手，路邊的樹連根拔起，停著的車一台接一台浮上半空，朝敵人砸了下去——",
       "index": 62,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26864,8 +26864,8 @@
       "formattedHtml": "還沒完，第二批車子又被拋了起來——",
       "index": 64,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26882,8 +26882,8 @@
       "formattedHtml": "最後一台車重重砸了下去——",
       "index": 66,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26900,8 +26900,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span> 使出了 聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 68,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -26999,7 +26999,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
       "index": 79,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -27019,7 +27019,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27028,15 +27028,15 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span>：「封弊者都給我把道具交出來！」",
       "index": 83,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27046,24 +27046,24 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 身上什麼都沒有，卻被罵得抬不起頭，出手都心虛了。",
       "index": 85,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span> 使出了 聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 86,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27071,9 +27071,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span> 開始有點喘",
       "index": 87,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27170,7 +27170,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
       "index": 98,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -27262,7 +27262,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27287,8 +27287,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 扭轉巨軀，大太刀掃出一道弧月",
       "index": 111,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27307,15 +27307,15 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "纏繞在 <span class=\"actor-name-right\">武士領主卡嘉奇</span> 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動",
       "index": 114,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27325,16 +27325,16 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "暗紫毒紋沿著 <span class=\"actor-name-left\">牙紀</span> 的傷口向上蔓延",
       "index": 116,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27343,7 +27343,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27397,7 +27397,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27422,8 +27422,8 @@
       "formattedHtml": "還沒完，第二批車子又被拋了起來——",
       "index": 126,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27440,8 +27440,8 @@
       "formattedHtml": "最後一台車重重砸了下去——",
       "index": 128,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27478,7 +27478,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27566,8 +27566,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span>：「封弊者都給我把道具交出來！」",
       "index": 142,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27593,8 +27593,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">同人</span> 雙膝一夾擺出內八，全身的超能力一口氣湧了上來。他抬起手，路邊的樹連根拔起，停著的車一台接一台浮上半空，朝敵人砸了下去——",
       "index": 145,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27611,8 +27611,8 @@
       "formattedHtml": "還沒完，第二批車子又被拋了起來——",
       "index": 147,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27638,8 +27638,8 @@
       "formattedHtml": "最後一台車重重砸了下去——",
       "index": 150,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27658,7 +27658,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27694,15 +27694,15 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 將雙刀同時掃出，兩道刀光一前一後旋過大殿",
       "index": 157,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27737,9 +27737,9 @@
       "formattedHtml": "「Switch！」<span class=\"actor-name-left\">牙紀</span> 從刀勢外側切入，卡嘉奇的架勢被撼動",
       "index": 161,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27766,7 +27766,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27782,8 +27782,8 @@
       "formattedHtml": "纏繞在 <span class=\"actor-name-right\">武士領主卡嘉奇</span> 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動",
       "index": 166,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27802,7 +27802,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27838,7 +27838,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -27937,7 +27937,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -27962,8 +27962,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 將雙刀同時掃出，兩道刀光一前一後旋過大殿",
       "index": 186,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -27998,9 +27998,9 @@
       "formattedHtml": "「Switch！」<span class=\"actor-name-left\">牙紀</span> 從刀勢外側切入，卡嘉奇的架勢被撼動",
       "index": 190,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28034,8 +28034,8 @@
       "formattedHtml": "纏繞在 <span class=\"actor-name-right\">武士領主卡嘉奇</span> 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動",
       "index": 194,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28045,16 +28045,16 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "暗紫毒紋沿著 <span class=\"actor-name-left\">牙紀</span> 的傷口向上蔓延",
       "index": 196,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28072,7 +28072,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28081,7 +28081,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28090,7 +28090,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28108,7 +28108,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28151,8 +28151,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">同人</span> 雙膝一夾擺出內八，全身的超能力一口氣湧了上來。他抬起手，路邊的樹連根拔起，停著的車一台接一台浮上半空，朝敵人砸了下去——",
       "index": 207,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28169,8 +28169,8 @@
       "formattedHtml": "還沒完，第二批車子又被拋了起來——",
       "index": 209,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28187,8 +28187,8 @@
       "formattedHtml": "最後一台車重重砸了下去——",
       "index": 211,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28367,7 +28367,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 身上的十字刻下了 9 道劍痕，劍尖對準了正中央——",
       "index": 231,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -28403,8 +28403,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 將雙刀同時掃出，兩道刀光一前一後旋過大殿",
       "index": 235,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28441,15 +28441,15 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "纏繞在 <span class=\"actor-name-right\">武士領主卡嘉奇</span> 鎧甲上的巨蛇昂起頭，地面隨著嘶鳴猛然震動",
       "index": 240,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28459,16 +28459,16 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "暗紫毒紋沿著 <span class=\"actor-name-left\">牙紀</span> 的傷口向上蔓延",
       "index": 242,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28477,7 +28477,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28549,7 +28549,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28558,7 +28558,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28639,7 +28639,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28702,7 +28702,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -28720,7 +28720,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28729,7 +28729,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28781,8 +28781,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 將雙刀同時掃出，兩道刀光一前一後旋過大殿",
       "index": 277,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28828,7 +28828,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28837,7 +28837,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28864,7 +28864,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28891,15 +28891,15 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">牙紀</span>：「封弊者都給我把道具交出來！」",
       "index": 290,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -28918,7 +28918,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28927,7 +28927,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28943,9 +28943,9 @@
       "formattedHtml": "<span class=\"actor-name-right\">武士領主卡嘉奇</span> 以刀撐地重新站起，刀鋒再次封住身前",
       "index": 295,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -28963,7 +28963,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -28981,7 +28981,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -29026,7 +29026,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -29035,7 +29035,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {

@@ -17395,7 +17395,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17413,7 +17413,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17422,7 +17422,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17431,7 +17431,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17440,7 +17440,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17483,18 +17483,18 @@
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 手裡的封印之杖亮了起來，杖頭的鳥喙褪去，換成了一顆星星。",
       "index": 14,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 用自己的星之力，把「風」轉換成了小櫻牌。",
       "index": 15,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17510,8 +17510,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 17,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -17609,7 +17609,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span> 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
       "index": 28,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -17645,9 +17645,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 用自己的星之力，把「雷」轉換成了小櫻牌。",
       "index": 32,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17690,9 +17690,9 @@
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span> 拔出軍刀，腳下展開一道眼睛形狀的陣，悶熱潮濕的空氣壓了下來——",
       "index": 37,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17710,7 +17710,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17746,7 +17746,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -17789,17 +17789,17 @@
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 用自己的星之力，把「火」轉換成了小櫻牌。",
       "index": 48,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 把「火」拋向半空，雙手握緊法杖，用力敲了下去。",
       "index": 49,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -17807,8 +17807,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 使出了 火之牌，牌面燃起，化成一個渾身是火的少年，張開火翼橫掃過去——",
       "index": 50,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -17825,8 +17825,8 @@
       "formattedHtml": "火翼一收，又一次撲了下來——",
       "index": 52,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -17852,8 +17852,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 55,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -17879,9 +17879,9 @@
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span> 舉起步槍，眼形陣往兩側撐開，泥濘和雨水漫進了陣裡——",
       "index": 58,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17908,7 +17908,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -17924,8 +17924,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 橫手一揮，三枚手裏劍呈扇形散開！",
       "index": 63,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -17989,7 +17989,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18007,7 +18007,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18034,7 +18034,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18050,9 +18050,9 @@
       "formattedHtml": "陣裡的雨下個不停，腳下的泥越陷越深——",
       "index": 77,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18079,7 +18079,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18088,7 +18088,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -18104,8 +18104,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 把「火」拋向半空，雙手握緊法杖，用力敲了下去。",
       "index": 83,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -18113,8 +18113,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">木之本櫻</span> 使出了 火之牌，牌面燃起，化成一個渾身是火的少年，張開火翼橫掃過去——",
       "index": 84,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -18131,8 +18131,8 @@
       "formattedHtml": "火翼一收，又一次撲了下來——",
       "index": 86,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -18142,7 +18142,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -18167,27 +18167,27 @@
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span>：「再來。」",
       "index": 90,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span> 站了起來，傷口全部合上了。",
       "index": 91,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span> 咬掉手榴彈的插銷，陣變成一個圓，罩住了整片戰場。陣裡沒有人倒得下去——",
       "index": 92,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18221,8 +18221,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span> 把手榴彈往鋼盔上一敲，扔進了人群裡——",
       "index": 96,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -18277,7 +18277,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18331,7 +18331,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18347,9 +18347,9 @@
       "formattedHtml": "圓形陣裡的祈禱沒有停過——",
       "index": 110,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18385,7 +18385,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18473,9 +18473,9 @@
       "formattedHtml": "圓形陣裡的祈禱沒有停過——",
       "index": 124,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18511,7 +18511,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18610,7 +18610,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -18743,8 +18743,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 154,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -18842,7 +18842,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">殉國禁獄鬼軍曹</span> 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
       "index": 165,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -18853,7 +18853,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -18943,7 +18943,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -18961,7 +18961,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -19060,7 +19060,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -19069,7 +19069,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
