@@ -1575,7 +1575,7 @@
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; width: 80px; height: 80px; }
-    .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); }
+    .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); transition: border-color 0.4s ease, box-shadow 0.4s ease; }
 
     .hp-container { width: 80px; height: 13px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1.5px solid #1a202c; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
     .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
@@ -1711,8 +1711,7 @@
     .sao-btn-accept.pressed { background: #ed8936; color: #fff; transform: scale(1.25); box-shadow: 0 0 20px #f6ad55, 0 0 35px #f687b3; }
     .sao-btn-cancel { color: #718096; }
 
-    /* Persistent Marriage Bond Aura & Cover Shield */
-    .actor.bond-active .avatar { border-color: #f687b3; box-shadow: 0 0 16px rgba(246, 135, 179, 0.85); }
+    /* Persistent Marriage Bond Cover Shield */
     .bridal-cover-shield { position: absolute; inset: -10px; border: 3px solid #fbb6ce; border-radius: 14px; background: radial-gradient(circle, rgba(246, 135, 179, 0.35) 0%, transparent 75%); box-shadow: 0 0 20px #f687b3; display: flex; align-items: flex-start; justify-content: center; z-index: 20; pointer-events: none; }
     .bridal-cover-shield span { margin-top: -12px; background: #d53f8c; color: #fff; font-size: 11px; font-weight: 900; padding: 1px 8px; border-radius: 999px; border: 1px solid #fff; }
 
@@ -1736,8 +1735,8 @@
     .seek-skill-pill { background: rgba(79, 209, 197, 0.2); color: #81e6d9; border: 1px solid #4fd1c5; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
     .seek-skill-context { font-size: 12px; color: #fbd38d; font-style: italic; opacity: 0.95; }
     .seek-banner-body { font-size: 14px; line-height: 1.45; color: #edf2f7; font-weight: 600; }
-    .actor.seek-acting .avatar { border-color: #f6e05e; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5); }
-    .actor.seek-targeted .avatar { border-color: #fc8181; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6); }
+    .actor.seek-acting .avatar { border-color: #f6e05e !important; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5) !important; }
+    .actor.seek-targeted .avatar { border-color: #fc8181 !important; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6) !important; }
 
     /* True AOE Fan Shockwave & Multi-Projectile Barrage VFX */
     .aoe-fan-wave { position: absolute; width: 160px; height: 340px; pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
@@ -3595,6 +3594,77 @@
       if (existingBadge) existingBadge.remove();
     });
   }
+  var STATUS_AURA_CONFIG = {
+    bond: { border: "#f687b3", glow: "rgba(246, 135, 179, 0.85)" },
+    dot: { border: "#9f7aea", glow: "rgba(159, 122, 234, 0.85)" },
+    hot: { border: "#48bb78", glow: "rgba(72, 187, 120, 0.85)" },
+    fatigue: { border: "#ed8936", glow: "rgba(237, 137, 54, 0.85)" },
+    silenced: { border: "#fc8181", glow: "rgba(252, 129, 129, 0.85)" }
+  };
+  function generateAuraKeyframes(categories) {
+    const n = categories.length;
+    if (n <= 1) return [];
+    const keyframes = [];
+    const step = 1 / n;
+    const transitionRatio = 0.28;
+    for (let i = 0; i < n; i++) {
+      const conf = STATUS_AURA_CONFIG[categories[i]];
+      const startOffset = i * step;
+      const steadyEndOffset = startOffset + step * (1 - transitionRatio);
+      keyframes.push({
+        borderColor: conf.border,
+        boxShadow: `0 0 16px ${conf.glow}`,
+        offset: Math.round(startOffset * 1e3) / 1e3
+      });
+      keyframes.push({
+        borderColor: conf.border,
+        boxShadow: `0 0 16px ${conf.glow}`,
+        offset: Math.round(steadyEndOffset * 1e3) / 1e3
+      });
+    }
+    const firstConf = STATUS_AURA_CONFIG[categories[0]];
+    keyframes.push({
+      borderColor: firstConf.border,
+      boxShadow: `0 0 16px ${firstConf.glow}`,
+      offset: 1
+    });
+    return keyframes;
+  }
+  function syncAvatarAuraDOM(avatarEl, activeCategories) {
+    if (!avatarEl) return;
+    const sortedCategories = activeCategories.slice().sort();
+    const signature = sortedCategories.join("+");
+    if (avatarEl._auraSignature === signature) return;
+    avatarEl._auraSignature = signature;
+    if (avatarEl._auraAnimation) {
+      avatarEl._auraAnimation.cancel();
+      avatarEl._auraAnimation = null;
+    }
+    if (sortedCategories.length === 0) {
+      avatarEl.style.borderColor = "";
+      avatarEl.style.boxShadow = "";
+      return;
+    }
+    if (sortedCategories.length === 1) {
+      const conf = STATUS_AURA_CONFIG[sortedCategories[0]];
+      avatarEl.style.borderColor = conf.border;
+      avatarEl.style.boxShadow = `0 0 16px ${conf.glow}`;
+      return;
+    }
+    const keyframes = generateAuraKeyframes(sortedCategories);
+    if (typeof avatarEl.animate === "function" && keyframes.length > 0) {
+      const duration = Math.max(3600, sortedCategories.length * 1800);
+      avatarEl._auraAnimation = avatarEl.animate(keyframes, {
+        duration,
+        iterations: Infinity,
+        easing: "ease-in-out"
+      });
+    } else {
+      const conf = STATUS_AURA_CONFIG[sortedCategories[0]];
+      avatarEl.style.borderColor = conf.border;
+      avatarEl.style.boxShadow = `0 0 16px ${conf.glow}`;
+    }
+  }
   function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null, bondStateMap = null) {
     engineState.actors.forEach((actor) => {
       const hpContainer = sr.getElementById(`hp-container-${actor.id}`) || sr.querySelector(`#actor-${actor.id} .hp-container`);
@@ -3606,19 +3676,19 @@
         if (isShieldActive) hpContainer.classList.add("shield-active");
         else hpContainer.classList.remove("shield-active");
       }
+      const statuses = !isDead && statusStateMap ? [...statusStateMap.get(actor.id) || []] : [];
+      const bondInfo = !isDead && bondStateMap ? bondStateMap.get(actor.id) : null;
+      if (bondInfo) {
+        const profile = getContractSkillProfile(bondInfo.skillId);
+        const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
+        statuses.unshift({
+          id: "bond",
+          name: partner ? `${profile?.badgeIcon || "\u{1F48D}"} ${partner.name}` : `${profile?.badgeIcon || "\u{1F48D}"} ${profile?.badgeText || "\u5951\u7D04"}`,
+          category: "bond",
+          icon: profile?.badgeIcon || "\u{1F48D}"
+        });
+      }
       if (statusTray) {
-        const statuses = !isDead && statusStateMap ? [...statusStateMap.get(actor.id) || []] : [];
-        const bondInfo = !isDead && bondStateMap ? bondStateMap.get(actor.id) : null;
-        if (bondInfo) {
-          const profile = getContractSkillProfile(bondInfo.skillId);
-          const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
-          statuses.unshift({
-            id: "bond",
-            name: partner ? `${profile?.badgeIcon || "\u{1F48D}"} ${partner.name}` : `${profile?.badgeIcon || "\u{1F48D}"} ${profile?.badgeText || "\u5951\u7D04"}`,
-            category: "bond",
-            icon: profile?.badgeIcon || "\u{1F48D}"
-          });
-        }
         if (statuses.length === 0) {
           statusTray.innerHTML = "";
         } else {
@@ -3629,6 +3699,11 @@
             statusTray.innerHTML = badgesHtml;
           }
         }
+      }
+      const avatarEl = wrapperEl?.querySelector(".avatar");
+      if (avatarEl) {
+        const activeCategories = !isDead ? [...new Set(statuses.map((s) => s.category).filter((c) => STATUS_AURA_CONFIG[c]))] : [];
+        syncAvatarAuraDOM(avatarEl, activeCategories);
       }
     });
   }

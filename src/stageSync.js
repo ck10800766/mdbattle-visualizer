@@ -88,8 +88,110 @@ export function syncActorBondVisuals(sr, bondStateMap = null) {
 }
 
 /**
- * Synchronizes persistent status tray badges (marriage/bond, DOT, HOT, FATIGUE, SILENCED)
- * and shield border highlights across all actors.
+ * Configuration mapping each status category to its border and outer aura glow colors.
+ * @type {Record<string, { border: string, glow: string }>}
+ */
+export const STATUS_AURA_CONFIG = {
+    bond:     { border: '#f687b3', glow: 'rgba(246, 135, 179, 0.85)' },
+    dot:      { border: '#9f7aea', glow: 'rgba(159, 122, 234, 0.85)' },
+    hot:      { border: '#48bb78', glow: 'rgba(72, 187, 120, 0.85)' },
+    fatigue:  { border: '#ed8936', glow: 'rgba(237, 137, 54, 0.85)' },
+    silenced: { border: '#fc8181', glow: 'rgba(252, 129, 129, 0.85)' }
+};
+
+/**
+ * Generates keyframes for smooth, slow breathing crossfading between multiple active status colors.
+ *
+ * @param {Array<string>} categories - Unique active status category names.
+ * @returns {Array<Keyframe>} Keyframe array for element.animate().
+ */
+export function generateAuraKeyframes(categories) {
+    const n = categories.length;
+    if (n <= 1) return [];
+
+    const keyframes = [];
+    const step = 1 / n;
+    const transitionRatio = 0.28;
+
+    for (let i = 0; i < n; i++) {
+        const conf = STATUS_AURA_CONFIG[categories[i]];
+        const startOffset = i * step;
+        const steadyEndOffset = startOffset + step * (1 - transitionRatio);
+
+        keyframes.push({
+            borderColor: conf.border,
+            boxShadow: `0 0 16px ${conf.glow}`,
+            offset: Math.round(startOffset * 1000) / 1000
+        });
+        keyframes.push({
+            borderColor: conf.border,
+            boxShadow: `0 0 16px ${conf.glow}`,
+            offset: Math.round(steadyEndOffset * 1000) / 1000
+        });
+    }
+
+    const firstConf = STATUS_AURA_CONFIG[categories[0]];
+    keyframes.push({
+        borderColor: firstConf.border,
+        boxShadow: `0 0 16px ${firstConf.glow}`,
+        offset: 1.0
+    });
+
+    return keyframes;
+}
+
+/**
+ * Synchronizes the actor avatar border and outer aura glow to reflect active status effects.
+ * - 0 statuses: resets to default border.
+ * - 1 status: displays a steady glowing aura.
+ * - Multiple statuses: smoothly alternates/crossfades between the active status colors in a slow breathing loop.
+ *
+ * @param {HTMLElement} avatarEl - The actor's .avatar image element.
+ * @param {Array<string>} activeCategories - Unique list of active status categories.
+ */
+export function syncAvatarAuraDOM(avatarEl, activeCategories) {
+    if (!avatarEl) return;
+    const sortedCategories = activeCategories.slice().sort();
+    const signature = sortedCategories.join('+');
+    if (avatarEl._auraSignature === signature) return;
+    avatarEl._auraSignature = signature;
+
+    if (avatarEl._auraAnimation) {
+        avatarEl._auraAnimation.cancel();
+        avatarEl._auraAnimation = null;
+    }
+
+    if (sortedCategories.length === 0) {
+        avatarEl.style.borderColor = '';
+        avatarEl.style.boxShadow = '';
+        return;
+    }
+
+    if (sortedCategories.length === 1) {
+        const conf = STATUS_AURA_CONFIG[sortedCategories[0]];
+        avatarEl.style.borderColor = conf.border;
+        avatarEl.style.boxShadow = `0 0 16px ${conf.glow}`;
+        return;
+    }
+
+    const keyframes = generateAuraKeyframes(sortedCategories);
+    if (typeof avatarEl.animate === 'function' && keyframes.length > 0) {
+        const duration = Math.max(3600, sortedCategories.length * 1800);
+        avatarEl._auraAnimation = avatarEl.animate(keyframes, {
+            duration,
+            iterations: Infinity,
+            easing: 'ease-in-out'
+        });
+    } else {
+        const conf = STATUS_AURA_CONFIG[sortedCategories[0]];
+        avatarEl.style.borderColor = conf.border;
+        avatarEl.style.boxShadow = `0 0 16px ${conf.glow}`;
+    }
+}
+
+/**
+ * Synchronizes persistent status tray badges (marriage/bond, DOT, HOT, FATIGUE, SILENCED),
+ * shield border highlights, and avatar status auras across all actors.
  *
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
  * @param {Map<string, Array<{ id: string, name: string, category: string, icon: string }>>|null} [statusStateMap=null] - Active status state map.
@@ -111,20 +213,20 @@ export function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldSta
         }
 
         // 2. Sync status badges (including marriage/contract bond)
-        if (statusTray) {
-            const statuses = (!isDead && statusStateMap) ? [...(statusStateMap.get(actor.id) || [])] : [];
-            const bondInfo = (!isDead && bondStateMap) ? bondStateMap.get(actor.id) : null;
-            if (bondInfo) {
-                const profile = getContractSkillProfile(bondInfo.skillId);
-                const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
-                statuses.unshift({
-                    id: 'bond',
-                    name: partner ? `${profile?.badgeIcon || '💍'} ${partner.name}` : `${profile?.badgeIcon || '💍'} ${profile?.badgeText || '契約'}`,
-                    category: 'bond',
-                    icon: profile?.badgeIcon || '💍'
-                });
-            }
+        const statuses = (!isDead && statusStateMap) ? [...(statusStateMap.get(actor.id) || [])] : [];
+        const bondInfo = (!isDead && bondStateMap) ? bondStateMap.get(actor.id) : null;
+        if (bondInfo) {
+            const profile = getContractSkillProfile(bondInfo.skillId);
+            const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
+            statuses.unshift({
+                id: 'bond',
+                name: partner ? `${profile?.badgeIcon || '💍'} ${partner.name}` : `${profile?.badgeIcon || '💍'} ${profile?.badgeText || '契約'}`,
+                category: 'bond',
+                icon: profile?.badgeIcon || '💍'
+            });
+        }
 
+        if (statusTray) {
             if (statuses.length === 0) {
                 statusTray.innerHTML = '';
             } else {
@@ -135,6 +237,15 @@ export function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldSta
                     statusTray.innerHTML = badgesHtml;
                 }
             }
+        }
+
+        // 3. Sync avatar status aura (single steady glow, or slow crossfading alternation between multiple statuses)
+        const avatarEl = wrapperEl?.querySelector('.avatar');
+        if (avatarEl) {
+            const activeCategories = (!isDead)
+                ? [...new Set(statuses.map(s => s.category).filter(c => STATUS_AURA_CONFIG[c]))]
+                : [];
+            syncAvatarAuraDOM(avatarEl, activeCategories);
         }
     });
 }
