@@ -207,7 +207,7 @@ export function calibrateHpWithAnchors(frames) {
             }
         }
 
-        // Fallback if no dialogue matched
+        // Structural fallback if no dialogue matched
         if (rebirthIndices.length === 0) {
             const searchLimit = firstPostRebirthDeltaIndex !== -1 ? firstPostRebirthDeltaIndex : anchorIndex;
             let fallbackIdx = -1;
@@ -220,6 +220,14 @@ export function calibrateHpWithAnchors(frames) {
                 ) {
                     fallbackIdx = i;
                     break;
+                }
+            }
+            if (fallbackIdx === -1) {
+                for (let i = lowHpStartIndex + 1; i < searchLimit; i++) {
+                    const f = frames[i];
+                    if (f && (f.actorId === actor.id || f.targetId === actor.id) && ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(f.type)) {
+                        fallbackIdx = i;
+                    }
                 }
             }
             rebirthIndices.push(fallbackIdx !== -1 ? fallbackIdx : searchLimit);

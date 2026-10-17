@@ -45,7 +45,7 @@ export const STAGE_STYLES = `
 
     /* Battle Arena & Actor Cards */
     .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 5vw; position: relative; min-height: 0; overflow: hidden; }
-    .team { display: flex; flex-direction: column; gap: 12px; align-items: center; align-content: center; max-width: 48%; max-height: 100%; }
+    .team { display: flex; flex-direction: column; gap: 15px; align-items: center; align-content: center; width: 40%; max-height: 100%; }
     .left-team { justify-content: center; flex-wrap: wrap; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
@@ -57,7 +57,7 @@ export const STAGE_STYLES = `
     .actor.right.despawning { animation: summonDespawnRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .actor.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
-    .actor.dead { filter: grayscale(100%) brightness(45%) contrast(110%); opacity: 0.55; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
+    .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; width: 80px; height: 80px; }
     .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); transition: border-color 0.4s ease, box-shadow 0.4s ease; }

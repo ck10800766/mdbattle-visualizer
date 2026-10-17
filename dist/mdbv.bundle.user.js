@@ -791,6 +791,14 @@
             break;
           }
         }
+        if (fallbackIdx === -1) {
+          for (let i = lowHpStartIndex + 1; i < searchLimit; i++) {
+            const f = frames[i];
+            if (f && (f.actorId === actor.id || f.targetId === actor.id) && ["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(f.type)) {
+              fallbackIdx = i;
+            }
+          }
+        }
         rebirthIndices.push(fallbackIdx !== -1 ? fallbackIdx : searchLimit);
       }
       for (let s = 0; s < rebirthIndices.length; s++) {
@@ -857,7 +865,7 @@
     }
     return { isTurnAction, turnActorId };
   }
-  function processSummonLifecycle(log, index, logs, frame, actorsDeathState, actorsSummonState, explicitlySummonedIds, despawnedActors) {
+  function processSummonLifecycle(log, index, logs, frame, actorsDeathState, actorsSummonState, explicitlySummonedIds, despawnedActors, structuralDepartures) {
     if (log.type === "SUMMON" && log.targetId) {
       const owner = engineState.actors.get(log.actorId);
       const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
@@ -894,8 +902,16 @@
         frame.summonedActorId = log.actorId;
       }
     }
-    if ((log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
-      let candidateId = null;
+    let candidateId = null;
+    if (structuralDepartures) {
+      for (const [sId, depIdx] of structuralDepartures.entries()) {
+        if (depIdx === index && actorsSummonState.get(sId) !== false && !despawnedActors.has(sId)) {
+          candidateId = sId;
+          break;
+        }
+      }
+    }
+    if (!candidateId && (log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
       if (log.actorId) {
         const actingUnit = engineState.actors.get(log.actorId);
         if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
@@ -918,12 +934,12 @@
           }
         }
       }
-      if (candidateId) {
-        actorsSummonState.set(candidateId, false);
-        despawnedActors.add(candidateId);
-        frame.isDespawnEvent = true;
-        frame.despawnedActorId = candidateId;
-      }
+    }
+    if (candidateId) {
+      actorsSummonState.set(candidateId, false);
+      despawnedActors.add(candidateId);
+      frame.isDespawnEvent = true;
+      frame.despawnedActorId = candidateId;
     }
   }
   function processContractSkillLifecycle(frame, contractProfile, msg, target, actorsBondState, contractCutInCount, addHpDelta) {
@@ -1170,6 +1186,135 @@
     });
     return { statusIntervals, shieldIntervals };
   }
+  function computeStructuralSummonDepartures(logs, actorsMap) {
+    const departures = /* @__PURE__ */ new Map();
+    const summonIds = /* @__PURE__ */ new Set();
+    const summonNames = /* @__PURE__ */ new Map();
+    actorsMap.forEach((actor, id) => {
+      if (actor.isSummon) {
+        summonIds.add(id);
+        if (actor.name) summonNames.set(id, actor.name);
+      }
+    });
+    logs.forEach((l) => {
+      if (!l) return;
+      if (l.type === "SUMMON" && l.targetId) {
+        summonIds.add(l.targetId);
+      }
+    });
+    summonIds.forEach((id) => {
+      const name = summonNames.get(id);
+      let lastCombatIdx = -1;
+      let lastDeathIdx = -1;
+      let hasHpRemaining = false;
+      logs.forEach((l, idx) => {
+        if (!l) return;
+        const isActor = l.actorId === id;
+        const isTarget = l.targetId === id;
+        const isOpponent = l.opponentId === id;
+        if (l.type === "HP_REMAINING" && (isActor || isTarget)) {
+          hasHpRemaining = true;
+        }
+        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(l.type) && (isActor || isTarget)) {
+          lastDeathIdx = idx;
+        }
+        if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL", "LUCK_EVENT", "BUFF_EFFECT"].includes(l.type)) {
+          if (isActor || isTarget || isOpponent) {
+            lastCombatIdx = Math.max(lastCombatIdx, idx);
+          }
+        }
+      });
+      if (hasHpRemaining) return;
+      if (lastDeathIdx > lastCombatIdx) return;
+      let candidateNarrativeIdx = -1;
+      for (let idx = Math.max(0, lastCombatIdx); idx < logs.length; idx++) {
+        const l = logs[idx];
+        if (!l) continue;
+        const msg = l.message || "";
+        const isActor = l.actorId === id;
+        const isTarget = l.targetId === id;
+        const nameMentioned = name && msg.includes(name);
+        if (["TEXT", "SKILL_TEXT", "BOSS_DIALOGUE"].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+          let futureCombat = false;
+          for (let k = idx + 1; k < logs.length; k++) {
+            const fl = logs[k];
+            if (!fl) continue;
+            if (fl.actorId === id || fl.targetId === id || fl.opponentId === id) {
+              if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL", "LUCK_EVENT", "BUFF_EFFECT", "DEATH"].includes(fl.type)) {
+                futureCombat = true;
+                break;
+              }
+            }
+          }
+          if (!futureCombat) {
+            candidateNarrativeIdx = idx;
+            break;
+          }
+        }
+      }
+      if (candidateNarrativeIdx !== -1) {
+        departures.set(id, candidateNarrativeIdx);
+      }
+    });
+    return departures;
+  }
+  function computeStructuralRevivals(logs, actorsMap) {
+    const revivals = /* @__PURE__ */ new Map();
+    const deathsByActor = /* @__PURE__ */ new Map();
+    logs.forEach((l, idx) => {
+      if (!l) return;
+      if (["DEATH", "PLAYER_DEATH"].includes(l.type) && l.actorId) {
+        if (!deathsByActor.has(l.actorId)) deathsByActor.set(l.actorId, []);
+        deathsByActor.get(l.actorId).push(idx);
+      }
+    });
+    deathsByActor.forEach((deathIndices, actorId) => {
+      const actor = actorsMap.get(actorId);
+      const actorName = actor?.name;
+      deathIndices.forEach((deathIdx, i) => {
+        const nextDeathIdx = i + 1 < deathIndices.length ? deathIndices[i + 1] : logs.length;
+        let resumeCombatIdx = -1;
+        for (let k = deathIdx + 1; k < nextDeathIdx; k++) {
+          const l = logs[k];
+          if (!l) continue;
+          const isActor = l.actorId === actorId;
+          const isTarget = l.targetId === actorId;
+          const isOpponent = l.opponentId === actorId;
+          if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL"].includes(l.type)) {
+            if (isActor || isTarget || isOpponent) {
+              resumeCombatIdx = k;
+              break;
+            }
+          }
+          if (l.type === "HP_REMAINING" && (isActor || isTarget)) {
+            resumeCombatIdx = k;
+            break;
+          }
+          if (["DEATH", "PLAYER_DEATH"].includes(l.type) && (isActor || isTarget)) {
+            resumeCombatIdx = k;
+            break;
+          }
+        }
+        if (resumeCombatIdx !== -1) {
+          let revivalIdx = resumeCombatIdx;
+          for (let k = deathIdx + 1; k <= resumeCombatIdx; k++) {
+            const l = logs[k];
+            if (!l) continue;
+            const msg = l.message || "";
+            const isActor = l.actorId === actorId;
+            const isTarget = l.targetId === actorId;
+            const nameMentioned = actorName && msg.includes(actorName);
+            if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+              revivalIdx = k;
+            }
+          }
+          if (!revivals.has(revivalIdx)) revivals.set(revivalIdx, /* @__PURE__ */ new Set());
+          revivals.get(revivalIdx).add(actorId);
+        }
+      });
+    });
+    return revivals;
+  }
   function buildStateSnapshots(logs) {
     engineState.frames = [];
     let currentTurn = 0;
@@ -1184,6 +1329,8 @@
     const contractCutInCount = /* @__PURE__ */ new Map();
     const despawnedActors = /* @__PURE__ */ new Set();
     const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
+    const structuralDepartures = computeStructuralSummonDepartures(logs, engineState.actors);
+    const structuralRevivals = computeStructuralRevivals(logs, engineState.actors);
     const explicitlySummonedIds = /* @__PURE__ */ new Set();
     logs.forEach((log) => {
       if (log && log.type === "SUMMON" && log.targetId) {
@@ -1290,7 +1437,8 @@
         actorsDeathState,
         actorsSummonState,
         explicitlySummonedIds,
-        despawnedActors
+        despawnedActors,
+        structuralDepartures
       );
       if (log.type === "BUFF_APPLY") {
         const attacker = engineState.actors.get(log.actorId);
@@ -1481,6 +1629,18 @@
       if (crossProfile && ["DAMAGE", "BLOCK"].includes(log.type) && crossProfile.pierceRegex.test(frame.message)) {
         frame.rosarioEvent = "PIERCE_CROSS";
       }
+      const revivingActors = structuralRevivals.get(index);
+      if (revivingActors) {
+        revivingActors.forEach((revivingActorId) => {
+          if (actorsDeathState.get(revivingActorId)) {
+            actorsDeathState.set(revivingActorId, false);
+            const revivingActor = engineState.actors.get(revivingActorId);
+            if (revivingActor) {
+              revivingActor.currentHp = revivingActor.maxHp;
+            }
+          }
+        });
+      }
       if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(log.type) && REBIRTH_RULES.dialogueRegex.test(frame.message)) {
         let revivingActorId = null;
         if (log.actorId && engineState.actors.has(log.actorId)) {
@@ -1508,6 +1668,13 @@
         const actingActor = engineState.actors.get(log.actorId);
         if (actingActor && actingActor.currentHp <= 0) {
           actingActor.currentHp = actingActor.maxHp;
+        }
+      }
+      if (log.targetId && actorsDeathState.get(log.targetId) && ["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL"].includes(log.type)) {
+        actorsDeathState.set(log.targetId, false);
+        const targetedActor = engineState.actors.get(log.targetId);
+        if (targetedActor && targetedActor.currentHp <= 0) {
+          targetedActor.currentHp = targetedActor.maxHp;
         }
       }
       if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
@@ -1633,7 +1800,7 @@
 
     /* Battle Arena & Actor Cards */
     .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 5vw; position: relative; min-height: 0; overflow: hidden; }
-    .team { display: flex; flex-direction: column; gap: 12px; align-items: center; align-content: center; max-width: 48%; max-height: 100%; }
+    .team { display: flex; flex-direction: column; gap: 15px; align-items: center; align-content: center; width: 40%; max-height: 100%; }
     .left-team { justify-content: center; flex-wrap: wrap; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
@@ -1645,7 +1812,7 @@
     .actor.right.despawning { animation: summonDespawnRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .actor.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
-    .actor.dead { filter: grayscale(100%) brightness(45%) contrast(110%); opacity: 0.55; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
+    .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; width: 80px; height: 80px; }
     .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); transition: border-color 0.4s ease, box-shadow 0.4s ease; }
