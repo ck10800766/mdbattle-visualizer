@@ -344,12 +344,12 @@ export function createBattleStage() {
             <div class="actor-name">${escapeHtml(actor.name)}</div>
             <div class="avatar-wrapper">
                 <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="status-tray" id="status-tray-${escapeHtml(actor.id)}"></div>
             </div>
             <div class="hp-container"${hpContainerStyle} id="hp-container-${escapeHtml(actor.id)}">
                 <div class="hp-fill" id="hp-fill-${escapeHtml(actor.id)}"></div>
                 <div class="hp-text" id="hp-text-${escapeHtml(actor.id)}">${hpTextContent}</div>
             </div>
-            <div class="status-tray"${hpContainerStyle} id="status-tray-${escapeHtml(actor.id)}"></div>
         `;
         if (actor.side === 'left') leftTeam.appendChild(el);
         else rightTeam.appendChild(el);

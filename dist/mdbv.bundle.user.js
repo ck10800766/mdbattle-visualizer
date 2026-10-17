@@ -1574,7 +1574,7 @@
     .actor.despawning { animation: summonDespawn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
-    .avatar-wrapper { position: relative; }
+    .avatar-wrapper { position: relative; width: 80px; height: 80px; }
     .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); }
 
     .hp-container { width: 80px; height: 13px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1.5px solid #1a202c; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
@@ -1584,9 +1584,11 @@
     .hp-fill.danger { background: #f56565; }
     .hp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; color: #fff; font-weight: 800; text-shadow: 0 1px 2px #000; pointer-events: none; letter-spacing: -0.2px; }
 
-    /* Actor Status Tray & Badges */
-    .status-tray { width: 80px; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 3px; min-height: 16px; margin-top: 3px; pointer-events: auto; }
+    /* Actor Status Tray & Badges (Vertical column on avatar outer side) */
+    .status-tray { position: absolute; top: 2px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; z-index: 25; pointer-events: auto; }
     .status-tray:empty { display: none; }
+    .actor.left .status-tray { right: calc(100% + 6px); }
+    .actor.right .status-tray { left: calc(100% + 6px); }
     .status-badge { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; cursor: default; animation: slideInUp 0.15s ease-out forwards; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 23, 42, 0.7); user-select: none; transition: transform 0.15s ease, box-shadow 0.15s ease; flex-shrink: 0; }
     .status-badge:hover { transform: scale(1.18); }
     .status-badge.status-dot { border-color: #9f7aea; background: rgba(85, 60, 154, 0.35); box-shadow: 0 0 6px rgba(159, 122, 234, 0.6); }
@@ -4406,12 +4408,12 @@
             <div class="actor-name">${escapeHtml(actor.name)}</div>
             <div class="avatar-wrapper">
                 <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="status-tray" id="status-tray-${escapeHtml(actor.id)}"></div>
             </div>
             <div class="hp-container"${hpContainerStyle} id="hp-container-${escapeHtml(actor.id)}">
                 <div class="hp-fill" id="hp-fill-${escapeHtml(actor.id)}"></div>
                 <div class="hp-text" id="hp-text-${escapeHtml(actor.id)}">${hpTextContent}</div>
             </div>
-            <div class="status-tray"${hpContainerStyle} id="status-tray-${escapeHtml(actor.id)}"></div>
         `;
       if (actor.side === "left") leftTeam.appendChild(el);
       else rightTeam.appendChild(el);
