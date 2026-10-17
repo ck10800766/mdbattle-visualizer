@@ -36,7 +36,8 @@ import {
     resolveDialogueSpeaker,
     isSceneNarrationFrame,
     renderSceneNarrationBanner,
-    shouldDeferUltimateCutIn
+    shouldDeferUltimateCutIn,
+    isUltimateCutInQuoteFrame
 } from './cinematics.js';
 import {
     lookaheadComboState,
@@ -895,27 +896,44 @@ export async function renderFrame(frame, token) {
                     despawnedEl.classList.remove('despawning');
                     despawnedEl.classList.add('unspawned');
                 }
-            }, 450 / getEffectiveSpeed());
+            }, 550 / getEffectiveSpeed());
         }
     }
 
     if (frame.isSummonEvent || frame.isDespawnEvent) {
-        frameDuration = Math.max(frameDuration, 650);
+        frameDuration = Math.max(frameDuration, 750);
     }
 
     // 3. Render speech bubble for dialogue (only on resolved on-field speaker) OR scene narration subtitle banner
     const speaker = resolveDialogueSpeaker(frame);
     if (speaker) {
-        const readTime = renderSpeechBubble(frame, sr, token);
-        const textDuration = getMessageReadingDuration(speaker.quote);
-        frameDuration = Math.max(frameDuration, textDuration, readTime);
+        // Ensure all combatants return to home positions before speaking (do not stick to enemies)
+        engineState.actors.forEach(actor => {
+            if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
+                const el = sr.getElementById(`actor-${actor.id}`);
+                if (el && !el.classList.contains('spawning') && !el.classList.contains('despawning')) {
+                    if (el.getAnimations) {
+                        el.getAnimations().forEach(anim => anim.cancel());
+                    }
+                    el.style.transform = '';
+                }
+            }
+        });
+        if (!isUltimateCutInQuoteFrame(frame)) {
+            const readTime = renderSpeechBubble(frame, sr, token);
+            const textDuration = getMessageReadingDuration(speaker.quote);
+            frameDuration = Math.max(frameDuration, textDuration, readTime);
+        }
     } else if (isSceneNarrationFrame(frame)) {
         // Ensure all combatants are in their home positions during scene narration
         engineState.actors.forEach(actor => {
             if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
                 const el = sr.getElementById(`actor-${actor.id}`);
-                if (el && el.getAnimations) {
-                    el.getAnimations().forEach(anim => anim.cancel());
+                if (el && !el.classList.contains('spawning') && !el.classList.contains('despawning')) {
+                    if (el.getAnimations) {
+                        el.getAnimations().forEach(anim => anim.cancel());
+                    }
+                    el.style.transform = '';
                 }
             }
         });

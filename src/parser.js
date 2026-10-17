@@ -177,21 +177,20 @@ function processSummonLifecycle(
     }
 
     // 3. Summon voluntary despawn (structural heuristic + semantic fallback)
-    let candidateId = null;
+    const candidateIds = [];
 
     // 3a. Check pre-computed structural departure heuristic
     if (structuralDepartures) {
         for (const [sId, depIdx] of structuralDepartures.entries()) {
             if (depIdx === index && actorsSummonState.get(sId) !== false && !despawnedActors.has(sId)) {
-                candidateId = sId;
-                break;
+                candidateIds.push(sId);
             }
         }
     }
 
     // 3b. Semantic despawn check (fallback or direct match via SUMMON_DESPAWN_REGEX)
     if (
-        !candidateId &&
+        candidateIds.length === 0 &&
         (log.type === 'SKILL_TEXT' || log.type === 'TEXT' || log.type === 'BOSS_DIALOGUE') &&
         SUMMON_DESPAWN_REGEX.test(frame.message)
     ) {
@@ -199,36 +198,37 @@ function processSummonLifecycle(
         if (log.actorId) {
             const actingUnit = engineState.actors.get(log.actorId);
             if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-                candidateId = log.actorId;
+                candidateIds.push(log.actorId);
             }
         }
 
         // Direct targetId check (e.g. unsummon/recall target)
-        if (!candidateId && log.targetId) {
+        if (candidateIds.length === 0 && log.targetId) {
             const targetUnit = engineState.actors.get(log.targetId);
             if (targetUnit && targetUnit.isSummon && actorsSummonState.get(log.targetId) !== false) {
-                candidateId = log.targetId;
+                candidateIds.push(log.targetId);
             }
         }
 
         // Contextual resolution by matching active summon names in the narrative message
-        if (!candidateId && frame.message) {
+        if (candidateIds.length === 0 && frame.message) {
             for (const [id, actor] of engineState.actors.entries()) {
-                if (actor.isSummon && actorsSummonState.get(id) !== false && actor.name) {
+                if (actor.isSummon && actorsSummonState.get(id) !== false && !despawnedActors.has(id) && actor.name) {
                     if (frame.message.includes(actor.name)) {
-                        candidateId = id;
-                        break;
+                        candidateIds.push(id);
                     }
                 }
             }
         }
     }
 
-    if (candidateId) {
-        actorsSummonState.set(candidateId, false);
-        despawnedActors.add(candidateId);
+    if (candidateIds.length > 0) {
+        candidateIds.forEach(id => {
+            actorsSummonState.set(id, false);
+            despawnedActors.add(id);
+        });
         frame.isDespawnEvent = true;
-        frame.despawnedActorId = candidateId;
+        frame.despawnedActorId = candidateIds[0];
     }
 }
 
@@ -558,23 +558,27 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
     const departures = new Map();
     const summonIds = new Set();
     const summonNames = new Map();
+    const summonSpawnIdx = new Map();
 
     actorsMap.forEach((actor, id) => {
         if (actor.isSummon) {
             summonIds.add(id);
             if (actor.name) summonNames.set(id, actor.name);
+            summonSpawnIdx.set(id, actor.initiallySpawned ? 0 : 0);
         }
     });
 
-    logs.forEach(l => {
+    logs.forEach((l, idx) => {
         if (!l) return;
         if (l.type === 'SUMMON' && l.targetId) {
             summonIds.add(l.targetId);
+            summonSpawnIdx.set(l.targetId, idx);
         }
     });
 
     summonIds.forEach(id => {
         const name = summonNames.get(id);
+        const spawnIdx = summonSpawnIdx.get(id) ?? 0;
         let lastCombatIdx = -1;
         let lastDeathIdx = -1;
         let hasHpRemaining = false;
@@ -604,7 +608,7 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
         if (lastDeathIdx > lastCombatIdx) return;
 
         let candidateNarrativeIdx = -1;
-        for (let idx = Math.max(0, lastCombatIdx); idx < logs.length; idx++) {
+        for (let idx = Math.max(spawnIdx, lastCombatIdx); idx < logs.length; idx++) {
             const l = logs[idx];
             if (!l) continue;
             const msg = l.message || '';

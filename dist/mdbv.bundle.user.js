@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.4
+// @version      7.5.5
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.4";
+  var APP_VERSION = "7.5.5";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -902,44 +902,44 @@
         frame.summonedActorId = log.actorId;
       }
     }
-    let candidateId = null;
+    const candidateIds = [];
     if (structuralDepartures) {
       for (const [sId, depIdx] of structuralDepartures.entries()) {
         if (depIdx === index && actorsSummonState.get(sId) !== false && !despawnedActors.has(sId)) {
-          candidateId = sId;
-          break;
+          candidateIds.push(sId);
         }
       }
     }
-    if (!candidateId && (log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
+    if (candidateIds.length === 0 && (log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
       if (log.actorId) {
         const actingUnit = engineState.actors.get(log.actorId);
         if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-          candidateId = log.actorId;
+          candidateIds.push(log.actorId);
         }
       }
-      if (!candidateId && log.targetId) {
+      if (candidateIds.length === 0 && log.targetId) {
         const targetUnit = engineState.actors.get(log.targetId);
         if (targetUnit && targetUnit.isSummon && actorsSummonState.get(log.targetId) !== false) {
-          candidateId = log.targetId;
+          candidateIds.push(log.targetId);
         }
       }
-      if (!candidateId && frame.message) {
+      if (candidateIds.length === 0 && frame.message) {
         for (const [id, actor] of engineState.actors.entries()) {
-          if (actor.isSummon && actorsSummonState.get(id) !== false && actor.name) {
+          if (actor.isSummon && actorsSummonState.get(id) !== false && !despawnedActors.has(id) && actor.name) {
             if (frame.message.includes(actor.name)) {
-              candidateId = id;
-              break;
+              candidateIds.push(id);
             }
           }
         }
       }
     }
-    if (candidateId) {
-      actorsSummonState.set(candidateId, false);
-      despawnedActors.add(candidateId);
+    if (candidateIds.length > 0) {
+      candidateIds.forEach((id) => {
+        actorsSummonState.set(id, false);
+        despawnedActors.add(id);
+      });
       frame.isDespawnEvent = true;
-      frame.despawnedActorId = candidateId;
+      frame.despawnedActorId = candidateIds[0];
     }
   }
   function processContractSkillLifecycle(frame, contractProfile, msg, target, actorsBondState, contractCutInCount, addHpDelta) {
@@ -1190,20 +1190,24 @@
     const departures = /* @__PURE__ */ new Map();
     const summonIds = /* @__PURE__ */ new Set();
     const summonNames = /* @__PURE__ */ new Map();
+    const summonSpawnIdx = /* @__PURE__ */ new Map();
     actorsMap.forEach((actor, id) => {
       if (actor.isSummon) {
         summonIds.add(id);
         if (actor.name) summonNames.set(id, actor.name);
+        summonSpawnIdx.set(id, actor.initiallySpawned ? 0 : 0);
       }
     });
-    logs.forEach((l) => {
+    logs.forEach((l, idx) => {
       if (!l) return;
       if (l.type === "SUMMON" && l.targetId) {
         summonIds.add(l.targetId);
+        summonSpawnIdx.set(l.targetId, idx);
       }
     });
     summonIds.forEach((id) => {
       const name = summonNames.get(id);
+      const spawnIdx = summonSpawnIdx.get(id) ?? 0;
       let lastCombatIdx = -1;
       let lastDeathIdx = -1;
       let hasHpRemaining = false;
@@ -1227,7 +1231,7 @@
       if (hasHpRemaining) return;
       if (lastDeathIdx > lastCombatIdx) return;
       let candidateNarrativeIdx = -1;
-      for (let idx = Math.max(0, lastCombatIdx); idx < logs.length; idx++) {
+      for (let idx = Math.max(spawnIdx, lastCombatIdx); idx < logs.length; idx++) {
         const l = logs[idx];
         if (!l) continue;
         const msg = l.message || "";
@@ -1807,11 +1811,11 @@
     .actor.unspawned { display: none !important; }
     .actor.spawning, .actor.despawning { transition: none !important; z-index: 50; }
     .actor.left.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .actor.left.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.left.despawning { animation: summonDespawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.right.spawning { animation: summonSpawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .actor.right.despawning { animation: summonDespawnRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.right.despawning { animation: summonDespawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .actor.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.despawning { animation: summonDespawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; width: 80px; height: 80px; }
@@ -1909,27 +1913,27 @@
 
     /* Keyframe Animations */
     @keyframes summonSpawnLeft {
-        0% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #63b3ed); }
-        60% { opacity: 1; filter: blur(1px) brightness(1.3) drop-shadow(0 0 10px #63b3ed); }
+        0% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 16px #63b3ed); }
+        70% { opacity: 1; filter: blur(1px) brightness(1.2); }
         100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1) drop-shadow(0 0 0 transparent); }
     }
     @keyframes summonDespawnLeft {
         0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); }
-        35% { filter: blur(2px) brightness(1.7) drop-shadow(0 0 14px #63b3ed); }
-        100% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2) drop-shadow(0 0 0 transparent); }
+        30% { filter: blur(1px) brightness(1.4) drop-shadow(0 0 12px #63b3ed); opacity: 1; }
+        100% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 0 transparent); }
     }
     @keyframes summonSpawnRight {
-        0% { opacity: 0; transform: translate3d(180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #fc8181); }
-        60% { opacity: 1; filter: blur(1px) brightness(1.3) drop-shadow(0 0 10px #fc8181); }
+        0% { opacity: 0; transform: translate3d(calc(50vw + 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 16px #fc8181); }
+        70% { opacity: 1; filter: blur(1px) brightness(1.2); }
         100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1) drop-shadow(0 0 0 transparent); }
     }
     @keyframes summonDespawnRight {
         0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); }
-        35% { filter: blur(2px) brightness(1.7) drop-shadow(0 0 14px #fc8181); }
-        100% { opacity: 0; transform: translate3d(180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2) drop-shadow(0 0 0 transparent); }
+        30% { filter: blur(1px) brightness(1.4) drop-shadow(0 0 12px #fc8181); opacity: 1; }
+        100% { opacity: 0; transform: translate3d(calc(50vw + 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 0 transparent); }
     }
-    @keyframes summonSpawn { 0% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #63b3ed); } 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } }
-    @keyframes summonDespawn { 0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } 100% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2); } }
+    @keyframes summonSpawn { 0% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 16px #63b3ed); } 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } }
+    @keyframes summonDespawn { 0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } 100% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
     @keyframes ult-bg-zoom { 0% { transform: scale(1.15); filter: grayscale(0%) contrast(100%) brightness(0.9); } 10% { filter: grayscale(70%) contrast(160%) brightness(0.55); } 100% { transform: scale(1); filter: grayscale(70%) contrast(160%) brightness(0.55); } }
@@ -2146,11 +2150,19 @@
     }
     return false;
   }
+  function isUltimateCutInQuoteFrame(frame) {
+    if (!frame || frame.skillTier !== "ultimate" || !isPrimaryUltimateTriggerFrame(frame)) return false;
+    if (shouldDeferUltimateCutIn(frame)) return false;
+    const msg = String(frame.message || "");
+    const spokenQuoteMatch = msg.match(/[：:]\s*「([^」]+)」/);
+    return Boolean(spokenQuoteMatch && spokenQuoteMatch[1].length <= 20);
+  }
   async function playUltimateCutIn(frame, sr, token) {
     const actor = engineState.actors.get(frame.actorId);
     if (!actor || engineState.playbackToken !== token) return;
     const arena = sr.getElementById("arena");
     if (!arena) return;
+    sr.querySelectorAll(".speech-bubble").forEach((b) => b.remove());
     const overlay = document.createElement("div");
     overlay.className = "ultimate-overlay active";
     const flash = document.createElement("div");
@@ -4256,7 +4268,7 @@
       triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
     }
     const speaker = resolveDialogueSpeaker(frame);
-    if (speaker) {
+    if (speaker && !isUltimateCutInQuoteFrame(frame)) {
       renderSpeechBubble(frame, sr, engineState.playbackToken);
     } else if (isSceneNarrationFrame(frame)) {
       renderSceneNarrationBanner(frame, sr, engineState.playbackToken);
@@ -5291,23 +5303,39 @@
             despawnedEl.classList.remove("despawning");
             despawnedEl.classList.add("unspawned");
           }
-        }, 450 / getEffectiveSpeed());
+        }, 550 / getEffectiveSpeed());
       }
     }
     if (frame.isSummonEvent || frame.isDespawnEvent) {
-      frameDuration = Math.max(frameDuration, 650);
+      frameDuration = Math.max(frameDuration, 750);
     }
     const speaker = resolveDialogueSpeaker(frame);
     if (speaker) {
-      const readTime = renderSpeechBubble(frame, sr, token);
-      const textDuration = getMessageReadingDuration(speaker.quote);
-      frameDuration = Math.max(frameDuration, textDuration, readTime);
+      engineState.actors.forEach((actor) => {
+        if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
+          const el = sr.getElementById(`actor-${actor.id}`);
+          if (el && !el.classList.contains("spawning") && !el.classList.contains("despawning")) {
+            if (el.getAnimations) {
+              el.getAnimations().forEach((anim) => anim.cancel());
+            }
+            el.style.transform = "";
+          }
+        }
+      });
+      if (!isUltimateCutInQuoteFrame(frame)) {
+        const readTime = renderSpeechBubble(frame, sr, token);
+        const textDuration = getMessageReadingDuration(speaker.quote);
+        frameDuration = Math.max(frameDuration, textDuration, readTime);
+      }
     } else if (isSceneNarrationFrame(frame)) {
       engineState.actors.forEach((actor) => {
         if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
           const el = sr.getElementById(`actor-${actor.id}`);
-          if (el && el.getAnimations) {
-            el.getAnimations().forEach((anim) => anim.cancel());
+          if (el && !el.classList.contains("spawning") && !el.classList.contains("despawning")) {
+            if (el.getAnimations) {
+              el.getAnimations().forEach((anim) => anim.cancel());
+            }
+            el.style.transform = "";
           }
         }
       });
