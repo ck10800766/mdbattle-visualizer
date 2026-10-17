@@ -16290,7 +16290,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 243,
@@ -16300,7 +16300,7 @@
       "coverAttackerId": null,
       "coverDamage": 0,
       "deadActorId": null,
-      "despawnedActorId": "summon_1",
+      "despawnedActorId": null,
       "diceCheck": null,
       "holdPositionForCover": false,
       "hpDeltas": {
@@ -16318,7 +16318,7 @@
       "isCoverEvent": false,
       "isCrit": false,
       "isDeathEvent": false,
-      "isDespawnEvent": true,
+      "isDespawnEvent": false,
       "isEnvironmentalPulse": false,
       "isNormalAttack": true,
       "isSelfDamage": false,
@@ -16385,7 +16385,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 624,
@@ -16483,7 +16483,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 395,
@@ -16581,7 +16581,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 229,
@@ -16679,7 +16679,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 29,
@@ -16774,7 +16774,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -16869,7 +16869,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 215,
@@ -16964,7 +16964,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 132,
@@ -17059,7 +17059,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 76,
@@ -17154,7 +17154,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 44,
@@ -17249,7 +17249,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 25,
@@ -17344,7 +17344,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 14,
@@ -17439,7 +17439,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 407,
@@ -17534,7 +17534,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 230,
@@ -17629,7 +17629,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 597,
@@ -17727,7 +17727,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 391,
@@ -17825,7 +17825,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 220,
@@ -17923,7 +17923,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 33,
@@ -18018,7 +18018,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 76,
@@ -18116,7 +18116,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 10,
@@ -18211,7 +18211,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 26,
@@ -18309,7 +18309,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -18402,7 +18402,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 491,
@@ -18500,7 +18500,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 903,
@@ -18598,7 +18598,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -18691,7 +18691,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -18784,7 +18784,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 566,
@@ -18882,7 +18882,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 928,
@@ -18980,7 +18980,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 413,
@@ -19078,7 +19078,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -19171,7 +19171,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 331,
@@ -19266,7 +19266,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 929,
@@ -19364,7 +19364,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 653,
@@ -19462,7 +19462,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 872,
@@ -19560,7 +19560,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 125,
@@ -19655,7 +19655,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 306,
@@ -19753,7 +19753,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 41,
@@ -19848,7 +19848,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 24,
@@ -19943,7 +19943,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 17,
@@ -20038,7 +20038,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 9,
@@ -20133,7 +20133,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 6,
@@ -20228,7 +20228,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 3,
@@ -20323,7 +20323,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 9,
@@ -20421,7 +20421,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -20514,7 +20514,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 394,
@@ -20609,7 +20609,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 502,
@@ -20704,7 +20704,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 533,
@@ -20799,7 +20799,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -20892,7 +20892,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 813,
@@ -20990,7 +20990,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 286,
@@ -21085,7 +21085,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 831,
@@ -21183,7 +21183,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -21278,7 +21278,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 1105,
@@ -21376,7 +21376,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 150,
@@ -21471,7 +21471,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 364,
@@ -21569,7 +21569,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 242,
@@ -21667,7 +21667,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 28,
@@ -21762,7 +21762,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 85,
@@ -21860,7 +21860,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 10,
@@ -21955,7 +21955,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -22048,7 +22048,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 570,
@@ -22146,7 +22146,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 1011,
@@ -22244,7 +22244,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 146,
@@ -22339,7 +22339,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 382,
@@ -22437,7 +22437,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 54,
@@ -22532,7 +22532,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 31,
@@ -22627,7 +22627,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 18,
@@ -22722,7 +22722,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 12,
@@ -22817,7 +22817,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 582,
@@ -22912,7 +22912,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 536,
@@ -23010,7 +23010,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 79,
@@ -23105,7 +23105,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 950,
@@ -23201,7 +23201,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -23295,7 +23295,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -23389,7 +23389,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -23483,7 +23483,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 211,
@@ -23579,7 +23579,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1335,
@@ -23678,7 +23678,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -23772,7 +23772,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 198,
@@ -23868,7 +23868,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 384,
@@ -23964,7 +23964,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -24058,7 +24058,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -24153,7 +24153,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1459,
@@ -24252,7 +24252,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 211,
@@ -24349,7 +24349,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 598,
@@ -24449,7 +24449,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 68,
@@ -24546,7 +24546,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 218,
@@ -24646,7 +24646,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 27,
@@ -24743,7 +24743,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 69,
@@ -24843,7 +24843,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -24938,7 +24938,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -25033,7 +25033,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 256,
@@ -25130,7 +25130,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 135,
@@ -25227,7 +25227,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 283,
@@ -25327,7 +25327,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -25422,7 +25422,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 213,
@@ -25519,7 +25519,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 208,
@@ -25616,7 +25616,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 123,
@@ -25716,7 +25716,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 721,
@@ -25816,7 +25816,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 223,
@@ -25913,7 +25913,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -26008,7 +26008,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1042,
@@ -26108,7 +26108,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 135,
@@ -26205,7 +26205,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 409,
@@ -26305,7 +26305,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 54,
@@ -26402,7 +26402,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 139,
@@ -26502,7 +26502,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 17,
@@ -26599,7 +26599,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 49,
@@ -26699,7 +26699,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 253,
@@ -26796,7 +26796,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 149,
@@ -26893,7 +26893,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 339,
@@ -26993,7 +26993,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -27090,7 +27090,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 412,
@@ -27187,7 +27187,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 233,
@@ -27287,7 +27287,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1087,
@@ -27387,7 +27387,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 146,
@@ -27484,7 +27484,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 413,
@@ -27584,7 +27584,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 238,
@@ -27684,7 +27684,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 30,
@@ -27781,7 +27781,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 19,
@@ -27878,7 +27878,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -27973,7 +27973,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 214,
@@ -28070,7 +28070,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 683,
@@ -28170,7 +28170,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 355,
@@ -28270,7 +28270,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 47,
@@ -28367,7 +28367,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 143,
@@ -28467,7 +28467,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 80,
@@ -28567,7 +28567,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1557,
@@ -28667,7 +28667,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 878,
@@ -28767,7 +28767,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 2366,
@@ -28867,7 +28867,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1684,
@@ -28967,7 +28967,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 909,
@@ -29067,7 +29067,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 127,
@@ -29164,7 +29164,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 301,
@@ -29264,7 +29264,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 43,
@@ -29361,7 +29361,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 116,
@@ -29461,7 +29461,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 14,
@@ -29558,7 +29558,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 8,
@@ -29655,7 +29655,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 81,
@@ -29752,7 +29752,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -29849,7 +29849,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 653,
@@ -29946,7 +29946,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 278,
@@ -30043,7 +30043,7 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -30138,8 +30138,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -30148,7 +30148,7 @@
       "coverAttackerId": null,
       "coverDamage": 0,
       "deadActorId": null,
-      "despawnedActorId": "summon_2",
+      "despawnedActorId": null,
       "diceCheck": null,
       "holdPositionForCover": false,
       "hpDeltas": {},
@@ -30164,7 +30164,7 @@
       "isCoverEvent": false,
       "isCrit": false,
       "isDeathEvent": false,
-      "isDespawnEvent": true,
+      "isDespawnEvent": false,
       "isEnvironmentalPulse": false,
       "isNormalAttack": false,
       "isSelfDamage": false,
@@ -30233,8 +30233,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 206,
       "aoeCasterId": null,
@@ -30333,8 +30333,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1600,
       "aoeCasterId": null,
@@ -30440,8 +30440,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -30542,8 +30542,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 170,
       "aoeCasterId": null,
@@ -30646,8 +30646,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 108,
       "aoeCasterId": null,
@@ -30750,8 +30750,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 254,
       "aoeCasterId": null,
@@ -30857,8 +30857,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 148,
       "aoeCasterId": null,
@@ -30964,8 +30964,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 24,
       "aoeCasterId": null,
@@ -31068,8 +31068,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 54,
       "aoeCasterId": null,
@@ -31175,8 +31175,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 8,
       "aoeCasterId": null,
@@ -31279,8 +31279,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 45,
       "aoeCasterId": null,
@@ -31386,8 +31386,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 230,
       "aoeCasterId": null,
@@ -31490,8 +31490,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -31592,8 +31592,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 394,
       "aoeCasterId": null,
@@ -31696,8 +31696,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 502,
       "aoeCasterId": null,
@@ -31800,8 +31800,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 533,
       "aoeCasterId": null,
@@ -31904,8 +31904,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 316,
       "aoeCasterId": null,
@@ -32008,8 +32008,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 179,
       "aoeCasterId": null,
@@ -32112,8 +32112,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 112,
       "aoeCasterId": null,
@@ -32216,8 +32216,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 69,
       "aoeCasterId": null,
@@ -32320,8 +32320,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 36,
       "aoeCasterId": null,
@@ -32424,8 +32424,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 97,
       "aoeCasterId": null,
@@ -32531,8 +32531,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -32633,8 +32633,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 233,
       "aoeCasterId": null,
@@ -32737,8 +32737,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 277,
       "aoeCasterId": null,
@@ -32844,8 +32844,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -32946,8 +32946,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33048,8 +33048,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33152,8 +33152,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33256,8 +33256,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33360,8 +33360,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33464,8 +33464,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33568,8 +33568,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33672,8 +33672,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 39,
       "aoeCasterId": null,
@@ -33779,8 +33779,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33884,8 +33884,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -33988,8 +33988,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34092,8 +34092,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34203,8 +34203,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34312,8 +34312,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34423,8 +34423,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34534,8 +34534,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34645,8 +34645,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34756,8 +34756,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34867,8 +34867,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -34978,8 +34978,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -35089,8 +35089,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -35200,8 +35200,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -35309,8 +35309,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 384,
       "aoeCasterId": "mob_0_patriot",
@@ -35420,8 +35420,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 365,
       "aoeCasterId": "mob_0_patriot",
@@ -35531,8 +35531,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": "mob_0_patriot",
@@ -35642,8 +35642,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -35751,8 +35751,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -35860,8 +35860,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -35970,8 +35970,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 2079,
       "aoeCasterId": null,
@@ -36091,8 +36091,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -36208,8 +36208,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -36327,8 +36327,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -36446,8 +36446,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -36565,8 +36565,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -36684,8 +36684,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -36803,8 +36803,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -36922,8 +36922,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37041,8 +37041,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37160,8 +37160,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37279,8 +37279,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37398,8 +37398,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37517,8 +37517,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37636,8 +37636,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37755,8 +37755,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37874,8 +37874,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -37993,8 +37993,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -38112,8 +38112,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -38231,8 +38231,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -38350,8 +38350,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -38469,8 +38469,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -38588,8 +38588,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -38705,8 +38705,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": "mob_0_patriot",
@@ -38824,8 +38824,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 367,
       "aoeCasterId": "mob_0_patriot",
@@ -38943,8 +38943,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 353,
       "aoeCasterId": "mob_0_patriot",
@@ -39062,8 +39062,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -39179,8 +39179,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 381,
       "aoeCasterId": "mob_0_patriot",
@@ -39298,8 +39298,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1264,
       "aoeCasterId": "mob_0_patriot",
@@ -39420,8 +39420,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 394,
       "aoeCasterId": "mob_0_patriot",
@@ -39539,8 +39539,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -39656,8 +39656,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": "6aa81489d9da6b90dddeaefd",
@@ -39775,8 +39775,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -39893,8 +39893,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40013,8 +40013,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40131,8 +40131,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40251,8 +40251,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40371,8 +40371,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40491,8 +40491,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40611,8 +40611,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40731,8 +40731,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40851,8 +40851,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -40971,8 +40971,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -41091,8 +41091,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -41211,8 +41211,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -41331,8 +41331,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -41451,8 +41451,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -41571,8 +41571,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -41691,8 +41691,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -41809,8 +41809,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1854,
       "aoeCasterId": null,
@@ -41925,8 +41925,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1081,
       "aoeCasterId": null,
@@ -42041,8 +42041,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -42152,8 +42152,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -42265,8 +42265,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -42376,8 +42376,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -42489,8 +42489,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -42600,8 +42600,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 394,
       "aoeCasterId": null,
@@ -42713,8 +42713,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 502,
       "aoeCasterId": null,
@@ -42826,8 +42826,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 533,
       "aoeCasterId": null,
@@ -42939,8 +42939,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 454,
       "aoeCasterId": null,
@@ -43052,8 +43052,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -43163,8 +43163,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 2695,
       "aoeCasterId": null,
@@ -43279,8 +43279,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1200,
       "aoeCasterId": null,
@@ -43395,8 +43395,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 167,
       "aoeCasterId": null,
@@ -43508,8 +43508,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 106,
       "aoeCasterId": null,
@@ -43621,8 +43621,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 58,
       "aoeCasterId": null,
@@ -43734,8 +43734,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 36,
       "aoeCasterId": null,
@@ -43847,8 +43847,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1497,
       "aoeCasterId": null,
@@ -43954,8 +43954,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -44059,8 +44059,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 443,
       "aoeCasterId": null,
@@ -44166,8 +44166,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 279,
       "aoeCasterId": null,
@@ -44273,8 +44273,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 171,
       "aoeCasterId": null,
@@ -44380,8 +44380,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 426,
       "aoeCasterId": null,
@@ -44490,8 +44490,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 56,
       "aoeCasterId": null,
@@ -44597,8 +44597,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 33,
       "aoeCasterId": null,
@@ -44704,8 +44704,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 278,
       "aoeCasterId": null,
@@ -44811,8 +44811,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 186,
       "aoeCasterId": null,
@@ -44918,8 +44918,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 92,
       "aoeCasterId": null,
@@ -45025,8 +45025,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -45132,8 +45132,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1746,
       "aoeCasterId": null,
@@ -45242,8 +45242,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -45347,8 +45347,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 144,
       "aoeCasterId": "6aa81489d9da6b90dddeaefd",
@@ -45454,8 +45454,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 42,
       "aoeCasterId": null,
@@ -45564,8 +45564,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 452,
       "aoeCasterId": null,
@@ -45671,8 +45671,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 318,
       "aoeCasterId": null,
@@ -45778,8 +45778,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -45883,8 +45883,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 923,
       "aoeCasterId": null,
@@ -45993,8 +45993,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 296,
       "aoeCasterId": null,
@@ -46100,8 +46100,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 962,
       "aoeCasterId": null,
@@ -46210,8 +46210,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 268,
       "aoeCasterId": null,
@@ -46317,8 +46317,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 2079,
       "aoeCasterId": null,
@@ -46426,8 +46426,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -46531,8 +46531,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 523,
       "aoeCasterId": "mob_0_patriot",
@@ -46638,8 +46638,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 331,
       "aoeCasterId": "mob_0_patriot",
@@ -46745,8 +46745,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -46852,8 +46852,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -46957,8 +46957,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1223,
       "aoeCasterId": null,
@@ -47066,8 +47066,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 2421,
       "aoeCasterId": null,
@@ -47176,8 +47176,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 575,
       "aoeCasterId": null,
@@ -47283,8 +47283,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -47388,8 +47388,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -47493,8 +47493,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 526,
       "aoeCasterId": null,
@@ -47600,8 +47600,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 286,
       "aoeCasterId": null,
@@ -47707,8 +47707,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 196,
       "aoeCasterId": null,
@@ -47814,8 +47814,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1983,
       "aoeCasterId": null,
@@ -47924,8 +47924,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 294,
       "aoeCasterId": null,
@@ -48031,8 +48031,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 201,
       "aoeCasterId": null,
@@ -48138,8 +48138,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 113,
       "aoeCasterId": null,
@@ -48245,8 +48245,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -48357,8 +48357,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -48469,8 +48469,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 199,
       "aoeCasterId": null,
@@ -48579,8 +48579,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 119,
       "aoeCasterId": null,
@@ -48689,8 +48689,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -48796,8 +48796,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -48901,8 +48901,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 394,
       "aoeCasterId": null,
@@ -49008,8 +49008,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 533,
       "aoeCasterId": null,
@@ -49115,8 +49115,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 82,
       "aoeCasterId": null,
@@ -49225,8 +49225,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1629,
       "aoeCasterId": null,
@@ -49335,8 +49335,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 289,
       "aoeCasterId": null,
@@ -49442,8 +49442,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -49547,8 +49547,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 249,
       "aoeCasterId": null,
@@ -49654,8 +49654,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 42,
       "aoeCasterId": null,
@@ -49771,8 +49771,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -49883,8 +49883,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -49995,8 +49995,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1,
       "aoeCasterId": null,
@@ -50105,8 +50105,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -50210,8 +50210,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -50315,8 +50315,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -50422,8 +50422,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -50527,8 +50527,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1816,
       "aoeCasterId": "mob_0_patriot",
@@ -50637,8 +50637,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 764,
       "aoeCasterId": null,
@@ -50744,8 +50744,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 2045,
       "aoeCasterId": null,
@@ -50854,8 +50854,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 343,
       "aoeCasterId": null,
@@ -50961,8 +50961,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 204,
       "aoeCasterId": null,
@@ -51068,8 +51068,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -51173,8 +51173,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 299,
       "aoeCasterId": null,
@@ -51280,8 +51280,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 175,
       "aoeCasterId": null,
@@ -51387,8 +51387,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 434,
       "aoeCasterId": null,
@@ -51497,8 +51497,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 57,
       "aoeCasterId": null,
@@ -51604,8 +51604,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 148,
       "aoeCasterId": null,
@@ -51714,8 +51714,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 19,
       "aoeCasterId": null,
@@ -51821,8 +51821,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -51928,8 +51928,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -52033,8 +52033,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 1144,
       "aoeCasterId": null,
@@ -52142,8 +52142,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 223,
       "aoeCasterId": null,
@@ -52249,8 +52249,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 302,
       "aoeCasterId": null,
@@ -52356,8 +52356,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 157,
       "aoeCasterId": null,
@@ -52463,8 +52463,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 402,
       "aoeCasterId": null,
@@ -52573,8 +52573,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -52678,8 +52678,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -52783,8 +52783,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -52888,8 +52888,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 110,
       "aoeCasterId": "6aa81489d9da6b90dddeaefd",
@@ -52995,8 +52995,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 800,
       "aoeCasterId": null,
@@ -53102,8 +53102,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -53207,8 +53207,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 394,
       "aoeCasterId": null,
@@ -53314,8 +53314,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -53419,8 +53419,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 216,
       "aoeCasterId": null,
@@ -53526,8 +53526,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 407,
       "aoeCasterId": null,
@@ -53636,8 +53636,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 82,
       "aoeCasterId": null,
@@ -53743,8 +53743,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 2337,
       "aoeCasterId": null,
@@ -53846,8 +53846,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -53944,8 +53944,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -54042,8 +54042,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 8528,
       "aoeCasterId": null,
@@ -54139,8 +54139,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -54236,8 +54236,8 @@
         "mob_0_patriot": true,
         "mob_1_guerrilla_shieldguard": true,
         "mob_2_guerrilla_mortar": true,
-        "summon_1": false,
-        "summon_2": false
+        "summon_1": true,
+        "summon_2": true
       },
       "actualDamage": 0,
       "aoeCasterId": null,

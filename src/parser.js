@@ -144,6 +144,7 @@ function processSummonLifecycle(
                 ownerId: log.actorId,
                 initiallySpawned: false
             }));
+            actorsDeathState.set(log.targetId, false);
         } else {
             const summonActor = engineState.actors.get(log.targetId);
             summonActor.currentHp = summonActor.maxHp;
@@ -556,30 +557,6 @@ export function buildStateSnapshots(logs) {
         }
     });
 
-    // Pre-scan narrative revivals so we can distinguish temporary deaths from permanent summon departures
-    const actorRevivalLogIndices = new Map();
-    logs.forEach((log, idx) => {
-        if (!log) return;
-        const msg = String(log.message || '');
-        if (
-            ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(log.type) &&
-            REBIRTH_RULES.dialogueRegex.test(msg)
-        ) {
-            if (log.actorId) {
-                if (!actorRevivalLogIndices.has(log.actorId)) actorRevivalLogIndices.set(log.actorId, []);
-                actorRevivalLogIndices.get(log.actorId).push(idx);
-            }
-        }
-    });
-
-    const hasFutureRevival = (actorId, currentIndex) => {
-        const revivals = actorRevivalLogIndices.get(actorId);
-        if (!revivals) return false;
-        return revivals.some(idx => idx > currentIndex);
-    };
-
-    const pendingSummonDespawns = new Set();
-
     // Reset per-actor runtime and statistical counters so buildStateSnapshots is idempotent
     engineState.actors.forEach(actor => {
         actor.currentHp = actor.maxHp;
@@ -687,24 +664,6 @@ export function buildStateSnapshots(logs) {
                 frame.turnNumber = currentTurn;
                 const actor = engineState.actors.get(turnActorId);
                 if (actor) actor.turnNumbers.push(currentTurn);
-            }
-        }
-
-        // Process any pending summon despawns from previous fatal combat deaths
-        if (pendingSummonDespawns.size > 0) {
-            for (const candidateId of [...pendingSummonDespawns]) {
-                const candidateActor = engineState.actors.get(candidateId);
-                const candName = candidateActor?.name || '';
-                const isFlavorNarrative =
-                    (log.type === 'TEXT' || log.type === 'SKILL_TEXT') &&
-                    (log.actorId === candidateId || (candName && String(log.message || '').includes(candName)));
-                if (!isFlavorNarrative) {
-                    actorsSummonState.set(candidateId, false);
-                    despawnedActors.add(candidateId);
-                    frame.isDespawnEvent = true;
-                    frame.despawnedActorId = candidateId;
-                    pendingSummonDespawns.delete(candidateId);
-                }
             }
         }
 
@@ -953,7 +912,6 @@ export function buildStateSnapshots(logs) {
                 if (revivingActor) {
                     revivingActor.currentHp = revivingActor.maxHp;
                 }
-                pendingSummonDespawns.delete(revivingActorId);
             }
         }
 
@@ -968,7 +926,6 @@ export function buildStateSnapshots(logs) {
             if (actingActor && actingActor.currentHp <= 0) {
                 actingActor.currentHp = actingActor.maxHp;
             }
-            pendingSummonDespawns.delete(log.actorId);
         }
 
         if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(log.type)) {
@@ -983,9 +940,6 @@ export function buildStateSnapshots(logs) {
             const deadActor = engineState.actors.get(log.actorId);
             if (deadActor) {
                 deadActor.currentHp = 0;
-                if (deadActor.isSummon && !hasFutureRevival(deadActor.id, index)) {
-                    pendingSummonDespawns.add(deadActor.id);
-                }
             }
         }
 

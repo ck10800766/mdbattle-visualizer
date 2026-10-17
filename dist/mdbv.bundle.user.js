@@ -873,6 +873,7 @@
           ownerId: log.actorId,
           initiallySpawned: false
         }));
+        actorsDeathState.set(log.targetId, false);
       } else {
         const summonActor = engineState.actors.get(log.targetId);
         summonActor.currentHp = summonActor.maxHp;
@@ -1189,23 +1190,6 @@
         explicitlySummonedIds.add(log.targetId);
       }
     });
-    const actorRevivalLogIndices = /* @__PURE__ */ new Map();
-    logs.forEach((log, idx) => {
-      if (!log) return;
-      const msg = String(log.message || "");
-      if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(log.type) && REBIRTH_RULES.dialogueRegex.test(msg)) {
-        if (log.actorId) {
-          if (!actorRevivalLogIndices.has(log.actorId)) actorRevivalLogIndices.set(log.actorId, []);
-          actorRevivalLogIndices.get(log.actorId).push(idx);
-        }
-      }
-    });
-    const hasFutureRevival = (actorId, currentIndex) => {
-      const revivals = actorRevivalLogIndices.get(actorId);
-      if (!revivals) return false;
-      return revivals.some((idx) => idx > currentIndex);
-    };
-    const pendingSummonDespawns = /* @__PURE__ */ new Set();
     engineState.actors.forEach((actor) => {
       actor.currentHp = actor.maxHp;
       actor.turnNumbers = [];
@@ -1296,20 +1280,6 @@
           frame.turnNumber = currentTurn;
           const actor = engineState.actors.get(turnActorId);
           if (actor) actor.turnNumbers.push(currentTurn);
-        }
-      }
-      if (pendingSummonDespawns.size > 0) {
-        for (const candidateId of [...pendingSummonDespawns]) {
-          const candidateActor = engineState.actors.get(candidateId);
-          const candName = candidateActor?.name || "";
-          const isFlavorNarrative = (log.type === "TEXT" || log.type === "SKILL_TEXT") && (log.actorId === candidateId || candName && String(log.message || "").includes(candName));
-          if (!isFlavorNarrative) {
-            actorsSummonState.set(candidateId, false);
-            despawnedActors.add(candidateId);
-            frame.isDespawnEvent = true;
-            frame.despawnedActorId = candidateId;
-            pendingSummonDespawns.delete(candidateId);
-          }
         }
       }
       processSummonLifecycle(
@@ -1531,7 +1501,6 @@
           if (revivingActor) {
             revivingActor.currentHp = revivingActor.maxHp;
           }
-          pendingSummonDespawns.delete(revivingActorId);
         }
       }
       if (log.actorId && actorsDeathState.get(log.actorId) && ["DAMAGE", "MISS", "COUNTER", "HEAL", "SKILL_TEXT", "BUFF_APPLY"].includes(log.type)) {
@@ -1540,7 +1509,6 @@
         if (actingActor && actingActor.currentHp <= 0) {
           actingActor.currentHp = actingActor.maxHp;
         }
-        pendingSummonDespawns.delete(log.actorId);
       }
       if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
         const alreadyDead = !!actorsDeathState.get(log.actorId);
@@ -1552,9 +1520,6 @@
         const deadActor = engineState.actors.get(log.actorId);
         if (deadActor) {
           deadActor.currentHp = 0;
-          if (deadActor.isSummon && !hasFutureRevival(deadActor.id, index)) {
-            pendingSummonDespawns.add(deadActor.id);
-          }
         }
       }
       engineState.actors.forEach((actor) => {
@@ -1668,7 +1633,7 @@
 
     /* Battle Arena & Actor Cards */
     .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 5vw; position: relative; min-height: 0; overflow: hidden; }
-    .team { display: flex; flex-direction: column; gap: 15px; align-items: center; align-content: center; width: 40%; max-height: 100%; }
+    .team { display: flex; flex-direction: column; gap: 12px; align-items: center; align-content: center; max-width: 48%; max-height: 100%; }
     .left-team { justify-content: center; flex-wrap: wrap; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
@@ -1680,7 +1645,7 @@
     .actor.right.despawning { animation: summonDespawnRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .actor.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
-    .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
+    .actor.dead { filter: grayscale(100%) brightness(45%) contrast(110%); opacity: 0.55; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; width: 80px; height: 80px; }
     .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); transition: border-color 0.4s ease, box-shadow 0.4s ease; }

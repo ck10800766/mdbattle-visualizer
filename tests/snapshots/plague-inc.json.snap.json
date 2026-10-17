@@ -45513,7 +45513,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 4000,
@@ -45523,7 +45523,7 @@
       "coverAttackerId": null,
       "coverDamage": 0,
       "deadActorId": null,
-      "despawnedActorId": "summon_1",
+      "despawnedActorId": null,
       "diceCheck": null,
       "holdPositionForCover": false,
       "hpDeltas": {
@@ -45541,7 +45541,7 @@
       "isCoverEvent": false,
       "isCrit": false,
       "isDeathEvent": false,
-      "isDespawnEvent": true,
+      "isDespawnEvent": false,
       "isEnvironmentalPulse": false,
       "isNormalAttack": false,
       "isSelfDamage": true,
@@ -45622,7 +45622,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -45729,7 +45729,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": false
       },
       "actualDamage": 0,
@@ -45837,7 +45837,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -45945,7 +45945,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -46053,7 +46053,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1529,
@@ -46167,7 +46167,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -46276,7 +46276,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -46385,7 +46385,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -46494,7 +46494,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
@@ -46603,7 +46603,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 6876,
@@ -46712,7 +46712,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 7864,
@@ -46821,7 +46821,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 10952,
@@ -46930,7 +46930,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 1,
@@ -47039,7 +47039,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 5200,
@@ -47148,7 +47148,7 @@
         "6aad1668c3b16affe1e05794": true,
         "6ab150baad84d95a03db1ca4": true,
         "mob_0_plague_inc": true,
-        "summon_1": false,
+        "summon_1": true,
         "summon_2": true
       },
       "actualDamage": 0,
