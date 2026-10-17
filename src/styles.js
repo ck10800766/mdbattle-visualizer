@@ -50,8 +50,13 @@ export const STAGE_STYLES = `
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
     .actor.unspawned { display: none !important; }
-    .actor.spawning { animation: summonSpawn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .actor.despawning { animation: summonDespawn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.spawning, .actor.despawning { transition: none !important; z-index: 50; }
+    .actor.left.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.left.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.right.spawning { animation: summonSpawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.right.despawning { animation: summonDespawnRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
+    .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .actor.despawning { animation: summonDespawnLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
     .avatar-wrapper { position: relative; width: 80px; height: 80px; }
@@ -147,8 +152,28 @@ export const STAGE_STYLES = `
     @keyframes text-pop { 0% { transform: translate(-50%, -50%) skewX(-15deg) scale(2); opacity: 0; } 15% { transform: translate(-50%, -50%) skewX(-15deg) scale(1); opacity: 1; } 80% { transform: translate(-50%, -50%) skewX(-15deg) scale(1); opacity: 1; } 100% { transform: translate(-50%, -50%) skewX(-15deg) scale(0.9); opacity: 0; } }
 
     /* Keyframe Animations */
-    @keyframes summonSpawn { 0% { opacity: 0; transform: scale(0.3) translateY(-30px); filter: brightness(3) drop-shadow(0 0 20px #fc8181); } 100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } }
-    @keyframes summonDespawn { 0% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); } 100% { opacity: 0; transform: scale(0.4) translateY(-25px); filter: brightness(2.5) blur(3px); } }
+    @keyframes summonSpawnLeft {
+        0% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #63b3ed); }
+        60% { opacity: 1; filter: blur(1px) brightness(1.3) drop-shadow(0 0 10px #63b3ed); }
+        100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonDespawnLeft {
+        0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); }
+        35% { filter: blur(2px) brightness(1.7) drop-shadow(0 0 14px #63b3ed); }
+        100% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonSpawnRight {
+        0% { opacity: 0; transform: translate3d(180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #fc8181); }
+        60% { opacity: 1; filter: blur(1px) brightness(1.3) drop-shadow(0 0 10px #fc8181); }
+        100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonDespawnRight {
+        0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); }
+        35% { filter: blur(2px) brightness(1.7) drop-shadow(0 0 14px #fc8181); }
+        100% { opacity: 0; transform: translate3d(180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2) drop-shadow(0 0 0 transparent); }
+    }
+    @keyframes summonSpawn { 0% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(6px) brightness(2.5) drop-shadow(0 0 18px #63b3ed); } 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } }
+    @keyframes summonDespawn { 0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } 100% { opacity: 0; transform: translate3d(-180px, 0, 0) scale(0.6); filter: blur(8px) brightness(2.2); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
     @keyframes ult-bg-zoom { 0% { transform: scale(1.15); filter: grayscale(0%) contrast(100%) brightness(0.9); } 10% { filter: grayscale(70%) contrast(160%) brightness(0.55); } 100% { transform: scale(1); filter: grayscale(70%) contrast(160%) brightness(0.55); } }

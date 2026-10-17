@@ -759,7 +759,7 @@ export async function renderFrame(frame, token) {
                 if (engineState.playbackToken === token && summonedEl.isConnected) {
                     summonedEl.classList.remove('spawning');
                 }
-            }, 600 / getEffectiveSpeed());
+            }, 550 / getEffectiveSpeed());
         }
     }
 
@@ -775,6 +775,10 @@ export async function renderFrame(frame, token) {
                 }
             }, 450 / getEffectiveSpeed());
         }
+    }
+
+    if (frame.isSummonEvent || frame.isDespawnEvent) {
+        frameDuration = Math.max(frameDuration, 650);
     }
 
     // 3. Render speech bubble for dialogue (only on resolved on-field speaker) OR scene narration subtitle banner
