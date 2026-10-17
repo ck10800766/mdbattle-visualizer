@@ -58,6 +58,7 @@ import {
 import {
     createLogLineElement,
     syncActorBondVisuals,
+    syncActorStatusAndShieldDOM,
     syncActorHpAndDeathDOM,
     syncStageToAbsoluteState
 } from './stageSync.js';
@@ -343,8 +344,9 @@ export function createBattleStage() {
             <div class="actor-name">${escapeHtml(actor.name)}</div>
             <div class="avatar-wrapper">
                 <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="status-tray" id="status-tray-${escapeHtml(actor.id)}"></div>
             </div>
-            <div class="hp-container"${hpContainerStyle}>
+            <div class="hp-container"${hpContainerStyle} id="hp-container-${escapeHtml(actor.id)}">
                 <div class="hp-fill" id="hp-fill-${escapeHtml(actor.id)}"></div>
                 <div class="hp-text" id="hp-text-${escapeHtml(actor.id)}">${hpTextContent}</div>
             </div>
@@ -583,6 +585,7 @@ async function renderAOEWaveBatch(waveFrames, token) {
     // 2. Update ATB timeline and bond state
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
+    syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
 
     // 3. Launch center-stage AOE caster animation, crescent shockwave, and projectile barrage
     const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
@@ -642,6 +645,7 @@ async function renderAOEWaveBatch(waveFrames, token) {
                 syncSummonVisibility: false,
                 deferDeadClassForActorId: waveDeadActorIds
             });
+            syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
         }, hitDelay);
     });
 
@@ -797,6 +801,7 @@ export async function renderFrame(frame, token) {
     // 5. Update ATB bar and persistent marriage/contract bond indicators
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
 
     // 6. Play full-screen Contract Cut-In, Rosario Cross inscription, or Ultimate Cut-In
     if (frame.contractEvent === 'ACCEPT') {
@@ -902,6 +907,7 @@ export async function renderFrame(frame, token) {
         syncSummonVisibility: false,
         deferDeadClassForActorId: triggeredFatality ? deadActorId : null
     });
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
 
     if (triggeredFatality && deadActorId) {
         await playFatalitySequence(sr, deadActorId, token);

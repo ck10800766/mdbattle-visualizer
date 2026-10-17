@@ -52,14 +52,28 @@ export const STAGE_STYLES = `
     .actor.despawning { animation: summonDespawn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
-    .avatar-wrapper { position: relative; }
-    .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); }
+    .avatar-wrapper { position: relative; width: 80px; height: 80px; }
+    .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); transition: border-color 0.4s ease, box-shadow 0.4s ease; }
 
-    .hp-container { width: 80px; height: 12px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1px solid #1a202c; }
+    .hp-container { width: 80px; height: 13px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1.5px solid #1a202c; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
     .hp-fill { height: 100%; background: #48bb78; transition: width 0.3s ease-out, background-color 0.3s; }
     .hp-fill.warning { background: #ecc94b; }
     .hp-fill.danger { background: #f56565; }
-    .hp-text { position: absolute; width: 100%; text-align: center; top: -1px; font-size: 11px; color: #fff; font-weight: bold; text-shadow: 0 1px 2px #000; }
+    .hp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; color: #fff; font-weight: 800; text-shadow: 0 1px 2px #000; pointer-events: none; letter-spacing: -0.2px; }
+
+    /* Actor Status Tray & Badges (Vertical column on avatar outer side) */
+    .status-tray { position: absolute; top: 2px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; z-index: 25; pointer-events: auto; }
+    .status-tray:empty { display: none; }
+    .actor.left .status-tray { right: calc(100% + 6px); }
+    .actor.right .status-tray { left: calc(100% + 6px); }
+    .status-badge { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; cursor: default; animation: slideInUp 0.15s ease-out forwards; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 23, 42, 0.7); user-select: none; transition: transform 0.15s ease, box-shadow 0.15s ease; flex-shrink: 0; }
+    .status-badge:hover { transform: scale(1.18); }
+    .status-badge.status-dot { border-color: #9f7aea; background: rgba(85, 60, 154, 0.35); box-shadow: 0 0 6px rgba(159, 122, 234, 0.6); }
+    .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); box-shadow: 0 0 6px rgba(72, 187, 120, 0.6); }
+    .status-badge.status-fatigue { border-color: #ed8936; background: rgba(192, 86, 33, 0.35); box-shadow: 0 0 6px rgba(237, 137, 54, 0.6); }
+    .status-badge.status-silenced { border-color: #fc8181; background: rgba(197, 48, 48, 0.35); box-shadow: 0 0 6px rgba(252, 129, 129, 0.6); }
+    .status-badge.status-bond { border-color: #f687b3; background: rgba(213, 63, 140, 0.35); box-shadow: 0 0 6px rgba(246, 135, 179, 0.6); }
 
     /* Dice Check & Status Badges */
     .dice-badge { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; z-index: 55; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.6); animation: slideInUp 0.2s ease-out forwards; }
@@ -175,9 +189,7 @@ export const STAGE_STYLES = `
     .sao-btn-accept.pressed { background: #ed8936; color: #fff; transform: scale(1.25); box-shadow: 0 0 20px #f6ad55, 0 0 35px #f687b3; }
     .sao-btn-cancel { color: #718096; }
 
-    /* Persistent Marriage Bond Aura & Cover Shield */
-    .actor.bond-active .avatar { border-color: #f687b3; box-shadow: 0 0 16px rgba(246, 135, 179, 0.85); }
-    .bond-ring-badge { position: absolute; top: -10px; right: -12px; background: linear-gradient(135deg, #d53f8c, #b83280); color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1.5px solid #fbb6ce; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 30; white-space: nowrap; pointer-events: none; }
+    /* Persistent Marriage Bond Cover Shield */
     .bridal-cover-shield { position: absolute; inset: -10px; border: 3px solid #fbb6ce; border-radius: 14px; background: radial-gradient(circle, rgba(246, 135, 179, 0.35) 0%, transparent 75%); box-shadow: 0 0 20px #f687b3; display: flex; align-items: flex-start; justify-content: center; z-index: 20; pointer-events: none; }
     .bridal-cover-shield span { margin-top: -12px; background: #d53f8c; color: #fff; font-size: 11px; font-weight: 900; padding: 1px 8px; border-radius: 999px; border: 1px solid #fff; }
 
@@ -201,8 +213,8 @@ export const STAGE_STYLES = `
     .seek-skill-pill { background: rgba(79, 209, 197, 0.2); color: #81e6d9; border: 1px solid #4fd1c5; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
     .seek-skill-context { font-size: 12px; color: #fbd38d; font-style: italic; opacity: 0.95; }
     .seek-banner-body { font-size: 14px; line-height: 1.45; color: #edf2f7; font-weight: 600; }
-    .actor.seek-acting .avatar { border-color: #f6e05e; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5); }
-    .actor.seek-targeted .avatar { border-color: #fc8181; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6); }
+    .actor.seek-acting .avatar { border-color: #f6e05e !important; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5) !important; }
+    .actor.seek-targeted .avatar { border-color: #fc8181 !important; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6) !important; }
 
     /* True AOE Fan Shockwave & Multi-Projectile Barrage VFX */
     .aoe-fan-wave { position: absolute; width: 160px; height: 340px; pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }

@@ -285,6 +285,220 @@ function processContractSkillLifecycle(
 }
 
 /**
+ * Computes deterministic active intervals for combat statuses (DOT, HOT, FATIGUE, SILENCED)
+ * and shield barriers based on verified occurrence sequences in raw combat logs.
+ *
+ * @param {Array<object>} logs - Raw combat log entries.
+ * @returns {{
+ *   statusIntervals: Array<{ actorId: string, start: number, end: number, status: { id: string, name: string, category: string, icon: string } }>,
+ *   shieldIntervals: Array<{ actorId: string, start: number, end: number }>
+ * }}
+ */
+function computeActiveStatusAndShieldIntervals(logs) {
+    const statusIntervals = [];
+    const shieldIntervals = [];
+
+    // 1. Collect and cluster DOT / HOT occurrences
+    const effectLogs = [];
+    logs.forEach((l, idx) => {
+        if (!l) return;
+        if (l.type === 'BUFF_EFFECT') {
+            const msg = String(l.message || '');
+            const isHot = l.buffType === 'HOT' || (/恢復|回復/.test(msg) && !/傷害|失去/.test(msg));
+            const buffId = l.buffId || l.skillId || (isHot ? 'hot' : 'dot');
+            let name = buffId;
+            const match = msg.match(/受到\s*(.+?)\s*影響/);
+            if (match) name = match[1];
+            effectLogs.push({
+                idx,
+                actorId: l.actorId,
+                buffId,
+                name: isHot ? (name || '持續恢復') : (name || '持續傷害'),
+                category: isHot ? 'hot' : 'dot',
+                icon: isHot ? '💚' : '☠️'
+            });
+        }
+    });
+
+    const byActorBuff = {};
+    effectLogs.forEach(entry => {
+        if (!entry.actorId) return;
+        const key = `${entry.actorId}::${entry.buffId}`;
+        if (!byActorBuff[key]) byActorBuff[key] = [];
+        byActorBuff[key].push(entry);
+    });
+
+    Object.values(byActorBuff).forEach(entries => {
+        let cluster = [];
+        const flushCluster = (c) => {
+            if (c.length === 0) return;
+            let startIdx = c[0].idx;
+            for (let b = startIdx - 1; b >= Math.max(0, startIdx - 20); b--) {
+                const prevLog = logs[b];
+                if (
+                    prevLog &&
+                    (prevLog.type === 'SKILL_TEXT' || prevLog.type === 'BUFF_APPLY') &&
+                    (prevLog.skillId === c[0].buffId || prevLog.buffId === c[0].buffId) &&
+                    (prevLog.targetId === c[0].actorId || prevLog.actorId === c[0].actorId)
+                ) {
+                    startIdx = b;
+                    break;
+                }
+            }
+            statusIntervals.push({
+                actorId: c[0].actorId,
+                start: startIdx,
+                end: c[c.length - 1].idx,
+                status: {
+                    id: c[0].buffId,
+                    name: c[0].name,
+                    category: c[0].category,
+                    icon: c[0].icon
+                }
+            });
+        };
+
+        entries.forEach(e => {
+            if (cluster.length === 0) {
+                cluster.push(e);
+            } else {
+                const prev = cluster[cluster.length - 1];
+                if (e.idx - prev.idx <= 25) {
+                    cluster.push(e);
+                } else {
+                    flushCluster(cluster);
+                    cluster = [e];
+                }
+            }
+        });
+        flushCluster(cluster);
+    });
+
+    // 2. Fatigue (persists until REST or DEATH)
+    const fatigueStarts = {};
+    logs.forEach((l, idx) => {
+        if (!l || !l.actorId) return;
+        if (l.type === 'FATIGUE' || l.type === 'FATIGUE_SKIP') {
+            if (!fatigueStarts[l.actorId]) {
+                fatigueStarts[l.actorId] = { idx, stage: l.stage };
+            }
+        } else if (l.type === 'REST' || l.type === 'DEATH' || l.type === 'PLAYER_DEATH' || l.type === 'PLAYER_DEFEAT') {
+            if (fatigueStarts[l.actorId]) {
+                statusIntervals.push({
+                    actorId: l.actorId,
+                    start: fatigueStarts[l.actorId].idx,
+                    end: idx,
+                    status: {
+                        id: 'fatigue',
+                        name: fatigueStarts[l.actorId].stage === 'EXHAUSTED' ? '力竭 (EXHAUSTED)' : '疲勞 (TIRED)',
+                        category: 'fatigue',
+                        icon: '💤'
+                    }
+                });
+                delete fatigueStarts[l.actorId];
+            }
+        }
+    });
+    Object.entries(fatigueStarts).forEach(([actorId, info]) => {
+        statusIntervals.push({
+            actorId,
+            start: info.idx,
+            end: logs.length - 1,
+            status: {
+                id: 'fatigue',
+                name: info.stage === 'EXHAUSTED' ? '力竭 (EXHAUSTED)' : '疲勞 (TIRED)',
+                category: 'fatigue',
+                icon: '💤'
+            }
+        });
+    });
+
+    // 3. Silenced / Holding (persists until next active combat action or DEATH)
+    const silenceStarts = {};
+    logs.forEach((l, idx) => {
+        if (!l || !l.actorId) return;
+        if (l.type === 'SILENCED') {
+            if (!silenceStarts[l.actorId]) {
+                silenceStarts[l.actorId] = idx;
+            }
+        } else if (['DAMAGE', 'HEAL', 'COUNTER'].includes(l.type) || (l.type === 'SKILL_TEXT' && l.skillId && l.skillId !== 'default')) {
+            if (silenceStarts[l.actorId] && idx > silenceStarts[l.actorId]) {
+                statusIntervals.push({
+                    actorId: l.actorId,
+                    start: silenceStarts[l.actorId],
+                    end: idx,
+                    status: { id: 'silenced', name: '魔力僵直 (SILENCED)', category: 'silenced', icon: '🤐' }
+                });
+                delete silenceStarts[l.actorId];
+            }
+        } else if (l.type === 'DEATH' || l.type === 'PLAYER_DEATH' || l.type === 'PLAYER_DEFEAT') {
+            if (silenceStarts[l.actorId]) {
+                statusIntervals.push({
+                    actorId: l.actorId,
+                    start: silenceStarts[l.actorId],
+                    end: idx,
+                    status: { id: 'silenced', name: '魔力僵直 (SILENCED)', category: 'silenced', icon: '🤐' }
+                });
+                delete silenceStarts[l.actorId];
+            }
+        }
+    });
+    Object.entries(silenceStarts).forEach(([actorId, startIdx]) => {
+        statusIntervals.push({
+            actorId,
+            start: startIdx,
+            end: logs.length - 1,
+            status: { id: 'silenced', name: '魔力僵直 (SILENCED)', category: 'silenced', icon: '🤐' }
+        });
+    });
+
+    // 4. Shield / Barrier blocks
+    const blockLogs = [];
+    logs.forEach((l, idx) => {
+        if (!l) return;
+        if (l.blocked || l.type === 'BLOCK') {
+            const defenderId = l.targetId || l.actorId;
+            if (defenderId) blockLogs.push({ idx, defenderId });
+        } else if (
+            (l.type === 'SKILL_TEXT' || l.type === 'BUFF_APPLY') &&
+            (l.skillId === 'sakura_shield' || /shield|barrier|護盾|防護/i.test(l.skillId || ''))
+        ) {
+            const recipientId = l.targetId || l.actorId;
+            if (recipientId) {
+                shieldIntervals.push({ actorId: recipientId, start: idx, end: Math.min(logs.length - 1, idx + 10) });
+            }
+        }
+    });
+
+    const byDefender = {};
+    blockLogs.forEach(b => {
+        if (!byDefender[b.defenderId]) byDefender[b.defenderId] = [];
+        byDefender[b.defenderId].push(b.idx);
+    });
+    Object.entries(byDefender).forEach(([defenderId, indices]) => {
+        let cluster = [];
+        indices.forEach(idx => {
+            if (cluster.length === 0) {
+                cluster.push(idx);
+            } else {
+                const prev = cluster[cluster.length - 1];
+                if (idx - prev <= 20) {
+                    cluster.push(idx);
+                } else {
+                    shieldIntervals.push({ actorId: defenderId, start: cluster[0], end: cluster[cluster.length - 1] });
+                    cluster = [idx];
+                }
+            }
+        });
+        if (cluster.length > 0) {
+            shieldIntervals.push({ actorId: defenderId, start: cluster[0], end: cluster[cluster.length - 1] });
+        }
+    });
+
+    return { statusIntervals, shieldIntervals };
+}
+
+/**
  * Builds deterministic frame-by-frame state snapshots from raw battle logs
  * and runs post-processing calibration passes (`calibrateHpWithAnchors` and `markAOEWaves`).
  *
@@ -304,6 +518,7 @@ export function buildStateSnapshots(logs) {
     const actorsBondState = new Map();
     const contractCutInCount = new Map();
     const despawnedActors = new Set();
+    const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
 
     const explicitlySummonedIds = new Set();
     logs.forEach(log => {
@@ -389,6 +604,8 @@ export function buildStateSnapshots(logs) {
             isDespawnEvent: false,
             despawnedActorId: null,
             actorsBondState: new Map(),
+            actorsStatusState: new Map(),
+            actorsShieldState: new Map(),
             contractEvent: null,
             isContractRepeat: false,
             isCoverEvent: false,
@@ -658,9 +875,38 @@ export function buildStateSnapshots(logs) {
             frame.actorsHpState.set(actor.id, actor.currentHp);
         });
 
+        const activeStatusesForActor = new Map();
+        const activeShieldForActor = new Map();
+
+        engineState.actors.forEach(actor => {
+            const isDead = !!actorsDeathState.get(actor.id);
+            if (isDead) {
+                activeStatusesForActor.set(actor.id, []);
+                activeShieldForActor.set(actor.id, false);
+                return;
+            }
+
+            const statuses = [];
+            statusIntervals.forEach(interval => {
+                if (interval.actorId === actor.id && index >= interval.start && index <= interval.end) {
+                    if (!statuses.some(s => s.id === interval.status.id)) {
+                        statuses.push(interval.status);
+                    }
+                }
+            });
+            activeStatusesForActor.set(actor.id, statuses);
+
+            const hasShield = shieldIntervals.some(
+                interval => interval.actorId === actor.id && index >= interval.start && index <= interval.end
+            );
+            activeShieldForActor.set(actor.id, hasShield);
+        });
+
         frame.actorsDeathState = new Map(actorsDeathState);
         frame.actorsSummonState = new Map(actorsSummonState);
         frame.actorsBondState = new Map(actorsBondState);
+        frame.actorsStatusState = activeStatusesForActor;
+        frame.actorsShieldState = activeShieldForActor;
         engineState.frames.push(frame);
     });
 

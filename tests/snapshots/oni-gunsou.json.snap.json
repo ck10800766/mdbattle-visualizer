@@ -178,6 +178,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -242,6 +258,22 @@
         "mob_0_oni_gunsou": 14000,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -308,6 +340,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -372,6 +420,22 @@
         "mob_0_oni_gunsou": 14000,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -438,6 +502,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -502,6 +582,22 @@
         "mob_0_oni_gunsou": 14000,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -568,6 +664,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -632,6 +744,22 @@
         "mob_0_oni_gunsou": 14000,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -698,6 +826,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -763,6 +907,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -827,6 +987,22 @@
         "mob_0_oni_gunsou": 13774,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -898,6 +1074,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -965,6 +1157,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1031,6 +1239,22 @@
         "mob_0_oni_gunsou": 12787,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -1102,6 +1326,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1167,6 +1407,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1231,6 +1487,22 @@
         "mob_0_oni_gunsou": 11511,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -1299,6 +1571,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1363,6 +1651,22 @@
         "mob_0_oni_gunsou": 11452,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -1431,6 +1735,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1497,6 +1817,22 @@
         "mob_0_oni_gunsou": 11344,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -1565,6 +1901,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1631,6 +1983,22 @@
         "mob_0_oni_gunsou": 11093,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -1702,6 +2070,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1769,6 +2153,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1835,6 +2235,22 @@
         "mob_0_oni_gunsou": 10790,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -1906,6 +2322,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -1975,6 +2407,22 @@
         "mob_0_oni_gunsou": 10361,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -2046,6 +2494,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2110,6 +2574,22 @@
         "mob_0_oni_gunsou": 8337,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -2181,6 +2661,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2245,6 +2741,22 @@
         "mob_0_oni_gunsou": 8174,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -2316,6 +2828,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2380,6 +2908,22 @@
         "mob_0_oni_gunsou": 1058,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -2451,6 +2995,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2521,6 +3081,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2589,6 +3165,22 @@
         "mob_0_oni_gunsou": 979,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -2661,6 +3253,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2727,6 +3335,22 @@
         "mob_0_oni_gunsou": 979,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -2797,6 +3421,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2866,6 +3506,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -2934,6 +3590,22 @@
         "mob_0_oni_gunsou": 885,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -3007,6 +3679,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3079,6 +3767,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3148,6 +3852,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3214,6 +3934,22 @@
         "mob_0_oni_gunsou": 1,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -3282,6 +4018,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3348,6 +4100,22 @@
         "mob_0_oni_gunsou": 13999,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -3418,6 +4186,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3484,6 +4268,22 @@
         "mob_0_oni_gunsou": 13999,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -3552,6 +4352,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3618,6 +4434,22 @@
         "mob_0_oni_gunsou": 13346,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -3688,6 +4520,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3754,6 +4602,22 @@
         "mob_0_oni_gunsou": 12638,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -3824,6 +4688,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3893,6 +4773,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -3959,6 +4855,22 @@
         "mob_0_oni_gunsou": 12098,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4028,6 +4940,22 @@
         "mob_0_oni_gunsou": 12182,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4100,6 +5028,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -4166,6 +5110,22 @@
         "mob_0_oni_gunsou": 12182,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4236,6 +5196,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -4304,6 +5280,22 @@
         "mob_0_oni_gunsou": 12182,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4374,6 +5366,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -4443,6 +5451,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -4509,6 +5533,22 @@
         "mob_0_oni_gunsou": 12008,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4578,6 +5618,22 @@
         "mob_0_oni_gunsou": 10421,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4651,6 +5707,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -4722,6 +5794,22 @@
         "mob_0_oni_gunsou": 4359,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4795,6 +5883,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -4863,6 +5967,22 @@
         "mob_0_oni_gunsou": 3670,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -4936,6 +6056,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5004,6 +6140,22 @@
         "mob_0_oni_gunsou": 2977,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -5074,6 +6226,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5141,6 +6309,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5207,6 +6391,22 @@
         "mob_0_oni_gunsou": 1793,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -5280,6 +6480,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5346,6 +6562,22 @@
         "mob_0_oni_gunsou": 1877,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -5418,6 +6650,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5484,6 +6732,22 @@
         "mob_0_oni_gunsou": 1877,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -5554,6 +6818,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5623,6 +6903,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5691,6 +6987,22 @@
         "mob_0_oni_gunsou": 1877,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -5763,6 +7075,22 @@
         "mob_0_oni_gunsou": 1877,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -5852,6 +7180,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5919,6 +7263,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -5985,6 +7345,22 @@
         "mob_0_oni_gunsou": 1211,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -6055,6 +7431,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -6121,6 +7513,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -6194,6 +7602,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -6260,6 +7684,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -6328,6 +7768,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -6394,6 +7850,22 @@
         "mob_0_oni_gunsou": 13999,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -6464,6 +7936,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -6530,6 +8018,22 @@
         "mob_0_oni_gunsou": 13999,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -6600,6 +8104,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -6668,6 +8188,22 @@
         "mob_0_oni_gunsou": 13999,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -6738,6 +8274,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -6804,6 +8356,22 @@
         "mob_0_oni_gunsou": 13728,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -6874,6 +8442,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -6942,6 +8526,22 @@
         "mob_0_oni_gunsou": 13396,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7012,6 +8612,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -7080,6 +8696,22 @@
         "mob_0_oni_gunsou": 12427,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7150,6 +8782,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -7217,6 +8865,22 @@
         "mob_0_oni_gunsou": 12427,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7286,6 +8950,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -7353,6 +9033,22 @@
         "mob_0_oni_gunsou": 11860,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7423,6 +9119,22 @@
         "mob_0_oni_gunsou": 10165,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7497,6 +9209,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -7567,6 +9295,22 @@
         "mob_0_oni_gunsou": 9966,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7641,6 +9385,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -7714,6 +9474,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -7782,6 +9558,22 @@
         "mob_0_oni_gunsou": 10050,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7854,6 +9646,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -7924,6 +9732,22 @@
         "mob_0_oni_gunsou": 10050,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -7996,6 +9820,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8065,6 +9905,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8133,6 +9989,22 @@
         "mob_0_oni_gunsou": 9461,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -8205,6 +10077,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8275,6 +10163,22 @@
         "mob_0_oni_gunsou": 8925,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -8347,6 +10251,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8417,6 +10337,22 @@
         "mob_0_oni_gunsou": 8456,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -8492,6 +10428,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8565,6 +10517,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8635,6 +10603,22 @@
         "mob_0_oni_gunsou": 7265,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -8709,6 +10693,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8777,6 +10777,22 @@
         "mob_0_oni_gunsou": 7265,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -8849,6 +10865,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -8919,6 +10951,22 @@
         "mob_0_oni_gunsou": 7265,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -8991,6 +11039,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9060,6 +11124,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9128,6 +11208,22 @@
         "mob_0_oni_gunsou": 6835,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -9203,6 +11299,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9273,6 +11385,22 @@
         "mob_0_oni_gunsou": 6701,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -9348,6 +11476,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9418,6 +11562,22 @@
         "mob_0_oni_gunsou": 6654,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -9493,6 +11653,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9566,6 +11742,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9635,6 +11827,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9703,6 +11911,22 @@
         "mob_0_oni_gunsou": 1769,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -9778,6 +12002,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9852,6 +12092,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -9920,6 +12176,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -9990,6 +12262,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10058,6 +12346,22 @@
         "mob_0_oni_gunsou": 8400,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -10129,6 +12433,22 @@
         "mob_0_oni_gunsou": 6754,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -10204,6 +12524,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10274,6 +12610,22 @@
         "mob_0_oni_gunsou": 6043,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -10349,6 +12701,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10420,6 +12788,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10490,6 +12874,22 @@
         "mob_0_oni_gunsou": 5700,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -10564,6 +12964,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10635,6 +13051,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10705,6 +13137,22 @@
         "mob_0_oni_gunsou": 5659,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -10779,6 +13227,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10848,6 +13312,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -10916,6 +13396,22 @@
         "mob_0_oni_gunsou": 5609,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -10987,6 +13483,22 @@
         "mob_0_oni_gunsou": 5406,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -11062,6 +13574,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11136,6 +13664,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11206,6 +13750,22 @@
         "mob_0_oni_gunsou": 4908,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -11281,6 +13841,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11351,6 +13927,22 @@
         "mob_0_oni_gunsou": 4643,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -11426,6 +14018,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11500,6 +14108,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11570,6 +14194,22 @@
         "mob_0_oni_gunsou": 4365,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -11642,6 +14282,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11710,6 +14366,22 @@
         "mob_0_oni_gunsou": 4030,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -11785,6 +14457,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11853,6 +14541,22 @@
         "mob_0_oni_gunsou": 4030,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -11925,6 +14629,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -11996,6 +14716,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -12066,6 +14802,22 @@
         "mob_0_oni_gunsou": 3905,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -12141,6 +14893,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -12214,6 +14982,22 @@
         "mob_0_oni_gunsou": 3824,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -12289,6 +15073,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -12359,6 +15159,22 @@
         "mob_0_oni_gunsou": 3697,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -12431,6 +15247,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -12500,6 +15332,22 @@
         "mob_0_oni_gunsou": 3697,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -12571,6 +15419,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -12640,6 +15504,22 @@
         "mob_0_oni_gunsou": 3781,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -12715,6 +15595,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -12784,6 +15680,22 @@
         "mob_0_oni_gunsou": 3763,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -12856,6 +15768,22 @@
         "mob_0_oni_gunsou": 2220,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -12932,6 +15860,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13006,6 +15950,22 @@
         "mob_0_oni_gunsou": 737,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -13082,6 +16042,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13157,6 +16133,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13228,6 +16220,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -13301,6 +16309,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13370,6 +16394,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -13441,6 +16481,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13510,6 +16566,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -13581,6 +16653,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13650,6 +16738,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -13721,6 +16825,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13790,6 +16910,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -13861,6 +16997,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -13930,6 +17082,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
@@ -14001,6 +17169,22 @@
         "summon_1": 1,
         "summon_2": 1
       },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
+      },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,
         "6aae431b231156aca1a3bb98": true,
@@ -14070,6 +17254,22 @@
         "mob_0_oni_gunsou": 0,
         "summon_1": 1,
         "summon_2": 1
+      },
+      "actorsShieldState": {
+        "6aad1668c3b16affe1e05794": false,
+        "6aae431b231156aca1a3bb98": false,
+        "6ab150baad84d95a03db1ca4": false,
+        "mob_0_oni_gunsou": false,
+        "summon_1": false,
+        "summon_2": false
+      },
+      "actorsStatusState": {
+        "6aad1668c3b16affe1e05794": [],
+        "6aae431b231156aca1a3bb98": [],
+        "6ab150baad84d95a03db1ca4": [],
+        "mob_0_oni_gunsou": [],
+        "summon_1": [],
+        "summon_2": []
       },
       "actorsSummonState": {
         "6aad1668c3b16affe1e05794": true,

@@ -953,6 +953,188 @@
       });
     }
   }
+  function computeActiveStatusAndShieldIntervals(logs) {
+    const statusIntervals = [];
+    const shieldIntervals = [];
+    const effectLogs = [];
+    logs.forEach((l, idx) => {
+      if (!l) return;
+      if (l.type === "BUFF_EFFECT") {
+        const msg = String(l.message || "");
+        const isHot = l.buffType === "HOT" || /恢復|回復/.test(msg) && !/傷害|失去/.test(msg);
+        const buffId = l.buffId || l.skillId || (isHot ? "hot" : "dot");
+        let name = buffId;
+        const match = msg.match(/受到\s*(.+?)\s*影響/);
+        if (match) name = match[1];
+        effectLogs.push({
+          idx,
+          actorId: l.actorId,
+          buffId,
+          name: isHot ? name || "\u6301\u7E8C\u6062\u5FA9" : name || "\u6301\u7E8C\u50B7\u5BB3",
+          category: isHot ? "hot" : "dot",
+          icon: isHot ? "\u{1F49A}" : "\u2620\uFE0F"
+        });
+      }
+    });
+    const byActorBuff = {};
+    effectLogs.forEach((entry) => {
+      if (!entry.actorId) return;
+      const key = `${entry.actorId}::${entry.buffId}`;
+      if (!byActorBuff[key]) byActorBuff[key] = [];
+      byActorBuff[key].push(entry);
+    });
+    Object.values(byActorBuff).forEach((entries) => {
+      let cluster = [];
+      const flushCluster = (c) => {
+        if (c.length === 0) return;
+        let startIdx = c[0].idx;
+        for (let b = startIdx - 1; b >= Math.max(0, startIdx - 20); b--) {
+          const prevLog = logs[b];
+          if (prevLog && (prevLog.type === "SKILL_TEXT" || prevLog.type === "BUFF_APPLY") && (prevLog.skillId === c[0].buffId || prevLog.buffId === c[0].buffId) && (prevLog.targetId === c[0].actorId || prevLog.actorId === c[0].actorId)) {
+            startIdx = b;
+            break;
+          }
+        }
+        statusIntervals.push({
+          actorId: c[0].actorId,
+          start: startIdx,
+          end: c[c.length - 1].idx,
+          status: {
+            id: c[0].buffId,
+            name: c[0].name,
+            category: c[0].category,
+            icon: c[0].icon
+          }
+        });
+      };
+      entries.forEach((e) => {
+        if (cluster.length === 0) {
+          cluster.push(e);
+        } else {
+          const prev = cluster[cluster.length - 1];
+          if (e.idx - prev.idx <= 25) {
+            cluster.push(e);
+          } else {
+            flushCluster(cluster);
+            cluster = [e];
+          }
+        }
+      });
+      flushCluster(cluster);
+    });
+    const fatigueStarts = {};
+    logs.forEach((l, idx) => {
+      if (!l || !l.actorId) return;
+      if (l.type === "FATIGUE" || l.type === "FATIGUE_SKIP") {
+        if (!fatigueStarts[l.actorId]) {
+          fatigueStarts[l.actorId] = { idx, stage: l.stage };
+        }
+      } else if (l.type === "REST" || l.type === "DEATH" || l.type === "PLAYER_DEATH" || l.type === "PLAYER_DEFEAT") {
+        if (fatigueStarts[l.actorId]) {
+          statusIntervals.push({
+            actorId: l.actorId,
+            start: fatigueStarts[l.actorId].idx,
+            end: idx,
+            status: {
+              id: "fatigue",
+              name: fatigueStarts[l.actorId].stage === "EXHAUSTED" ? "\u529B\u7AED (EXHAUSTED)" : "\u75B2\u52DE (TIRED)",
+              category: "fatigue",
+              icon: "\u{1F4A4}"
+            }
+          });
+          delete fatigueStarts[l.actorId];
+        }
+      }
+    });
+    Object.entries(fatigueStarts).forEach(([actorId, info]) => {
+      statusIntervals.push({
+        actorId,
+        start: info.idx,
+        end: logs.length - 1,
+        status: {
+          id: "fatigue",
+          name: info.stage === "EXHAUSTED" ? "\u529B\u7AED (EXHAUSTED)" : "\u75B2\u52DE (TIRED)",
+          category: "fatigue",
+          icon: "\u{1F4A4}"
+        }
+      });
+    });
+    const silenceStarts = {};
+    logs.forEach((l, idx) => {
+      if (!l || !l.actorId) return;
+      if (l.type === "SILENCED") {
+        if (!silenceStarts[l.actorId]) {
+          silenceStarts[l.actorId] = idx;
+        }
+      } else if (["DAMAGE", "HEAL", "COUNTER"].includes(l.type) || l.type === "SKILL_TEXT" && l.skillId && l.skillId !== "default") {
+        if (silenceStarts[l.actorId] && idx > silenceStarts[l.actorId]) {
+          statusIntervals.push({
+            actorId: l.actorId,
+            start: silenceStarts[l.actorId],
+            end: idx,
+            status: { id: "silenced", name: "\u9B54\u529B\u50F5\u76F4 (SILENCED)", category: "silenced", icon: "\u{1F910}" }
+          });
+          delete silenceStarts[l.actorId];
+        }
+      } else if (l.type === "DEATH" || l.type === "PLAYER_DEATH" || l.type === "PLAYER_DEFEAT") {
+        if (silenceStarts[l.actorId]) {
+          statusIntervals.push({
+            actorId: l.actorId,
+            start: silenceStarts[l.actorId],
+            end: idx,
+            status: { id: "silenced", name: "\u9B54\u529B\u50F5\u76F4 (SILENCED)", category: "silenced", icon: "\u{1F910}" }
+          });
+          delete silenceStarts[l.actorId];
+        }
+      }
+    });
+    Object.entries(silenceStarts).forEach(([actorId, startIdx]) => {
+      statusIntervals.push({
+        actorId,
+        start: startIdx,
+        end: logs.length - 1,
+        status: { id: "silenced", name: "\u9B54\u529B\u50F5\u76F4 (SILENCED)", category: "silenced", icon: "\u{1F910}" }
+      });
+    });
+    const blockLogs = [];
+    logs.forEach((l, idx) => {
+      if (!l) return;
+      if (l.blocked || l.type === "BLOCK") {
+        const defenderId = l.targetId || l.actorId;
+        if (defenderId) blockLogs.push({ idx, defenderId });
+      } else if ((l.type === "SKILL_TEXT" || l.type === "BUFF_APPLY") && (l.skillId === "sakura_shield" || /shield|barrier|護盾|防護/i.test(l.skillId || ""))) {
+        const recipientId = l.targetId || l.actorId;
+        if (recipientId) {
+          shieldIntervals.push({ actorId: recipientId, start: idx, end: Math.min(logs.length - 1, idx + 10) });
+        }
+      }
+    });
+    const byDefender = {};
+    blockLogs.forEach((b) => {
+      if (!byDefender[b.defenderId]) byDefender[b.defenderId] = [];
+      byDefender[b.defenderId].push(b.idx);
+    });
+    Object.entries(byDefender).forEach(([defenderId, indices]) => {
+      let cluster = [];
+      indices.forEach((idx) => {
+        if (cluster.length === 0) {
+          cluster.push(idx);
+        } else {
+          const prev = cluster[cluster.length - 1];
+          if (idx - prev <= 20) {
+            cluster.push(idx);
+          } else {
+            shieldIntervals.push({ actorId: defenderId, start: cluster[0], end: cluster[cluster.length - 1] });
+            cluster = [idx];
+          }
+        }
+      });
+      if (cluster.length > 0) {
+        shieldIntervals.push({ actorId: defenderId, start: cluster[0], end: cluster[cluster.length - 1] });
+      }
+    });
+    return { statusIntervals, shieldIntervals };
+  }
   function buildStateSnapshots(logs) {
     engineState.frames = [];
     let currentTurn = 0;
@@ -966,6 +1148,7 @@
     const actorsBondState = /* @__PURE__ */ new Map();
     const contractCutInCount = /* @__PURE__ */ new Map();
     const despawnedActors = /* @__PURE__ */ new Set();
+    const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
     const explicitlySummonedIds = /* @__PURE__ */ new Set();
     logs.forEach((log) => {
       if (log && log.type === "SUMMON" && log.targetId) {
@@ -1038,6 +1221,8 @@
         isDespawnEvent: false,
         despawnedActorId: null,
         actorsBondState: /* @__PURE__ */ new Map(),
+        actorsStatusState: /* @__PURE__ */ new Map(),
+        actorsShieldState: /* @__PURE__ */ new Map(),
         contractEvent: null,
         isContractRepeat: false,
         isCoverEvent: false,
@@ -1274,9 +1459,34 @@
       engineState.actors.forEach((actor) => {
         frame.actorsHpState.set(actor.id, actor.currentHp);
       });
+      const activeStatusesForActor = /* @__PURE__ */ new Map();
+      const activeShieldForActor = /* @__PURE__ */ new Map();
+      engineState.actors.forEach((actor) => {
+        const isDead = !!actorsDeathState.get(actor.id);
+        if (isDead) {
+          activeStatusesForActor.set(actor.id, []);
+          activeShieldForActor.set(actor.id, false);
+          return;
+        }
+        const statuses = [];
+        statusIntervals.forEach((interval) => {
+          if (interval.actorId === actor.id && index >= interval.start && index <= interval.end) {
+            if (!statuses.some((s) => s.id === interval.status.id)) {
+              statuses.push(interval.status);
+            }
+          }
+        });
+        activeStatusesForActor.set(actor.id, statuses);
+        const hasShield = shieldIntervals.some(
+          (interval) => interval.actorId === actor.id && index >= interval.start && index <= interval.end
+        );
+        activeShieldForActor.set(actor.id, hasShield);
+      });
       frame.actorsDeathState = new Map(actorsDeathState);
       frame.actorsSummonState = new Map(actorsSummonState);
       frame.actorsBondState = new Map(actorsBondState);
+      frame.actorsStatusState = activeStatusesForActor;
+      frame.actorsShieldState = activeShieldForActor;
       engineState.frames.push(frame);
     });
     calibrateHpWithAnchors(engineState.frames);
@@ -1364,14 +1574,28 @@
     .actor.despawning { animation: summonDespawn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
     .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
-    .avatar-wrapper { position: relative; }
-    .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); }
+    .avatar-wrapper { position: relative; width: 80px; height: 80px; }
+    .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); transition: border-color 0.4s ease, box-shadow 0.4s ease; }
 
-    .hp-container { width: 80px; height: 12px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1px solid #1a202c; }
+    .hp-container { width: 80px; height: 13px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1.5px solid #1a202c; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
     .hp-fill { height: 100%; background: #48bb78; transition: width 0.3s ease-out, background-color 0.3s; }
     .hp-fill.warning { background: #ecc94b; }
     .hp-fill.danger { background: #f56565; }
-    .hp-text { position: absolute; width: 100%; text-align: center; top: -1px; font-size: 11px; color: #fff; font-weight: bold; text-shadow: 0 1px 2px #000; }
+    .hp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; color: #fff; font-weight: 800; text-shadow: 0 1px 2px #000; pointer-events: none; letter-spacing: -0.2px; }
+
+    /* Actor Status Tray & Badges (Vertical column on avatar outer side) */
+    .status-tray { position: absolute; top: 2px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; z-index: 25; pointer-events: auto; }
+    .status-tray:empty { display: none; }
+    .actor.left .status-tray { right: calc(100% + 6px); }
+    .actor.right .status-tray { left: calc(100% + 6px); }
+    .status-badge { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; cursor: default; animation: slideInUp 0.15s ease-out forwards; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 23, 42, 0.7); user-select: none; transition: transform 0.15s ease, box-shadow 0.15s ease; flex-shrink: 0; }
+    .status-badge:hover { transform: scale(1.18); }
+    .status-badge.status-dot { border-color: #9f7aea; background: rgba(85, 60, 154, 0.35); box-shadow: 0 0 6px rgba(159, 122, 234, 0.6); }
+    .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); box-shadow: 0 0 6px rgba(72, 187, 120, 0.6); }
+    .status-badge.status-fatigue { border-color: #ed8936; background: rgba(192, 86, 33, 0.35); box-shadow: 0 0 6px rgba(237, 137, 54, 0.6); }
+    .status-badge.status-silenced { border-color: #fc8181; background: rgba(197, 48, 48, 0.35); box-shadow: 0 0 6px rgba(252, 129, 129, 0.6); }
+    .status-badge.status-bond { border-color: #f687b3; background: rgba(213, 63, 140, 0.35); box-shadow: 0 0 6px rgba(246, 135, 179, 0.6); }
 
     /* Dice Check & Status Badges */
     .dice-badge { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; z-index: 55; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.6); animation: slideInUp 0.2s ease-out forwards; }
@@ -1487,9 +1711,7 @@
     .sao-btn-accept.pressed { background: #ed8936; color: #fff; transform: scale(1.25); box-shadow: 0 0 20px #f6ad55, 0 0 35px #f687b3; }
     .sao-btn-cancel { color: #718096; }
 
-    /* Persistent Marriage Bond Aura & Cover Shield */
-    .actor.bond-active .avatar { border-color: #f687b3; box-shadow: 0 0 16px rgba(246, 135, 179, 0.85); }
-    .bond-ring-badge { position: absolute; top: -10px; right: -12px; background: linear-gradient(135deg, #d53f8c, #b83280); color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1.5px solid #fbb6ce; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 30; white-space: nowrap; pointer-events: none; }
+    /* Persistent Marriage Bond Cover Shield */
     .bridal-cover-shield { position: absolute; inset: -10px; border: 3px solid #fbb6ce; border-radius: 14px; background: radial-gradient(circle, rgba(246, 135, 179, 0.35) 0%, transparent 75%); box-shadow: 0 0 20px #f687b3; display: flex; align-items: flex-start; justify-content: center; z-index: 20; pointer-events: none; }
     .bridal-cover-shield span { margin-top: -12px; background: #d53f8c; color: #fff; font-size: 11px; font-weight: 900; padding: 1px 8px; border-radius: 999px; border: 1px solid #fff; }
 
@@ -1513,8 +1735,8 @@
     .seek-skill-pill { background: rgba(79, 209, 197, 0.2); color: #81e6d9; border: 1px solid #4fd1c5; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
     .seek-skill-context { font-size: 12px; color: #fbd38d; font-style: italic; opacity: 0.95; }
     .seek-banner-body { font-size: 14px; line-height: 1.45; color: #edf2f7; font-weight: 600; }
-    .actor.seek-acting .avatar { border-color: #f6e05e; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5); }
-    .actor.seek-targeted .avatar { border-color: #fc8181; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6); }
+    .actor.seek-acting .avatar { border-color: #f6e05e !important; box-shadow: 0 0 18px #f6e05e, 0 0 30px rgba(246, 224, 94, 0.5) !important; }
+    .actor.seek-targeted .avatar { border-color: #fc8181 !important; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6) !important; }
 
     /* True AOE Fan Shockwave & Multi-Projectile Barrage VFX */
     .aoe-fan-wave { position: absolute; width: 160px; height: 340px; pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
@@ -3362,20 +3584,126 @@
       const wrapperEl = sr.getElementById(`actor-${actor.id}`);
       if (!wrapperEl) return;
       const bondInfo = bondStateMap ? bondStateMap.get(actor.id) : null;
-      const existingBadge = wrapperEl.querySelector(".bond-ring-badge");
-      if (bondInfo) {
-        const profile = getContractSkillProfile(bondInfo.skillId);
+      const isDead = wrapperEl.classList.contains("dead");
+      if (bondInfo && !isDead) {
         wrapperEl.classList.add("bond-active");
-        if (!existingBadge) {
-          const badge = document.createElement("div");
-          badge.className = "bond-ring-badge";
-          const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
-          badge.textContent = partner ? `${profile?.badgeIcon || "\u{1F48D}"} ${partner.name}` : `${profile?.badgeIcon || "\u{1F48D}"} ${profile?.badgeText || "\u5951\u7D04"}`;
-          wrapperEl.appendChild(badge);
-        }
       } else {
         wrapperEl.classList.remove("bond-active");
-        if (existingBadge) existingBadge.remove();
+      }
+      const existingBadge = wrapperEl.querySelector(".bond-ring-badge");
+      if (existingBadge) existingBadge.remove();
+    });
+  }
+  var STATUS_AURA_CONFIG = {
+    bond: { border: "#f687b3", glow: "rgba(246, 135, 179, 0.85)" },
+    dot: { border: "#9f7aea", glow: "rgba(159, 122, 234, 0.85)" },
+    hot: { border: "#48bb78", glow: "rgba(72, 187, 120, 0.85)" },
+    fatigue: { border: "#ed8936", glow: "rgba(237, 137, 54, 0.85)" },
+    silenced: { border: "#fc8181", glow: "rgba(252, 129, 129, 0.85)" }
+  };
+  function generateAuraKeyframes(categories) {
+    const n = categories.length;
+    if (n <= 1) return [];
+    const keyframes = [];
+    const step = 1 / n;
+    const transitionRatio = 0.28;
+    for (let i = 0; i < n; i++) {
+      const conf = STATUS_AURA_CONFIG[categories[i]];
+      const startOffset = i * step;
+      const steadyEndOffset = startOffset + step * (1 - transitionRatio);
+      keyframes.push({
+        borderColor: conf.border,
+        boxShadow: `0 0 16px ${conf.glow}`,
+        offset: Math.round(startOffset * 1e3) / 1e3
+      });
+      keyframes.push({
+        borderColor: conf.border,
+        boxShadow: `0 0 16px ${conf.glow}`,
+        offset: Math.round(steadyEndOffset * 1e3) / 1e3
+      });
+    }
+    const firstConf = STATUS_AURA_CONFIG[categories[0]];
+    keyframes.push({
+      borderColor: firstConf.border,
+      boxShadow: `0 0 16px ${firstConf.glow}`,
+      offset: 1
+    });
+    return keyframes;
+  }
+  function syncAvatarAuraDOM(avatarEl, activeCategories) {
+    if (!avatarEl) return;
+    const sortedCategories = activeCategories.slice().sort();
+    const signature = sortedCategories.join("+");
+    if (avatarEl._auraSignature === signature) return;
+    avatarEl._auraSignature = signature;
+    if (avatarEl._auraAnimation) {
+      avatarEl._auraAnimation.cancel();
+      avatarEl._auraAnimation = null;
+    }
+    if (sortedCategories.length === 0) {
+      avatarEl.style.borderColor = "";
+      avatarEl.style.boxShadow = "";
+      return;
+    }
+    if (sortedCategories.length === 1) {
+      const conf = STATUS_AURA_CONFIG[sortedCategories[0]];
+      avatarEl.style.borderColor = conf.border;
+      avatarEl.style.boxShadow = `0 0 16px ${conf.glow}`;
+      return;
+    }
+    const keyframes = generateAuraKeyframes(sortedCategories);
+    if (typeof avatarEl.animate === "function" && keyframes.length > 0) {
+      const duration = Math.max(3600, sortedCategories.length * 1800);
+      avatarEl._auraAnimation = avatarEl.animate(keyframes, {
+        duration,
+        iterations: Infinity,
+        easing: "ease-in-out"
+      });
+    } else {
+      const conf = STATUS_AURA_CONFIG[sortedCategories[0]];
+      avatarEl.style.borderColor = conf.border;
+      avatarEl.style.boxShadow = `0 0 16px ${conf.glow}`;
+    }
+  }
+  function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null, bondStateMap = null) {
+    engineState.actors.forEach((actor) => {
+      const hpContainer = sr.getElementById(`hp-container-${actor.id}`) || sr.querySelector(`#actor-${actor.id} .hp-container`);
+      const statusTray = sr.getElementById(`status-tray-${actor.id}`);
+      const wrapperEl = sr.getElementById(`actor-${actor.id}`);
+      const isDead = wrapperEl?.classList.contains("dead");
+      const isShieldActive = !isDead && (shieldStateMap ? !!shieldStateMap.get(actor.id) : false);
+      if (hpContainer) {
+        if (isShieldActive) hpContainer.classList.add("shield-active");
+        else hpContainer.classList.remove("shield-active");
+      }
+      const statuses = !isDead && statusStateMap ? [...statusStateMap.get(actor.id) || []] : [];
+      const bondInfo = !isDead && bondStateMap ? bondStateMap.get(actor.id) : null;
+      if (bondInfo) {
+        const profile = getContractSkillProfile(bondInfo.skillId);
+        const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
+        statuses.unshift({
+          id: "bond",
+          name: partner ? `${profile?.badgeIcon || "\u{1F48D}"} ${partner.name}` : `${profile?.badgeIcon || "\u{1F48D}"} ${profile?.badgeText || "\u5951\u7D04"}`,
+          category: "bond",
+          icon: profile?.badgeIcon || "\u{1F48D}"
+        });
+      }
+      if (statusTray) {
+        if (statuses.length === 0) {
+          statusTray.innerHTML = "";
+        } else {
+          const badgesHtml = statuses.map(
+            (st) => `<span class="status-badge status-${escapeHtml(st.category)}" title="${escapeHtml(st.name)}">${escapeHtml(st.icon)}</span>`
+          ).join("");
+          if (statusTray.innerHTML !== badgesHtml) {
+            statusTray.innerHTML = badgesHtml;
+          }
+        }
+      }
+      const avatarEl = wrapperEl?.querySelector(".avatar");
+      if (avatarEl) {
+        const activeCategories = !isDead ? [...new Set(statuses.map((s) => s.category).filter((c) => STATUS_AURA_CONFIG[c]))] : [];
+        syncAvatarAuraDOM(avatarEl, activeCategories);
       }
     });
   }
@@ -3398,6 +3726,10 @@
       if (!actor) return;
       const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : currentHp <= 0;
       if (fillEl && textEl && !actor.hideHp) {
+        const hpContainer = sr.getElementById(`hp-container-${actorId}`);
+        if (hpContainer) hpContainer.style.display = "";
+        const statusTray = sr.getElementById(`status-tray-${actorId}`);
+        if (statusTray) statusTray.style.display = "";
         const pct = currentHp / actor.maxHp * 100;
         if (skipHpTransition) {
           fillEl.style.transition = "none";
@@ -3422,6 +3754,10 @@
       }
       actor.currentHp = currentHp;
       if (isDead && wrapperEl) {
+        const hpContainer = sr.getElementById(`hp-container-${actorId}`);
+        if (hpContainer) hpContainer.classList.remove("shield-active");
+        const statusTray = sr.getElementById(`status-tray-${actorId}`);
+        if (statusTray) statusTray.innerHTML = "";
         const shouldDefer = deferDeadClassForActorId instanceof Set ? deferDeadClassForActorId.has(actorId) : deferDeadClassForActorId === actorId;
         if (!shouldDefer) {
           wrapperEl.classList.add("dead");
@@ -3622,6 +3958,7 @@
       });
       updateATBUI(1, true);
       syncActorBondVisuals(sr, null);
+      syncActorStatusAndShieldDOM(sr, null, null);
     } else {
       const frame = engineState.frames[stateFrameIndex];
       if (!frame) return;
@@ -3632,6 +3969,7 @@
       });
       updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
       syncActorBondVisuals(sr, frame.actorsBondState);
+      syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
       if (showActivePreview) {
         renderSeekPreviewState(sr, stateFrameIndex);
       }
@@ -4145,8 +4483,9 @@
             <div class="actor-name">${escapeHtml(actor.name)}</div>
             <div class="avatar-wrapper">
                 <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
+                <div class="status-tray" id="status-tray-${escapeHtml(actor.id)}"></div>
             </div>
-            <div class="hp-container"${hpContainerStyle}>
+            <div class="hp-container"${hpContainerStyle} id="hp-container-${escapeHtml(actor.id)}">
                 <div class="hp-fill" id="hp-fill-${escapeHtml(actor.id)}"></div>
                 <div class="hp-text" id="hp-text-${escapeHtml(actor.id)}">${hpTextContent}</div>
             </div>
@@ -4329,6 +4668,7 @@
     }
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
+    syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
     const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
     const hasCritShake = waveFrames.some((wf) => wf.vfx.includes("screen-shake"));
     if (hasCritShake && arena) {
@@ -4377,6 +4717,7 @@
           syncSummonVisibility: false,
           deferDeadClassForActorId: waveDeadActorIds
         });
+        syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
       }, hitDelay);
     });
     await new Promise((resolve) => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
@@ -4486,6 +4827,7 @@
     }
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
     if (frame.contractEvent === "ACCEPT") {
       await playContractCutIn(frame, sr, token);
       if (engineState.playbackToken !== token) return;
@@ -4572,6 +4914,7 @@
       syncSummonVisibility: false,
       deferDeadClassForActorId: triggeredFatality ? deadActorId : null
     });
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
     if (triggeredFatality && deadActorId) {
       await playFatalitySequence(sr, deadActorId, token);
       if (engineState.playbackToken !== token) return;
