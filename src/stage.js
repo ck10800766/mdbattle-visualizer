@@ -7,6 +7,7 @@
  */
 
 import {
+    APP_VERSION,
     DEFAULT_AVATAR_URL,
     HOST_CONTENT_SELECTOR,
     PLAYBACK_SPEEDS
@@ -310,10 +311,16 @@ export function createBattleStage() {
         showMVPPanel();
     };
 
+    const versionTag = document.createElement('span');
+    versionTag.className = 'version-tag';
+    versionTag.textContent = `v${APP_VERSION}`;
+    versionTag.title = `MDBattle-Visualizer v${APP_VERSION}`;
+
     controls.appendChild(playBtn);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
     controls.appendChild(skipBtn);
+    controls.appendChild(versionTag);
 
     const ctbBox = document.createElement('div');
     ctbBox.className = 'ctb-container';

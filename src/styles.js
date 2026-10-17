@@ -24,11 +24,13 @@ export const STAGE_STYLES = `
     button:active { transform: scale(0.97); }
     button.btn-skip, button.danger { background: #9b2c2c; border-color: #fc8181; color: #fff; }
     button.btn-skip:hover, button.danger:hover { background: #c53030; }
+    .version-tag { font-size: 11px; color: #718096; font-family: monospace; padding: 2px 6px; background: rgba(255, 255, 255, 0.05); border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); user-select: none; white-space: nowrap; }
     @media (max-width: 640px) {
         .controls { padding: 8px 10px; gap: 6px; }
         .seek-container { gap: 6px; font-size: 12px; }
         #seek-label { min-width: 52px; }
         button { padding: 5px 9px; font-size: 12px; }
+        .version-tag { display: none; }
     }
 
     /* ATB / CTB Timeline Track */

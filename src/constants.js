@@ -48,4 +48,10 @@ export const PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
  */
 export const SPEED_STORAGE_KEY = 'mdbv_playback_speed';
 
+/**
+ * Application semantic version string.
+ * @type {string}
+ */
+export const APP_VERSION = '7.5.1';
+
 

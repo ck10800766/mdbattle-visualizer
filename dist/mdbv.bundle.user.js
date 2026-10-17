@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.0
+// @version      7.5.1
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,6 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
+  var APP_VERSION = "7.5.1";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -296,7 +297,7 @@
     "genji_dragonblade_sweep"
   ]);
   var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字/;
-  var SUMMON_DESPAWN_REGEX = /揮了揮手，回到.+?的隊伍裡|離開了戰場|消失在戰場/;
+  var SUMMON_DESPAWN_REGEX = /(?:淡去|散回|散去|消散|消逝|消失|退場|離場|脫離戰場|離開(?:了?戰場)?|離去|撤退|隱沒|揮了揮手，回到|回到.+?(?:隊伍|身邊|身旁|空間|法陣|歸處|冥界|灰霧|陰影|原處|手牌|卡組|召喚)|返回.+?(?:隊伍|身邊|身旁|空間|法陣|冥界|界)|化(?:作|為).*(?:白煙|青煙|黑煙|煙霧|塵埃|光點|虛無|泡影|灰燼)|時間(?:結束|已到|用盡|到了)|解除.*召喚|召喚.*解除|召喚結束)/;
   var ENVIRONMENTAL_SKILLS = /* @__PURE__ */ new Set([
     "originium_altar",
     "undead_chef_karma",
@@ -881,13 +882,35 @@
         frame.summonedActorId = log.actorId;
       }
     }
-    if (log.actorId && (log.type === "SKILL_TEXT" || log.type === "TEXT") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
-      const actingUnit = engineState.actors.get(log.actorId);
-      if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-        actorsSummonState.set(log.actorId, false);
-        despawnedActors.add(log.actorId);
+    if ((log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
+      let candidateId = null;
+      if (log.actorId) {
+        const actingUnit = engineState.actors.get(log.actorId);
+        if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
+          candidateId = log.actorId;
+        }
+      }
+      if (!candidateId && log.targetId) {
+        const targetUnit = engineState.actors.get(log.targetId);
+        if (targetUnit && targetUnit.isSummon && actorsSummonState.get(log.targetId) !== false) {
+          candidateId = log.targetId;
+        }
+      }
+      if (!candidateId && frame.message) {
+        for (const [id, actor] of engineState.actors.entries()) {
+          if (actor.isSummon && actorsSummonState.get(id) !== false && actor.name) {
+            if (frame.message.includes(actor.name)) {
+              candidateId = id;
+              break;
+            }
+          }
+        }
+      }
+      if (candidateId) {
+        actorsSummonState.set(candidateId, false);
+        despawnedActors.add(candidateId);
         frame.isDespawnEvent = true;
-        frame.despawnedActorId = log.actorId;
+        frame.despawnedActorId = candidateId;
       }
     }
   }
@@ -1546,11 +1569,13 @@
     button:active { transform: scale(0.97); }
     button.btn-skip, button.danger { background: #9b2c2c; border-color: #fc8181; color: #fff; }
     button.btn-skip:hover, button.danger:hover { background: #c53030; }
+    .version-tag { font-size: 11px; color: #718096; font-family: monospace; padding: 2px 6px; background: rgba(255, 255, 255, 0.05); border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); user-select: none; white-space: nowrap; }
     @media (max-width: 640px) {
         .controls { padding: 8px 10px; gap: 6px; }
         .seek-container { gap: 6px; font-size: 12px; }
         #seek-label { min-width: 52px; }
         button { padding: 5px 9px; font-size: 12px; }
+        .version-tag { display: none; }
     }
 
     /* ATB / CTB Timeline Track */
@@ -4454,10 +4479,15 @@
       playBtn.textContent = "\u91CD\u65B0\u64AD\u653E";
       showMVPPanel();
     };
+    const versionTag = document.createElement("span");
+    versionTag.className = "version-tag";
+    versionTag.textContent = `v${APP_VERSION}`;
+    versionTag.title = `MDBattle-Visualizer v${APP_VERSION}`;
     controls.appendChild(playBtn);
     controls.appendChild(speedBtn);
     controls.appendChild(seekContainer);
     controls.appendChild(skipBtn);
+    controls.appendChild(versionTag);
     const ctbBox = document.createElement("div");
     ctbBox.className = "ctb-container";
     ctbBox.innerHTML = `

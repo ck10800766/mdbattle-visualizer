@@ -1,0 +1,4516 @@
+{
+  "participants": {
+    "players": [
+      {
+        "userId": "6aa7de14cc943baeed96be1f",
+        "characterId": "6acb167ef3b98cafba391d6c",
+        "name": "茶茶丸o",
+        "characterName": "同人",
+        "imagePath": "/images/characters/kirito.webp",
+        "doujinAppearance": {
+          "frontHair": "#facb73",
+          "backHair": "#facb73",
+          "brows": "#e6a429",
+          "eyes": "#29d9b6",
+          "skin": "#ffdfba",
+          "outfit": "#4d8ceb",
+          "frontHairStyle": "blunt",
+          "browStyle": "bold",
+          "eyeStyle": "round",
+          "outfitStyle": "armor"
+        },
+        "title": "我的同人",
+        "level": 100,
+        "stats": {
+          "hp": 9630,
+          "atk": 326,
+          "def": 374,
+          "sta": 316,
+          "agi": 411,
+          "spd": 178,
+          "tec": 706,
+          "int": 929,
+          "luk": 293
+        },
+        "_id": "6ad2e23f019e762c214d9bfb"
+      },
+      {
+        "userId": "6ab08d63da9c7ee989f18102",
+        "characterId": "6ace7d3c3954866fcf361d81",
+        "name": "Dandi",
+        "characterName": "迪盧克",
+        "imagePath": "/images/characters/diluc.webp",
+        "title": "盧鍋巴",
+        "level": 100,
+        "stats": {
+          "hp": 12710,
+          "atk": 753,
+          "def": 260,
+          "sta": 425,
+          "agi": 241,
+          "spd": 346,
+          "tec": 577,
+          "int": 190,
+          "luk": 376
+        },
+        "_id": "6ad2e23f019e762c214d9bfc"
+      },
+      {
+        "userId": "6aae0e1e32a990089bdaf160",
+        "characterId": "6acf73c0a30a0a65d16ff5a1",
+        "name": "褪色者",
+        "characterName": "有紀",
+        "imagePath": "/images/characters/kibayuki-yuuki.webp",
+        "title": "婚紗絕劍",
+        "level": 100,
+        "stats": {
+          "hp": 8700,
+          "atk": 795,
+          "def": 166,
+          "sta": 309,
+          "agi": 258,
+          "spd": 507,
+          "tec": 659,
+          "int": 86,
+          "luk": 351
+        },
+        "isAssist": true,
+        "_id": "6ad2e23f019e762c214d9bfd"
+      }
+    ],
+    "enemies": [
+      {
+        "entityId": "mob_0_klein_moretti",
+        "monsterId": "klein_moretti",
+        "name": "克萊恩·莫雷蒂",
+        "imagePath": "/images/boss/klein-moretti.webp",
+        "title": "詭秘之主",
+        "floor": 58,
+        "level": 165,
+        "stats": {
+          "hp": 110000,
+          "atk": 750,
+          "def": 400,
+          "sta": 500,
+          "agi": 250,
+          "spd": 450,
+          "tec": 350,
+          "int": 700,
+          "luk": 400
+        },
+        "_id": "6ad2e23f019e762c214d9bfe"
+      },
+      {
+        "entityId": "summon_5",
+        "monsterId": "klein_projection",
+        "summonerId": "mob_0_klein_moretti",
+        "name": "有紀 的歷史投影",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "歷史迷霧",
+        "floor": 58,
+        "level": 165,
+        "stats": {
+          "hp": 1000,
+          "atk": 100,
+          "def": 100,
+          "sta": 300,
+          "agi": 100,
+          "spd": 300,
+          "tec": 100,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ad2e23f019e762c214d9bff"
+      },
+      {
+        "entityId": "summon_6",
+        "monsterId": "klein_projection",
+        "summonerId": "mob_0_klein_moretti",
+        "name": "有紀 的歷史投影",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "歷史迷霧",
+        "floor": 58,
+        "level": 165,
+        "stats": {
+          "hp": 1000,
+          "atk": 100,
+          "def": 100,
+          "sta": 300,
+          "agi": 100,
+          "spd": 300,
+          "tec": 100,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ad2e23f019e762c214d9c00"
+      },
+      {
+        "entityId": "summon_7",
+        "monsterId": "klein_projection",
+        "summonerId": "mob_0_klein_moretti",
+        "name": "迪盧克 的歷史投影",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "歷史迷霧",
+        "floor": 58,
+        "level": 165,
+        "stats": {
+          "hp": 1000,
+          "atk": 100,
+          "def": 100,
+          "sta": 300,
+          "agi": 100,
+          "spd": 300,
+          "tec": 100,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ad2e23f019e762c214d9c01"
+      },
+      {
+        "entityId": "summon_9",
+        "monsterId": "klein_projection",
+        "summonerId": "mob_0_klein_moretti",
+        "name": "同人 的歷史投影",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "歷史迷霧",
+        "floor": 58,
+        "level": 165,
+        "stats": {
+          "hp": 1000,
+          "atk": 100,
+          "def": 100,
+          "sta": 300,
+          "agi": 100,
+          "spd": 300,
+          "tec": 100,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ad2e23f019e762c214d9c02"
+      }
+    ]
+  },
+  "_id": "6ad2e23f019e762c214d9bfa",
+  "reportId": 219897,
+  "userIds": [
+    "6aa7de14cc943baeed96be1f",
+    "6ab08d63da9c7ee989f18102",
+    "6aae0e1e32a990089bdaf160"
+  ],
+  "battleType": "BOSS",
+  "boss": {
+    "floorNumber": 58,
+    "name": "克萊恩·莫雷蒂",
+    "title": "詭秘之主",
+    "imagePath": "/images/boss/klein-moretti.webp"
+  },
+  "result": "WIN",
+  "outcomes": [
+    {
+      "userId": "6aa7de14cc943baeed96be1f",
+      "name": "同人",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 59
+    },
+    {
+      "userId": "6ab08d63da9c7ee989f18102",
+      "name": "迪盧克",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 59
+    }
+  ],
+  "createdAt": "2026-10-17T02:49:35.443Z",
+  "__v": 0,
+  "logs": [
+    {
+      "type": "BATTLE_START",
+      "message": "戰鬥開始！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "message": "一陣灰白的霧氣漫過眼前。等霧散開，挑戰者們發現自己坐在一張古老的青銅長桌旁，四周是望不到盡頭的灰霧，頭頂是一座巍峨的宮殿。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "message": "長桌最上首的高背椅上，坐著一道被灰霧遮住面目的人影。祂開口了，聲音不高，卻像從很遠的地方傳來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "message": "愚者：「新成員啊，……就用我走過的路，來考考你們吧。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "message": "灰霧裡走出一個穿著舊外套的年輕人，腰間別著一把左輪手槍，手腕上纏著一條黃水晶靈擺。那是剛喝下占卜家魔藥的克萊恩·莫雷蒂。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_opening",
+      "message": "長桌旁的高背椅一張接一張亮起微光：同人 的椅背上浮現了「正義」，迪盧克 的椅背上浮現了「倒吊人」，有紀 的椅背上浮現了「太陽」。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_opening",
+      "message": "克萊恩·莫雷蒂：「各位好。我是克萊恩·莫雷蒂，一個……剛入行的占卜家。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "克萊恩·莫雷蒂 從袖口垂下一條黃水晶靈擺，低聲念出了 同人 的名字。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 9（19） + 骰出 48 = 77，同人 幸運（293 → 20） + 骰出 84 = 104。",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 29,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 9（19）",
+          "roll": 48,
+          "total": 77
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 20,
+          "modifier": 0,
+          "baseText": "幸運（293 → 20）",
+          "roll": 84,
+          "total": 104
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺停在半空，一動也不動。克萊恩·莫雷蒂 皺了皺眉，什麼也沒看見。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_opening",
+      "message": "迪盧克 把手套拉緊，大劍從背上卸了下來：「酒莊還有帳要對，速戰速決。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_1",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1043,
+      "actualDamage": 1043,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 踏前一步，第一道逆焰斬向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1043 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_2",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1140,
+      "actualDamage": 1140,
+      "isCrit": true,
+      "blocked": false,
+      "message": "火焰沒有熄，第二道逆焰追著 克萊恩·莫雷蒂 砍了過去，會心一擊！對 克萊恩·莫雷蒂 造成了 1140 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_3",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 337,
+      "actualDamage": 337,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 把劍掄過頭頂，第三道逆焰重重劈在 克萊恩·莫雷蒂 身上，對 克萊恩·莫雷蒂 造成了 337 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "shadow_clone_jutsu",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 把葉冠左右交疊，用葉片飛快地結出十字印：「砰——！」白煙猛然炸開。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "summon_1",
+      "skillId": "shadow_clone_jutsu",
+      "isNormalAttack": false,
+      "message": "同人的影分身 從白煙裡滾了出來。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_revolver",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 1335,
+      "actualDamage": 1335,
+      "isCrit": true,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 舉起左輪手槍，朝 迪盧克 扣下了扳機，會心一擊！對 迪盧克 造成了 1335 點傷害！"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "targetId": "summon_2",
+      "skillId": "yuuki_sleeping_knights",
+      "isNormalAttack": false,
+      "message": "有紀 發出公會訊號，沉睡騎士的 帖奇 趕來助陣！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "summon_2",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "帖奇：「我來擋。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "standard_offensive_magic",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2721,
+      "actualDamage": 2721,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 無聲地放出一般攻擊魔法，會心一擊！對 克萊恩·莫雷蒂 造成了 2721 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 1335,
+      "message": "同人 喚出了小黃金樹，金色暖光使 迪盧克 恢復了 1335 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 有紀 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 帖奇 恢復了 0 HP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_revolver",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "value": 380,
+      "actualDamage": 380,
+      "isCrit": false,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 舉起左輪手槍，朝 帖奇 扣下了扳機，對 帖奇 造成了 380 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_revolver",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "value": 1322,
+      "actualDamage": 1322,
+      "isCrit": true,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 舉起左輪手槍，朝 帖奇 扣下了扳機，會心一擊！對 帖奇 造成了 1322 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 9（19） + 骰出 29 = 58，同人 幸運（293 → 20） + 骰出 58 = 78。",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 29,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 9（19）",
+          "roll": 29,
+          "total": 58
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 20,
+          "modifier": 0,
+          "baseText": "幸運（293 → 20）",
+          "roll": 58,
+          "total": 78
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺晃了兩下就停了。這一次，克萊恩·莫雷蒂 沒有占卜到什麼。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_revolver",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "message": "克萊恩·莫雷蒂 舉起左輪手槍，朝 帖奇 扣下了扳機，但是被 帖奇 躲開了！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 124,
+      "actionCancelled": true,
+      "eventId": "red_5",
+      "message": "一顆雄三飛彈把 有紀 的頭頂當作降落點，造成 124 點傷害。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 124,
+      "message": "同人的影分身 使出了 緊急包紮，使 有紀 回復了 124 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_1",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 558,
+      "actualDamage": 558,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 單手拖起大劍，斜斜一劍劈向 克萊恩·莫雷蒂，對 克萊恩·莫雷蒂 造成了 558 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "standard_offensive_magic",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 3244,
+      "actualDamage": 3244,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 無聲地放出一般攻擊魔法，會心一擊！對 克萊恩·莫雷蒂 造成了 3244 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_2",
+      "skillId": "yuuki_tecchi_mace",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 608,
+      "actualDamage": 608,
+      "isCrit": true,
+      "blocked": false,
+      "message": "帖奇 頂著大盾往前推，順手一錘，會心一擊！對 克萊恩·莫雷蒂 造成了 608 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "summon_2",
+      "targetId": "summon_2",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 53,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 帖奇 的頭，造成 53 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_revolver",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 1176,
+      "actualDamage": 1176,
+      "isCrit": true,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 舉起左輪手槍，朝 同人 扣下了扳機，會心一擊！對 同人 造成了 1176 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_advance",
+      "message": "克萊恩·莫雷蒂 喝下了第二瓶魔藥。他的身體變得異常靈活，臉上掛起一個看不出真假的笑容。序列 8，小丑。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_2",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2381,
+      "actualDamage": 2381,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 借著揮劍的勢頭轉身，橫斬 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 2381 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2220,
+      "actualDamage": 2220,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 攻擊，會心一擊！對 克萊恩·莫雷蒂 造成了 2220 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1366,
+      "actualDamage": 1366,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 2 連擊，會心一擊！對 克萊恩·莫雷蒂 造成了 1366 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "standard_offensive_magic",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 3158,
+      "actualDamage": 3158,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 無聲地放出一般攻擊魔法，會心一擊！對 克萊恩·莫雷蒂 造成了 3158 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_3",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 494,
+      "actualDamage": 494,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 雙手握劍，由下往上挑向 克萊恩·莫雷蒂，對 克萊恩·莫雷蒂 造成了 494 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 8（17） + 骰出 94 = 125，有紀 幸運（351 → 24） + 骰出 46 = 70。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 31,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 8（17）",
+          "roll": 94,
+          "total": 125
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "幸運（351 → 24）",
+          "roll": 46,
+          "total": 70
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺順時針轉了起來。克萊恩·莫雷蒂 看見了 有紀 接下來的動作。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 62,
+      "actionCancelled": true,
+      "eventId": "purple_1",
+      "message": "有紀 往後退後腦撞到樹受到 62 點傷害。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_card",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "message": "克萊恩·莫雷蒂 使出了 紙牌飛擲，指間的紙牌硬得像鐵片，旋轉著切向 有紀，但是被 有紀 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "standard_offensive_magic",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 3264,
+      "actualDamage": 3264,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 無聲地放出一般攻擊魔法，會心一擊！對 克萊恩·莫雷蒂 造成了 3264 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_madness",
+      "message": "克萊恩·莫雷蒂 還沒把上一瓶魔藥消化完，就仰頭喝下了下一瓶。他表面上一派從容，耳邊卻響起了細碎的囈語。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_advance",
+      "message": "克萊恩·莫雷蒂 喝下了第三瓶魔藥，從袖口抽出一疊早就折好的紙人，指尖一彈就燃起了火苗。序列 7，魔術師。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "value": 1755,
+      "message": "同人 使出了 緊急包紮，使 帖奇 回復了 1755 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "message": "有紀 還沒出手，克萊恩·莫雷蒂 就已經往旁邊讓開了。小丑的危險直覺，加上剛才的占卜，讓他躲得從從容容！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 297,
+      "actualDamage": 297,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 297 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 56,
+      "actualDamage": 56,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 3 劍，對 克萊恩·莫雷蒂 造成了 56 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 65,
+      "actualDamage": 65,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 劍，對 克萊恩·莫雷蒂 造成了 65 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 63,
+      "actualDamage": 63,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 劍，對 克萊恩·莫雷蒂 造成了 63 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 59,
+      "actualDamage": 59,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 6 劍，對 克萊恩·莫雷蒂 造成了 59 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 278,
+      "actualDamage": 278,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 7 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 278 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 65,
+      "actualDamage": 65,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 8 劍，對 克萊恩·莫雷蒂 造成了 65 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 316,
+      "actualDamage": 316,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 9 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 316 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 306,
+      "actualDamage": 306,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 10 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 306 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "message": "克萊恩·莫雷蒂 身上的十字刻下了 9 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_klein_moretti"
+    },
+    {
+      "type": "BLOCK",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 0,
+      "actualDamage": 0,
+      "isCrit": true,
+      "blocked": true,
+      "message": "第 11 劍，但是被 克萊恩·莫雷蒂 用紙人替身擋下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_paper",
+      "message": "被打中的是一張紙人，它在半空中燒成了灰。克萊恩·莫雷蒂 本人站在幾步外，心裡暗暗慶幸出門前多折了幾張。他身上的紙人還剩 2 張。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "message": "克萊恩·莫雷蒂 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 161,
+      "actualDamage": 161,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 161 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 611,
+      "actualDamage": 611,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 迪盧克 造成了 611 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 854,
+      "actualDamage": 854,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 有紀 造成了 854 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "message": "但是被 同人的影分身 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "value": 225,
+      "actualDamage": 225,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 帖奇 造成了 225 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_klein_moretti",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 45,
+          "modifier": 0,
+          "baseText": "技巧（659 → 45）",
+          "roll": 98,
+          "total": 143
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "技巧（350 → 24）",
+          "roll": 92,
+          "total": 116
+        },
+        "winner": "LEFT"
+      },
+      "message": "絕劍判定：有紀 技巧（659 → 45） + 骰出 98 = 143，克萊恩·莫雷蒂 技巧（350 → 24） + 骰出 92 = 116。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "message": "有紀 接下這一劍，第 68 勝。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_riposte",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 963,
+      "actualDamage": 963,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 反手刺了回去，會心一擊！對 克萊恩·莫雷蒂 造成了 963 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6aae0e1e32a990089bdaf160",
+        "targetId": "mob_0_klein_moretti",
+        "incomingSkillId": "klein_snap"
+      }
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_2",
+      "skillId": "yuuki_tecchi_mace",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 618,
+      "actualDamage": 618,
+      "isCrit": true,
+      "blocked": false,
+      "message": "帖奇 頂著大盾往前推，順手一錘，會心一擊！對 克萊恩·莫雷蒂 造成了 618 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_1",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1135,
+      "actualDamage": 1135,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 踏前一步，第一道逆焰斬向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1135 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_2",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1109,
+      "actualDamage": 1109,
+      "isCrit": true,
+      "blocked": false,
+      "message": "火焰沒有熄，第二道逆焰追著 克萊恩·莫雷蒂 砍了過去，會心一擊！對 克萊恩·莫雷蒂 造成了 1109 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_3",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 383,
+      "actualDamage": 383,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 把劍掄過頭頂，第三道逆焰重重劈在 克萊恩·莫雷蒂 身上，對 克萊恩·莫雷蒂 造成了 383 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 1337,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 1337 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 611,
+      "message": "同人 喚出了小黃金樹，金色暖光使 迪盧克 恢復了 611 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 916,
+      "message": "同人 喚出了小黃金樹，金色暖光使 有紀 恢復了 916 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "value": 225,
+      "message": "同人 喚出了小黃金樹，金色暖光使 帖奇 恢復了 225 HP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 2031,
+      "actualDamage": 2031,
+      "isCrit": true,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 從 有紀 身後的燭火裡走了出來，抬手就是一發空氣彈，會心一擊！對 有紀 造成了 2031 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "summon_1",
+      "targetId": "summon_1",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 139,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 同人的影分身 的頭，造成 139 點傷害。"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_1",
+      "message": "同人的影分身 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_2",
+      "skillId": "yuuki_tecchi_mace",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 134,
+      "actualDamage": 134,
+      "isCrit": false,
+      "blocked": false,
+      "message": "帖奇 頂著大盾往前推，順手一錘，對 克萊恩·莫雷蒂 造成了 134 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "summon_2",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "帖奇 揮了揮手，回到沉睡騎士的隊伍裡。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 7（15） + 骰出 61 = 94，有紀 幸運（351 → 24） + 骰出 100 = 124。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 33,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 7（15）",
+          "roll": 61,
+          "total": 94
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "幸運（351 → 24）",
+          "roll": 100,
+          "total": 124
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺停在半空，一動也不動。克萊恩·莫雷蒂 皺了皺眉，什麼也沒看見。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 311,
+      "actualDamage": 311,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 1 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 311 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 59,
+      "actualDamage": 59,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 劍，對 克萊恩·莫雷蒂 造成了 59 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 330,
+      "actualDamage": 330,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 330 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 62,
+      "actualDamage": 62,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 劍，對 克萊恩·莫雷蒂 造成了 62 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 60,
+      "actualDamage": 60,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 劍，對 克萊恩·莫雷蒂 造成了 60 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 316,
+      "actualDamage": 316,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 6 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 316 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 306,
+      "actualDamage": 306,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 7 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 306 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 297,
+      "actualDamage": 297,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 8 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 297 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 59,
+      "actualDamage": 59,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 9 劍，對 克萊恩·莫雷蒂 造成了 59 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 278,
+      "actualDamage": 278,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 10 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 278 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "message": "克萊恩·莫雷蒂 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_klein_moretti"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1176,
+      "actualDamage": 1176,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 11 劍，貫穿十字的正中央，對 克萊恩·莫雷蒂 造成 1176 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "targetId": "mob_0_klein_moretti",
+      "skillId": "diluc_counter",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "incomingSkillId": "klein_card",
+      "value": 1670,
+      "isCrit": true,
+      "message": "克萊恩·莫雷蒂 使出了 紙牌飛擲，指間的紙牌硬得像鐵片，旋轉著切向 迪盧克，但是遭迪盧克以反擊反擊！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_counter",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1670,
+      "actualDamage": 1670,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 用劍身格開這一擊，順勢回斬 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1670 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6ab08d63da9c7ee989f18102",
+        "targetId": "mob_0_klein_moretti",
+        "incomingSkillId": "klein_card"
+      }
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 迪盧克 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 2031,
+      "message": "同人 喚出了小黃金樹，金色暖光使 有紀 恢復了 2031 HP！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn",
+      "skillTier": "ultimate",
+      "message": "迪盧克 把大劍拖過地面，火星一路濺開。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn",
+      "skillTier": "ultimate",
+      "message": "迪盧克：「父親說過，騎士的劍是為了守護而揮的。那天我沒能守住他，騎士團也選擇了沉默。……所以從那之後，我自己守。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn",
+      "skillTier": "ultimate",
+      "message": "迪盧克：「黎明前的夜最暗。同人、有紀——這把火，給你們照路。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn",
+      "skillTier": "ultimate",
+      "message": "劍上的火焰化成一隻火鳥，展開雙翼衝了出去。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn",
+      "skillTier": "ultimate",
+      "message": "迪盧克 喚來了黎明！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn_slash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2569,
+      "actualDamage": 2569,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 一劍劈開面前的 克萊恩·莫雷蒂，火焰炸開，會心一擊！對 克萊恩·莫雷蒂 造成了 2569 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn_phoenix",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1635,
+      "actualDamage": 1635,
+      "isCrit": true,
+      "blocked": false,
+      "message": "火鳥從 克萊恩·莫雷蒂 身上穿了過去，會心一擊！對 克萊恩·莫雷蒂 造成了 1635 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn_burst",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2139,
+      "actualDamage": 2139,
+      "isCrit": true,
+      "blocked": false,
+      "message": "火鳥落在 克萊恩·莫雷蒂 身上，炸成一片火海，會心一擊！對 克萊恩·莫雷蒂 造成了 2139 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn",
+      "message": "火焰順著劍身燒了上來。迪盧克 的大劍帶上了火元素。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_madness",
+      "message": "克萊恩·莫雷蒂 還沒把上一瓶魔藥消化完，就仰頭喝下了下一瓶。他表面上一派從容，耳邊卻響起了細碎的囈語。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_advance",
+      "message": "克萊恩·莫雷蒂 喝下了第四瓶魔藥。他的五官像水面一樣晃了晃，變成一張冷峻陌生的臉，那是瘋狂的冒險家格爾曼·斯帕羅。序列 6，無面人。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2076,
+      "actualDamage": 2076,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 攻擊，會心一擊！對 克萊恩·莫雷蒂 造成了 2076 點傷害！"
+    },
+    {
+      "type": "BLOCK",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_fire_1",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 0,
+      "actualDamage": 0,
+      "isCrit": true,
+      "blocked": true,
+      "message": "迪盧克 揮出燃燒的大劍，火舌舔過 克萊恩·莫雷蒂，但是被 克萊恩·莫雷蒂 用紙人替身擋下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_paper",
+      "message": "又一張紙人燒成了灰。克萊恩·莫雷蒂 身上的紙人還剩 1 張。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_wedding",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "有紀：「有人要跟有紀結婚嗎？今天七夕！」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_wedding",
+      "message": "婚禮的鐘聲響起，同人 按下了接受。這一次不是試穿了。",
+      "targetId": "6aa7de14cc943baeed96be1f"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "standard_offensive_magic",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 539,
+      "actualDamage": 539,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 無聲地放出一般攻擊魔法，對 克萊恩·莫雷蒂 造成了 539 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 6（13） + 骰出 97 = 132，有紀 幸運（351 → 24） + 骰出 83 = 107。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 35,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 6（13）",
+          "roll": 97,
+          "total": 132
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "幸運（351 → 24）",
+          "roll": 83,
+          "total": 107
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺又轉了起來。有紀 的下一步，克萊恩·莫雷蒂 已經知道了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 499,
+      "actualDamage": 499,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 掄著燃燒的大劍原地迴旋，火圈一圈一圈捲向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 499 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 116,
+      "actualDamage": 116,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 圈，對 克萊恩·莫雷蒂 造成了 116 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 456,
+      "actualDamage": 456,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 456 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 114,
+      "actualDamage": 114,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 圈，對 克萊恩·莫雷蒂 造成了 114 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 111,
+      "actualDamage": 111,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 圈，對 克萊恩·莫雷蒂 造成了 111 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_finish_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1486,
+      "actualDamage": 1486,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 收住轉勢，帶著一身的火砸向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1486 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 479,
+      "actualDamage": 479,
+      "isCrit": false,
+      "blocked": false,
+      "message": "有紀 攻擊，對 克萊恩·莫雷蒂 造成了 479 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 0,
+      "message": "同人 使出了 緊急包紮，使 迪盧克 回復了 0 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 491,
+      "actualDamage": 491,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 掄著燃燒的大劍原地迴旋，火圈一圈一圈捲向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 491 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 104,
+      "actualDamage": 104,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 圈，對 克萊恩·莫雷蒂 造成了 104 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 482,
+      "actualDamage": 482,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 482 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 114,
+      "actualDamage": 114,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 4 圈，對 克萊恩·莫雷蒂 造成了 114 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 117,
+      "actualDamage": 117,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 圈，對 克萊恩·莫雷蒂 造成了 117 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_finish_fire",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1490,
+      "actualDamage": 1490,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 收住轉勢，帶著一身的火砸向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1490 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_anchor",
+      "message": "克萊恩·莫雷蒂 耳邊的囈語越來越響。他按住太陽穴，閉上眼，回到灰霧之上，聽著信徒們一聲一聲的祈禱，把自己慢慢拉了回來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_anchor",
+      "message": "這段時間，他身上沒有任何準備。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 0,
+      "message": "同人 使出了 緊急包紮，使 同人 回復了 0 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 1758,
+      "actualDamage": 1758,
+      "isCrit": true,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 從 迪盧克 身後的燭火裡走了出來，抬手就是一發空氣彈，會心一擊！對 迪盧克 造成了 1758 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_fire_1",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 748,
+      "actualDamage": 748,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 揮出燃燒的大劍，火舌舔過 克萊恩·莫雷蒂，對 克萊恩·莫雷蒂 造成了 748 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_dawn",
+      "message": "劍上的火熄了。迪盧克 甩掉劍身上的餘燼。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 6（13） + 骰出 35 = 70，迪盧克 幸運（376 → 26） + 骰出 51 = 77。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 35,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 6（13）",
+          "roll": 35,
+          "total": 70
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 26,
+          "modifier": 0,
+          "baseText": "幸運（376 → 26）",
+          "roll": 51,
+          "total": 77
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺晃了兩下就停了。這一次，克萊恩·莫雷蒂 沒有占卜到什麼。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "shadow_clone_jutsu",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 把葉冠左右交疊，用葉片飛快地結出十字印：「砰——！」白煙猛然炸開。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "summon_3",
+      "skillId": "shadow_clone_jutsu",
+      "isNormalAttack": false,
+      "message": "同人的影分身 從白煙裡滾了出來。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_2",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 471,
+      "actualDamage": 471,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 借著揮劍的勢頭轉身，橫斬 克萊恩·莫雷蒂，對 克萊恩·莫雷蒂 造成了 471 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_madness",
+      "message": "克萊恩·莫雷蒂 還沒把上一瓶魔藥消化完，就仰頭喝下了下一瓶。他表面上一派從容，耳邊卻響起了細碎的囈語。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_advance",
+      "message": "克萊恩·莫雷蒂 喝下了第五瓶魔藥。他的指尖垂下無數條透明的細線，只有他自己看得見。序列 5，秘偶大師。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "message": "克萊恩·莫雷蒂 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 99,
+      "actualDamage": 99,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 99 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_trial_marriage",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "message": "有紀 拖著婚紗擋到 同人 身前，替對方扛下了 66 點傷害。"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "targetId": "mob_0_klein_moretti",
+      "skillId": "diluc_counter",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "incomingSkillId": "klein_snap",
+      "value": 358,
+      "isCrit": false,
+      "message": "但是遭迪盧克以反擊反擊！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_counter",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 358,
+      "actualDamage": 358,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 用劍身格開這一擊，順勢回斬 克萊恩·莫雷蒂，對 克萊恩·莫雷蒂 造成了 358 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6ab08d63da9c7ee989f18102",
+        "targetId": "mob_0_klein_moretti",
+        "incomingSkillId": "klein_snap"
+      }
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 277,
+      "actualDamage": 277,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 有紀 造成了 277 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_3",
+      "value": 575,
+      "actualDamage": 1,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 同人的影分身 造成了 575 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_3",
+      "message": "同人的影分身 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_klein_moretti",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 45,
+          "modifier": 0,
+          "baseText": "技巧（659 → 45）",
+          "roll": 85,
+          "total": 130
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "技巧（350 → 24）",
+          "roll": 51,
+          "total": 75
+        },
+        "winner": "LEFT"
+      },
+      "message": "絕劍判定：有紀 技巧（659 → 45） + 骰出 85 = 130，克萊恩·莫雷蒂 技巧（350 → 24） + 骰出 51 = 75。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "message": "有紀 接下這一劍，第 69 勝。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_riposte",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 232,
+      "actualDamage": 232,
+      "isCrit": false,
+      "blocked": false,
+      "message": "有紀 反手刺了回去，對 克萊恩·莫雷蒂 造成了 232 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6aae0e1e32a990089bdaf160",
+        "targetId": "mob_0_klein_moretti",
+        "incomingSkillId": "klein_snap"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 21 = 58，有紀 智力（86 → 6） + 骰出 34 = 40。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 21,
+          "total": 58
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 6,
+          "modifier": 0,
+          "baseText": "智力（86 → 6）",
+          "roll": 34,
+          "total": 40
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "有紀 的手腳像是被什麼東西輕輕牽了一下，自己卻看不見。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 302,
+      "actualDamage": 302,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 1 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 302 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 64,
+      "actualDamage": 64,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 劍，對 克萊恩·莫雷蒂 造成了 64 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 297,
+      "actualDamage": 297,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 297 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 321,
+      "actualDamage": 321,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 4 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 321 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 70,
+      "actualDamage": 70,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 劍，對 克萊恩·莫雷蒂 造成了 70 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 70,
+      "actualDamage": 70,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 6 劍，對 克萊恩·莫雷蒂 造成了 70 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 72,
+      "actualDamage": 72,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 7 劍，對 克萊恩·莫雷蒂 造成了 72 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 306,
+      "actualDamage": 306,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 8 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 306 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 63,
+      "actualDamage": 63,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 9 劍，對 克萊恩·莫雷蒂 造成了 63 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 66,
+      "actualDamage": 66,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 10 劍，對 克萊恩·莫雷蒂 造成了 66 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "message": "克萊恩·莫雷蒂 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_klein_moretti"
+    },
+    {
+      "type": "BLOCK",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 0,
+      "actualDamage": 0,
+      "isCrit": true,
+      "blocked": true,
+      "message": "第 11 劍，但是被 克萊恩·莫雷蒂 用紙人替身擋下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_paper",
+      "message": "又一張紙人燒成了灰。克萊恩·莫雷蒂 身上的紙人還剩 0 張。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_face",
+      "message": "克萊恩·莫雷蒂 的臉晃了一晃，變成了 同人 的模樣，學著 同人 的架勢，朝 迪盧克 出手——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "klein_face",
+      "value": 460,
+      "actualDamage": 460,
+      "blocked": false,
+      "message": "迪盧克 挨了一記跟 同人 一模一樣的招式，受到 460 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_paper",
+      "message": "克萊恩·莫雷蒂 趁空檔又折好了一張紙人，收進了口袋。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 21 = 58，有紀 智力（86 → 6） + 骰出 37 = 43。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 21,
+          "total": 58
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 6,
+          "modifier": 0,
+          "baseText": "智力（86 → 6）",
+          "roll": 37,
+          "total": 43
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "有紀 身上的細線又多了一條，動作越來越不像自己的了。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 121,
+      "actionCancelled": true,
+      "eventId": "red_5",
+      "message": "一顆雄三飛彈把 有紀 的頭頂當作降落點，造成 121 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 2154,
+      "actualDamage": 2154,
+      "isCrit": true,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 從 有紀 身後的燭火裡走了出來，抬手就是一發空氣彈，會心一擊！對 有紀 造成了 2154 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 86 = 123，同人 智力（929 → 64） + 骰出 92 = 156。",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 86,
+          "total": 123
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 64,
+          "modifier": 0,
+          "baseText": "智力（929 → 64）",
+          "roll": 92,
+          "total": 156
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "同人 打了個寒顫，甩開了纏上來的什麼東西。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 447,
+      "actualDamage": 447,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 掄著大劍原地迴旋，一圈一圈捲向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 447 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 438,
+      "actualDamage": 438,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 438 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 109,
+      "actualDamage": 109,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 3 圈，對 克萊恩·莫雷蒂 造成了 109 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 412,
+      "actualDamage": 412,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 4 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 412 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 469,
+      "actualDamage": 469,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 5 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 469 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_finish",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 320,
+      "actualDamage": 320,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 收住轉勢，最後一劍砸向 克萊恩·莫雷蒂，對 克萊恩·莫雷蒂 造成了 320 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 67 = 104，同人 幸運（293 → 20） + 骰出 55 = 75。",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 67,
+          "total": 104
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 20,
+          "modifier": 0,
+          "baseText": "幸運（293 → 20）",
+          "roll": 55,
+          "total": 75
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "克萊恩·莫雷蒂 瞥了一眼靈擺，又瞥了一眼 同人，嘴角微微一提。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_air",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 590,
+      "actualDamage": 590,
+      "isCrit": false,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 使出了 空氣彈，食指朝 有紀 一比，嘴裡輕輕「砰」了一聲，對 有紀 造成了 590 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_klein_moretti",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 45,
+          "modifier": 0,
+          "baseText": "技巧（659 → 45）",
+          "roll": 87,
+          "total": 132
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "技巧（350 → 24）",
+          "roll": 39,
+          "total": 63
+        },
+        "winner": "LEFT"
+      },
+      "message": "絕劍判定：有紀 技巧（659 → 45） + 骰出 87 = 132，克萊恩·莫雷蒂 技巧（350 → 24） + 骰出 39 = 63。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "message": "有紀 接下這一劍，第 70 勝。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_riposte",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1021,
+      "actualDamage": 1021,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 反手刺了回去，會心一擊！對 克萊恩·莫雷蒂 造成了 1021 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6aae0e1e32a990089bdaf160",
+        "targetId": "mob_0_klein_moretti",
+        "incomingSkillId": "klein_air"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 72 = 109，同人 智力（929 → 64） + 骰出 21 = 85。",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 72,
+          "total": 109
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 64,
+          "modifier": 0,
+          "baseText": "智力（929 → 64）",
+          "roll": 21,
+          "total": 85
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "同人 的手腳像是被什麼東西輕輕牽了一下，自己卻看不見。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "targetId": "summon_4",
+      "skillId": "yuuki_sleeping_knights",
+      "isNormalAttack": false,
+      "message": "有紀 發出公會訊號，沉睡騎士的 準 趕來助陣！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "summon_4",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "準：「交給我吧，隊長！」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_1",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1144,
+      "actualDamage": 1144,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 踏前一步，第一道逆焰斬向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1144 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_2",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 191,
+      "actualDamage": 191,
+      "isCrit": false,
+      "blocked": false,
+      "message": "火焰沒有熄，第二道逆焰追著 克萊恩·莫雷蒂 砍了過去，對 克萊恩·莫雷蒂 造成了 191 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_3",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1341,
+      "actualDamage": 1341,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 把劍掄過頭頂，第三道逆焰重重劈在 克萊恩·莫雷蒂 身上，會心一擊！對 克萊恩·莫雷蒂 造成了 1341 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 2218,
+      "message": "同人 使出了 緊急包紮，使 迪盧克 回復了 2218 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "message": "克萊恩·莫雷蒂 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "message": "但是被 同人 躲開了！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "message": "但是被 迪盧克 躲開了！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "message": "但是被 有紀 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_4",
+      "value": 1020,
+      "actualDamage": 1020,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 準 造成了 1020 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 37 = 74，有紀 智力（86 → 6） + 骰出 65 = 71。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 37,
+          "total": 74
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 6,
+          "modifier": 0,
+          "baseText": "智力（86 → 6）",
+          "roll": 65,
+          "total": 71
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "有紀 身上的細線又多了一條，動作越來越不像自己的了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_face",
+      "message": "克萊恩·莫雷蒂 的臉晃了一晃，變成了 有紀 的模樣，學著 有紀 的架勢，朝 迪盧克 出手——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "klein_face",
+      "value": 468,
+      "actualDamage": 468,
+      "blocked": false,
+      "message": "迪盧克 挨了一記跟 有紀 一模一樣的招式，受到 468 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 14 = 51，迪盧克 智力（190 → 13） + 骰出 19 = 32。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 14,
+          "total": 51
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 13,
+          "modifier": 0,
+          "baseText": "智力（190 → 13）",
+          "roll": 19,
+          "total": 32
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "迪盧克 的手腳像是被什麼東西輕輕牽了一下，自己卻看不見。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2598,
+      "actualDamage": 2598,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 攻擊，會心一擊！對 克萊恩·莫雷蒂 造成了 2598 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 130,
+      "actionCancelled": true,
+      "eventId": "purple_7",
+      "message": "一群發狂的比特犬衝過來襲擊 同人，造成 130 點傷害。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 37 = 74，迪盧克 幸運（376 → 26） + 骰出 90 = 116。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 37,
+          "total": 74
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 26,
+          "modifier": 0,
+          "baseText": "幸運（376 → 26）",
+          "roll": 90,
+          "total": 116
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺停在半空，一動也不動。克萊恩·莫雷蒂 皺了皺眉，什麼也沒看見。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_air",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "message": "克萊恩·莫雷蒂 使出了 空氣彈，食指朝 同人 一比，嘴裡輕輕「砰」了一聲，但是被 同人 躲開了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 5（11） + 骰出 70 = 107，迪盧克 智力（190 → 13） + 骰出 12 = 25。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 37,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 5（11）",
+          "roll": 70,
+          "total": 107
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 13,
+          "modifier": 0,
+          "baseText": "智力（190 → 13）",
+          "roll": 12,
+          "total": 25
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "迪盧克 身上的細線又多了一條，動作越來越不像自己的了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_1",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 828,
+      "actualDamage": 828,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 踏前一步，第一道逆焰斬向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 828 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_2",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 218,
+      "actualDamage": 218,
+      "isCrit": false,
+      "blocked": false,
+      "message": "火焰沒有熄，第二道逆焰追著 克萊恩·莫雷蒂 砍了過去，對 克萊恩·莫雷蒂 造成了 218 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_onslaught_3",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1232,
+      "actualDamage": 1232,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 把劍掄過頭頂，第三道逆焰重重劈在 克萊恩·莫雷蒂 身上，會心一擊！對 克萊恩·莫雷蒂 造成了 1232 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_4",
+      "skillId": "yuuki_jun_greatsword",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 355,
+      "actualDamage": 355,
+      "isCrit": false,
+      "blocked": false,
+      "message": "準 掄起大劍劈下，對 克萊恩·莫雷蒂 造成了 355 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_4",
+      "skillId": "yuuki_jun_greatsword",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1553,
+      "actualDamage": 1553,
+      "isCrit": true,
+      "blocked": false,
+      "message": "準 掄起大劍劈下，會心一擊！對 克萊恩·莫雷蒂 造成了 1553 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_madness",
+      "message": "克萊恩·莫雷蒂 還沒把上一瓶魔藥消化完，就仰頭喝下了下一瓶。他表面上一派從容，耳邊卻響起了細碎的囈語。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_advance",
+      "message": "克萊恩·莫雷蒂 換上一身考究的禮服，自稱道恩·唐泰斯。這一場表演到了高潮，他喝下了第六瓶魔藥。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_advance",
+      "message": "他的身體在一瞬間散成無數條蠕動的靈之蟲，又重新聚攏成人形。他已經不再是凡人了。序列 4，詭法師。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 68,
+      "actualDamage": 68,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 1 劍，對 克萊恩·莫雷蒂 造成了 68 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 378,
+      "actualDamage": 378,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 378 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 316,
+      "actualDamage": 316,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 316 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 321,
+      "actualDamage": 321,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 4 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 321 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 316,
+      "actualDamage": 316,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 5 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 316 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 378,
+      "actualDamage": 378,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 6 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 378 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 316,
+      "actualDamage": 316,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 7 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 316 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 321,
+      "actualDamage": 321,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 8 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 321 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 354,
+      "actualDamage": 354,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 9 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 354 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 326,
+      "actualDamage": 326,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 10 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 326 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "message": "克萊恩·莫雷蒂 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_klein_moretti"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1168,
+      "actualDamage": 1168,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 11 劍，貫穿十字的正中央，對 克萊恩·莫雷蒂 造成 1168 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "有紀 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "stage": "TIRED",
+      "message": "有紀 開始有點喘"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 213,
+      "actualDamage": 213,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 1 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 213 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 246,
+      "actualDamage": 246,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 246 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 59,
+      "actualDamage": 59,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 3 劍，對 克萊恩·莫雷蒂 造成了 59 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 246,
+      "actualDamage": 246,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 4 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 246 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 52,
+      "actualDamage": 52,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 5 劍，對 克萊恩·莫雷蒂 造成了 52 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 230,
+      "actualDamage": 230,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 6 劍，會心一擊！對 克萊恩·莫雷蒂 造成了 230 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 58,
+      "actualDamage": 58,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 7 劍，對 克萊恩·莫雷蒂 造成了 58 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 61,
+      "actualDamage": 61,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 8 劍，對 克萊恩·莫雷蒂 造成了 61 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 53,
+      "actualDamage": 53,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 9 劍，對 克萊恩·莫雷蒂 造成了 53 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 62,
+      "actualDamage": 62,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 10 劍，對 克萊恩·莫雷蒂 造成了 62 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "message": "克萊恩·莫雷蒂 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
+      "skillTier": "ultimate",
+      "targetId": "mob_0_klein_moretti"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "yuuki_rosario",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 972,
+      "actualDamage": 972,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 11 劍，貫穿十字的正中央，對 克萊恩·莫雷蒂 造成 972 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 157,
+      "actionCancelled": true,
+      "eventId": "purple_2",
+      "message": "有紀 踩到香蕉皮摔倒受到 157 點傷害。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_anchor",
+      "message": "克萊恩·莫雷蒂 耳邊的囈語越來越響。他按住太陽穴，閉上眼，回到灰霧之上，聽著信徒們一聲一聲的祈禱，把自己慢慢拉了回來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_anchor",
+      "message": "這段時間，他身上沒有任何準備。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "standard_offensive_magic",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 656,
+      "actualDamage": 656,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 無聲地放出一般攻擊魔法，對 克萊恩·莫雷蒂 造成了 656 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_1",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2135,
+      "actualDamage": 2135,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 單手拖起大劍，斜斜一劍劈向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 2135 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 4（9） + 骰出 29 = 68，有紀 幸運（280 → 19） + 骰出 90 = 109。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 39,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 4（9）",
+          "roll": 29,
+          "total": 68
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 19,
+          "modifier": 0,
+          "baseText": "幸運（280 → 19）",
+          "roll": 90,
+          "total": 109
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺晃了兩下就停了。這一次，克萊恩·莫雷蒂 沒有占卜到什麼。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 138,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 有紀 的頭，造成 138 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_2",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2060,
+      "actualDamage": 2060,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 借著揮劍的勢頭轉身，橫斬 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 2060 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_4",
+      "value": 1020,
+      "message": "同人 使出了 緊急包紮，使 準 回復了 1020 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_4",
+      "skillId": "yuuki_jun_greatsword",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1433,
+      "actualDamage": 1433,
+      "isCrit": true,
+      "blocked": false,
+      "message": "準 掄起大劍劈下，會心一擊！對 克萊恩·莫雷蒂 造成了 1433 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "summon_4",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "準 揮了揮手，回到沉睡騎士的隊伍裡。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_madness",
+      "message": "克萊恩·莫雷蒂 還沒把上一瓶魔藥消化完，就仰頭喝下了下一瓶。他表面上一派從容，耳邊卻響起了細碎的囈語。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_advance",
+      "message": "克萊恩·莫雷蒂 喝下了第七瓶魔藥，身後浮起一片灰白的迷霧，迷霧裡隱約有許多人影。序列 3，古代學者。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_projection",
+      "message": "克萊恩·莫雷蒂 使出了 歷史投影，伸手探進身後的灰霧，從歷史裡拉出了一個人影。那是 有紀，過去的 有紀。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "mob_0_klein_moretti",
+      "targetId": "summon_5",
+      "skillId": "klein_projection_call",
+      "isNormalAttack": false,
+      "message": "灰霧裡的人影一步一步走到了長桌旁。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_paper",
+      "message": "克萊恩·莫雷蒂 趁空檔又折好了一張紙人，收進了口袋。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 62 = 104，迪盧克 智力（190 → 13） + 骰出 6 = 19。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 62,
+          "total": 104
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 13,
+          "modifier": 0,
+          "baseText": "智力（190 → 13）",
+          "roll": 6,
+          "total": 19
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "迪盧克 身上的細線又多了一條，動作越來越不像自己的了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_air",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 2733,
+      "actualDamage": 2733,
+      "isCrit": true,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 使出了 空氣彈，食指朝 有紀 一比，嘴裡輕輕「砰」了一聲，會心一擊！對 有紀 造成了 2733 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_klein_moretti",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 45,
+          "modifier": 0,
+          "baseText": "技巧（659 → 45）",
+          "roll": 47,
+          "total": 92
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "技巧（350 → 24）",
+          "roll": 97,
+          "total": 121
+        },
+        "winner": "RIGHT"
+      },
+      "message": "絕劍判定：有紀 技巧（659 → 45） + 骰出 47 = 92，克萊恩·莫雷蒂 技巧（350 → 24） + 骰出 97 = 121。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "message": "有紀 的連勝停在第 70 勝。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 8 = 50，迪盧克 智力（190 → 13） + 骰出 31 = 44。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 8,
+          "total": 50
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 13,
+          "modifier": 0,
+          "baseText": "智力（190 → 13）",
+          "roll": 31,
+          "total": 44
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "klein_marionette",
+      "message": "細線收緊了。迪盧克 的眼神一下子空了，一條靈之蟲順著細線鑽了進去。迪盧克 成了秘偶。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "message": "克萊恩·莫雷蒂 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 114,
+      "actualDamage": 114,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 114 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_trial_marriage",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "message": "有紀 拖著婚紗擋到 同人 身前，替對方扛下了 76 點傷害。"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "targetId": "mob_0_klein_moretti",
+      "skillId": "diluc_counter",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "incomingSkillId": "klein_snap",
+      "value": 1775,
+      "isCrit": true,
+      "message": "但是遭迪盧克以反擊反擊！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_counter",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1775,
+      "actualDamage": 1775,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 用劍身格開這一擊，順勢回斬 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1775 點傷害！",
+      "isCounter": true,
+      "counterSource": {
+        "actorId": "6ab08d63da9c7ee989f18102",
+        "targetId": "mob_0_klein_moretti",
+        "incomingSkillId": "klein_snap"
+      }
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "message": "但是被 有紀 躲開了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 84 = 126，有紀 智力（68 → 5） + 骰出 90 = 95。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 84,
+          "total": 126
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 5,
+          "modifier": 0,
+          "baseText": "智力（68 → 5）",
+          "roll": 90,
+          "total": 95
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "klein_marionette",
+      "message": "細線收緊了。有紀 的眼神一下子空了，一條靈之蟲順著細線鑽了進去。有紀 成了秘偶。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "klein_marionette",
+      "message": "迪盧克 的動作僵硬得像一具提線木偶，轉身朝隊友出手。"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "diluc_sword_3",
+      "value": 855,
+      "isCrit": true,
+      "message": "迪盧克 雙手握劍，由下往上挑向 同人，但是遭同人反擊，會心一擊！受到 855 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_3",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 241,
+      "actualDamage": 241,
+      "isCrit": false,
+      "blocked": false,
+      "message": "大劍沒有停下，第 2 下，對 同人 造成了 241 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_3",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 600,
+      "actualDamage": 600,
+      "isCrit": true,
+      "blocked": false,
+      "message": "他順勢再進一步，第 3 下，會心一擊！對 同人 造成了 600 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 115,
+      "actionCancelled": true,
+      "eventId": "purple_6",
+      "message": "天外飛來一支箭射中 同人 的左膝蓋造成 115 點傷害。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 35 = 77，有紀 幸運（280 → 19） + 骰出 38 = 57。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 35,
+          "total": 77
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 19,
+          "modifier": 0,
+          "baseText": "幸運（280 → 19）",
+          "roll": 38,
+          "total": 57
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺順時針轉了起來。克萊恩·莫雷蒂 看見了 有紀 接下來的動作。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_5",
+      "skillId": "klein_projection_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 680,
+      "actualDamage": 680,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 的歷史投影 照著過去的樣子出手，打向 迪盧克，會心一擊！對 迪盧克 造成了 680 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_face",
+      "message": "克萊恩·莫雷蒂 的臉晃了一晃，變成了 同人 的模樣，學著 同人 的架勢，朝 有紀 出手——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "skillId": "klein_face",
+      "value": 628,
+      "actualDamage": 628,
+      "blocked": false,
+      "message": "有紀 挨了一記跟 同人 一模一樣的招式，受到 628 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 9 = 51，同人 智力（929 → 64） + 骰出 55 = 119。",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 9,
+          "total": 51
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 64,
+          "modifier": 0,
+          "baseText": "智力（929 → 64）",
+          "roll": 55,
+          "total": 119
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "同人 打了個寒顫，甩開了纏上來的什麼東西。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_night_hero",
+      "message": "夜風裡傳來一陣燒焦的味道。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "klein_marionette",
+      "message": "有紀 的動作僵硬得像一具提線木偶，轉身朝隊友出手。"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kibayuki_slash",
+      "value": 1081,
+      "isCrit": true,
+      "message": "有紀 攻擊，但是遭同人反擊，會心一擊！受到 1081 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 944,
+      "actualDamage": 944,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 2 連擊，會心一擊！對 同人 造成了 944 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 508,
+      "actualDamage": 508,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 3 連擊，會心一擊！對 同人 造成了 508 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_night_hero",
+      "message": "一道紅色的火光劃開了夜色。迪盧克 擋到 有紀 前面，劍尖指著 克萊恩·莫雷蒂。"
+    },
+    {
+      "type": "BLOCK",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_night_hero_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 0,
+      "actualDamage": 0,
+      "isCrit": true,
+      "blocked": true,
+      "message": "迪盧克 從暗處一劍斬向 克萊恩·莫雷蒂，但是被 克萊恩·莫雷蒂 用紙人替身擋下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_night_hero",
+      "message": "迪盧克：「你的對手是我。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_4",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_klein_moretti",
+      "value": 2692,
+      "actualDamage": 2692,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 把大劍高高舉起，整個人的重量壓在劍上，砸向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 2692 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_paper",
+      "message": "又一張紙人燒成了灰。克萊恩·莫雷蒂 身上的紙人還剩 1 張。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 2043,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 2043 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 2003,
+      "message": "同人 喚出了小黃金樹，金色暖光使 迪盧克 恢復了 2003 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 2043,
+      "message": "同人 喚出了小黃金樹，金色暖光使 有紀 恢復了 2043 HP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 632,
+      "actualDamage": 632,
+      "isCrit": false,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 從 迪盧克 身後的燭火裡走了出來，抬手就是一發空氣彈，對 迪盧克 造成了 632 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 83 = 125，有紀 智力（68 → 5） + 骰出 94 = 99。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 83,
+          "total": 125
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 5,
+          "modifier": 0,
+          "baseText": "智力（68 → 5）",
+          "roll": 94,
+          "total": 99
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "有紀 的手腳像是被什麼東西輕輕牽了一下，自己卻看不見。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_air",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 728,
+      "actualDamage": 728,
+      "isCrit": false,
+      "blocked": false,
+      "message": "克萊恩·莫雷蒂 使出了 空氣彈，食指朝 有紀 一比，嘴裡輕輕「砰」了一聲，對 有紀 造成了 728 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_klein_moretti",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 45,
+          "modifier": 0,
+          "baseText": "技巧（659 → 45）",
+          "roll": 67,
+          "total": 112
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "技巧（350 → 24）",
+          "roll": 98,
+          "total": 122
+        },
+        "winner": "RIGHT"
+      },
+      "message": "絕劍判定：有紀 技巧（659 → 45） + 骰出 67 = 112，克萊恩·莫雷蒂 技巧（350 → 24） + 骰出 98 = 122。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 66 = 108，迪盧克 智力（190 → 13） + 骰出 23 = 36。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 66,
+          "total": 108
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 13,
+          "modifier": 0,
+          "baseText": "智力（190 → 13）",
+          "roll": 23,
+          "total": 36
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "迪盧克 的手腳像是被什麼東西輕輕牽了一下，自己卻看不見。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 708,
+      "message": "同人 使出了 緊急包紮，使 同人 回復了 708 點生命！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "summon_5",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "diluc_sword_1",
+      "value": 776,
+      "isCrit": true,
+      "message": "迪盧克 單手拖起大劍，斜斜一劍劈向 有紀 的歷史投影，但是遭有紀 的歷史投影反擊，會心一擊！受到 776 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_5",
+      "skillId": "klein_projection_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 143,
+      "actualDamage": 143,
+      "isCrit": false,
+      "blocked": false,
+      "message": "有紀 的歷史投影 照著過去的樣子出手，打向 迪盧克，對 迪盧克 造成了 143 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "占卜判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 56 = 98，迪盧克 幸運（376 → 26） + 骰出 64 = 90。",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 56,
+          "total": 98
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 26,
+          "modifier": 0,
+          "baseText": "幸運（376 → 26）",
+          "roll": 64,
+          "total": 90
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_divine",
+      "message": "靈擺又轉了起來。迪盧克 的下一步，克萊恩·莫雷蒂 已經知道了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_5",
+      "skillId": "klein_projection_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 153,
+      "actualDamage": 153,
+      "isCrit": false,
+      "blocked": false,
+      "message": "有紀 的歷史投影 照著過去的樣子出手，打向 迪盧克，對 迪盧克 造成了 153 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_5",
+      "skillId": "klein_projection",
+      "message": "有紀 的歷史投影 的輪廓一點一點淡去，散回了灰霧裡。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_projection",
+      "message": "克萊恩·莫雷蒂 使出了 歷史投影，伸手探進身後的灰霧，從歷史裡拉出了一個人影。那是 有紀，過去的 有紀。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "mob_0_klein_moretti",
+      "targetId": "summon_6",
+      "skillId": "klein_projection_call",
+      "isNormalAttack": false,
+      "message": "灰霧裡的人影一步一步走到了長桌旁。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_paper",
+      "message": "克萊恩·莫雷蒂 趁空檔又折好了一張紙人，收進了口袋。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 24 = 66，同人 智力（929 → 64） + 骰出 47 = 111。",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 24,
+          "total": 66
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 64,
+          "modifier": 0,
+          "baseText": "智力（929 → 64）",
+          "roll": 47,
+          "total": 111
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "同人 打了個寒顫，甩開了纏上來的什麼東西。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_6",
+      "value": 2300,
+      "actualDamage": 2300,
+      "isCrit": true,
+      "blocked": false,
+      "message": "有紀 攻擊，會心一擊！對 有紀 的歷史投影 造成了 2300 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "opponentId": "mob_0_klein_moretti",
+      "value": 127,
+      "actionCancelled": true,
+      "eventId": "purple_6",
+      "message": "天外飛來一支箭射中 同人 的左膝蓋造成 127 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_2",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_6",
+      "value": 637,
+      "actualDamage": 637,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 借著揮劍的勢頭轉身，橫斬 有紀 的歷史投影，對 有紀 的歷史投影 造成了 637 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "message": "克萊恩·莫雷蒂 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 123,
+      "actualDamage": 123,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 123 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_trial_marriage",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "message": "有紀 拖著婚紗擋到 同人 身前，替對方扛下了 82 點傷害。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "message": "但是被 迪盧克 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_snap",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "value": 323,
+      "actualDamage": 323,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 有紀 造成了 323 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aae0e1e32a990089bdaf160",
+      "skillId": "kibayuki_zekken",
+      "targetId": "mob_0_klein_moretti",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 45,
+          "modifier": 0,
+          "baseText": "技巧（659 → 45）",
+          "roll": 34,
+          "total": 79
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 24,
+          "modifier": 0,
+          "baseText": "技巧（350 → 24）",
+          "roll": 56,
+          "total": 80
+        },
+        "winner": "RIGHT"
+      },
+      "message": "絕劍判定：有紀 技巧（659 → 45） + 骰出 34 = 79，克萊恩·莫雷蒂 技巧（350 → 24） + 骰出 56 = 80。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "靈體之線判定：克萊恩·莫雷蒂 智力（700 → 48）－序列 3（6） + 骰出 70 = 112，有紀 智力（68 → 5） + 骰出 73 = 78。",
+      "targetId": "6aae0e1e32a990089bdaf160",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 42,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）－序列 3（6）",
+          "roll": 70,
+          "total": 112
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 5,
+          "modifier": 0,
+          "baseText": "智力（68 → 5）",
+          "roll": 73,
+          "total": 78
+        },
+        "winner": "LEFT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_klein_moretti",
+      "skillId": "klein_threads",
+      "message": "有紀 身上的細線又多了一條，動作越來越不像自己的了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_sword_3",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_6",
+      "value": 783,
+      "actualDamage": 108,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 雙手握劍，由下往上挑向 有紀 的歷史投影，對 有紀 的歷史投影 造成了 108 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_6",
+      "message": "有紀 的歷史投影 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 105,
+      "actualDamage": 105,
+      "isCrit": false,
+      "blocked": false,
+      "message": "迪盧克 掄著大劍原地迴旋，一圈一圈捲向 克萊恩·莫雷蒂，對 克萊恩·莫雷蒂 造成了 105 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 425,
+      "actualDamage": 425,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 425 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 460,
+      "actualDamage": 460,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 460 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 451,
+      "actualDamage": 451,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 4 圈，會心一擊！對 克萊恩·莫雷蒂 造成了 451 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "diluc_charged_finish",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_klein_moretti",
+      "value": 1337,
+      "actualDamage": 1337,
+      "isCrit": true,
+      "blocked": false,
+      "message": "迪盧克 收住轉勢，最後一劍砸向 克萊恩·莫雷蒂，會心一擊！對 克萊恩·莫雷蒂 造成了 1337 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_8",
+      "skillId": "yuuki_sleeping_knights",
+      "message": "詩烏涅 揮了揮手，回到沉睡騎士的隊伍裡。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_9",
+      "skillId": "klein_projection",
+      "message": "同人 的歷史投影 的輪廓一點一點淡去，散回了灰霧裡。"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "mob_0_klein_moretti",
+      "message": "克萊恩·莫雷蒂 倒下了！"
+    }
+  ]
+}

@@ -62,10 +62,13 @@ export const ULTIMATE_CUTIN_EXCLUDED_SKILLS = new Set([
 export const ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字/;
 
 /**
- * Regex matching log messages where a summoned unit voluntarily leaves the battlefield.
+ * Generalized regex matching log messages where a summoned unit voluntarily leaves,
+ * dissipates, or is dismissed/returned from the battlefield.
+ * Character- and skill-agnostic: matches fading projections, smoke/clone dissipations,
+ * party members returning, battle withdrawals, time limits, and dismissals.
  * @type {RegExp}
  */
-export const SUMMON_DESPAWN_REGEX = /揮了揮手，回到.+?的隊伍裡|離開了戰場|消失在戰場/;
+export const SUMMON_DESPAWN_REGEX = /(?:淡去|散回|散去|消散|消逝|消失|退場|離場|脫離戰場|離開(?:了?戰場)?|離去|撤退|隱沒|揮了揮手，回到|回到.+?(?:隊伍|身邊|身旁|空間|法陣|歸處|冥界|灰霧|陰影|原處|手牌|卡組|召喚)|返回.+?(?:隊伍|身邊|身旁|空間|法陣|冥界|界)|化(?:作|為).*(?:白煙|青煙|黑煙|煙霧|塵埃|光點|虛無|泡影|灰燼)|時間(?:結束|已到|用盡|到了)|解除.*召喚|召喚.*解除|召喚結束)/;
 
 /**
  * Battlefield environmental hazard skills that pulse passively without consuming

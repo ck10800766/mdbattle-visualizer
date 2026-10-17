@@ -173,18 +173,46 @@ function processSummonLifecycle(
         }
     }
 
-    // 3. Summon voluntary despawn (e.g., Sleeping Knights waving goodbye and returning to party)
+    // 3. Summon voluntary despawn (generalized across all summons, projections, and skills)
     if (
-        log.actorId &&
-        (log.type === 'SKILL_TEXT' || log.type === 'TEXT') &&
+        (log.type === 'SKILL_TEXT' || log.type === 'TEXT' || log.type === 'BOSS_DIALOGUE') &&
         SUMMON_DESPAWN_REGEX.test(frame.message)
     ) {
-        const actingUnit = engineState.actors.get(log.actorId);
-        if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-            actorsSummonState.set(log.actorId, false);
-            despawnedActors.add(log.actorId);
+        let candidateId = null;
+
+        // 3a. Direct actorId check (active summon taking a voluntary departure/fading action)
+        if (log.actorId) {
+            const actingUnit = engineState.actors.get(log.actorId);
+            if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
+                candidateId = log.actorId;
+            }
+        }
+
+        // 3b. Direct targetId check (e.g. unsummon/recall target)
+        if (!candidateId && log.targetId) {
+            const targetUnit = engineState.actors.get(log.targetId);
+            if (targetUnit && targetUnit.isSummon && actorsSummonState.get(log.targetId) !== false) {
+                candidateId = log.targetId;
+            }
+        }
+
+        // 3c. Contextual resolution by matching active summon names in the narrative message
+        if (!candidateId && frame.message) {
+            for (const [id, actor] of engineState.actors.entries()) {
+                if (actor.isSummon && actorsSummonState.get(id) !== false && actor.name) {
+                    if (frame.message.includes(actor.name)) {
+                        candidateId = id;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (candidateId) {
+            actorsSummonState.set(candidateId, false);
+            despawnedActors.add(candidateId);
             frame.isDespawnEvent = true;
-            frame.despawnedActorId = log.actorId;
+            frame.despawnedActorId = candidateId;
         }
     }
 }
