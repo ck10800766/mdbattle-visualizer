@@ -9,7 +9,8 @@
 import { DEFAULT_AVATAR_URL } from './constants.js';
 import {
     ULTIMATE_CUTIN_EXCLUDED_SKILLS,
-    ULTIMATE_SUBFRAME_REGEX
+    ULTIMATE_SUBFRAME_REGEX,
+    isPrimaryUltimateTriggerFrame
 } from './profiles.js';
 import {
     engineState,
@@ -17,27 +18,9 @@ import {
 } from './state.js';
 import { escapeHtml } from './utils.js';
 
-// Re-export stage DOM sync utilities for unified backward-compatibility
+// Re-export stage DOM sync utilities and ultimate frame trigger for unified backward-compatibility
 export * from './stageSync.js';
-
-/**
- * Evaluates whether a given frame should trigger a full-screen Ultimate Cut-In.
- * Excludes normal attacks and passive cleave follow-ups (`ULTIMATE_CUTIN_EXCLUDED_SKILLS`).
- *
- * @param {object} frame - Combat frame to evaluate.
- * @returns {boolean} True if this frame initiates a primary ultimate skill cast.
- */
-export function isPrimaryUltimateTriggerFrame(frame) {
-    if (
-        frame.skillTier !== 'ultimate' ||
-        !['SKILL_TEXT', 'TEXT', 'DAMAGE'].includes(frame.type) ||
-        frame.isNormalAttack ||
-        ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)
-    ) {
-        return false;
-    }
-    return true;
-}
+export { isPrimaryUltimateTriggerFrame };
 
 /**
  * Scans the combat frame timeline and extracts key milestone events (Boss Rebirth, K.O. Death,

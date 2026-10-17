@@ -53,6 +53,7 @@
       prevDeltaY: 0,
       aoeCenterX: void 0,
       aoeCenterY: void 0,
+      aoeCasterId: null,
       atCenterStage: false,
       lastFrameIndex: -1
     };
@@ -296,6 +297,12 @@
   var ULTIMATE_CUTIN_EXCLUDED_SKILLS = /* @__PURE__ */ new Set([
     "genji_dragonblade_sweep"
   ]);
+  function isPrimaryUltimateTriggerFrame(frame) {
+    if (!frame || frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
+      return false;
+    }
+    return true;
+  }
   var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字|身上的十字刻下了|還沒完|最後一台車/;
   var SUMMON_DESPAWN_REGEX = /(?:淡去|散回|散去|消散|消逝|消失|退場|離場|脫離戰場|離開(?:了?戰場)?|離去|撤退|隱沒|揮了揮手，回到|回到.+?(?:隊伍|身邊|身旁|空間|法陣|歸處|冥界|灰霧|陰影|原處|手牌|卡組|召喚)|返回.+?(?:隊伍|身邊|身旁|空間|法陣|冥界|界)|化(?:作|為).*(?:白煙|青煙|黑煙|煙霧|塵埃|光點|虛無|泡影|灰燼)|時間(?:結束|已到|用盡|到了)|解除.*召喚|召喚.*解除|召喚結束)/;
   var ENVIRONMENTAL_SKILLS = /* @__PURE__ */ new Set([
@@ -1915,19 +1922,46 @@
       subText = stripCombatOutcomeText(rawRemainingText, actor.name);
     } else {
       let extractedSkillName = null;
+      let skillSourceFrame = frame;
       const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
       if (skillMatchCurrent) {
         extractedSkillName = skillMatchCurrent[1];
       } else {
-        const nextFrame = engineState.frames[frame.index + 1];
-        if (nextFrame && nextFrame.actorId === frame.actorId && nextFrame.skillId === frame.skillId) {
-          const skillMatchNext = String(nextFrame.message || "").match(/使出了\s*([^，,。！!—\s]+)/);
-          if (skillMatchNext) extractedSkillName = skillMatchNext[1];
+        for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+          const candidate = engineState.frames[i];
+          if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
+            const match = String(candidate.message || "").match(/使出了\s*([^，,。！!—\s]+)/);
+            if (match) {
+              extractedSkillName = match[1];
+              skillSourceFrame = candidate;
+              break;
+            }
+          }
         }
+      }
+      if (!extractedSkillName) {
+        for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+          const candidate = engineState.frames[i];
+          if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
+            const cardMatch = String(candidate.message || "").match(/把「([^」]+)」拋向/);
+            if (cardMatch) {
+              extractedSkillName = `${cardMatch[1]}\u4E4B\u724C`;
+              skillSourceFrame = candidate;
+              break;
+            }
+          }
+        }
+      }
+      if (!extractedSkillName && frame.skillName) {
+        extractedSkillName = frame.skillName;
       }
       if (extractedSkillName) {
         mainText = extractedSkillName;
-        const rawRemaining = frame.message.replace(new RegExp(`\u4F7F\u51FA\u4E86\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
+        let narrativeMsg = frame.message;
+        if (!narrativeMsg || /造成了|受到|點傷害|會心一擊|防禦|閃避/.test(narrativeMsg)) {
+          narrativeMsg = skillSourceFrame?.message || "";
+        }
+        const rawRemaining = narrativeMsg.replace(new RegExp(`\u4F7F\u51FA\u4E86\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
         subText = stripCombatOutcomeText(rawRemaining, actor.name);
       } else {
         let rawSkillId = frame.skillId || "ULTIMATE_SKILL";
@@ -2572,10 +2606,19 @@
     }
     if (actorEl.getAnimations) actorEl.getAnimations().forEach((anim) => anim.cancel());
     const arenaRect = arena.getBoundingClientRect();
-    if (engineState.currentCombo.aoeCenterX === void 0 || firstFrame.isAOEFirst) {
+    const aoeCasterId = firstFrame.aoeCasterId || firstFrame.actorId;
+    if (engineState.currentCombo.aoeCenterX === void 0 || firstFrame.isAOEFirst || engineState.currentCombo.aoeCasterId !== aoeCasterId) {
       const cleanActorRect = actorEl.getBoundingClientRect();
-      engineState.currentCombo.aoeCenterX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
-      engineState.currentCombo.aoeCenterY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      let calculatedMoveX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
+      const calculatedDeltaY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      const side2 = engineState.actors.get(firstFrame.actorId)?.side || "left";
+      if (side2 === "right" && calculatedMoveX > 0) calculatedMoveX = -Math.abs(calculatedMoveX);
+      else if (side2 === "left" && calculatedMoveX < 0) calculatedMoveX = Math.abs(calculatedMoveX);
+      const maxDist = arenaRect.width * 0.48;
+      calculatedMoveX = Math.max(-maxDist, Math.min(maxDist, calculatedMoveX));
+      engineState.currentCombo.aoeCenterX = calculatedMoveX;
+      engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+      engineState.currentCombo.aoeCasterId = aoeCasterId;
     }
     const cMoveX = engineState.currentCombo.aoeCenterX || 0;
     const cDeltaY = engineState.currentCombo.aoeCenterY || 0;
@@ -2596,6 +2639,9 @@
       });
       engineState.currentCombo.atCenterStage = false;
       engineState.currentCombo.knockedBack = true;
+      engineState.currentCombo.aoeCenterX = void 0;
+      engineState.currentCombo.aoeCenterY = void 0;
+      engineState.currentCombo.aoeCasterId = null;
     } else {
       actorEl.animate([
         { transform: startTransform, zIndex: 10 },
@@ -2624,11 +2670,25 @@
     if (targetEl.getAnimations) targetEl.getAnimations().forEach((anim) => anim.cancel());
     const arenaRect = arena.getBoundingClientRect();
     if (frame.isCounter || frame.type === "COUNTER") {
-      const tRect = targetEl.getBoundingClientRect();
-      const cMoveX2 = engineState.currentCombo.aoeCenterX ?? arenaRect.left + arenaRect.width / 2 - (tRect.left + tRect.width / 2);
-      const cDeltaY2 = engineState.currentCombo.aoeCenterY ?? arenaRect.top + arenaRect.height / 2 - (tRect.top + tRect.height / 2);
-      engineState.currentCombo.aoeCenterX = cMoveX2;
-      engineState.currentCombo.aoeCenterY = cDeltaY2;
+      const aoeCasterId2 = frame.targetId;
+      const needsRecalculate2 = frame.isAOEFirst || engineState.currentCombo.aoeCasterId !== aoeCasterId2 || engineState.currentCombo.aoeCenterX === void 0;
+      if (needsRecalculate2) {
+        const tRect = targetEl.getBoundingClientRect();
+        let calculatedMoveX = arenaRect.left + arenaRect.width / 2 - (tRect.left + tRect.width / 2);
+        const calculatedDeltaY = arenaRect.top + arenaRect.height / 2 - (tRect.top + tRect.height / 2);
+        if (targetSide === "right" && calculatedMoveX > 0) {
+          calculatedMoveX = -Math.abs(calculatedMoveX);
+        } else if (targetSide === "left" && calculatedMoveX < 0) {
+          calculatedMoveX = Math.abs(calculatedMoveX);
+        }
+        const maxDisplacement = arenaRect.width * 0.48;
+        calculatedMoveX = Math.max(-maxDisplacement, Math.min(maxDisplacement, calculatedMoveX));
+        engineState.currentCombo.aoeCenterX = calculatedMoveX;
+        engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+        engineState.currentCombo.aoeCasterId = aoeCasterId2;
+      }
+      const cMoveX2 = engineState.currentCombo.aoeCenterX;
+      const cDeltaY2 = engineState.currentCombo.aoeCenterY;
       const aRect = actorEl.getBoundingClientRect();
       const defToCenterX = arenaRect.left + arenaRect.width / 2 - (aRect.left + aRect.width / 2) + (side === "left" ? -45 : 45);
       const defToCenterY = arenaRect.top + arenaRect.height / 2 - (aRect.top + aRect.height / 2);
@@ -2648,6 +2708,9 @@
         ], { duration: 480 / speed, easing: "ease-out", fill: "none" });
         engineState.currentCombo.atCenterStage = false;
         engineState.currentCombo.knockedBack = true;
+        engineState.currentCombo.aoeCenterX = void 0;
+        engineState.currentCombo.aoeCenterY = void 0;
+        engineState.currentCombo.aoeCasterId = null;
       } else {
         targetEl.animate([
           { transform: engineState.currentCombo.atCenterStage ? pCasterCenter : "translate(0,0) scale(1)", zIndex: 10 },
@@ -2659,10 +2722,19 @@
       spawnClashSpark(arena, targetEl, 80, "#f6e05e", speed);
       return 520;
     }
-    if (engineState.currentCombo.aoeCenterX === void 0 || frame.isAOEFirst) {
+    const aoeCasterId = frame.aoeCasterId || frame.actorId;
+    const needsRecalculate = frame.isAOEFirst || engineState.currentCombo.aoeCasterId !== aoeCasterId || engineState.currentCombo.aoeCenterX === void 0;
+    if (needsRecalculate) {
       const cleanActorRect = actorEl.getBoundingClientRect();
-      engineState.currentCombo.aoeCenterX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
-      engineState.currentCombo.aoeCenterY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      let calculatedMoveX = arenaRect.left + arenaRect.width / 2 - (cleanActorRect.left + cleanActorRect.width / 2);
+      const calculatedDeltaY = arenaRect.top + arenaRect.height / 2 - (cleanActorRect.top + cleanActorRect.height / 2);
+      if (side === "right" && calculatedMoveX > 0) calculatedMoveX = -Math.abs(calculatedMoveX);
+      else if (side === "left" && calculatedMoveX < 0) calculatedMoveX = Math.abs(calculatedMoveX);
+      const maxDist = arenaRect.width * 0.48;
+      calculatedMoveX = Math.max(-maxDist, Math.min(maxDist, calculatedMoveX));
+      engineState.currentCombo.aoeCenterX = calculatedMoveX;
+      engineState.currentCombo.aoeCenterY = calculatedDeltaY;
+      engineState.currentCombo.aoeCasterId = aoeCasterId;
     }
     const cMoveX = engineState.currentCombo.aoeCenterX;
     const cDeltaY = engineState.currentCombo.aoeCenterY;
@@ -2703,6 +2775,9 @@
       ];
       engineState.currentCombo.atCenterStage = false;
       engineState.currentCombo.knockedBack = true;
+      engineState.currentCombo.aoeCenterX = void 0;
+      engineState.currentCombo.aoeCenterY = void 0;
+      engineState.currentCombo.aoeCasterId = null;
     }
     actorEl.animate(actorKeyframes, actorAnimConfig);
     const centerStageX = arenaRect.width / 2;
@@ -3958,6 +4033,14 @@
     ).forEach((el) => el.remove());
     engineState.actors.forEach((actor) => {
       actor.lastUltimateTurn = null;
+      if (!isInitialReset) {
+        for (let i = 0; i < frameIndex; i++) {
+          const f = engineState.frames[i];
+          if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f)) {
+            actor.lastUltimateTurn = f.turnNumber;
+          }
+        }
+      }
       const el = sr.getElementById(`actor-${actor.id}`);
       if (el) {
         if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
@@ -4029,12 +4112,6 @@
   }
 
   // src/timeline.js
-  function isPrimaryUltimateTriggerFrame(frame) {
-    if (frame.skillTier !== "ultimate" || !["SKILL_TEXT", "TEXT", "DAMAGE"].includes(frame.type) || frame.isNormalAttack || ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)) {
-      return false;
-    }
-    return true;
-  }
   function extractTimelineMarkers(frames) {
     if (!Array.isArray(frames) || frames.length === 0) return [];
     const markers = [];
@@ -4471,19 +4548,39 @@
       const nextSpeed = setPlaybackSpeed(PLAYBACK_SPEEDS[nextIndex]);
       speedBtn.textContent = `\u901F\u5EA6: ${nextSpeed}x`;
     };
+    let wasPlayingBeforeDrag = false;
+    seekRange.onpointerdown = () => {
+      wasPlayingBeforeDrag = engineState.isPlaying;
+      if (engineState.isPlaying) {
+        engineState.isPlaying = false;
+        nextPlaybackToken();
+        playBtn.textContent = "\u64AD\u653E";
+      }
+    };
     seekRange.oninput = (e) => {
       const targetFrame = Number(e.target.value);
       engineState.currentFrameIndex = targetFrame;
       seekLabel.textContent = formatSeekLabelText(targetFrame);
       engineState.currentCombo = createEmptyCombo();
-      const token2 = nextPlaybackToken();
-      if (engineState.isPlaying) {
+      nextPlaybackToken();
+      if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
+        playBtn.textContent = "\u64AD\u653E";
+      }
+      syncStageToAbsoluteState(targetFrame, false, true);
+    };
+    seekRange.onchange = (e) => {
+      const targetFrame = Number(e.target.value);
+      engineState.currentFrameIndex = targetFrame;
+      seekLabel.textContent = formatSeekLabelText(targetFrame);
+      engineState.currentCombo = createEmptyCombo();
+      if (wasPlayingBeforeDrag) {
+        wasPlayingBeforeDrag = false;
         syncStageToAbsoluteState(targetFrame, false, false);
+        engineState.isPlaying = true;
+        playBtn.textContent = "\u66AB\u505C";
+        const token2 = nextPlaybackToken();
         playbackLoop(token2);
       } else {
-        if (playBtn.textContent === "\u91CD\u65B0\u64AD\u653E") {
-          playBtn.textContent = "\u64AD\u653E";
-        }
         syncStageToAbsoluteState(targetFrame, false, true);
       }
     };

@@ -50,6 +50,7 @@ export function createEmptyCombo() {
         prevDeltaY: 0,
         aoeCenterX: undefined,
         aoeCenterY: undefined,
+        aoeCasterId: null,
         atCenterStage: false,
         lastFrameIndex: -1
     };

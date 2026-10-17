@@ -144,20 +144,59 @@ export async function playUltimateCutIn(frame, sr, token) {
         subText = stripCombatOutcomeText(rawRemainingText, actor.name);
     } else {
         let extractedSkillName = null;
+        let skillSourceFrame = frame;
+
+        // 1. Direct match on current frame
         const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
         if (skillMatchCurrent) {
             extractedSkillName = skillMatchCurrent[1];
         } else {
-            const nextFrame = engineState.frames[frame.index + 1];
-            if (nextFrame && nextFrame.actorId === frame.actorId && nextFrame.skillId === frame.skillId) {
-                const skillMatchNext = String(nextFrame.message || '').match(/使出了\s*([^，,。！!—\s]+)/);
-                if (skillMatchNext) extractedSkillName = skillMatchNext[1];
+            // 2. Scan nearby frames within the same turn for the primary cast frame of this skill
+            for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+                const candidate = engineState.frames[i];
+                if (
+                    candidate &&
+                    candidate.turnNumber === frame.turnNumber &&
+                    candidate.actorId === frame.actorId
+                ) {
+                    const match = String(candidate.message || '').match(/使出了\s*([^，,。！!—\s]+)/);
+                    if (match) {
+                        extractedSkillName = match[1];
+                        skillSourceFrame = candidate;
+                        break;
+                    }
+                }
             }
+        }
+
+        // 3. Fallback: bracketed card invocation in message, e.g. 把「火」拋向半空 -> 火之牌
+        if (!extractedSkillName) {
+            for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+                const candidate = engineState.frames[i];
+                if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
+                    const cardMatch = String(candidate.message || '').match(/把「([^」]+)」拋向/);
+                    if (cardMatch) {
+                        extractedSkillName = `${cardMatch[1]}之牌`;
+                        skillSourceFrame = candidate;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 4. Fallback: frame.skillName if available from parser
+        if (!extractedSkillName && frame.skillName) {
+            extractedSkillName = frame.skillName;
         }
 
         if (extractedSkillName) {
             mainText = extractedSkillName;
-            const rawRemaining = frame.message
+            // Prefer narrative casting description over pure damage/block resolution lines
+            let narrativeMsg = frame.message;
+            if (!narrativeMsg || /造成了|受到|點傷害|會心一擊|防禦|閃避/.test(narrativeMsg)) {
+                narrativeMsg = skillSourceFrame?.message || '';
+            }
+            const rawRemaining = narrativeMsg
                 .replace(new RegExp(`使出了\\s*${escapeRegExp(extractedSkillName)}[，,、\\s]*`), ' ')
                 .trim();
             subText = stripCombatOutcomeText(rawRemaining, actor.name);

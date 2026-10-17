@@ -271,21 +271,44 @@ export function createBattleStage() {
         speedBtn.textContent = `速度: ${nextSpeed}x`;
     };
 
+    let wasPlayingBeforeDrag = false;
+
+    seekRange.onpointerdown = () => {
+        wasPlayingBeforeDrag = engineState.isPlaying;
+        if (engineState.isPlaying) {
+            engineState.isPlaying = false;
+            nextPlaybackToken();
+            playBtn.textContent = '播放';
+        }
+    };
+
     seekRange.oninput = (e) => {
         const targetFrame = Number(e.target.value);
         engineState.currentFrameIndex = targetFrame;
         seekLabel.textContent = formatSeekLabelText(targetFrame);
         engineState.currentCombo = createEmptyCombo();
+        nextPlaybackToken();
 
-        const token = nextPlaybackToken();
+        if (playBtn.textContent === '重新播放') {
+            playBtn.textContent = '播放';
+        }
+        syncStageToAbsoluteState(targetFrame, false, true);
+    };
 
-        if (engineState.isPlaying) {
+    seekRange.onchange = (e) => {
+        const targetFrame = Number(e.target.value);
+        engineState.currentFrameIndex = targetFrame;
+        seekLabel.textContent = formatSeekLabelText(targetFrame);
+        engineState.currentCombo = createEmptyCombo();
+
+        if (wasPlayingBeforeDrag) {
+            wasPlayingBeforeDrag = false;
             syncStageToAbsoluteState(targetFrame, false, false);
+            engineState.isPlaying = true;
+            playBtn.textContent = '暫停';
+            const token = nextPlaybackToken();
             playbackLoop(token);
         } else {
-            if (playBtn.textContent === '重新播放') {
-                playBtn.textContent = '播放';
-            }
             syncStageToAbsoluteState(targetFrame, false, true);
         }
     };

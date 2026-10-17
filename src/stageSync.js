@@ -8,7 +8,7 @@
  */
 
 import { DEFAULT_AVATAR_URL } from './constants.js';
-import { getContractSkillProfile } from './profiles.js';
+import { getContractSkillProfile, isPrimaryUltimateTriggerFrame } from './profiles.js';
 import {
     engineState,
     createEmptyCombo,
@@ -540,9 +540,17 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
         '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile, .arena-field-wave, .scene-narration-banner'
     ).forEach(el => el.remove());
 
-    // Cancel active Web Animations and reset actor transforms
+    // Cancel active Web Animations, restore accurate lastUltimateTurn up to frameIndex, and reset actor transforms
     engineState.actors.forEach(actor => {
         actor.lastUltimateTurn = null;
+        if (!isInitialReset) {
+            for (let i = 0; i < frameIndex; i++) {
+                const f = engineState.frames[i];
+                if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f)) {
+                    actor.lastUltimateTurn = f.turnNumber;
+                }
+            }
+        }
         const el = sr.getElementById(`actor-${actor.id}`);
         if (el) {
             if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());

@@ -56,6 +56,26 @@ export const ULTIMATE_CUTIN_EXCLUDED_SKILLS = new Set([
 ]);
 
 /**
+ * Evaluates whether a given frame should trigger a full-screen Ultimate Cut-In.
+ * Excludes normal attacks, passive cleave follow-ups, and excluded skills.
+ *
+ * @param {object} frame - Combat frame to evaluate.
+ * @returns {boolean} True if this frame initiates a primary ultimate skill cast.
+ */
+export function isPrimaryUltimateTriggerFrame(frame) {
+    if (
+        !frame ||
+        frame.skillTier !== 'ultimate' ||
+        !['SKILL_TEXT', 'TEXT', 'DAMAGE'].includes(frame.type) ||
+        frame.isNormalAttack ||
+        ULTIMATE_CUTIN_EXCLUDED_SKILLS.has(frame.skillId)
+    ) {
+        return false;
+    }
+    return true;
+}
+
+/**
  * Regex matching mid-combo or secondary ultimate log lines that should not re-trigger an Ultimate Cut-In.
  * @type {RegExp}
  */
