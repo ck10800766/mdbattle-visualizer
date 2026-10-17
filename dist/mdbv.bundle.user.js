@@ -953,6 +953,188 @@
       });
     }
   }
+  function computeActiveStatusAndShieldIntervals(logs) {
+    const statusIntervals = [];
+    const shieldIntervals = [];
+    const effectLogs = [];
+    logs.forEach((l, idx) => {
+      if (!l) return;
+      if (l.type === "BUFF_EFFECT") {
+        const msg = String(l.message || "");
+        const isHot = l.buffType === "HOT" || /恢復|回復/.test(msg) && !/傷害|失去/.test(msg);
+        const buffId = l.buffId || l.skillId || (isHot ? "hot" : "dot");
+        let name = buffId;
+        const match = msg.match(/受到\s*(.+?)\s*影響/);
+        if (match) name = match[1];
+        effectLogs.push({
+          idx,
+          actorId: l.actorId,
+          buffId,
+          name: isHot ? name || "\u6301\u7E8C\u6062\u5FA9" : name || "\u6301\u7E8C\u50B7\u5BB3",
+          category: isHot ? "hot" : "dot",
+          icon: isHot ? "\u{1F49A}" : "\u2620\uFE0F"
+        });
+      }
+    });
+    const byActorBuff = {};
+    effectLogs.forEach((entry) => {
+      if (!entry.actorId) return;
+      const key = `${entry.actorId}::${entry.buffId}`;
+      if (!byActorBuff[key]) byActorBuff[key] = [];
+      byActorBuff[key].push(entry);
+    });
+    Object.values(byActorBuff).forEach((entries) => {
+      let cluster = [];
+      const flushCluster = (c) => {
+        if (c.length === 0) return;
+        let startIdx = c[0].idx;
+        for (let b = startIdx - 1; b >= Math.max(0, startIdx - 20); b--) {
+          const prevLog = logs[b];
+          if (prevLog && (prevLog.type === "SKILL_TEXT" || prevLog.type === "BUFF_APPLY") && (prevLog.skillId === c[0].buffId || prevLog.buffId === c[0].buffId) && (prevLog.targetId === c[0].actorId || prevLog.actorId === c[0].actorId)) {
+            startIdx = b;
+            break;
+          }
+        }
+        statusIntervals.push({
+          actorId: c[0].actorId,
+          start: startIdx,
+          end: c[c.length - 1].idx,
+          status: {
+            id: c[0].buffId,
+            name: c[0].name,
+            category: c[0].category,
+            icon: c[0].icon
+          }
+        });
+      };
+      entries.forEach((e) => {
+        if (cluster.length === 0) {
+          cluster.push(e);
+        } else {
+          const prev = cluster[cluster.length - 1];
+          if (e.idx - prev.idx <= 25) {
+            cluster.push(e);
+          } else {
+            flushCluster(cluster);
+            cluster = [e];
+          }
+        }
+      });
+      flushCluster(cluster);
+    });
+    const fatigueStarts = {};
+    logs.forEach((l, idx) => {
+      if (!l || !l.actorId) return;
+      if (l.type === "FATIGUE" || l.type === "FATIGUE_SKIP") {
+        if (!fatigueStarts[l.actorId]) {
+          fatigueStarts[l.actorId] = { idx, stage: l.stage };
+        }
+      } else if (l.type === "REST" || l.type === "DEATH" || l.type === "PLAYER_DEATH" || l.type === "PLAYER_DEFEAT") {
+        if (fatigueStarts[l.actorId]) {
+          statusIntervals.push({
+            actorId: l.actorId,
+            start: fatigueStarts[l.actorId].idx,
+            end: idx,
+            status: {
+              id: "fatigue",
+              name: fatigueStarts[l.actorId].stage === "EXHAUSTED" ? "\u529B\u7AED (EXHAUSTED)" : "\u75B2\u52DE (TIRED)",
+              category: "fatigue",
+              icon: "\u{1F4A4}"
+            }
+          });
+          delete fatigueStarts[l.actorId];
+        }
+      }
+    });
+    Object.entries(fatigueStarts).forEach(([actorId, info]) => {
+      statusIntervals.push({
+        actorId,
+        start: info.idx,
+        end: logs.length - 1,
+        status: {
+          id: "fatigue",
+          name: info.stage === "EXHAUSTED" ? "\u529B\u7AED (EXHAUSTED)" : "\u75B2\u52DE (TIRED)",
+          category: "fatigue",
+          icon: "\u{1F4A4}"
+        }
+      });
+    });
+    const silenceStarts = {};
+    logs.forEach((l, idx) => {
+      if (!l || !l.actorId) return;
+      if (l.type === "SILENCED") {
+        if (!silenceStarts[l.actorId]) {
+          silenceStarts[l.actorId] = idx;
+        }
+      } else if (["DAMAGE", "HEAL", "COUNTER"].includes(l.type) || l.type === "SKILL_TEXT" && l.skillId && l.skillId !== "default") {
+        if (silenceStarts[l.actorId] && idx > silenceStarts[l.actorId]) {
+          statusIntervals.push({
+            actorId: l.actorId,
+            start: silenceStarts[l.actorId],
+            end: idx,
+            status: { id: "silenced", name: "\u9B54\u529B\u50F5\u76F4 (SILENCED)", category: "silenced", icon: "\u{1F910}" }
+          });
+          delete silenceStarts[l.actorId];
+        }
+      } else if (l.type === "DEATH" || l.type === "PLAYER_DEATH" || l.type === "PLAYER_DEFEAT") {
+        if (silenceStarts[l.actorId]) {
+          statusIntervals.push({
+            actorId: l.actorId,
+            start: silenceStarts[l.actorId],
+            end: idx,
+            status: { id: "silenced", name: "\u9B54\u529B\u50F5\u76F4 (SILENCED)", category: "silenced", icon: "\u{1F910}" }
+          });
+          delete silenceStarts[l.actorId];
+        }
+      }
+    });
+    Object.entries(silenceStarts).forEach(([actorId, startIdx]) => {
+      statusIntervals.push({
+        actorId,
+        start: startIdx,
+        end: logs.length - 1,
+        status: { id: "silenced", name: "\u9B54\u529B\u50F5\u76F4 (SILENCED)", category: "silenced", icon: "\u{1F910}" }
+      });
+    });
+    const blockLogs = [];
+    logs.forEach((l, idx) => {
+      if (!l) return;
+      if (l.blocked || l.type === "BLOCK") {
+        const defenderId = l.targetId || l.actorId;
+        if (defenderId) blockLogs.push({ idx, defenderId });
+      } else if ((l.type === "SKILL_TEXT" || l.type === "BUFF_APPLY") && (l.skillId === "sakura_shield" || /shield|barrier|護盾|防護/i.test(l.skillId || ""))) {
+        const recipientId = l.targetId || l.actorId;
+        if (recipientId) {
+          shieldIntervals.push({ actorId: recipientId, start: idx, end: Math.min(logs.length - 1, idx + 10) });
+        }
+      }
+    });
+    const byDefender = {};
+    blockLogs.forEach((b) => {
+      if (!byDefender[b.defenderId]) byDefender[b.defenderId] = [];
+      byDefender[b.defenderId].push(b.idx);
+    });
+    Object.entries(byDefender).forEach(([defenderId, indices]) => {
+      let cluster = [];
+      indices.forEach((idx) => {
+        if (cluster.length === 0) {
+          cluster.push(idx);
+        } else {
+          const prev = cluster[cluster.length - 1];
+          if (idx - prev <= 20) {
+            cluster.push(idx);
+          } else {
+            shieldIntervals.push({ actorId: defenderId, start: cluster[0], end: cluster[cluster.length - 1] });
+            cluster = [idx];
+          }
+        }
+      });
+      if (cluster.length > 0) {
+        shieldIntervals.push({ actorId: defenderId, start: cluster[0], end: cluster[cluster.length - 1] });
+      }
+    });
+    return { statusIntervals, shieldIntervals };
+  }
   function buildStateSnapshots(logs) {
     engineState.frames = [];
     let currentTurn = 0;
@@ -966,6 +1148,7 @@
     const actorsBondState = /* @__PURE__ */ new Map();
     const contractCutInCount = /* @__PURE__ */ new Map();
     const despawnedActors = /* @__PURE__ */ new Set();
+    const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
     const explicitlySummonedIds = /* @__PURE__ */ new Set();
     logs.forEach((log) => {
       if (log && log.type === "SUMMON" && log.targetId) {
@@ -1038,6 +1221,8 @@
         isDespawnEvent: false,
         despawnedActorId: null,
         actorsBondState: /* @__PURE__ */ new Map(),
+        actorsStatusState: /* @__PURE__ */ new Map(),
+        actorsShieldState: /* @__PURE__ */ new Map(),
         contractEvent: null,
         isContractRepeat: false,
         isCoverEvent: false,
@@ -1274,9 +1459,34 @@
       engineState.actors.forEach((actor) => {
         frame.actorsHpState.set(actor.id, actor.currentHp);
       });
+      const activeStatusesForActor = /* @__PURE__ */ new Map();
+      const activeShieldForActor = /* @__PURE__ */ new Map();
+      engineState.actors.forEach((actor) => {
+        const isDead = !!actorsDeathState.get(actor.id);
+        if (isDead) {
+          activeStatusesForActor.set(actor.id, []);
+          activeShieldForActor.set(actor.id, false);
+          return;
+        }
+        const statuses = [];
+        statusIntervals.forEach((interval) => {
+          if (interval.actorId === actor.id && index >= interval.start && index <= interval.end) {
+            if (!statuses.some((s) => s.id === interval.status.id)) {
+              statuses.push(interval.status);
+            }
+          }
+        });
+        activeStatusesForActor.set(actor.id, statuses);
+        const hasShield = shieldIntervals.some(
+          (interval) => interval.actorId === actor.id && index >= interval.start && index <= interval.end
+        );
+        activeShieldForActor.set(actor.id, hasShield);
+      });
       frame.actorsDeathState = new Map(actorsDeathState);
       frame.actorsSummonState = new Map(actorsSummonState);
       frame.actorsBondState = new Map(actorsBondState);
+      frame.actorsStatusState = activeStatusesForActor;
+      frame.actorsShieldState = activeShieldForActor;
       engineState.frames.push(frame);
     });
     calibrateHpWithAnchors(engineState.frames);
@@ -1367,11 +1577,20 @@
     .avatar-wrapper { position: relative; }
     .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); }
 
-    .hp-container { width: 80px; height: 12px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1px solid #1a202c; }
+    .hp-container { width: 80px; height: 13px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1.5px solid #1a202c; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
     .hp-fill { height: 100%; background: #48bb78; transition: width 0.3s ease-out, background-color 0.3s; }
     .hp-fill.warning { background: #ecc94b; }
     .hp-fill.danger { background: #f56565; }
-    .hp-text { position: absolute; width: 100%; text-align: center; top: -1px; font-size: 11px; color: #fff; font-weight: bold; text-shadow: 0 1px 2px #000; }
+    .hp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; color: #fff; font-weight: 800; text-shadow: 0 1px 2px #000; pointer-events: none; letter-spacing: -0.2px; }
+
+    /* Actor Status Tray & Badges */
+    .status-tray { display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 16px; margin-top: 3px; pointer-events: auto; }
+    .status-badge { display: inline-flex; align-items: center; justify-content: center; font-size: 11px; line-height: 1; padding: 2px 4px; border-radius: 4px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.2); cursor: default; animation: slideInUp 0.15s ease-out forwards; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+    .status-badge.status-dot { border-color: #9f7aea; background: rgba(85, 60, 154, 0.35); }
+    .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); }
+    .status-badge.status-fatigue { border-color: #ed8936; background: rgba(192, 86, 33, 0.35); }
+    .status-badge.status-silenced { border-color: #fc8181; background: rgba(197, 48, 48, 0.35); }
 
     /* Dice Check & Status Badges */
     .dice-badge { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; z-index: 55; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.6); animation: slideInUp 0.2s ease-out forwards; }
@@ -3379,6 +3598,32 @@
       }
     });
   }
+  function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null) {
+    engineState.actors.forEach((actor) => {
+      const hpContainer = sr.getElementById(`hp-container-${actor.id}`) || sr.querySelector(`#actor-${actor.id} .hp-container`);
+      const statusTray = sr.getElementById(`status-tray-${actor.id}`);
+      const wrapperEl = sr.getElementById(`actor-${actor.id}`);
+      const isDead = wrapperEl?.classList.contains("dead");
+      const isShieldActive = !isDead && (shieldStateMap ? !!shieldStateMap.get(actor.id) : false);
+      if (hpContainer) {
+        if (isShieldActive) hpContainer.classList.add("shield-active");
+        else hpContainer.classList.remove("shield-active");
+      }
+      if (statusTray) {
+        const statuses = !isDead && statusStateMap ? statusStateMap.get(actor.id) || [] : [];
+        if (statuses.length === 0) {
+          statusTray.innerHTML = "";
+        } else {
+          const badgesHtml = statuses.map(
+            (st) => `<span class="status-badge status-${escapeHtml(st.category)}" title="${escapeHtml(st.name)}">${escapeHtml(st.icon)}</span>`
+          ).join("");
+          if (statusTray.innerHTML !== badgesHtml) {
+            statusTray.innerHTML = badgesHtml;
+          }
+        }
+      }
+    });
+  }
   function syncActorHpAndDeathDOM(sr, frame, {
     skipHpTransition = false,
     syncSummonVisibility = false,
@@ -3398,6 +3643,10 @@
       if (!actor) return;
       const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : currentHp <= 0;
       if (fillEl && textEl && !actor.hideHp) {
+        const hpContainer = sr.getElementById(`hp-container-${actorId}`);
+        if (hpContainer) hpContainer.style.display = "";
+        const statusTray = sr.getElementById(`status-tray-${actorId}`);
+        if (statusTray) statusTray.style.display = "";
         const pct = currentHp / actor.maxHp * 100;
         if (skipHpTransition) {
           fillEl.style.transition = "none";
@@ -3422,6 +3671,10 @@
       }
       actor.currentHp = currentHp;
       if (isDead && wrapperEl) {
+        const hpContainer = sr.getElementById(`hp-container-${actorId}`);
+        if (hpContainer) hpContainer.classList.remove("shield-active");
+        const statusTray = sr.getElementById(`status-tray-${actorId}`);
+        if (statusTray) statusTray.innerHTML = "";
         const shouldDefer = deferDeadClassForActorId instanceof Set ? deferDeadClassForActorId.has(actorId) : deferDeadClassForActorId === actorId;
         if (!shouldDefer) {
           wrapperEl.classList.add("dead");
@@ -3622,6 +3875,7 @@
       });
       updateATBUI(1, true);
       syncActorBondVisuals(sr, null);
+      syncActorStatusAndShieldDOM(sr, null, null);
     } else {
       const frame = engineState.frames[stateFrameIndex];
       if (!frame) return;
@@ -3632,6 +3886,7 @@
       });
       updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
       syncActorBondVisuals(sr, frame.actorsBondState);
+      syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
       if (showActivePreview) {
         renderSeekPreviewState(sr, stateFrameIndex);
       }
@@ -4146,10 +4401,11 @@
             <div class="avatar-wrapper">
                 <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
             </div>
-            <div class="hp-container"${hpContainerStyle}>
+            <div class="hp-container"${hpContainerStyle} id="hp-container-${escapeHtml(actor.id)}">
                 <div class="hp-fill" id="hp-fill-${escapeHtml(actor.id)}"></div>
                 <div class="hp-text" id="hp-text-${escapeHtml(actor.id)}">${hpTextContent}</div>
             </div>
+            <div class="status-tray"${hpContainerStyle} id="status-tray-${escapeHtml(actor.id)}"></div>
         `;
       if (actor.side === "left") leftTeam.appendChild(el);
       else rightTeam.appendChild(el);
@@ -4329,6 +4585,7 @@
     }
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
+    syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState);
     const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
     const hasCritShake = waveFrames.some((wf) => wf.vfx.includes("screen-shake"));
     if (hasCritShake && arena) {
@@ -4377,6 +4634,7 @@
           syncSummonVisibility: false,
           deferDeadClassForActorId: waveDeadActorIds
         });
+        syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState);
       }, hitDelay);
     });
     await new Promise((resolve) => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
@@ -4486,6 +4744,7 @@
     }
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
     if (frame.contractEvent === "ACCEPT") {
       await playContractCutIn(frame, sr, token);
       if (engineState.playbackToken !== token) return;
@@ -4572,6 +4831,7 @@
       syncSummonVisibility: false,
       deferDeadClassForActorId: triggeredFatality ? deadActorId : null
     });
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
     if (triggeredFatality && deadActorId) {
       await playFatalitySequence(sr, deadActorId, token);
       if (engineState.playbackToken !== token) return;

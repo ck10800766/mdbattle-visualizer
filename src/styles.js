@@ -55,11 +55,20 @@ export const STAGE_STYLES = `
     .avatar-wrapper { position: relative; }
     .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); }
 
-    .hp-container { width: 80px; height: 12px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1px solid #1a202c; }
+    .hp-container { width: 80px; height: 13px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1.5px solid #1a202c; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
     .hp-fill { height: 100%; background: #48bb78; transition: width 0.3s ease-out, background-color 0.3s; }
     .hp-fill.warning { background: #ecc94b; }
     .hp-fill.danger { background: #f56565; }
-    .hp-text { position: absolute; width: 100%; text-align: center; top: -1px; font-size: 11px; color: #fff; font-weight: bold; text-shadow: 0 1px 2px #000; }
+    .hp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; color: #fff; font-weight: 800; text-shadow: 0 1px 2px #000; pointer-events: none; letter-spacing: -0.2px; }
+
+    /* Actor Status Tray & Badges */
+    .status-tray { display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 16px; margin-top: 3px; pointer-events: auto; }
+    .status-badge { display: inline-flex; align-items: center; justify-content: center; font-size: 11px; line-height: 1; padding: 2px 4px; border-radius: 4px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.2); cursor: default; animation: slideInUp 0.15s ease-out forwards; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+    .status-badge.status-dot { border-color: #9f7aea; background: rgba(85, 60, 154, 0.35); }
+    .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); }
+    .status-badge.status-fatigue { border-color: #ed8936; background: rgba(192, 86, 33, 0.35); }
+    .status-badge.status-silenced { border-color: #fc8181; background: rgba(197, 48, 48, 0.35); }
 
     /* Dice Check & Status Badges */
     .dice-badge { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; z-index: 55; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.6); animation: slideInUp 0.2s ease-out forwards; }

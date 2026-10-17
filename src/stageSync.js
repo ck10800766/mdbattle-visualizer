@@ -96,6 +96,44 @@ export function syncActorBondVisuals(sr, bondStateMap = null) {
 }
 
 /**
+ * Synchronizes persistent status tray badges (DOT, HOT, FATIGUE, SILENCED) and shield border highlights across all actors.
+ *
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {Map<string, Array<{ id: string, name: string, category: string, icon: string }>>|null} [statusStateMap=null] - Active status state map.
+ * @param {Map<string, boolean>|null} [shieldStateMap=null] - Active shield state map.
+ */
+export function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null) {
+    engineState.actors.forEach(actor => {
+        const hpContainer = sr.getElementById(`hp-container-${actor.id}`) || sr.querySelector(`#actor-${actor.id} .hp-container`);
+        const statusTray = sr.getElementById(`status-tray-${actor.id}`);
+        const wrapperEl = sr.getElementById(`actor-${actor.id}`);
+        const isDead = wrapperEl?.classList.contains('dead');
+
+        // 1. Sync shield active blue border
+        const isShieldActive = !isDead && (shieldStateMap ? !!shieldStateMap.get(actor.id) : false);
+        if (hpContainer) {
+            if (isShieldActive) hpContainer.classList.add('shield-active');
+            else hpContainer.classList.remove('shield-active');
+        }
+
+        // 2. Sync status badges
+        if (statusTray) {
+            const statuses = (!isDead && statusStateMap) ? (statusStateMap.get(actor.id) || []) : [];
+            if (statuses.length === 0) {
+                statusTray.innerHTML = '';
+            } else {
+                const badgesHtml = statuses.map(st =>
+                    `<span class="status-badge status-${escapeHtml(st.category)}" title="${escapeHtml(st.name)}">${escapeHtml(st.icon)}</span>`
+                ).join('');
+                if (statusTray.innerHTML !== badgesHtml) {
+                    statusTray.innerHTML = badgesHtml;
+                }
+            }
+        }
+    });
+}
+
+/**
  * Updates HP bar widths, numeric HP labels, low-HP warning/danger states, and `.dead` classes
  * across all actors for a given frame snapshot.
  *
@@ -135,6 +173,11 @@ export function syncActorHpAndDeathDOM(
         const isDead = frame.actorsDeathState ? frame.actorsDeathState.get(actorId) : (currentHp <= 0);
 
         if (fillEl && textEl && !actor.hideHp) {
+            const hpContainer = sr.getElementById(`hp-container-${actorId}`);
+            if (hpContainer) hpContainer.style.display = '';
+            const statusTray = sr.getElementById(`status-tray-${actorId}`);
+            if (statusTray) statusTray.style.display = '';
+
             const pct = (currentHp / actor.maxHp) * 100;
             if (skipHpTransition) {
                 fillEl.style.transition = 'none';
@@ -161,6 +204,11 @@ export function syncActorHpAndDeathDOM(
         actor.currentHp = currentHp;
 
         if (isDead && wrapperEl) {
+            const hpContainer = sr.getElementById(`hp-container-${actorId}`);
+            if (hpContainer) hpContainer.classList.remove('shield-active');
+            const statusTray = sr.getElementById(`status-tray-${actorId}`);
+            if (statusTray) statusTray.innerHTML = '';
+
             const shouldDefer =
                 deferDeadClassForActorId instanceof Set
                     ? deferDeadClassForActorId.has(actorId)
@@ -440,6 +488,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
 
         updateATBUI(1, true);
         syncActorBondVisuals(sr, null);
+        syncActorStatusAndShieldDOM(sr, null, null);
     } else {
         const frame = engineState.frames[stateFrameIndex];
         if (!frame) return;
@@ -451,9 +500,10 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
             deferDeadClassForActorId: null
         });
 
-        // Restore ATB progress and contract bond visual auras
+        // Restore ATB progress, contract bond visual auras, and status/shield DOM
         updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
         syncActorBondVisuals(sr, frame.actorsBondState);
+        syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
 
         // When paused or stepping, render active combat situation preview
         if (showActivePreview) {
