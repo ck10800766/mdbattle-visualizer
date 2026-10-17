@@ -8,6 +8,20 @@
 
 ## [Unreleased]
 
+## [7.5.5] - 2026-10-18
+
+### Fixed
+- **召喚物結構性非戰鬥離場搜尋起點修復**（保護傘公司 53F 戰報）：
+  - 修復 `computeStructuralSummonDepartures` 啟始搜尋下界錯誤（由 `Math.max(0, lastCombatIdx)` 修正為 `Math.max(spawnIdx, lastCombatIdx)`）：
+    - 原先若召喚物登場後未曾直接受擊/出招即隨劇情離場（如獵殺者遭直升機吊離現場），因 `lastCombatIdx === -1` 導致搜尋迴圈從第 0 幀起算，誤匹配到開場前同名召喚物（第 26 幀）而預先標註離場的結構性 Bug。
+    - 嚴格遵守「提到名字 + 後續無戰鬥互動」的純結構性不變量判定，完全不需增加或依賴硬編碼正則表達式，召喚物登場後於第 267 幀敘述提及並在後續無互動，即可精準識別離場並同步觸發退場動畫。
+
+### Changed
+- **抑制奧義特寫（Cut-In）台詞的重複角色對話框演出**：
+  - 新增 `isUltimateCutInQuoteFrame(frame)` 判定：當角色的詠唱/宣誓台詞（<= 20 字）已被選取並呈現在全螢幕垂直滾動 Cut-In 特寫中時，舞台即時演繹（`stage.js`）與時間軸拖曳同步（`stageSync.js`）將主動抑制該角色的頭頂打字機對話框（`renderSpeechBubble`），避免角色在全螢幕帥氣喊出台詞的同時，背後或兩側又露出一模一樣的對話框導致一句話演出兩次的視覺瑕疵。
+  - 在 `playUltimateCutIn` 啟動瞬間自動清空場上殘留對話框，確保大招特寫乾淨俐落無雜訊干擾。
+  - 長文本鋪陳（如 Gebura 巷子獨白）因被 `shouldDeferUltimateCutIn` 延後出招且不寫入 Cut-In，仍完整保留頭頂對話框供玩家閱讀。
+
 ## [7.5.4] - 2026-10-18
 
 ### Added

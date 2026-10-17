@@ -27,7 +27,8 @@ import {
     resolveDialogueSpeaker,
     isSceneNarrationFrame,
     renderSceneNarrationBanner,
-    shouldDeferUltimateCutIn
+    shouldDeferUltimateCutIn,
+    isUltimateCutInQuoteFrame
 } from './cinematics.js';
 import {
     spawnAOEFanWave,
@@ -499,7 +500,7 @@ export function renderSeekPreviewState(sr, frameIndex) {
 
     // 5. Render speech bubbles, scene narration subtitle banner, and overhead badges
     const speaker = resolveDialogueSpeaker(frame);
-    if (speaker) {
+    if (speaker && !isUltimateCutInQuoteFrame(frame)) {
         renderSpeechBubble(frame, sr, engineState.playbackToken);
     } else if (isSceneNarrationFrame(frame)) {
         renderSceneNarrationBanner(frame, sr, engineState.playbackToken);

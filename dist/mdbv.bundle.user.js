@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.4
+// @version      7.5.5
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.4";
+  var APP_VERSION = "7.5.5";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -902,44 +902,44 @@
         frame.summonedActorId = log.actorId;
       }
     }
-    let candidateId = null;
+    const candidateIds = [];
     if (structuralDepartures) {
       for (const [sId, depIdx] of structuralDepartures.entries()) {
         if (depIdx === index && actorsSummonState.get(sId) !== false && !despawnedActors.has(sId)) {
-          candidateId = sId;
-          break;
+          candidateIds.push(sId);
         }
       }
     }
-    if (!candidateId && (log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
+    if (candidateIds.length === 0 && (log.type === "SKILL_TEXT" || log.type === "TEXT" || log.type === "BOSS_DIALOGUE") && SUMMON_DESPAWN_REGEX.test(frame.message)) {
       if (log.actorId) {
         const actingUnit = engineState.actors.get(log.actorId);
         if (actingUnit && actingUnit.isSummon && actorsSummonState.get(log.actorId) !== false) {
-          candidateId = log.actorId;
+          candidateIds.push(log.actorId);
         }
       }
-      if (!candidateId && log.targetId) {
+      if (candidateIds.length === 0 && log.targetId) {
         const targetUnit = engineState.actors.get(log.targetId);
         if (targetUnit && targetUnit.isSummon && actorsSummonState.get(log.targetId) !== false) {
-          candidateId = log.targetId;
+          candidateIds.push(log.targetId);
         }
       }
-      if (!candidateId && frame.message) {
+      if (candidateIds.length === 0 && frame.message) {
         for (const [id, actor] of engineState.actors.entries()) {
-          if (actor.isSummon && actorsSummonState.get(id) !== false && actor.name) {
+          if (actor.isSummon && actorsSummonState.get(id) !== false && !despawnedActors.has(id) && actor.name) {
             if (frame.message.includes(actor.name)) {
-              candidateId = id;
-              break;
+              candidateIds.push(id);
             }
           }
         }
       }
     }
-    if (candidateId) {
-      actorsSummonState.set(candidateId, false);
-      despawnedActors.add(candidateId);
+    if (candidateIds.length > 0) {
+      candidateIds.forEach((id) => {
+        actorsSummonState.set(id, false);
+        despawnedActors.add(id);
+      });
       frame.isDespawnEvent = true;
-      frame.despawnedActorId = candidateId;
+      frame.despawnedActorId = candidateIds[0];
     }
   }
   function processContractSkillLifecycle(frame, contractProfile, msg, target, actorsBondState, contractCutInCount, addHpDelta) {
@@ -1190,20 +1190,24 @@
     const departures = /* @__PURE__ */ new Map();
     const summonIds = /* @__PURE__ */ new Set();
     const summonNames = /* @__PURE__ */ new Map();
+    const summonSpawnIdx = /* @__PURE__ */ new Map();
     actorsMap.forEach((actor, id) => {
       if (actor.isSummon) {
         summonIds.add(id);
         if (actor.name) summonNames.set(id, actor.name);
+        summonSpawnIdx.set(id, actor.initiallySpawned ? 0 : 0);
       }
     });
-    logs.forEach((l) => {
+    logs.forEach((l, idx) => {
       if (!l) return;
       if (l.type === "SUMMON" && l.targetId) {
         summonIds.add(l.targetId);
+        summonSpawnIdx.set(l.targetId, idx);
       }
     });
     summonIds.forEach((id) => {
       const name = summonNames.get(id);
+      const spawnIdx = summonSpawnIdx.get(id) ?? 0;
       let lastCombatIdx = -1;
       let lastDeathIdx = -1;
       let hasHpRemaining = false;
@@ -1227,7 +1231,7 @@
       if (hasHpRemaining) return;
       if (lastDeathIdx > lastCombatIdx) return;
       let candidateNarrativeIdx = -1;
-      for (let idx = Math.max(0, lastCombatIdx); idx < logs.length; idx++) {
+      for (let idx = Math.max(spawnIdx, lastCombatIdx); idx < logs.length; idx++) {
         const l = logs[idx];
         if (!l) continue;
         const msg = l.message || "";
@@ -2146,11 +2150,19 @@
     }
     return false;
   }
+  function isUltimateCutInQuoteFrame(frame) {
+    if (!frame || frame.skillTier !== "ultimate" || !isPrimaryUltimateTriggerFrame(frame)) return false;
+    if (shouldDeferUltimateCutIn(frame)) return false;
+    const msg = String(frame.message || "");
+    const spokenQuoteMatch = msg.match(/[：:]\s*「([^」]+)」/);
+    return Boolean(spokenQuoteMatch && spokenQuoteMatch[1].length <= 20);
+  }
   async function playUltimateCutIn(frame, sr, token) {
     const actor = engineState.actors.get(frame.actorId);
     if (!actor || engineState.playbackToken !== token) return;
     const arena = sr.getElementById("arena");
     if (!arena) return;
+    sr.querySelectorAll(".speech-bubble").forEach((b) => b.remove());
     const overlay = document.createElement("div");
     overlay.className = "ultimate-overlay active";
     const flash = document.createElement("div");
@@ -4256,7 +4268,7 @@
       triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
     }
     const speaker = resolveDialogueSpeaker(frame);
-    if (speaker) {
+    if (speaker && !isUltimateCutInQuoteFrame(frame)) {
       renderSpeechBubble(frame, sr, engineState.playbackToken);
     } else if (isSceneNarrationFrame(frame)) {
       renderSceneNarrationBanner(frame, sr, engineState.playbackToken);
@@ -5298,7 +5310,7 @@
       frameDuration = Math.max(frameDuration, 650);
     }
     const speaker = resolveDialogueSpeaker(frame);
-    if (speaker) {
+    if (speaker && !isUltimateCutInQuoteFrame(frame)) {
       const readTime = renderSpeechBubble(frame, sr, token);
       const textDuration = getMessageReadingDuration(speaker.quote);
       frameDuration = Math.max(frameDuration, textDuration, readTime);

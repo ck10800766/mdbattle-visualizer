@@ -36,7 +36,8 @@ import {
     resolveDialogueSpeaker,
     isSceneNarrationFrame,
     renderSceneNarrationBanner,
-    shouldDeferUltimateCutIn
+    shouldDeferUltimateCutIn,
+    isUltimateCutInQuoteFrame
 } from './cinematics.js';
 import {
     lookaheadComboState,
@@ -905,7 +906,7 @@ export async function renderFrame(frame, token) {
 
     // 3. Render speech bubble for dialogue (only on resolved on-field speaker) OR scene narration subtitle banner
     const speaker = resolveDialogueSpeaker(frame);
-    if (speaker) {
+    if (speaker && !isUltimateCutInQuoteFrame(frame)) {
         const readTime = renderSpeechBubble(frame, sr, token);
         const textDuration = getMessageReadingDuration(speaker.quote);
         frameDuration = Math.max(frameDuration, textDuration, readTime);

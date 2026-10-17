@@ -14,6 +14,7 @@ import {
     getContractSkillProfile,
     matchesSkill,
     getCrossFinisherProfile,
+    isPrimaryUltimateTriggerFrame,
     SPECIAL_SKILL_BADGE_RULES
 } from './profiles.js';
 
@@ -174,6 +175,23 @@ export function shouldDeferUltimateCutIn(frame) {
 }
 
 /**
+ * Evaluates whether a combat frame's dialogue quote is presented as the primary
+ * focus of a full-screen Ultimate Cut-In.
+ * When true, on-field speech bubbles for this frame should be suppressed to prevent
+ * the character from delivering the same line twice (once in Cut-In, once in speech bubble).
+ *
+ * @param {object} frame - Combat frame to evaluate.
+ * @returns {boolean} True if the dialogue quote is featured as the Cut-In title.
+ */
+export function isUltimateCutInQuoteFrame(frame) {
+    if (!frame || frame.skillTier !== 'ultimate' || !isPrimaryUltimateTriggerFrame(frame)) return false;
+    if (shouldDeferUltimateCutIn(frame)) return false;
+    const msg = String(frame.message || '');
+    const spokenQuoteMatch = msg.match(/[：:]\s*「([^」]+)」/);
+    return Boolean(spokenQuoteMatch && spokenQuoteMatch[1].length <= 20);
+}
+
+/**
  * Renders a full-screen vertical-text Ultimate skill cut-in animation.
  * Extracts either a spoken quote (preceded by a colon) or the skill name along with cleaned flavor text.
  * @param {object} frame - Current combat frame.
@@ -187,6 +205,9 @@ export async function playUltimateCutIn(frame, sr, token) {
 
     const arena = sr.getElementById('arena');
     if (!arena) return;
+
+    // Dismiss any existing speech bubbles on stage so they don't peek through the cut-in
+    sr.querySelectorAll('.speech-bubble').forEach(b => b.remove());
 
     const overlay = document.createElement('div');
     overlay.className = 'ultimate-overlay active';
