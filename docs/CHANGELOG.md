@@ -6,6 +6,17 @@
 
 ---
 
+## [Unreleased]
+
+### Fixed
+- **AOE 迎擊反擊（Counter）導致 Boss 被擊飛至螢幕外問題**（`oni-gunsou.json` 第 97 影格）：
+  - 修復在連續正常播放時，若前段戰鬥有其他角色（如小櫻）施放 AOE 技能，殘留的 `aoeCenterX` 座標值未因環境脈衝（`ENVIRONMENTAL_SKILLS`）而清空，導致第 97 影格防守方對 Boss 手榴彈發動迎擊反擊時，誤套用前一位左側角色的正向位移數值（`+450px`），將右側的 Boss 往右側螢幕外邊界推飛。
+  - 於 `playAOEWaveChoreography` 與 `playAOEWaveBatchChoreography` 中加入 `aoeCasterId` 一致性校驗、強制首影格重算、座標物理方向限制（右側角色必定往舞台中心負向位移、左側角色必定正向位移）與邊界防護鉗位（`maxDisplacement`），並於 AOE 結束時徹底清空暫態座標。
+- **時間軸拖曳（Scrubbing）時小櫻奧義 Cut-in 顯示錯誤問題**：
+  - 修復在時間軸拖曳或跳轉影格時，`actor.lastUltimateTurn` 被盲目清空為 `null`，導致當進度落於奧義多段打擊的子影格（如小櫻火之牌第 51/85 傷害影格）時，誤觸發次級 Cut-in 並退回英文 `FIREY` 與傷害數字的 Bug。
+  - 在 `syncStageToAbsoluteState` 中依照目標影格重建準確的 `lastUltimateTurn` 狀態，避免跳轉到連續打擊途中引發幽靈 Cut-in；同時增強 `playUltimateCutIn` 的技能文本解析，使子影格向上搜尋同回合主要施法文案，確保始終顯示中文技能名稱（如「火之牌」）與意境敘述。
+  - 優化時間軸拖曳體驗：在拖曳滑桿時自動暫停背景 Live 播放迴圈，以 60fps 順暢更新即時戰況靜態預覽，放開時再平滑銜接播放，徹底根除拖曳期間並行迴圈競爭的問題。
+
 ## [7.5.2] - 2026-10-17
 
 ### Added
