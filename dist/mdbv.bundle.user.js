@@ -296,7 +296,7 @@
   var ULTIMATE_CUTIN_EXCLUDED_SKILLS = /* @__PURE__ */ new Set([
     "genji_dragonblade_sweep"
   ]);
-  var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字/;
+  var ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字|身上的十字刻下了|還沒完|最後一台車/;
   var SUMMON_DESPAWN_REGEX = /(?:淡去|散回|散去|消散|消逝|消失|退場|離場|脫離戰場|離開(?:了?戰場)?|離去|撤退|隱沒|揮了揮手，回到|回到.+?(?:隊伍|身邊|身旁|空間|法陣|歸處|冥界|灰霧|陰影|原處|手牌|卡組|召喚)|返回.+?(?:隊伍|身邊|身旁|空間|法陣|冥界|界)|化(?:作|為).*(?:白煙|青煙|黑煙|煙霧|塵埃|光點|虛無|泡影|灰燼)|時間(?:結束|已到|用盡|到了)|解除.*召喚|召喚.*解除|召喚結束)/;
   var ENVIRONMENTAL_SKILLS = /* @__PURE__ */ new Set([
     "originium_altar",
@@ -2290,7 +2290,21 @@
   }
 
   // src/combo.js
+  function isSameSkillCombo(skillA, skillB) {
+    if (!skillA || !skillB) return false;
+    if (skillA === skillB) return true;
+    const rootA = skillA.replace(/_\d+$/, "");
+    const rootB = skillB.replace(/_\d+$/, "");
+    if (rootA === rootB) return true;
+    const familyA = rootA.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, "");
+    const familyB = rootB.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, "");
+    if (familyA && familyA === familyB) return true;
+    return false;
+  }
   function lookaheadComboState(currentIndex, frame) {
+    if (!frame.actorId || !["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(frame.type)) {
+      return { isNextFrameSameCombo: false, isNextTargetDifferent: false, shouldReturnToOrigin: false };
+    }
     let isNextFrameSameCombo = false;
     let isNextTargetDifferent = false;
     let shouldReturnToOrigin = false;
@@ -2303,19 +2317,22 @@
         continue;
       }
       if (lookahead.turnNumber !== frame.turnNumber) break;
-      if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type)) {
+      if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type) || isSceneNarrationFrame(lookahead) || lookahead.diceCheck) {
         shouldReturnToOrigin = true;
         continue;
       }
       if (lookahead.type === "SKILL_TEXT") {
-        const isSameSkillBridgeText = lookahead.actorId === frame.actorId && activeSkillId && lookahead.skillId === activeSkillId && !lookahead.isCoverEvent;
+        const isSameSkillBridgeText = lookahead.actorId === frame.actorId && activeSkillId && (lookahead.skillId === activeSkillId || isSameSkillCombo(activeSkillId, lookahead.skillId)) && !lookahead.isCoverEvent && !isSceneNarrationFrame(lookahead);
         if (!isSameSkillBridgeText) {
           shouldReturnToOrigin = true;
         }
         continue;
       }
-      if (lookahead.type === "TEXT" && lookahead.skillTier === "ultimate") {
-        shouldReturnToOrigin = true;
+      if (lookahead.type === "TEXT") {
+        const isMidComboText = lookahead.actorId === frame.actorId && ULTIMATE_SUBFRAME_REGEX.test(lookahead.message || "") && !isSceneNarrationFrame(lookahead);
+        if (!isMidComboText) {
+          shouldReturnToOrigin = true;
+        }
         continue;
       }
       if (lookahead.type === "BUFF_APPLY" && !lookahead.passiveId && lookahead.targetId === lookahead.actorId) {
@@ -2341,7 +2358,7 @@
             isNextTargetDifferent = true;
           }
           const isDirectProc = lookahead.source === "DIRECT";
-          if (!isDirectProc && lookahead.skillId !== activeSkillId) {
+          if (!isDirectProc && !isSameSkillCombo(activeSkillId, lookahead.skillId)) {
             shouldReturnToOrigin = true;
           }
         }
@@ -4872,6 +4889,14 @@
       const textDuration = getMessageReadingDuration(speaker.quote);
       frameDuration = Math.max(frameDuration, textDuration, readTime);
     } else if (isSceneNarrationFrame(frame)) {
+      engineState.actors.forEach((actor) => {
+        if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
+          const el = sr.getElementById(`actor-${actor.id}`);
+          if (el && el.getAnimations) {
+            el.getAnimations().forEach((anim) => anim.cancel());
+          }
+        }
+      });
       const readTime = renderSceneNarrationBanner(frame, sr, token);
       const textDuration = getMessageReadingDuration(frame.message);
       frameDuration = Math.max(frameDuration, textDuration, readTime);

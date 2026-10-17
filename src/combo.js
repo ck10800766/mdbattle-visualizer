@@ -7,6 +7,33 @@
  */
 
 import { engineState, createEmptyCombo } from './state.js';
+import { isSceneNarrationFrame } from './cinematics.js';
+import { ULTIMATE_SUBFRAME_REGEX } from './profiles.js';
+
+/**
+ * Determines whether two skill IDs belong to the same multi-hit attack combo chain
+ * (e.g., diluc_onslaught_1 -> diluc_onslaught_2 -> diluc_onslaught_3,
+ *  diluc_sword_1 -> diluc_sword_2, diluc_dawn_slash -> diluc_dawn_phoenix).
+ * @param {string|null|undefined} skillA - First skill ID.
+ * @param {string|null|undefined} skillB - Second skill ID.
+ * @returns {boolean} True if both skills belong to the same combo sequence.
+ */
+export function isSameSkillCombo(skillA, skillB) {
+    if (!skillA || !skillB) return false;
+    if (skillA === skillB) return true;
+
+    // Strip trailing numeric stage suffixes (_1, _2, _3, etc.)
+    const rootA = skillA.replace(/_\d+$/, '');
+    const rootB = skillB.replace(/_\d+$/, '');
+    if (rootA === rootB) return true;
+
+    // Strip sub-hit suffixes (_slash, _phoenix, _burst, _finish, _hit, _strike, _flurry)
+    const familyA = rootA.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, '');
+    const familyB = rootB.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, '');
+    if (familyA && familyA === familyB) return true;
+
+    return false;
+}
 
 /**
  * Inspects upcoming frames within the same turn to decouple combo hit accumulation
@@ -23,6 +50,10 @@ import { engineState, createEmptyCombo } from './state.js';
  * @returns {{ isNextFrameSameCombo: boolean, isNextTargetDifferent: boolean, shouldReturnToOrigin: boolean }}
  */
 export function lookaheadComboState(currentIndex, frame) {
+    if (!frame.actorId || !['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(frame.type)) {
+        return { isNextFrameSameCombo: false, isNextTargetDifferent: false, shouldReturnToOrigin: false };
+    }
+
     let isNextFrameSameCombo = false;
     let isNextTargetDifferent = false;
     let shouldReturnToOrigin = false;
@@ -44,25 +75,40 @@ export function lookaheadComboState(currentIndex, frame) {
 
         if (lookahead.turnNumber !== frame.turnNumber) break;
 
-        if (['HEAL', 'SP_RECOVER', 'BOSS_DIALOGUE', 'SUMMON'].includes(lookahead.type)) {
+        // Force attacker back to origin on non-combat cinematic pauses (heals, dialogues, summons, scene narrations)
+        if (
+            ['HEAL', 'SP_RECOVER', 'BOSS_DIALOGUE', 'SUMMON'].includes(lookahead.type) ||
+            isSceneNarrationFrame(lookahead) ||
+            lookahead.diceCheck
+        ) {
             shouldReturnToOrigin = true;
             continue;
         }
+
         if (lookahead.type === 'SKILL_TEXT') {
             const isSameSkillBridgeText =
                 lookahead.actorId === frame.actorId &&
                 activeSkillId &&
-                lookahead.skillId === activeSkillId &&
-                !lookahead.isCoverEvent;
+                (lookahead.skillId === activeSkillId || isSameSkillCombo(activeSkillId, lookahead.skillId)) &&
+                !lookahead.isCoverEvent &&
+                !isSceneNarrationFrame(lookahead);
             if (!isSameSkillBridgeText) {
                 shouldReturnToOrigin = true;
             }
             continue;
         }
-        if (lookahead.type === 'TEXT' && lookahead.skillTier === 'ultimate') {
-            shouldReturnToOrigin = true;
+
+        if (lookahead.type === 'TEXT') {
+            const isMidComboText =
+                lookahead.actorId === frame.actorId &&
+                ULTIMATE_SUBFRAME_REGEX.test(lookahead.message || '') &&
+                !isSceneNarrationFrame(lookahead);
+            if (!isMidComboText) {
+                shouldReturnToOrigin = true;
+            }
             continue;
         }
+
         if (lookahead.type === 'BUFF_APPLY' && !lookahead.passiveId && lookahead.targetId === lookahead.actorId) {
             shouldReturnToOrigin = true;
             continue;
@@ -88,7 +134,7 @@ export function lookaheadComboState(currentIndex, frame) {
                     isNextTargetDifferent = true;
                 }
                 const isDirectProc = lookahead.source === 'DIRECT';
-                if (!isDirectProc && lookahead.skillId !== activeSkillId) {
+                if (!isDirectProc && !isSameSkillCombo(activeSkillId, lookahead.skillId)) {
                     shouldReturnToOrigin = true;
                 }
             }

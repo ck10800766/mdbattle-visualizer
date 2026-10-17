@@ -4854,7 +4854,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -4879,8 +4879,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 3,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -4978,7 +4978,7 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 身上的十字刻下了 10 道劍痕，劍尖對準了正中央——",
       "index": 14,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -4996,8 +4996,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 16,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -5095,7 +5095,7 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 身上的十字刻下了 8 道劍痕，劍尖對準了正中央——",
       "index": 27,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -5113,18 +5113,18 @@
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span>：「我需要治療！」……沒有人回應，他只好自己繞到邊線抓起一個醫療包。",
       "index": 29,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">源氏</span> 回復了 1694 HP。",
       "index": 30,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -5205,7 +5205,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -5221,8 +5221,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 41,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -5322,7 +5322,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -5340,7 +5340,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -5349,7 +5349,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -5376,16 +5376,16 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "迅影襲的冷卻重置了！<span class=\"actor-name-left\">源氏</span> 腳下一蹬，又衝向了 <span class=\"actor-name-right\">有紀</span>！",
       "index": 59,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {

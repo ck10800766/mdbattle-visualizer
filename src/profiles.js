@@ -59,7 +59,7 @@ export const ULTIMATE_CUTIN_EXCLUDED_SKILLS = new Set([
  * Regex matching mid-combo or secondary ultimate log lines that should not re-trigger an Ultimate Cut-In.
  * @type {RegExp}
  */
-export const ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字/;
+export const ULTIMATE_SUBFRAME_REGEX = /^(?:第\s*\d+\s*[劍擊發道]|火翼一收|刀勢未收|綠光連閃|一刀快過一刀|刀勢未盡)|拔出了龍一文字|身上的十字刻下了|還沒完|最後一台車/;
 
 /**
  * Generalized regex matching log messages where a summoned unit voluntarily leaves,

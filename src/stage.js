@@ -788,6 +788,15 @@ export async function renderFrame(frame, token) {
         const textDuration = getMessageReadingDuration(speaker.quote);
         frameDuration = Math.max(frameDuration, textDuration, readTime);
     } else if (isSceneNarrationFrame(frame)) {
+        // Ensure all combatants are in their home positions during scene narration
+        engineState.actors.forEach(actor => {
+            if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
+                const el = sr.getElementById(`actor-${actor.id}`);
+                if (el && el.getAnimations) {
+                    el.getAnimations().forEach(anim => anim.cancel());
+                }
+            }
+        });
         const readTime = renderSceneNarrationBanner(frame, sr, token);
         const textDuration = getMessageReadingDuration(frame.message);
         frameDuration = Math.max(frameDuration, textDuration, readTime);

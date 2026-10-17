@@ -45053,9 +45053,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">迪盧克</span> 把手套拉緊，大劍從背上卸了下來：「酒莊還有帳要對，速戰速決。」",
       "index": 10,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45064,7 +45064,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45073,7 +45073,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45091,7 +45091,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45145,7 +45145,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45154,7 +45154,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45163,7 +45163,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45172,7 +45172,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45199,25 +45199,25 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
       "formattedHtml": "占卜判定：<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 智力（700 → 48）－序列 9（19） + 骰出 29 = 58，<span class=\"actor-name-left\">同人</span> 幸運（293 → 20） + 骰出 58 = 78。",
       "index": 27,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "靈擺晃了兩下就停了。這一次，<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 沒有占卜到什麼。",
       "index": 28,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45235,7 +45235,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45289,7 +45289,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -45352,7 +45352,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45361,7 +45361,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45397,7 +45397,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45406,7 +45406,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45422,8 +45422,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 51,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -45521,7 +45521,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 身上的十字刻下了 9 道劍痕，劍尖對<span class=\"actor-name-left\">準</span>了正中央——",
       "index": 62,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -45532,7 +45532,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -45548,8 +45548,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——",
       "index": 65,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -45595,7 +45595,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -45613,7 +45613,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45640,7 +45640,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45649,7 +45649,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45667,7 +45667,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45676,7 +45676,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45685,7 +45685,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45694,7 +45694,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45773,8 +45773,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 90,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -45872,7 +45872,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 身上的十字刻下了 10 道劍痕，劍尖對<span class=\"actor-name-left\">準</span>了正中央——",
       "index": 101,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -45910,7 +45910,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45919,7 +45919,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45928,7 +45928,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45937,7 +45937,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45946,7 +45946,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45955,7 +45955,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45964,7 +45964,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45982,7 +45982,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -45991,7 +45991,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46045,7 +46045,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46081,7 +46081,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46234,7 +46234,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46243,7 +46243,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46306,7 +46306,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46324,7 +46324,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46349,8 +46349,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——",
       "index": 154,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -46369,7 +46369,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46405,7 +46405,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46432,7 +46432,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46450,7 +46450,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46459,15 +46459,15 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 167,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -46565,7 +46565,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 身上的十字刻下了 10 道劍痕，劍尖對<span class=\"actor-name-left\">準</span>了正中央——",
       "index": 178,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -46576,7 +46576,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46592,8 +46592,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 的臉晃了一晃，變成了 <span class=\"actor-name-left\">同人</span> 的模樣，學著 <span class=\"actor-name-left\">同人</span> 的架勢，朝 <span class=\"actor-name-left\">迪盧克</span> 出手——",
       "index": 181,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -46610,27 +46610,27 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 趁空檔又折好了一張紙人，收進了口袋。",
       "index": 183,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "靈體之線判定：<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 智力（700 → 48）－序列 5（11） + 骰出 21 = 58，<span class=\"actor-name-left\">有紀</span> 智力（86 → 6） + 骰出 37 = 43。",
       "index": 184,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 身上的細線又多了一條，動作越來越不像自己的了。",
       "index": 185,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46648,7 +46648,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46711,7 +46711,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46720,7 +46720,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46747,7 +46747,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46765,7 +46765,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46783,7 +46783,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46792,7 +46792,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46819,7 +46819,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46828,7 +46828,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -46853,8 +46853,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——",
       "index": 210,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -46898,26 +46898,26 @@
       "formattedHtml": "靈體之線判定：<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 智力（700 → 48）－序列 5（11） + 骰出 37 = 74，<span class=\"actor-name-left\">有紀</span> 智力（86 → 6） + 骰出 65 = 71。",
       "index": 215,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 身上的細線又多了一條，動作越來越不像自己的了。",
       "index": 216,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 的臉晃了一晃，變成了 <span class=\"actor-name-left\">有紀</span> 的模樣，學著 <span class=\"actor-name-left\">有紀</span> 的架勢，朝 <span class=\"actor-name-left\">迪盧克</span> 出手——",
       "index": 217,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -46927,7 +46927,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -46990,7 +46990,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -47017,7 +47017,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47026,7 +47026,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47053,7 +47053,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -47087,8 +47087,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 236,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -47186,7 +47186,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 身上的十字刻下了 10 道劍痕，劍尖對<span class=\"actor-name-left\">準</span>了正中央——",
       "index": 247,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -47204,8 +47204,8 @@
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 使出了 真・聖母聖詠，提著婚紗裙襬踏前一步，劍尖沿著斜十字疾刺而出——",
       "index": 249,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -47213,9 +47213,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 開始有點喘",
       "index": 250,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47312,7 +47312,7 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 身上的十字刻下了 10 道劍痕，劍尖對<span class=\"actor-name-left\">準</span>了正中央——",
       "index": 261,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
@@ -47377,7 +47377,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47386,7 +47386,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47456,45 +47456,45 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 使出了 歷史投影，伸手探進身後的灰霧，從歷史裡拉出了一個人影。那是 <span class=\"actor-name-left\">有紀</span>，過去的 <span class=\"actor-name-left\">有紀</span>。",
       "index": 277,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "灰霧裡的人影一步一步走到了長桌旁。",
       "index": 278,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 趁空檔又折好了一張紙人，收進了口袋。",
       "index": 279,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "靈體之線判定：<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 智力（700 → 48）－序列 3（6） + 骰出 62 = 104，<span class=\"actor-name-left\">迪盧克</span> 智力（190 → 13） + 骰出 6 = 19。",
       "index": 280,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">迪盧克</span> 身上的細線又多了一條，動作越來越不像自己的了。",
       "index": 281,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47503,7 +47503,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -47546,8 +47546,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——",
       "index": 287,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -47566,7 +47566,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47593,7 +47593,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -47690,8 +47690,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 的臉晃了一晃，變成了 <span class=\"actor-name-left\">同人</span> 的模樣，學著 <span class=\"actor-name-left\">同人</span> 的架勢，朝 <span class=\"actor-name-left\">有紀</span> 出手——",
       "index": 303,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -47701,7 +47701,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -47771,9 +47771,9 @@
       "formattedHtml": "一道紅色的火光劃開了夜色。<span class=\"actor-name-left\">迪盧克</span> 擋到 <span class=\"actor-name-left\">有紀</span> 前面，劍尖指著 <span class=\"actor-name-right\">克萊恩·莫雷蒂</span>。",
       "index": 312,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47789,9 +47789,9 @@
       "formattedHtml": "<span class=\"actor-name-left\">迪盧克</span>：「你的對手是我。」",
       "index": 314,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47809,7 +47809,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47818,7 +47818,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47827,7 +47827,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47852,18 +47852,18 @@
       "formattedHtml": "靈體之線判定：<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 智力（700 → 48）－序列 3（6） + 骰出 83 = 125，<span class=\"actor-name-left\">有紀</span> 智力（68 → 5） + 骰出 94 = 99。",
       "index": 321,
       "lookahead": {
-        "isNextFrameSameCombo": true,
+        "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
       "formattedHtml": "<span class=\"actor-name-left\">有紀</span> 的手腳像是被什麼東西輕輕牽了一下，自己卻看不見。",
       "index": 322,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47881,7 +47881,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47890,7 +47890,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47899,7 +47899,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -47926,7 +47926,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -47953,7 +47953,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -47971,7 +47971,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -48041,8 +48041,8 @@
       "formattedHtml": "<span class=\"actor-name-right\">克萊恩·莫雷蒂</span> 使出了 響指，打了一個清脆的響指，長桌四周的燭火同時竄起，撲向所有人——",
       "index": 342,
       "lookahead": {
-        "isNextFrameSameCombo": true,
-        "isNextTargetDifferent": true,
+        "isNextFrameSameCombo": false,
+        "isNextTargetDifferent": false,
         "shouldReturnToOrigin": false
       }
     },
@@ -48079,7 +48079,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -48160,7 +48160,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -48169,7 +48169,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
