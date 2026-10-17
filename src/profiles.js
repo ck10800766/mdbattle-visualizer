@@ -106,7 +106,7 @@ export const ENVIRONMENTAL_SKILLS = new Set([
  * @type {{ dialogueRegex: RegExp, blockKeyword: string }}
  */
 export const REBIRTH_RULES = {
-    dialogueRegex: /站了起來|進軍|重生|甦醒|恢復|第二階段/,
+    dialogueRegex: /站了起來|再次站起|重新站起|進軍|重生|甦醒|恢復|第二階段|第三階段|爬了過來|蠕動的血肉|傷口全部合上/,
     blockKeyword: '重生'
 };
 

@@ -1,0 +1,5051 @@
+{
+  "participants": {
+    "players": [
+      {
+        "userId": "6aad1668c3b16affe1e05794",
+        "characterId": "6ad1b979b695c12f496e401f",
+        "name": "帕塔之友",
+        "characterName": "Gebura",
+        "imagePath": "/images/characters/gebura.webp",
+        "title": "殷紅迷霧",
+        "level": 81,
+        "stats": {
+          "hp": 7740,
+          "atk": 579,
+          "def": 202,
+          "sta": 310,
+          "agi": 115,
+          "spd": 464,
+          "tec": 530,
+          "int": 83,
+          "luk": 232
+        },
+        "_id": "6ad37dccfd41b081584a4128"
+      },
+      {
+        "userId": "6ab150baad84d95a03db1ca4",
+        "characterId": "6acff289051fbeaaac344eef",
+        "name": "E14112067",
+        "characterName": "流螢",
+        "imagePath": "/images/characters/firefly.webp",
+        "title": "格拉默鐵騎",
+        "level": 100,
+        "stats": {
+          "hp": 10690,
+          "atk": 550,
+          "def": 252,
+          "sta": 393,
+          "agi": 205,
+          "spd": 529,
+          "tec": 552,
+          "int": 228,
+          "luk": 337
+        },
+        "_id": "6ad37dccfd41b081584a4129"
+      },
+      {
+        "userId": "6aa7dd35cc943baeed96bd8a",
+        "characterId": "6ac49079e5d3cc64e0e126ce",
+        "name": "冰斗先生",
+        "characterName": "同人",
+        "imagePath": "/images/characters/kirito.webp",
+        "doujinAppearance": {
+          "frontHair": "#ffd92e",
+          "backHair": "#ffdb3b",
+          "brows": "#17080d",
+          "eyes": "#3865c7",
+          "skin": "#fce6ca",
+          "outfit": "#3a3eb5",
+          "frontHairStyle": "blunt",
+          "backHairStyle": "waves",
+          "browStyle": "soft",
+          "eyeStyle": "almond",
+          "outfitStyle": "armor"
+        },
+        "title": "我的同人",
+        "level": 100,
+        "stats": {
+          "hp": 12280,
+          "atk": 267,
+          "def": 369,
+          "sta": 303,
+          "agi": 340,
+          "spd": 250,
+          "tec": 426,
+          "int": 868,
+          "luk": 511
+        },
+        "isAssist": true,
+        "_id": "6ad37dccfd41b081584a412a"
+      }
+    ],
+    "enemies": [
+      {
+        "entityId": "mob_0_plague_inc",
+        "monsterId": "plague_inc",
+        "name": "瘟疫公司",
+        "imagePath": "/images/boss/plague-inc.webp",
+        "title": "零號病人",
+        "floor": 52,
+        "level": 150,
+        "stats": {
+          "hp": 80000,
+          "atk": 1500,
+          "def": 350,
+          "sta": 500,
+          "agi": 150,
+          "spd": 220,
+          "tec": 350,
+          "int": 350,
+          "luk": 250
+        },
+        "_id": "6ad37dccfd41b081584a412b"
+      }
+    ]
+  },
+  "_id": "6ad37dccfd41b081584a4127",
+  "reportId": 223439,
+  "userIds": [
+    "6aad1668c3b16affe1e05794",
+    "6ab150baad84d95a03db1ca4",
+    "6aa7dd35cc943baeed96bd8a"
+  ],
+  "battleType": "BOSS",
+  "boss": {
+    "floorNumber": 52,
+    "name": "瘟疫公司",
+    "title": "零號病人",
+    "imagePath": "/images/boss/plague-inc.webp"
+  },
+  "result": "WIN",
+  "outcomes": [
+    {
+      "userId": "6aad1668c3b16affe1e05794",
+      "name": "Gebura",
+      "expGained": 5200,
+      "isDead": false,
+      "newFloor": 53
+    },
+    {
+      "userId": "6ab150baad84d95a03db1ca4",
+      "name": "流螢",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 53
+    }
+  ],
+  "createdAt": "2026-10-17T13:53:16.466Z",
+  "__v": 0,
+  "logs": [
+    {
+      "type": "BATTLE_START",
+      "message": "戰鬥開始！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "message": "一張灰色的世界地圖攤在眼前，所有國家都還亮著。地圖的角落浮出一行小字：零號病人已出現。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：馬達加斯加宣布關閉所有港口。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_madagascar",
+      "message": "同人 守在 馬達加斯加，與外界斷絕了往來。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_opening",
+      "message": "Gebura 睜開眼睛，把靠在肩上的刀扛了起來。「我沒睡，閉著眼睛冥想而已。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「目標出現，各單位警戒。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「火螢Ⅳ型，啟動！」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_meteoric_incineration",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "流螢 從高空俯衝而下，火焰在敵陣中炸開——"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_meteoric_incineration",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_meteoric_incineration",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 151,
+      "actualDamage": 151,
+      "isCrit": false,
+      "blocked": false,
+      "message": "瘟疫公司 被捲進爆炸，受到 151 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1083,
+      "actualDamage": 1083,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 收刀成刺，一記大刀直刺捅向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1083 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 610,
+      "actualDamage": 610,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 2 下，會心一擊！對 瘟疫公司 造成了 610 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 348,
+      "actualDamage": 348,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 3 下，會心一擊！對 瘟疫公司 造成了 348 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 244,
+      "actualDamage": 244,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 4 下，會心一擊！對 瘟疫公司 造成了 244 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 141,
+      "actualDamage": 141,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 5 下，會心一擊！對 瘟疫公司 造成了 141 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 575,
+      "actualDamage": 575,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 575 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「薩姆，已就位。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1480,
+      "actualDamage": 1480,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1480 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 198,
+      "actualDamage": 198,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 198 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 446,
+      "actualDamage": 446,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 446 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 71,
+      "actualDamage": 71,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 71 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 153,
+      "actualDamage": 153,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 153 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 106,
+      "actualDamage": 106,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 6 連擊，會心一擊！對 瘟疫公司 造成了 106 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_spread",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "message": "瘟疫公司 使出了 傳播，看不見的病原體附上了 流螢，但是被 流螢 躲開了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_resistance",
+      "message": "瘟疫公司 對 物理攻擊 產生了抗藥性。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_vertical_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 566,
+      "actualDamage": 566,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 的刀身拖出一道紅霧，筆直地劈向 瘟疫公司，對 瘟疫公司 造成了 566 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "mob_0_plague_inc",
+      "opponentId": "6aa7dd35cc943baeed96bd8a",
+      "value": 286,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 瘟疫公司 的頭，造成 286 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 181,
+      "actualDamage": 181,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，對 瘟疫公司 造成了 181 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 98,
+      "actualDamage": 98,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 98 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 64,
+      "actualDamage": 64,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 3 連擊，對 瘟疫公司 造成了 64 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 34,
+      "actualDamage": 34,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 34 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 93,
+      "actualDamage": 93,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 93 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 2078,
+      "actualDamage": 2078,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 2078 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 370,
+      "actualDamage": 370,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 高舉大刀，一記大刀縱劈直落 瘟疫公司，對 瘟疫公司 造成了 370 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 198,
+      "actualDamage": 198,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，對 瘟疫公司 造成了 198 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 495,
+      "actualDamage": 495,
+      "isCrit": true,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，會心一擊！對 瘟疫公司 造成了 495 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 292,
+      "actualDamage": 292,
+      "isCrit": true,
+      "blocked": false,
+      "message": "紅霧翻湧，第 4 下，會心一擊！對 瘟疫公司 造成了 292 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 43,
+      "actualDamage": 43,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 5 下，對 瘟疫公司 造成了 43 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 157,
+      "actualDamage": 157,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，對 瘟疫公司 造成了 157 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 102,
+      "actualDamage": 102,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 102 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 271,
+      "actualDamage": 271,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 271 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 36,
+      "actualDamage": 36,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 36 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 90,
+      "actualDamage": 90,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 90 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "shadow_clone_jutsu",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 把葉冠左右交疊，用葉片飛快地結出十字印：「砰——！」白煙猛然炸開。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "targetId": "summon_1",
+      "skillId": "shadow_clone_jutsu",
+      "isNormalAttack": false,
+      "message": "同人的影分身 從白煙裡滾了出來。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 使出了 緊急包紮，使 同人的影分身 回復了 0 點生命！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 Gebura 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 流螢 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_evolve",
+      "message": "瘟疫公司 演化出了 咳嗽。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：多國診所回報輕微咳嗽病例增加，衛生單位認為是季節性感冒。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_spread",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 833,
+      "actualDamage": 833,
+      "isCrit": false,
+      "blocked": false,
+      "message": "瘟疫公司 使出了 傳播，看不見的病原體附上了 流螢，對 流螢 造成了 833 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_infection",
+      "message": "流螢 被感染了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 258,
+      "actualDamage": 258,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 壓低刀身，一記大刀橫斬掃過 瘟疫公司，對 瘟疫公司 造成了 258 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 593,
+      "actualDamage": 593,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，會心一擊！對 瘟疫公司 造成了 593 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 84,
+      "actualDamage": 84,
+      "isCrit": false,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，對 瘟疫公司 造成了 84 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 223,
+      "actualDamage": 223,
+      "isCrit": true,
+      "blocked": false,
+      "message": "紅霧翻湧，第 4 下，會心一擊！對 瘟疫公司 造成了 223 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 508,
+      "actualDamage": 508,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 508 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 803,
+      "actualDamage": 803,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 瘟疫公司，會心一擊！對 瘟疫公司 造成了 803 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_onrush_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1501,
+      "actualDamage": 1501,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 一步踏進 瘟疫公司 懷裡，會心一擊！對 瘟疫公司 造成了 1501 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 167,
+      "actualDamage": 167,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，對 瘟疫公司 造成了 167 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 90,
+      "actualDamage": 90,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 90 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 226,
+      "actualDamage": 226,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 226 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 32,
+      "actualDamage": 32,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 32 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 266,
+      "actualDamage": 266,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 壓低刀身，一記大刀橫斬掃過 瘟疫公司，對 瘟疫公司 造成了 266 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 147,
+      "actualDamage": 147,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，對 瘟疫公司 造成了 147 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 364,
+      "actualDamage": 364,
+      "isCrit": true,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，會心一擊！對 瘟疫公司 造成了 364 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 173 點傷害！",
+      "value": 173
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_spread",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 959,
+      "actualDamage": 959,
+      "isCrit": false,
+      "blocked": false,
+      "message": "瘟疫公司 使出了 傳播，看不見的病原體附上了 Gebura，對 Gebura 造成了 959 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_infection",
+      "message": "Gebura 被感染了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_resistance",
+      "message": "瘟疫公司 對 物理攻擊 產生了抗藥性。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 512,
+      "actualDamage": 512,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 512 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1673,
+      "actualDamage": 1673,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1673 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 959,
+      "message": "同人 喚出了小黃金樹，金色暖光使 Gebura 恢復了 959 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 833,
+      "message": "同人 喚出了小黃金樹，金色暖光使 流螢 恢復了 833 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「收到支援。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「進攻，執行。」",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 把自己的生命灌進薩姆的推進器，裝甲的縫隙透出火光，失去了 4276 點生命。",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_aerial_bombardment",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1059,
+      "actualDamage": 1059,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 指令-天火轟擊，薩姆從空中直直砸向 瘟疫公司，會心一擊！炸出 1059 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 的能量蓄滿了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「飛螢撲火，向死而生。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "源火中樞的熱度燒掉了 流螢 身上的感染。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_infection",
+      "message": "流螢 體內的病原體被清除了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我為自我而戰，直至一切……燃燒殆盡！」",
+      "skillId": "firefly_complete_combustion",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 解開了薩姆的全部限制，裝甲從內側燒成通紅，火螢Ⅳ型進入完全燃燒！",
+      "skillId": "firefly_complete_combustion",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「火螢Ⅳ型，已就位。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 208,
+      "actualDamage": 208,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，造成 208 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 524,
+      "actualDamage": 524,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 524 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1651,
+      "actualDamage": 1651,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1651 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 227,
+      "actualDamage": 227,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 順勢一甩，領帶揮出的劍氣飛向了 瘟疫公司，對 瘟疫公司 造成了 227 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "opponentId": "mob_0_plague_inc",
+      "value": 22,
+      "actionCancelled": true,
+      "eventId": "purple_6",
+      "message": "天外飛來一支箭射中 Gebura 的左膝蓋造成 22 點傷害。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 289,
+      "actualDamage": 289,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，造成 289 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 205,
+      "actualDamage": 205,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 壓低刀身，一記大刀橫斬掃過 瘟疫公司，對 瘟疫公司 造成了 205 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 141,
+      "actualDamage": 141,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，對 瘟疫公司 造成了 141 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 313,
+      "actualDamage": 313,
+      "isCrit": true,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，會心一擊！對 瘟疫公司 造成了 313 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 50,
+      "actualDamage": 50,
+      "isCrit": false,
+      "blocked": false,
+      "message": "紅霧翻湧，第 4 下，對 瘟疫公司 造成了 50 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 30,
+      "actualDamage": 30,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 5 下，對 瘟疫公司 造成了 30 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 22,
+      "message": "同人 使出了 緊急包紮，使 Gebura 回復了 22 點生命！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人的影分身 使出了 緊急包紮，使 同人的影分身 回復了 0 點生命！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 171 點傷害！",
+      "value": 171
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_evolve",
+      "message": "瘟疫公司 演化出了 噁心。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：腸胃不適的病例持續上升，專家呼籲民眾注意飲食衛生。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "message": "瘟疫公司 使出了 症狀發作，感染者身上的症狀同時惡化——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 1943,
+      "actualDamage": 1943,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 Gebura 造成了 1943 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_resistance",
+      "message": "瘟疫公司 對 法術 產生了抗藥性。"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 171 點傷害！",
+      "value": 171
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_spread",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1518,
+      "actualDamage": 1518,
+      "isCrit": true,
+      "blocked": false,
+      "message": "瘟疫公司 使出了 傳播，看不見的病原體附上了 流螢，會心一擊！對 流螢 造成了 1518 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_infection",
+      "message": "流螢 被感染了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_resistance",
+      "message": "瘟疫公司 對 持續傷害 產生了抗藥性。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「行動四，點火。」",
+      "skillId": "firefly_pyrogenic_decimation"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 258,
+      "actualDamage": 258,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 拖著一道火焰斬向 瘟疫公司，對 瘟疫公司 造成了 258 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 649,
+      "actualDamage": 649,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 2 連擊，會心一擊！對 瘟疫公司 造成了 649 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 375,
+      "actualDamage": 375,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 375 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 242,
+      "actualDamage": 242,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 4 連擊，會心一擊！對 瘟疫公司 造成了 242 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 133,
+      "actualDamage": 133,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 133 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 21,
+      "actualDamage": 21,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 6 連擊，對 瘟疫公司 造成了 21 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 44,
+      "actualDamage": 44,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 7 連擊，會心一擊！對 瘟疫公司 造成了 44 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 27,
+      "actualDamage": 27,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 8 連擊，會心一擊！對 瘟疫公司 造成了 27 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 4,
+      "actualDamage": 4,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 9 連擊，對 瘟疫公司 造成了 4 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 9,
+      "actualDamage": 9,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 10 連擊，會心一擊！對 瘟疫公司 造成了 9 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 3,
+      "actualDamage": 3,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 11 連擊，會心一擊！對 瘟疫公司 造成了 3 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1,
+      "actualDamage": 1,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 12 連擊，對 瘟疫公司 造成了 1 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "流螢 吸回散出去的火焰，回復了 1069 點生命。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：世界衛生組織確認了一種新型病原體，各國開始研發解藥。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 502,
+      "actualDamage": 502,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 502 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1347,
+      "actualDamage": 1347,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，會心一擊！造成 1347 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "message": "Gebura 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "message": "流螢 因為噁心，體力減少了 31 點。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1714,
+      "actualDamage": 1714,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，會心一擊！造成 1714 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「為戰而生，為生而戰！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1860,
+      "actualDamage": 1860,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，會心一擊！造成 1860 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 449,
+      "message": "餘燼流回裝甲裡，流螢 回復了 449 點生命。"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 111 點傷害！",
+      "value": 111
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_evolve",
+      "message": "瘟疫公司 演化出了 皮疹。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：皮膚科門診出現不明原因的紅疹，目前沒有致命案例。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "message": "瘟疫公司 使出了 症狀發作，感染者身上的症狀同時惡化——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 1885,
+      "actualDamage": 1885,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 Gebura 造成了 1885 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1023,
+      "actualDamage": 1023,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 流螢 造成了 1023 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1835,
+      "actualDamage": 1835,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1835 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_vertical_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1924,
+      "actualDamage": 1924,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 的刀身拖出一道紅霧，筆直地劈向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1924 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1762,
+      "actualDamage": 1762,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1762 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1158,
+      "actualDamage": 1158,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 高舉大刀，一記大刀縱劈直落 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1158 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 751,
+      "actualDamage": 751,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，會心一擊！對 瘟疫公司 造成了 751 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 428,
+      "actualDamage": 428,
+      "isCrit": true,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，會心一擊！對 瘟疫公司 造成了 428 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 233,
+      "actualDamage": 233,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 壓低刀身，一記大刀橫斬掃過 瘟疫公司，對 瘟疫公司 造成了 233 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 640,
+      "actualDamage": 640,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，會心一擊！對 瘟疫公司 造成了 640 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 89,
+      "actualDamage": 89,
+      "isCrit": false,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，對 瘟疫公司 造成了 89 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 56,
+      "actualDamage": 56,
+      "isCrit": false,
+      "blocked": false,
+      "message": "紅霧翻湧，第 4 下，對 瘟疫公司 造成了 56 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 30,
+      "actualDamage": 30,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 5 下，對 瘟疫公司 造成了 30 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 20,
+      "actualDamage": 20,
+      "isCrit": false,
+      "blocked": false,
+      "message": "她踏前半步，第 6 下，對 瘟疫公司 造成了 20 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 11,
+      "actualDamage": 11,
+      "isCrit": false,
+      "blocked": false,
+      "message": "紅霧翻湧，第 7 下，對 瘟疫公司 造成了 11 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 0,
+      "message": "同人的影分身 使出了 緊急包紮，使 同人 回復了 0 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1177,
+      "actualDamage": 1177,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，會心一擊！造成 1177 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1023,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1023 點生命。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "message": "Gebura 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_legend",
+      "message": "Gebura 單膝跪了下去，又站了起來。「……就這樣？」傳說不會倒在這裡。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "value": 42,
+      "actualDamage": 42,
+      "message": "Gebura 受到 皮疹 影響，受到了 42 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "message": "流螢 因為噁心，體力減少了 31 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "value": 106,
+      "actualDamage": 106,
+      "message": "流螢 受到 皮疹 影響，受到了 106 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "薩姆的散熱口噴出大片白霧，火光一點一點熄了下去，流螢 喘了口氣。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「讓我多待會兒吧，用這副身體……」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 461,
+      "actualDamage": 461,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 461 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 205,
+      "actualDamage": 205,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 順勢一甩，領帶揮出的劍氣飛向了 瘟疫公司，對 瘟疫公司 造成了 205 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_infection",
+      "message": "Gebura 體內的病原體被清除了。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "skillTier": "ultimate",
+      "message": "Gebura 抹掉嘴角的血，回頭看了一眼 流螢、同人。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "skillTier": "ultimate",
+      "message": "Gebura：「以前在巷子裡，我想護住街坊，最後刀口卻朝向了他們。後來在研究所，我擋在所有人前面，擋到最後一口氣。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "skillTier": "ultimate",
+      "message": "Gebura：「這把刀從來就不是為了殺人才拿起來的。……站到我身後。只要我還站著，誰都別想越過這條線！」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "skillTier": "ultimate",
+      "message": "紅色的霧在她身邊炸開，吞沒了整個戰場。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "skillTier": "ultimate",
+      "message": "Gebura 綻放了 E.G.O:殷紅迷霧！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 192,
+      "actualDamage": 192,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 收刀成刺，一記大刀直刺捅向 瘟疫公司，對 瘟疫公司 造成了 192 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 455,
+      "actualDamage": 455,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 2 下，會心一擊！對 瘟疫公司 造成了 455 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 60,
+      "actualDamage": 60,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 3 下，對 瘟疫公司 造成了 60 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "gebura_spear",
+      "value": 2791,
+      "isCrit": true,
+      "message": "刀尖收回又刺出，第 4 下，但是遭瘟疫公司反擊，會心一擊！受到 2791 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「進攻，執行。」",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 把自己的生命灌進薩姆的推進器，裝甲的縫隙透出火光，失去了 4276 點生命。",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_aerial_bombardment",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 329,
+      "actualDamage": 329,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 指令-天火轟擊，薩姆從空中直直砸向 瘟疫公司，炸出 329 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 141 點傷害！",
+      "value": 141
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_evolve",
+      "message": "瘟疫公司 演化出了 水傳播。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：一艘受汙染的貨輪靠岸了。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_madagascar",
+      "message": "同人 的港口防線失守了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_spread",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 833,
+      "actualDamage": 833,
+      "isCrit": false,
+      "blocked": false,
+      "message": "瘟疫公司 使出了 傳播，看不見的病原體附上了 Gebura，對 Gebura 造成了 833 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_infection",
+      "message": "Gebura 被感染了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 169,
+      "actualDamage": 169,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，對 瘟疫公司 造成了 169 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 94,
+      "actualDamage": 94,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 94 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 281,
+      "actualDamage": 281,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 281 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 161,
+      "actualDamage": 161,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 4 連擊，會心一擊！對 瘟疫公司 造成了 161 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 93,
+      "actualDamage": 93,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 93 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 12,
+      "actualDamage": 12,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 6 連擊，對 瘟疫公司 造成了 12 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 6,
+      "actualDamage": 6,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 7 連擊，對 瘟疫公司 造成了 6 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 503,
+      "actualDamage": 503,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 503 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 306,
+      "actualDamage": 306,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 壓低刀身，一記大刀橫斬掃過 瘟疫公司，對 瘟疫公司 造成了 306 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 150,
+      "actualDamage": 150,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，對 瘟疫公司 造成了 150 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 425,
+      "actualDamage": 425,
+      "isCrit": true,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，會心一擊！對 瘟疫公司 造成了 425 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_level_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 61,
+      "actualDamage": 61,
+      "isCrit": false,
+      "blocked": false,
+      "message": "紅霧翻湧，第 4 下，對 瘟疫公司 造成了 61 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 使出了 緊急包紮，使 同人的影分身 回復了 0 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 497,
+      "actualDamage": 497,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 497 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 213,
+      "actualDamage": 213,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 瘟疫公司，對 瘟疫公司 造成了 213 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「預備，起爆。」",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 把自己的生命灌進薩姆的推進器，裝甲的縫隙透出火光，失去了 4276 點生命。",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_aerial_bombardment",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 300,
+      "actualDamage": 300,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 指令-天火轟擊，薩姆從空中直直砸向 瘟疫公司，炸出 300 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 的能量蓄滿了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「飛螢撲火，向死而生。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "源火中樞的熱度燒掉了 流螢 身上的感染。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_infection",
+      "message": "流螢 體內的病原體被清除了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我為自我而戰，直至一切……燃燒殆盡！」",
+      "skillId": "firefly_complete_combustion",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 解開了薩姆的全部限制，裝甲從內側燒成通紅，火螢Ⅳ型進入完全燃燒！",
+      "skillId": "firefly_complete_combustion",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「這不止是一場戰役。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 294,
+      "actualDamage": 294,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，造成 294 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：研究團隊成功分離出病原體。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "message": "Gebura 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "value": 77,
+      "actualDamage": 77,
+      "message": "Gebura 受到 皮疹 影響，受到了 77 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_infection",
+      "message": "Gebura 咳了幾聲，流螢 被感染了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1693,
+      "actualDamage": 1693,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1693 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1119,
+      "actualDamage": 1119,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，會心一擊！造成 1119 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 5208,
+      "message": "同人的影分身 使出了 緊急包紮，使 Gebura 回復了 5208 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 927,
+      "actualDamage": 927,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 盯著 瘟疫公司，等到對方露出破綻才出刀，會心一擊！對 瘟疫公司 造成了 927 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 605,
+      "actualDamage": 605,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，會心一擊！對 瘟疫公司 造成了 605 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 361,
+      "actualDamage": 361,
+      "isCrit": true,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，會心一擊！對 瘟疫公司 造成了 361 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 49,
+      "actualDamage": 49,
+      "isCrit": false,
+      "blocked": false,
+      "message": "紅霧翻湧，第 4 下，對 瘟疫公司 造成了 49 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 141,
+      "actualDamage": 141,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀光未散，第 5 下，會心一擊！對 瘟疫公司 造成了 141 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 20,
+      "actualDamage": 20,
+      "isCrit": false,
+      "blocked": false,
+      "message": "她踏前半步，第 6 下，對 瘟疫公司 造成了 20 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 48,
+      "actualDamage": 48,
+      "isCrit": true,
+      "blocked": false,
+      "message": "紅霧翻湧，第 7 下，會心一擊！對 瘟疫公司 造成了 48 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "message": "Gebura 吐出一口氣，握刀的手更穩了。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 1909,
+      "message": "同人 喚出了小黃金樹，金色暖光使 Gebura 恢復了 1909 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1909,
+      "message": "同人 喚出了小黃金樹，金色暖光使 流螢 恢復了 1909 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「行動四，點火。」",
+      "skillId": "firefly_pyrogenic_decimation"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1019,
+      "actualDamage": 1019,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 拖著一道火焰斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1019 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 597,
+      "actualDamage": 597,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 2 連擊，會心一擊！對 瘟疫公司 造成了 597 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 358,
+      "actualDamage": 358,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 358 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 184,
+      "actualDamage": 184,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 4 連擊，會心一擊！對 瘟疫公司 造成了 184 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 27,
+      "actualDamage": 27,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 5 連擊，對 瘟疫公司 造成了 27 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 76,
+      "actualDamage": 76,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 6 連擊，會心一擊！對 瘟疫公司 造成了 76 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 39,
+      "actualDamage": 39,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 7 連擊，會心一擊！對 瘟疫公司 造成了 39 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 5,
+      "actualDamage": 5,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 8 連擊，對 瘟疫公司 造成了 5 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 13,
+      "actualDamage": 13,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 9 連擊，會心一擊！對 瘟疫公司 造成了 13 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 8,
+      "actualDamage": 8,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 10 連擊，會心一擊！對 瘟疫公司 造成了 8 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 5,
+      "actualDamage": 5,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 11 連擊，會心一擊！對 瘟疫公司 造成了 5 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 2,
+      "actualDamage": 2,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 12 連擊，會心一擊！對 瘟疫公司 造成了 2 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "流螢 吸回散出去的火焰，回復了 1069 點生命。"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 156 點傷害！",
+      "value": 156
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "message": "瘟疫公司 使出了 症狀發作，感染者身上的症狀同時惡化——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 571,
+      "actualDamage": 571,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 Gebura 造成了 571 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1212,
+      "actualDamage": 1212,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 流螢 造成了 1212 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 256,
+      "actualDamage": 256,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 盯著 瘟疫公司，等到對方露出破綻才出刀，對 瘟疫公司 造成了 256 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 147,
+      "actualDamage": 147,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，對 瘟疫公司 造成了 147 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 347,
+      "actualDamage": 347,
+      "isCrit": true,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，會心一擊！對 瘟疫公司 造成了 347 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 215,
+      "actualDamage": 215,
+      "isCrit": true,
+      "blocked": false,
+      "message": "紅霧翻湧，第 4 下，會心一擊！對 瘟疫公司 造成了 215 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "message": "Gebura 吐出一口氣，握刀的手更穩了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "message": "紅色的霧散了。Gebura 喘了口氣，把武器重新扛上肩膀。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 204,
+      "actualDamage": 204,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 盯著 瘟疫公司，等到對方露出破綻才出刀，對 瘟疫公司 造成了 204 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 502,
+      "actualDamage": 502,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，會心一擊！對 瘟疫公司 造成了 502 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 67,
+      "actualDamage": 67,
+      "isCrit": false,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，對 瘟疫公司 造成了 67 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "message": "Gebura 吐出一口氣，握刀的手更穩了。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 4754,
+      "message": "同人 使出了 緊急包紮，使 流螢 回復了 4754 點生命！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：疫苗進入臨床試驗階段。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "message": "Gebura 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "stage": "TIRED",
+      "message": "Gebura 開始有點喘"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "value": 77,
+      "actualDamage": 77,
+      "message": "Gebura 受到 皮疹 影響，受到了 77 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "message": "流螢 因為噁心，體力減少了 31 點。"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "stage": "TIRED",
+      "message": "流螢 開始有點喘"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "value": 106,
+      "actualDamage": 106,
+      "message": "流螢 受到 皮疹 影響，受到了 106 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 164 點傷害！",
+      "value": 164
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_evolve",
+      "message": "瘟疫公司 演化出了 發燒。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：患者開始出現持續高燒，各國醫院的病床迅速被占滿。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_spread",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 1989,
+      "actualDamage": 1989,
+      "isCrit": true,
+      "blocked": false,
+      "message": "瘟疫公司 使出了 傳播，看不見的病原體附上了 同人，會心一擊！對 同人 造成了 1989 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_infection",
+      "message": "同人 被感染了。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1980,
+      "actualDamage": 1980,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1980 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 208,
+      "actualDamage": 208,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 順勢一甩，領帶揮出的劍氣飛向了 瘟疫公司，對 瘟疫公司 造成了 208 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_reshuffle",
+      "message": "瘟疫公司 的基因序列重新排列了——"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：病原體出現大規模突變，現有的研究成果大半作廢。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "opponentId": "mob_0_plague_inc",
+      "value": 76,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 Gebura 的頭，造成 76 點傷害。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 1178,
+      "message": "同人 喚出了小黃金樹，金色暖光使 Gebura 恢復了 1178 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 106,
+      "message": "同人 喚出了小黃金樹，金色暖光使 流螢 恢復了 106 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 1909,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 1909 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 100,
+      "actualDamage": 100,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 拖著一道火焰斬向 瘟疫公司，對 瘟疫公司 造成了 100 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "firefly_pyrogenic_decimation",
+      "value": 1840,
+      "isCrit": true,
+      "message": "流螢 2 連擊，但是遭瘟疫公司反擊，會心一擊！受到 1840 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 127,
+      "actualDamage": 127,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 127 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 20,
+      "actualDamage": 20,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 20 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 13,
+      "actualDamage": 13,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 5 連擊，對 瘟疫公司 造成了 13 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 27,
+      "actualDamage": 27,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 6 連擊，會心一擊！對 瘟疫公司 造成了 27 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 15,
+      "actualDamage": 15,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 7 連擊，會心一擊！對 瘟疫公司 造成了 15 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 8,
+      "actualDamage": 8,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 8 連擊，會心一擊！對 瘟疫公司 造成了 8 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1,
+      "actualDamage": 1,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 9 連擊，對 瘟疫公司 造成了 1 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "流螢 吸回散出去的火焰，回復了 1069 點生命。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 Gebura 恢復了 0 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 771,
+      "message": "同人 喚出了小黃金樹，金色暖光使 流螢 恢復了 771 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 80,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 80 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1902,
+      "actualDamage": 1902,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1902 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我將，點燃星海！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 129,
+      "actualDamage": 129,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，造成 129 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 0,
+      "message": "同人的影分身 使出了 緊急包紮，使 Gebura 回復了 0 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 249,
+      "actualDamage": 249,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 收刀成刺，一記大刀直刺捅向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 249 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 164,
+      "actualDamage": 164,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 2 下，會心一擊！對 瘟疫公司 造成了 164 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 98,
+      "actualDamage": 98,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 3 下，會心一擊！對 瘟疫公司 造成了 98 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "message": "Gebura 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "value": 77,
+      "actualDamage": 77,
+      "message": "Gebura 受到 皮疹 影響，受到了 77 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "message": "流螢 因為噁心，體力減少了 31 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "value": 106,
+      "actualDamage": 106,
+      "message": "流螢 受到 皮疹 影響，受到了 106 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_symptoms",
+      "message": "同人 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "stage": "TIRED",
+      "message": "同人 開始有點喘"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_symptoms",
+      "value": 122,
+      "actualDamage": 122,
+      "message": "同人 受到 皮疹 影響，受到了 122 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "薩姆的散熱口噴出大片白霧，火光一點一點熄了下去，流螢 喘了口氣。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 96,
+      "actualDamage": 96,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，對 瘟疫公司 造成了 96 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 55,
+      "actualDamage": 55,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 55 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 31,
+      "actualDamage": 31,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 3 連擊，對 瘟疫公司 造成了 31 點傷害！"
+    },
+    {
+      "type": "BUFF_EFFECT",
+      "actorId": "mob_0_plague_inc",
+      "buffId": "gebura_bleed",
+      "buffType": "DOT",
+      "message": "瘟疫公司 受到 流血 影響，受到了 165 點傷害！",
+      "value": 165
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "message": "瘟疫公司 使出了 症狀發作，感染者身上的症狀同時惡化——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 730,
+      "actualDamage": 730,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 Gebura 造成了 730 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 2214,
+      "actualDamage": 2214,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 流螢 造成了 2214 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "message": "但是被 同人 躲開了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「切換預案。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 488,
+      "actualDamage": 488,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 488 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 300,
+      "actualDamage": 300,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 2 連擊，會心一擊！對 瘟疫公司 造成了 300 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 177,
+      "actualDamage": 177,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 177 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 27,
+      "actualDamage": 27,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 27 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 122,
+      "message": "同人的影分身 使出了 緊急包紮，使 同人 回復了 122 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_onrush_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 749,
+      "actualDamage": 749,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 一步踏進 瘟疫公司 懷裡，會心一擊！對 瘟疫公司 造成了 749 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 420,
+      "actualDamage": 420,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 420 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "opponentId": "mob_0_plague_inc",
+      "value": 77,
+      "actionCancelled": true,
+      "eventId": "purple_6",
+      "message": "天外飛來一支箭射中 Gebura 的左膝蓋造成 77 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 367,
+      "actualDamage": 367,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 367 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 140,
+      "actualDamage": 140,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，對 瘟疫公司 造成了 140 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 75,
+      "actualDamage": 75,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 75 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 48,
+      "actualDamage": 48,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 3 連擊，對 瘟疫公司 造成了 48 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 30,
+      "actualDamage": 30,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 30 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 63,
+      "actualDamage": 63,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 63 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 9,
+      "actualDamage": 9,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 6 連擊，對 瘟疫公司 造成了 9 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 884,
+      "message": "同人 使出了 緊急包紮，使 Gebura 回復了 884 點生命！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "message": "Gebura 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "value": 77,
+      "actualDamage": 77,
+      "message": "Gebura 受到 皮疹 影響，受到了 77 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "message": "流螢 因為噁心，體力減少了 31 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_symptoms",
+      "value": 106,
+      "actualDamage": 106,
+      "message": "流螢 受到 皮疹 影響，受到了 106 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_symptoms",
+      "message": "同人 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_symptoms",
+      "value": 122,
+      "actualDamage": 122,
+      "message": "同人 受到 皮疹 影響，受到了 122 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「預備，起爆。」",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 把自己的生命灌進薩姆的推進器，裝甲的縫隙透出火光，失去了 4276 點生命。",
+      "skillId": "firefly_aerial_bombardment"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_aerial_bombardment",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 249,
+      "actualDamage": 249,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 指令-天火轟擊，薩姆從空中直直砸向 瘟疫公司，炸出 249 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_evolve",
+      "message": "瘟疫公司 演化出了 打噴嚏。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：病原體確認可經飛沫傳染，多國開始要求民眾戴口罩。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "message": "瘟疫公司 使出了 症狀發作，感染者身上的症狀同時惡化——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 2005,
+      "actualDamage": 2005,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 Gebura 造成了 2005 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 439,
+      "actualDamage": 439,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 流螢 造成了 439 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 526,
+      "actualDamage": 526,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 526 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 93,
+      "actualDamage": 93,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 收刀成刺，一記大刀直刺捅向 瘟疫公司，對 瘟疫公司 造成了 93 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 50,
+      "actualDamage": 50,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 2 下，對 瘟疫公司 造成了 50 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 32,
+      "actualDamage": 32,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 3 下，對 瘟疫公司 造成了 32 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_spear",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 17,
+      "actualDamage": 17,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀尖收回又刺出，第 4 下，對 瘟疫公司 造成了 17 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 341,
+      "actualDamage": 341,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 341 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 317,
+      "actualDamage": 317,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 點燃薩姆的推進器撞向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 317 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 58,
+      "actualDamage": 58,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 58 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 36,
+      "actualDamage": 36,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 3 連擊，對 瘟疫公司 造成了 36 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 76,
+      "actualDamage": 76,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 4 連擊，會心一擊！對 瘟疫公司 造成了 76 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 37,
+      "actualDamage": 37,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 37 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "firefly_flare_propulsion",
+      "value": 600,
+      "isCrit": false,
+      "message": "流螢 6 連擊，但是遭瘟疫公司反擊，受到 600 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_flare_propulsion",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 14,
+      "actualDamage": 14,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 7 連擊，會心一擊！對 瘟疫公司 造成了 14 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 的能量蓄滿了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「飛螢撲火，向死而生。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "源火中樞的熱度燒掉了 流螢 身上的感染。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_infection",
+      "message": "流螢 體內的病原體被清除了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「我為自我而戰，直至一切……燃燒殆盡！」",
+      "skillId": "firefly_complete_combustion",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢 解開了薩姆的全部限制，裝甲從內側燒成通紅，火螢Ⅳ型進入完全燃燒！",
+      "skillId": "firefly_complete_combustion",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「這不止是一場戰役。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「行動四，點火。」",
+      "skillId": "firefly_pyrogenic_decimation"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 143,
+      "actualDamage": 143,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 拖著一道火焰斬向 瘟疫公司，對 瘟疫公司 造成了 143 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 284,
+      "actualDamage": 284,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 2 連擊，會心一擊！對 瘟疫公司 造成了 284 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 45,
+      "actualDamage": 45,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 3 連擊，對 瘟疫公司 造成了 45 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 105,
+      "actualDamage": 105,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 4 連擊，會心一擊！對 瘟疫公司 造成了 105 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 63,
+      "actualDamage": 63,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 5 連擊，會心一擊！對 瘟疫公司 造成了 63 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 37,
+      "actualDamage": 37,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 6 連擊，會心一擊！對 瘟疫公司 造成了 37 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 21,
+      "actualDamage": 21,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 7 連擊，會心一擊！對 瘟疫公司 造成了 21 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 12,
+      "actualDamage": 12,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 8 連擊，會心一擊！對 瘟疫公司 造成了 12 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 2,
+      "actualDamage": 2,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 9 連擊，對 瘟疫公司 造成了 2 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 3,
+      "actualDamage": 3,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 10 連擊，會心一擊！對 瘟疫公司 造成了 3 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "流螢 吸回散出去的火焰，回復了 1069 點生命。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1087,
+      "actualDamage": 1087,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1087 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 165,
+      "actualDamage": 165,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 順勢一甩，領帶揮出的劍氣飛向了 瘟疫公司，對 瘟疫公司 造成了 165 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人的影分身 使出了 緊急包紮，使 同人的影分身 回復了 0 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "message": "瘟疫公司 使出了 症狀發作，感染者身上的症狀同時惡化——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 2125,
+      "actualDamage": 2125,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 Gebura 造成了 2125 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "message": "但是被 同人 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 134,
+      "actualDamage": 134,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 盯著 瘟疫公司，等到對方露出破綻才出刀，對 瘟疫公司 造成了 134 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 79,
+      "actualDamage": 79,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，對 瘟疫公司 造成了 79 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_focus_spirit",
+      "message": "Gebura 吐出一口氣，握刀的手更穩了。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 1909,
+      "message": "同人 喚出了小黃金樹，金色暖光使 Gebura 恢復了 1909 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1909,
+      "message": "同人 喚出了小黃金樹，金色暖光使 流螢 恢復了 1909 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 648,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人 恢復了 648 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 0,
+      "message": "同人 喚出了小黃金樹，金色暖光使 同人的影分身 恢復了 0 HP！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：各國實驗室日夜趕工，解藥即將完成。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "message": "Gebura 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "skillId": "plague_symptoms",
+      "value": 77,
+      "actualDamage": 77,
+      "message": "Gebura 受到 皮疹 影響，受到了 77 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_symptoms",
+      "message": "同人 因為噁心，體力減少了 24 點。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "plague_symptoms",
+      "value": 122,
+      "actualDamage": 122,
+      "message": "同人 受到 皮疹 影響，受到了 122 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「為戰而生，為生而戰！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 682,
+      "actualDamage": 682,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，會心一擊！造成 682 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_evolve",
+      "message": "瘟疫公司 演化出了 失眠。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：大量患者整夜無法入睡，醫院的夜間急診大排長龍。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_spread",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 526,
+      "actualDamage": 526,
+      "isCrit": false,
+      "blocked": false,
+      "message": "瘟疫公司 使出了 傳播，看不見的病原體附上了 流螢，對 流螢 造成了 526 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "plague_infection",
+      "message": "流螢 被感染了。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "summon_1",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 2375,
+      "message": "同人的影分身 使出了 緊急包紮，使 Gebura 回復了 2375 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 126,
+      "actualDamage": 126,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 拖著一道火焰斬向 瘟疫公司，對 瘟疫公司 造成了 126 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 76,
+      "actualDamage": 76,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 2 連擊，對 瘟疫公司 造成了 76 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 157,
+      "actualDamage": 157,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 3 連擊，會心一擊！對 瘟疫公司 造成了 157 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 27,
+      "actualDamage": 27,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 4 連擊，對 瘟疫公司 造成了 27 點傷害！"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "firefly_pyrogenic_decimation",
+      "value": 533,
+      "isCrit": false,
+      "message": "流螢 5 連擊，但是遭瘟疫公司反擊，受到 533 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_pyrogenic_decimation",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 9,
+      "actualDamage": 9,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 6 連擊，對 瘟疫公司 造成了 9 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "流螢 吸回散出去的火焰，回復了 1069 點生命。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 590,
+      "actualDamage": 590,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 高舉大刀，一記大刀縱劈直落 瘟疫公司，會心一擊！對 瘟疫公司 造成了 590 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 358,
+      "actualDamage": 358,
+      "isCrit": true,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，會心一擊！對 瘟疫公司 造成了 358 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 68,
+      "actualDamage": 68,
+      "isCrit": false,
+      "blocked": false,
+      "message": "她踏前半步，第 3 下，對 瘟疫公司 造成了 68 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "first_aid",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 122,
+      "message": "同人 使出了 緊急包紮，使 同人 回復了 122 點生命！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "opponentId": "mob_0_plague_inc",
+      "value": 75,
+      "actionCancelled": true,
+      "eventId": "purple_5",
+      "message": "一把小刀飛來刺中 Gebura，造成 75 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 1845,
+      "actualDamage": 1845,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1845 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_sword_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 220,
+      "actualDamage": 220,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 順勢一甩，領帶揮出的劍氣飛向了 瘟疫公司，對 瘟疫公司 造成了 220 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「為戰而生，為生而戰！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 550,
+      "actualDamage": 550,
+      "isCrit": true,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，會心一擊！造成 550 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "message": "瘟疫公司 使出了 症狀發作，感染者身上的症狀同時惡化——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aad1668c3b16affe1e05794",
+      "value": 719,
+      "actualDamage": 719,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 Gebura 造成了 719 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1115,
+      "actualDamage": 1115,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 流螢 造成了 1115 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_flare",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 501,
+      "actualDamage": 501,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 501 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：解藥完成，各國開始大規模施打。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_cure",
+      "message": "所有人體內的病原體都被清除了，再也感染不了任何人。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_cure",
+      "message": "瘟疫公司 的抗藥性失效了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「為戰而生，為生而戰！」",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "stage": "EXHAUSTED",
+      "message": "流螢 快累到不行了"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 327,
+      "actualDamage": 327,
+      "isCrit": false,
+      "blocked": false,
+      "message": "流螢 使出了 火螢Ⅳ型-死星覆滅，整副裝甲化成一顆墜落的火球砸向 瘟疫公司，造成 327 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "skillId": "firefly_deathstar_overload",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "message": "瘟疫公司 身上燒出了火弱點！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "value": 1069,
+      "message": "餘燼流回裝甲裡，流螢 回復了 1069 點生命。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 408,
+      "actualDamage": 408,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 408 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "opponentId": "mob_0_plague_inc",
+      "value": 114,
+      "actionCancelled": true,
+      "eventId": "red_1",
+      "message": "一顆迷路的隕石精準突破大氣層，直接命中 流螢 的天靈蓋，造成 114 點傷害。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "targetId": "6aad1668c3b16affe1e05794",
+      "opponentId": "mob_0_plague_inc",
+      "value": 70,
+      "actionCancelled": true,
+      "eventId": "purple_3",
+      "message": "一顆棒球飛來砸中 Gebura 的頭，造成 70 點傷害。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "skillTier": "ultimate",
+      "message": "Gebura：「還沒完。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_manifest_ego",
+      "skillTier": "ultimate",
+      "message": "紅色的霧再次炸開，Gebura 綻放了 E.G.O:殷紅迷霧！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_1",
+      "skillId": "teru_necktie_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 606,
+      "actualDamage": 606,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人的影分身 揮出灌滿超能力的領帶，像刀一樣斬向 瘟疫公司，對 瘟疫公司 造成了 606 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_strain",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7dd35cc943baeed96bd8a",
+      "value": 827,
+      "actualDamage": 827,
+      "isCrit": false,
+      "blocked": false,
+      "message": "瘟疫公司 侵蝕著 同人 的身體，對 同人 造成了 827 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 470,
+      "actualDamage": 470,
+      "isCrit": false,
+      "blocked": false,
+      "message": "Gebura 高舉大刀，一記大刀縱劈直落 瘟疫公司，對 瘟疫公司 造成了 470 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_upstanding_slash",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_plague_inc",
+      "value": 276,
+      "actualDamage": 276,
+      "isCrit": false,
+      "blocked": false,
+      "message": "刀光未散，第 2 下，對 瘟疫公司 造成了 276 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "targetId": "6ab150baad84d95a03db1ca4",
+      "opponentId": "mob_0_plague_inc",
+      "value": 51,
+      "actionCancelled": true,
+      "eventId": "purple_7",
+      "message": "一群發狂的比特犬衝過來襲擊 流螢，造成 51 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_strain",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 701,
+      "actualDamage": 1,
+      "isCrit": false,
+      "blocked": false,
+      "message": "瘟疫公司 侵蝕著 同人的影分身 的身體，對 同人的影分身 造成了 701 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_1",
+      "message": "同人的影分身 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_plague_inc",
+      "targetId": "mob_0_plague_inc",
+      "skillId": "plague_cure",
+      "value": 4000,
+      "actualDamage": 4000,
+      "message": "解藥持續擴散，瘟疫公司 受到 4000 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "薩姆的散熱口噴出大片白霧，火光一點一點熄了下去，流螢 喘了口氣。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "skillId": "shadow_clone_jutsu",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 把葉冠左右交疊，用葉片飛快地結出十字印：「砰——！」白煙猛然炸開。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "targetId": "summon_2",
+      "skillId": "shadow_clone_jutsu",
+      "isNormalAttack": false,
+      "message": "同人的影分身 從白煙裡滾了出來。"
+    },
+    {
+      "type": "FATIGUE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "stage": "EXHAUSTED",
+      "message": "Gebura 快累到不行了"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "skillId": "gebura_vertical_hit",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_plague_inc",
+      "value": 1540,
+      "actualDamage": 1529,
+      "isCrit": true,
+      "blocked": false,
+      "message": "Gebura 的刀身拖出一道紅霧，筆直地劈向 瘟疫公司，會心一擊！對 瘟疫公司 造成了 1540 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "mob_0_plague_inc",
+      "message": "瘟疫公司 倒下了！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_plague_inc",
+      "message": "病原體的最後一點活性消失了。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "message": "流螢：「每一場勝利，都來之不易。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_plague_inc",
+      "skillId": "plague_news",
+      "message": "新聞快報：最後一名患者康復出院，世界衛生組織宣布病原體已被根除。"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "value": 6876,
+      "maxHp": 7740,
+      "message": "Gebura 剩餘 6876 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "value": 7864,
+      "maxHp": 10690,
+      "message": "流螢 剩餘 7864 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6aa7dd35cc943baeed96bd8a",
+      "value": 10952,
+      "maxHp": 12280,
+      "message": "同人 剩餘 10952 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "summon_2",
+      "value": 1,
+      "maxHp": 1,
+      "message": "同人的影分身 剩餘 1 HP"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6aad1668c3b16affe1e05794",
+      "value": 5200,
+      "message": "Gebura 獲得了 5200 點經驗值"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6ab150baad84d95a03db1ca4",
+      "value": 0,
+      "message": "流螢 獲得了 0 點經驗值"
+    }
+  ],
+  "_mdbvMeta": {
+    "exportedAt": "2026-10-17T15:05:20.184Z",
+    "totalTurns": 97,
+    "frameCount": 487
+  }
+}

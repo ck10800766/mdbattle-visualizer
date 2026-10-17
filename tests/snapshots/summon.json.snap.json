@@ -4419,7 +4419,7 @@
       "actorsSummonState": {
         "6aaf63c0177ff92cc8f066ad": true,
         "6ab150baad84d95a03db1ca4": true,
-        "summon_1": true
+        "summon_1": false
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -4428,7 +4428,7 @@
       "coverAttackerId": null,
       "coverDamage": 0,
       "deadActorId": null,
-      "despawnedActorId": null,
+      "despawnedActorId": "summon_1",
       "diceCheck": null,
       "holdPositionForCover": false,
       "hpDeltas": {},
@@ -4444,7 +4444,7 @@
       "isCoverEvent": false,
       "isCrit": false,
       "isDeathEvent": false,
-      "isDespawnEvent": false,
+      "isDespawnEvent": true,
       "isEnvironmentalPulse": false,
       "isNormalAttack": false,
       "isSelfDamage": false,
@@ -4492,7 +4492,7 @@
       "actorsSummonState": {
         "6aaf63c0177ff92cc8f066ad": true,
         "6ab150baad84d95a03db1ca4": true,
-        "summon_1": true
+        "summon_1": false
       },
       "actualDamage": 545,
       "aoeCasterId": null,
@@ -4567,7 +4567,7 @@
       "actorsSummonState": {
         "6aaf63c0177ff92cc8f066ad": true,
         "6ab150baad84d95a03db1ca4": true,
-        "summon_1": true
+        "summon_1": false
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -4640,7 +4640,7 @@
       "actorsSummonState": {
         "6aaf63c0177ff92cc8f066ad": true,
         "6ab150baad84d95a03db1ca4": true,
-        "summon_1": true
+        "summon_1": false
       },
       "actualDamage": 0,
       "aoeCasterId": null,
@@ -4713,7 +4713,7 @@
       "actorsSummonState": {
         "6aaf63c0177ff92cc8f066ad": true,
         "6ab150baad84d95a03db1ca4": true,
-        "summon_1": true
+        "summon_1": false
       },
       "actualDamage": 287,
       "aoeCasterId": null,
@@ -4786,7 +4786,7 @@
       "actorsSummonState": {
         "6aaf63c0177ff92cc8f066ad": true,
         "6ab150baad84d95a03db1ca4": true,
-        "summon_1": true
+        "summon_1": false
       },
       "actualDamage": 64,
       "aoeCasterId": null,

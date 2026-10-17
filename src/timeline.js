@@ -35,19 +35,24 @@ export function extractTimelineMarkers(frames) {
 
     const markers = [];
     const lastUltTurnByActor = new Map();
+    const rebirthCountByActor = new Map();
 
     frames.forEach((f, idx) => {
         const events = [];
 
-        // 1. Boss Phase 2+ Rebirth / Revival
+        // 1. Boss / Unit Phase 2+ Rebirth / Revival
         if (f.rebirthHeal) {
             const targetId = f.targetId || f.actorId;
             const actorName = engineState.actors.get(targetId)?.name || 'Boss';
+            const count = (rebirthCountByActor.get(targetId) || 0) + 1;
+            rebirthCountByActor.set(targetId, count);
+            const ordinals = ['', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+            const phaseStr = ordinals[count] || `${count + 1}`;
             events.push({
                 priority: 5,
                 category: 'rebirth',
                 icon: '🔥',
-                title: `🔥 二階段甦醒：${actorName}`
+                title: `🔥 ${phaseStr}階段甦醒：${actorName}`
             });
         }
 

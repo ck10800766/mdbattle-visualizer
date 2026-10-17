@@ -776,7 +776,7 @@ export async function renderFrame(frame, token) {
     if (frame.isSummonEvent && frame.summonedActorId) {
         const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
         if (summonedEl) {
-            summonedEl.classList.remove('unspawned', 'despawning');
+            summonedEl.classList.remove('unspawned', 'despawning', 'dead');
             summonedEl.classList.add('spawning');
             setTimeout(() => {
                 if (engineState.playbackToken === token && summonedEl.isConnected) {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.2
+// @version      7.5.3
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.2";
+  var APP_VERSION = "7.5.3";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -311,7 +311,7 @@
     "oni_gunsou_prayer"
   ]);
   var REBIRTH_RULES = {
-    dialogueRegex: /站了起來|進軍|重生|甦醒|恢復|第二階段/,
+    dialogueRegex: /站了起來|再次站起|重新站起|進軍|重生|甦醒|恢復|第二階段|第三階段|爬了過來|蠕動的血肉|傷口全部合上/,
     blockKeyword: "\u91CD\u751F"
   };
   var LUCK_DROP_EMOJI_RULES = [
@@ -818,7 +818,11 @@
           }
         }
         for (let i = rIdx; i <= segEnd; i++) {
-          frames[i].actorsHpState.set(actor.id, backwardHp[i - rIdx]);
+          const hp = backwardHp[i - rIdx];
+          frames[i].actorsHpState.set(actor.id, hp);
+          if (hp > 0 || i === rIdx) {
+            frames[i].actorsDeathState.set(actor.id, false);
+          }
         }
       }
       for (let i = anchorIndex + 1; i < frames.length; i++) {
@@ -1185,6 +1189,23 @@
         explicitlySummonedIds.add(log.targetId);
       }
     });
+    const actorRevivalLogIndices = /* @__PURE__ */ new Map();
+    logs.forEach((log, idx) => {
+      if (!log) return;
+      const msg = String(log.message || "");
+      if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(log.type) && REBIRTH_RULES.dialogueRegex.test(msg)) {
+        if (log.actorId) {
+          if (!actorRevivalLogIndices.has(log.actorId)) actorRevivalLogIndices.set(log.actorId, []);
+          actorRevivalLogIndices.get(log.actorId).push(idx);
+        }
+      }
+    });
+    const hasFutureRevival = (actorId, currentIndex) => {
+      const revivals = actorRevivalLogIndices.get(actorId);
+      if (!revivals) return false;
+      return revivals.some((idx) => idx > currentIndex);
+    };
+    const pendingSummonDespawns = /* @__PURE__ */ new Set();
     engineState.actors.forEach((actor) => {
       actor.currentHp = actor.maxHp;
       actor.turnNumbers = [];
@@ -1275,6 +1296,20 @@
           frame.turnNumber = currentTurn;
           const actor = engineState.actors.get(turnActorId);
           if (actor) actor.turnNumbers.push(currentTurn);
+        }
+      }
+      if (pendingSummonDespawns.size > 0) {
+        for (const candidateId of [...pendingSummonDespawns]) {
+          const candidateActor = engineState.actors.get(candidateId);
+          const candName = candidateActor?.name || "";
+          const isFlavorNarrative = (log.type === "TEXT" || log.type === "SKILL_TEXT") && (log.actorId === candidateId || candName && String(log.message || "").includes(candName));
+          if (!isFlavorNarrative) {
+            actorsSummonState.set(candidateId, false);
+            despawnedActors.add(candidateId);
+            frame.isDespawnEvent = true;
+            frame.despawnedActorId = candidateId;
+            pendingSummonDespawns.delete(candidateId);
+          }
         }
       }
       processSummonLifecycle(
@@ -1476,6 +1511,37 @@
       if (crossProfile && ["DAMAGE", "BLOCK"].includes(log.type) && crossProfile.pierceRegex.test(frame.message)) {
         frame.rosarioEvent = "PIERCE_CROSS";
       }
+      if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(log.type) && REBIRTH_RULES.dialogueRegex.test(frame.message)) {
+        let revivingActorId = null;
+        if (log.actorId && engineState.actors.has(log.actorId)) {
+          revivingActorId = log.actorId;
+        } else if (log.targetId && engineState.actors.has(log.targetId)) {
+          revivingActorId = log.targetId;
+        } else {
+          for (const [id, a] of engineState.actors.entries()) {
+            if (a.name && frame.message.includes(a.name) && actorsDeathState.get(id)) {
+              revivingActorId = id;
+              break;
+            }
+          }
+        }
+        if (revivingActorId && actorsDeathState.get(revivingActorId)) {
+          actorsDeathState.set(revivingActorId, false);
+          const revivingActor = engineState.actors.get(revivingActorId);
+          if (revivingActor) {
+            revivingActor.currentHp = revivingActor.maxHp;
+          }
+          pendingSummonDespawns.delete(revivingActorId);
+        }
+      }
+      if (log.actorId && actorsDeathState.get(log.actorId) && ["DAMAGE", "MISS", "COUNTER", "HEAL", "SKILL_TEXT", "BUFF_APPLY"].includes(log.type)) {
+        actorsDeathState.set(log.actorId, false);
+        const actingActor = engineState.actors.get(log.actorId);
+        if (actingActor && actingActor.currentHp <= 0) {
+          actingActor.currentHp = actingActor.maxHp;
+        }
+        pendingSummonDespawns.delete(log.actorId);
+      }
       if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
         const alreadyDead = !!actorsDeathState.get(log.actorId);
         actorsDeathState.set(log.actorId, true);
@@ -1484,7 +1550,12 @@
           frame.deadActorId = log.actorId;
         }
         const deadActor = engineState.actors.get(log.actorId);
-        if (deadActor) deadActor.currentHp = 0;
+        if (deadActor) {
+          deadActor.currentHp = 0;
+          if (deadActor.isSummon && !hasFutureRevival(deadActor.id, index)) {
+            pendingSummonDespawns.add(deadActor.id);
+          }
+        }
       }
       engineState.actors.forEach((actor) => {
         frame.actorsHpState.set(actor.id, actor.currentHp);
@@ -4116,16 +4187,21 @@
     if (!Array.isArray(frames) || frames.length === 0) return [];
     const markers = [];
     const lastUltTurnByActor = /* @__PURE__ */ new Map();
+    const rebirthCountByActor = /* @__PURE__ */ new Map();
     frames.forEach((f, idx) => {
       const events = [];
       if (f.rebirthHeal) {
         const targetId = f.targetId || f.actorId;
         const actorName = engineState.actors.get(targetId)?.name || "Boss";
+        const count = (rebirthCountByActor.get(targetId) || 0) + 1;
+        rebirthCountByActor.set(targetId, count);
+        const ordinals = ["", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u4E03", "\u516B", "\u4E5D", "\u5341"];
+        const phaseStr = ordinals[count] || `${count + 1}`;
         events.push({
           priority: 5,
           category: "rebirth",
           icon: "\u{1F525}",
-          title: `\u{1F525} \u4E8C\u968E\u6BB5\u7526\u9192\uFF1A${actorName}`
+          title: `\u{1F525} ${phaseStr}\u968E\u6BB5\u7526\u9192\uFF1A${actorName}`
         });
       }
       if (f.isDeathEvent && f.deadActorId) {
@@ -4940,7 +5016,7 @@
     if (frame.isSummonEvent && frame.summonedActorId) {
       const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
       if (summonedEl) {
-        summonedEl.classList.remove("unspawned", "despawning");
+        summonedEl.classList.remove("unspawned", "despawning", "dead");
         summonedEl.classList.add("spawning");
         setTimeout(() => {
           if (engineState.playbackToken === token && summonedEl.isConnected) {

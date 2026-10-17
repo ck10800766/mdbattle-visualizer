@@ -22,6 +22,7 @@ import {
     getContractSkillProfile,
     getCrossFinisherProfile,
     SUMMON_DESPAWN_REGEX,
+    REBIRTH_RULES,
     isBeneficialBuffSkill
 } from './profiles.js';
 
@@ -555,6 +556,30 @@ export function buildStateSnapshots(logs) {
         }
     });
 
+    // Pre-scan narrative revivals so we can distinguish temporary deaths from permanent summon departures
+    const actorRevivalLogIndices = new Map();
+    logs.forEach((log, idx) => {
+        if (!log) return;
+        const msg = String(log.message || '');
+        if (
+            ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(log.type) &&
+            REBIRTH_RULES.dialogueRegex.test(msg)
+        ) {
+            if (log.actorId) {
+                if (!actorRevivalLogIndices.has(log.actorId)) actorRevivalLogIndices.set(log.actorId, []);
+                actorRevivalLogIndices.get(log.actorId).push(idx);
+            }
+        }
+    });
+
+    const hasFutureRevival = (actorId, currentIndex) => {
+        const revivals = actorRevivalLogIndices.get(actorId);
+        if (!revivals) return false;
+        return revivals.some(idx => idx > currentIndex);
+    };
+
+    const pendingSummonDespawns = new Set();
+
     // Reset per-actor runtime and statistical counters so buildStateSnapshots is idempotent
     engineState.actors.forEach(actor => {
         actor.currentHp = actor.maxHp;
@@ -662,6 +687,24 @@ export function buildStateSnapshots(logs) {
                 frame.turnNumber = currentTurn;
                 const actor = engineState.actors.get(turnActorId);
                 if (actor) actor.turnNumbers.push(currentTurn);
+            }
+        }
+
+        // Process any pending summon despawns from previous fatal combat deaths
+        if (pendingSummonDespawns.size > 0) {
+            for (const candidateId of [...pendingSummonDespawns]) {
+                const candidateActor = engineState.actors.get(candidateId);
+                const candName = candidateActor?.name || '';
+                const isFlavorNarrative =
+                    (log.type === 'TEXT' || log.type === 'SKILL_TEXT') &&
+                    (log.actorId === candidateId || (candName && String(log.message || '').includes(candName)));
+                if (!isFlavorNarrative) {
+                    actorsSummonState.set(candidateId, false);
+                    despawnedActors.add(candidateId);
+                    frame.isDespawnEvent = true;
+                    frame.despawnedActorId = candidateId;
+                    pendingSummonDespawns.delete(candidateId);
+                }
             }
         }
 
@@ -886,6 +929,48 @@ export function buildStateSnapshots(logs) {
             frame.rosarioEvent = 'PIERCE_CROSS';
         }
 
+        // Detect narrative unit revival / standing back up (Bosses, players, and multi-phase summons)
+        if (
+            ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(log.type) &&
+            REBIRTH_RULES.dialogueRegex.test(frame.message)
+        ) {
+            let revivingActorId = null;
+            if (log.actorId && engineState.actors.has(log.actorId)) {
+                revivingActorId = log.actorId;
+            } else if (log.targetId && engineState.actors.has(log.targetId)) {
+                revivingActorId = log.targetId;
+            } else {
+                for (const [id, a] of engineState.actors.entries()) {
+                    if (a.name && frame.message.includes(a.name) && actorsDeathState.get(id)) {
+                        revivingActorId = id;
+                        break;
+                    }
+                }
+            }
+            if (revivingActorId && actorsDeathState.get(revivingActorId)) {
+                actorsDeathState.set(revivingActorId, false);
+                const revivingActor = engineState.actors.get(revivingActorId);
+                if (revivingActor) {
+                    revivingActor.currentHp = revivingActor.maxHp;
+                }
+                pendingSummonDespawns.delete(revivingActorId);
+            }
+        }
+
+        // Safety net: an actor actively acting cannot be dead
+        if (
+            log.actorId &&
+            actorsDeathState.get(log.actorId) &&
+            ['DAMAGE', 'MISS', 'COUNTER', 'HEAL', 'SKILL_TEXT', 'BUFF_APPLY'].includes(log.type)
+        ) {
+            actorsDeathState.set(log.actorId, false);
+            const actingActor = engineState.actors.get(log.actorId);
+            if (actingActor && actingActor.currentHp <= 0) {
+                actingActor.currentHp = actingActor.maxHp;
+            }
+            pendingSummonDespawns.delete(log.actorId);
+        }
+
         if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(log.type)) {
             const alreadyDead = !!actorsDeathState.get(log.actorId);
             actorsDeathState.set(log.actorId, true);
@@ -896,7 +981,12 @@ export function buildStateSnapshots(logs) {
             }
 
             const deadActor = engineState.actors.get(log.actorId);
-            if (deadActor) deadActor.currentHp = 0;
+            if (deadActor) {
+                deadActor.currentHp = 0;
+                if (deadActor.isSummon && !hasFutureRevival(deadActor.id, index)) {
+                    pendingSummonDespawns.add(deadActor.id);
+                }
+            }
         }
 
         engineState.actors.forEach(actor => {

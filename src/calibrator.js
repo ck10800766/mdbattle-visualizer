@@ -255,7 +255,11 @@ export function calibrateHpWithAnchors(frames) {
             }
 
             for (let i = rIdx; i <= segEnd; i++) {
-                frames[i].actorsHpState.set(actor.id, backwardHp[i - rIdx]);
+                const hp = backwardHp[i - rIdx];
+                frames[i].actorsHpState.set(actor.id, hp);
+                if (hp > 0 || i === rIdx) {
+                    frames[i].actorsDeathState.set(actor.id, false);
+                }
             }
         }
 
