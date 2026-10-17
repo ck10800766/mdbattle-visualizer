@@ -1585,8 +1585,9 @@
     .hp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; color: #fff; font-weight: 800; text-shadow: 0 1px 2px #000; pointer-events: none; letter-spacing: -0.2px; }
 
     /* Actor Status Tray & Badges */
-    .status-tray { display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 16px; margin-top: 3px; pointer-events: auto; }
-    .status-badge { display: inline-flex; align-items: center; justify-content: center; font-size: 11px; line-height: 1; padding: 2px 4px; border-radius: 4px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.2); cursor: default; animation: slideInUp 0.15s ease-out forwards; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+    .status-tray { display: flex; align-items: center; justify-content: flex-start; gap: 4px; min-height: 16px; margin-top: 3px; padding-left: 1px; pointer-events: auto; }
+    .status-badge { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; cursor: default; animation: slideInUp 0.15s ease-out forwards; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 23, 42, 0.7); user-select: none; transition: transform 0.15s ease; }
+    .status-badge:hover { transform: scale(1.18); }
     .status-badge.status-dot { border-color: #9f7aea; background: rgba(85, 60, 154, 0.35); }
     .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); }
     .status-badge.status-fatigue { border-color: #ed8936; background: rgba(192, 86, 33, 0.35); }
