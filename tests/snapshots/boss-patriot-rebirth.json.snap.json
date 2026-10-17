@@ -54288,7 +54288,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -54315,7 +54315,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -54621,7 +54621,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55008,7 +55008,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55152,7 +55152,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55350,7 +55350,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55530,7 +55530,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55539,7 +55539,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55638,7 +55638,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -55827,7 +55827,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -56619,7 +56619,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -56961,7 +56961,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": true,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57213,7 +57213,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57339,7 +57339,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57861,7 +57861,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -57870,7 +57870,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58572,7 +58572,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58680,7 +58680,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {
@@ -58707,7 +58707,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": true
+        "shouldReturnToOrigin": false
       }
     },
     {

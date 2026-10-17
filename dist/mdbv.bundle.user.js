@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.1
+// @version      7.5.2
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.1";
+  var APP_VERSION = "7.5.2";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -2290,17 +2290,6 @@
   }
 
   // src/combo.js
-  function isSameSkillCombo(skillA, skillB) {
-    if (!skillA || !skillB) return false;
-    if (skillA === skillB) return true;
-    const rootA = skillA.replace(/_\d+$/, "");
-    const rootB = skillB.replace(/_\d+$/, "");
-    if (rootA === rootB) return true;
-    const familyA = rootA.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, "");
-    const familyB = rootB.replace(/_(slash|phoenix|burst|finish|hit|strike|flurry)$/, "");
-    if (familyA && familyA === familyB) return true;
-    return false;
-  }
   function lookaheadComboState(currentIndex, frame) {
     if (!frame.actorId || !["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(frame.type)) {
       return { isNextFrameSameCombo: false, isNextTargetDifferent: false, shouldReturnToOrigin: false };
@@ -2308,29 +2297,26 @@
     let isNextFrameSameCombo = false;
     let isNextTargetDifferent = false;
     let shouldReturnToOrigin = false;
-    const activeSkillId = frame.source === "DIRECT" && engineState.currentCombo.actorId === frame.actorId ? engineState.currentCombo.skillId : frame.skillId;
     for (let i = currentIndex + 1; i < engineState.frames.length; i++) {
       const lookahead = engineState.frames[i];
+      if (lookahead.turnNumber !== frame.turnNumber) break;
       if (lookahead.type === "LUCK_EVENT") {
         shouldReturnToOrigin = true;
-        if (lookahead.turnNumber !== frame.turnNumber) break;
         continue;
       }
-      if (lookahead.turnNumber !== frame.turnNumber) break;
       if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type) || isSceneNarrationFrame(lookahead) || lookahead.diceCheck) {
         shouldReturnToOrigin = true;
         continue;
       }
-      if (lookahead.type === "SKILL_TEXT") {
-        const isSameSkillBridgeText = lookahead.actorId === frame.actorId && activeSkillId && (lookahead.skillId === activeSkillId || isSameSkillCombo(activeSkillId, lookahead.skillId)) && !lookahead.isCoverEvent && !isSceneNarrationFrame(lookahead);
-        if (!isSameSkillBridgeText) {
+      if (lookahead.type === "TEXT") {
+        const isMidComboConnector = lookahead.actorId === frame.actorId && ULTIMATE_SUBFRAME_REGEX.test(lookahead.message || "");
+        if (!isMidComboConnector) {
           shouldReturnToOrigin = true;
         }
         continue;
       }
-      if (lookahead.type === "TEXT") {
-        const isMidComboText = lookahead.actorId === frame.actorId && ULTIMATE_SUBFRAME_REGEX.test(lookahead.message || "") && !isSceneNarrationFrame(lookahead);
-        if (!isMidComboText) {
+      if (lookahead.type === "SKILL_TEXT") {
+        if (lookahead.isCoverEvent || isSceneNarrationFrame(lookahead)) {
           shouldReturnToOrigin = true;
         }
         continue;
@@ -2354,12 +2340,11 @@
         }
         if (lookahead.actorId === frame.actorId) {
           isNextFrameSameCombo = true;
+          if (!frame.isAOE && lookahead.isAOE) {
+            shouldReturnToOrigin = true;
+          }
           if (lookahead.targetId !== frame.targetId) {
             isNextTargetDifferent = true;
-          }
-          const isDirectProc = lookahead.source === "DIRECT";
-          if (!isDirectProc && !isSameSkillCombo(activeSkillId, lookahead.skillId)) {
-            shouldReturnToOrigin = true;
           }
         }
         break;
