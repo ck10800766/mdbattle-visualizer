@@ -2020,8 +2020,8 @@
     .seek-track-wrapper input[type="range"] { width: 100%; margin: 0; position: relative; z-index: 2; }
     .seek-markers-layer { position: absolute; left: 7px; right: 7px; top: 0; height: 100%; pointer-events: none; z-index: 3; }
     .seek-pin { position: absolute; top: 1px; transform: translateX(-50%) scale(0.6); width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #fff; cursor: pointer; pointer-events: none; opacity: 0; padding: 0; transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease; z-index: 4; }
-    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
-    .seek-container:hover .seek-pin:hover, .seek-track-wrapper:hover .seek-pin:hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
+    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; transform: translateX(-50%) scale(1); }
+    .seek-pin.pin-hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
     .seek-pin.pin-ultimate { background: #f6e05e; box-shadow: 0 0 8px #f6e05e; }
     .seek-pin.pin-death { background: #fc8181; box-shadow: 0 0 8px #e53e3e; }
     .seek-pin.pin-rebirth { background: #48bb78; box-shadow: 0 0 10px #48bb78; }
@@ -2030,11 +2030,15 @@
     .seek-pin-tooltip { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-4px); background: rgba(15, 23, 42, 0.98); color: #f8fafc; border: 1px solid #4fd1c5; border-radius: 6px; padding: 6px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s ease, transform 0.15s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9); z-index: 9999; text-align: left; }
     .seek-pin-tooltip.tooltip-align-left { left: 0; transform: translateY(-4px); }
     .seek-pin-tooltip.tooltip-align-right { left: auto; right: 0; transform: translateY(-4px); }
-    .seek-pin:hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .seek-pin:hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
-    .seek-pin:hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
     .seek-pin-tooltip-title { color: #f6e05e; font-weight: 800; margin-bottom: 2px; display: block; }
     .seek-pin-tooltip-detail { color: #cbd5e1; font-size: 11px; font-weight: 500; display: block; max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Timeline Seek Frame Hover Tooltip */
+    .seek-hover-tooltip { position: absolute; bottom: 26px; left: 0; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); color: #e2e8f0; border: 1px solid rgba(79, 209, 197, 0.6); border-radius: 5px; padding: 3px 8px; font-size: 11px; font-weight: 700; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.1s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7); z-index: 100; letter-spacing: 0.3px; }
+    .seek-hover-tooltip.active { opacity: 1; visibility: visible; }
 
     /* Report Export/Import Buttons, Hotkey Popover & Drag-Drop Overlay */
     button.btn-io { background: #2b6cb0; border-color: #63b3ed; padding: 6px 10px; color: #ebf8ff; }
@@ -2113,6 +2117,34 @@
       }
     }
     return null;
+  }
+  function shouldDeferUltimateCutIn(frame) {
+    if (!engineState.frames || !frame || frame.index == null) return false;
+    const currentMsg = String(frame.message || "");
+    const currentQuote = currentMsg.match(/[：:]\s*「([^」]+)」/);
+    if (currentQuote && currentQuote[1].length <= 20) {
+      return false;
+    }
+    if (extractSkillFromMessage(currentMsg)) {
+      return false;
+    }
+    for (let i = frame.index + 1; i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+      const candidate = engineState.frames[i];
+      if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId && candidate.skillTier === "ultimate") {
+        const candMsg = String(candidate.message || "");
+        const candQuote = candMsg.match(/[：:]\s*「([^」]+)」/);
+        if (candQuote && candQuote[1].length <= 20) {
+          return true;
+        }
+        if (extractSkillFromMessage(candMsg)) {
+          return true;
+        }
+        if (/把「([^」]+)」拋向/.test(candMsg)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   async function playUltimateCutIn(frame, sr, token) {
     const actor = engineState.actors.get(frame.actorId);
@@ -4251,7 +4283,7 @@
       if (!isInitialReset) {
         for (let i = 0; i < frameIndex; i++) {
           const f = engineState.frames[i];
-          if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f)) {
+          if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f) && !shouldDeferUltimateCutIn(f)) {
             actor.lastUltimateTurn = f.turnNumber;
           }
         }
@@ -4716,6 +4748,8 @@
       pin.className = `seek-pin pin-${marker.category}`;
       const pct = Math.max(0, Math.min(100, marker.frameIndex / maxFrameIdx * 100));
       pin.style.left = `${pct}%`;
+      pin.dataset.frameIndex = marker.frameIndex;
+      pin.dataset.pct = pct;
       const tooltip = document.createElement("div");
       tooltip.className = "seek-pin-tooltip";
       if (pct < 15) tooltip.classList.add("tooltip-align-left");
@@ -4731,14 +4765,90 @@
         tooltip.appendChild(detailEl);
       }
       pin.appendChild(tooltip);
-      pin.onclick = (e) => {
-        e.stopPropagation();
-        jumpToFrame(marker.frameIndex);
-      };
       seekMarkersLayer.appendChild(pin);
     });
+    const seekHoverTooltip = document.createElement("div");
+    seekHoverTooltip.className = "seek-hover-tooltip";
     seekTrackWrapper.appendChild(seekRange);
     seekTrackWrapper.appendChild(seekMarkersLayer);
+    seekTrackWrapper.appendChild(seekHoverTooltip);
+    let activeHoverPin = null;
+    let isDraggingSeek = false;
+    seekRange.addEventListener("pointerdown", () => {
+      isDraggingSeek = true;
+      if (activeHoverPin) {
+        activeHoverPin.classList.remove("pin-hover");
+        activeHoverPin = null;
+      }
+      seekHoverTooltip.classList.remove("active");
+    });
+    const onPointerUpGlobal = () => {
+      isDraggingSeek = false;
+    };
+    window.addEventListener("pointerup", onPointerUpGlobal);
+    seekTrackWrapper.onpointermove = (e) => {
+      if (isDraggingSeek || engineState.frames.length === 0) return;
+      const rect = seekMarkersLayer.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const mouseX = e.clientX - rect.left;
+      const clampedMouseX = Math.max(0, Math.min(mouseX, rect.width));
+      const pct = clampedMouseX / rect.width;
+      const hoverFrameIdx = Math.round(pct * (engineState.frames.length - 1));
+      const frame = engineState.frames[hoverFrameIdx];
+      let closestPin = null;
+      let minPixelDist = Infinity;
+      const pinElements = seekMarkersLayer.querySelectorAll(".seek-pin");
+      pinElements.forEach((pinEl) => {
+        const pinPct = parseFloat(pinEl.dataset.pct);
+        const pinX = pinPct / 100 * rect.width;
+        const dist = Math.abs(pinX - mouseX);
+        if (dist < minPixelDist) {
+          minPixelDist = dist;
+          closestPin = pinEl;
+        }
+      });
+      const PIN_SNAP_DISTANCE = 11;
+      if (closestPin && minPixelDist <= PIN_SNAP_DISTANCE) {
+        if (activeHoverPin !== closestPin) {
+          if (activeHoverPin) activeHoverPin.classList.remove("pin-hover");
+          closestPin.classList.add("pin-hover");
+          activeHoverPin = closestPin;
+        }
+        seekHoverTooltip.classList.remove("active");
+      } else {
+        if (activeHoverPin) {
+          activeHoverPin.classList.remove("pin-hover");
+          activeHoverPin = null;
+        }
+        const turnNum = frame?.turnNumber ?? 1;
+        seekHoverTooltip.textContent = `\u7B2C ${hoverFrameIdx + 1} \u5E40 (T${turnNum})`;
+        seekHoverTooltip.style.left = `${clampedMouseX + 7}px`;
+        if (clampedMouseX < 45) {
+          seekHoverTooltip.style.transform = "translateX(0)";
+        } else if (rect.width - clampedMouseX < 45) {
+          seekHoverTooltip.style.transform = "translateX(-100%)";
+        } else {
+          seekHoverTooltip.style.transform = "translateX(-50%)";
+        }
+        seekHoverTooltip.classList.add("active");
+      }
+    };
+    seekTrackWrapper.onpointerleave = () => {
+      if (activeHoverPin) {
+        activeHoverPin.classList.remove("pin-hover");
+        activeHoverPin = null;
+      }
+      seekHoverTooltip.classList.remove("active");
+    };
+    seekTrackWrapper.addEventListener("click", (e) => {
+      if (activeHoverPin) {
+        const frameIdx = parseInt(activeHoverPin.dataset.frameIndex, 10);
+        if (!isNaN(frameIdx)) {
+          e.stopPropagation();
+          jumpToFrame(frameIdx);
+        }
+      }
+    }, true);
     playBtn.onclick = () => {
       if (!engineState.isPlaying) {
         if (engineState.currentFrameIndex === 0 || engineState.currentFrameIndex >= engineState.frames.length) {
@@ -5033,9 +5143,11 @@
       const actor = engineState.actors.get(firstFrame.actorId);
       const isMultiHitSubFrame = ULTIMATE_SUBFRAME_REGEX.test(firstFrame.message.trim()) || firstFrame.rosarioEvent === "INSCRIBE_CROSS";
       if (actor && actor.lastUltimateTurn !== firstFrame.turnNumber && !isMultiHitSubFrame) {
-        actor.lastUltimateTurn = firstFrame.turnNumber;
-        await playUltimateCutIn(firstFrame, sr, token);
-        if (engineState.playbackToken !== token) return;
+        if (!shouldDeferUltimateCutIn(firstFrame)) {
+          actor.lastUltimateTurn = firstFrame.turnNumber;
+          await playUltimateCutIn(firstFrame, sr, token);
+          if (engineState.playbackToken !== token) return;
+        }
       } else if (actor && isMultiHitSubFrame) {
         actor.lastUltimateTurn = firstFrame.turnNumber;
       }
@@ -5226,9 +5338,11 @@
       const actor = engineState.actors.get(frame.actorId);
       const isMultiHitSubFrame = ULTIMATE_SUBFRAME_REGEX.test(frame.message.trim()) || frame.rosarioEvent === "INSCRIBE_CROSS";
       if (actor && actor.lastUltimateTurn !== frame.turnNumber && !isMultiHitSubFrame) {
-        actor.lastUltimateTurn = frame.turnNumber;
-        await playUltimateCutIn(frame, sr, token);
-        if (engineState.playbackToken !== token) return;
+        if (!shouldDeferUltimateCutIn(frame)) {
+          actor.lastUltimateTurn = frame.turnNumber;
+          await playUltimateCutIn(frame, sr, token);
+          if (engineState.playbackToken !== token) return;
+        }
       } else if (actor && isMultiHitSubFrame) {
         actor.lastUltimateTurn = frame.turnNumber;
       }

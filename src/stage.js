@@ -35,7 +35,8 @@ import {
     playEnvironmentalFieldPulse,
     resolveDialogueSpeaker,
     isSceneNarrationFrame,
-    renderSceneNarrationBanner
+    renderSceneNarrationBanner,
+    shouldDeferUltimateCutIn
 } from './cinematics.js';
 import {
     lookaheadComboState,
@@ -212,6 +213,8 @@ export function createBattleStage() {
         pin.className = `seek-pin pin-${marker.category}`;
         const pct = Math.max(0, Math.min(100, (marker.frameIndex / maxFrameIdx) * 100));
         pin.style.left = `${pct}%`;
+        pin.dataset.frameIndex = marker.frameIndex;
+        pin.dataset.pct = pct;
 
         const tooltip = document.createElement('div');
         tooltip.className = 'seek-pin-tooltip';
@@ -229,15 +232,109 @@ export function createBattleStage() {
         }
         pin.appendChild(tooltip);
 
-        pin.onclick = (e) => {
-            e.stopPropagation();
-            jumpToFrame(marker.frameIndex);
-        };
         seekMarkersLayer.appendChild(pin);
     });
 
+    const seekHoverTooltip = document.createElement('div');
+    seekHoverTooltip.className = 'seek-hover-tooltip';
+
     seekTrackWrapper.appendChild(seekRange);
     seekTrackWrapper.appendChild(seekMarkersLayer);
+    seekTrackWrapper.appendChild(seekHoverTooltip);
+
+    let activeHoverPin = null;
+    let isDraggingSeek = false;
+
+    seekRange.addEventListener('pointerdown', () => {
+        isDraggingSeek = true;
+        if (activeHoverPin) {
+            activeHoverPin.classList.remove('pin-hover');
+            activeHoverPin = null;
+        }
+        seekHoverTooltip.classList.remove('active');
+    });
+
+    const onPointerUpGlobal = () => {
+        isDraggingSeek = false;
+    };
+    window.addEventListener('pointerup', onPointerUpGlobal);
+
+    seekTrackWrapper.onpointermove = (e) => {
+        if (isDraggingSeek || engineState.frames.length === 0) return;
+
+        const rect = seekMarkersLayer.getBoundingClientRect();
+        if (rect.width <= 0) return;
+
+        const mouseX = e.clientX - rect.left;
+        const clampedMouseX = Math.max(0, Math.min(mouseX, rect.width));
+        const pct = clampedMouseX / rect.width;
+        const hoverFrameIdx = Math.round(pct * (engineState.frames.length - 1));
+        const frame = engineState.frames[hoverFrameIdx];
+
+        // Proximity detection: find closest milestone pin
+        let closestPin = null;
+        let minPixelDist = Infinity;
+
+        const pinElements = seekMarkersLayer.querySelectorAll('.seek-pin');
+        pinElements.forEach(pinEl => {
+            const pinPct = parseFloat(pinEl.dataset.pct);
+            const pinX = (pinPct / 100) * rect.width;
+            const dist = Math.abs(pinX - mouseX);
+            if (dist < minPixelDist) {
+                minPixelDist = dist;
+                closestPin = pinEl;
+            }
+        });
+
+        // Threshold in pixels to snap focus to a milestone pin
+        const PIN_SNAP_DISTANCE = 11;
+
+        if (closestPin && minPixelDist <= PIN_SNAP_DISTANCE) {
+            if (activeHoverPin !== closestPin) {
+                if (activeHoverPin) activeHoverPin.classList.remove('pin-hover');
+                closestPin.classList.add('pin-hover');
+                activeHoverPin = closestPin;
+            }
+            seekHoverTooltip.classList.remove('active');
+        } else {
+            if (activeHoverPin) {
+                activeHoverPin.classList.remove('pin-hover');
+                activeHoverPin = null;
+            }
+
+            const turnNum = frame?.turnNumber ?? 1;
+            seekHoverTooltip.textContent = `第 ${hoverFrameIdx + 1} 幀 (T${turnNum})`;
+            seekHoverTooltip.style.left = `${clampedMouseX + 7}px`;
+
+            if (clampedMouseX < 45) {
+                seekHoverTooltip.style.transform = 'translateX(0)';
+            } else if (rect.width - clampedMouseX < 45) {
+                seekHoverTooltip.style.transform = 'translateX(-100%)';
+            } else {
+                seekHoverTooltip.style.transform = 'translateX(-50%)';
+            }
+
+            seekHoverTooltip.classList.add('active');
+        }
+    };
+
+    seekTrackWrapper.onpointerleave = () => {
+        if (activeHoverPin) {
+            activeHoverPin.classList.remove('pin-hover');
+            activeHoverPin = null;
+        }
+        seekHoverTooltip.classList.remove('active');
+    };
+
+    seekTrackWrapper.addEventListener('click', (e) => {
+        if (activeHoverPin) {
+            const frameIdx = parseInt(activeHoverPin.dataset.frameIndex, 10);
+            if (!isNaN(frameIdx)) {
+                e.stopPropagation();
+                jumpToFrame(frameIdx);
+            }
+        }
+    }, true);
 
     playBtn.onclick = () => {
         if (!engineState.isPlaying) {
@@ -604,9 +701,11 @@ async function renderAOEWaveBatch(waveFrames, token) {
             firstFrame.rosarioEvent === 'INSCRIBE_CROSS';
 
         if (actor && actor.lastUltimateTurn !== firstFrame.turnNumber && !isMultiHitSubFrame) {
-            actor.lastUltimateTurn = firstFrame.turnNumber;
-            await playUltimateCutIn(firstFrame, sr, token);
-            if (engineState.playbackToken !== token) return;
+            if (!shouldDeferUltimateCutIn(firstFrame)) {
+                actor.lastUltimateTurn = firstFrame.turnNumber;
+                await playUltimateCutIn(firstFrame, sr, token);
+                if (engineState.playbackToken !== token) return;
+            }
         } else if (actor && isMultiHitSubFrame) {
             actor.lastUltimateTurn = firstFrame.turnNumber;
         }
@@ -865,9 +964,11 @@ export async function renderFrame(frame, token) {
             frame.rosarioEvent === 'INSCRIBE_CROSS';
 
         if (actor && actor.lastUltimateTurn !== frame.turnNumber && !isMultiHitSubFrame) {
-            actor.lastUltimateTurn = frame.turnNumber;
-            await playUltimateCutIn(frame, sr, token);
-            if (engineState.playbackToken !== token) return;
+            if (!shouldDeferUltimateCutIn(frame)) {
+                actor.lastUltimateTurn = frame.turnNumber;
+                await playUltimateCutIn(frame, sr, token);
+                if (engineState.playbackToken !== token) return;
+            }
         } else if (actor && isMultiHitSubFrame) {
             actor.lastUltimateTurn = frame.turnNumber;
         }

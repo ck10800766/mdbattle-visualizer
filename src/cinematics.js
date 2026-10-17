@@ -109,7 +109,7 @@ export async function playFatalitySequence(sr, actorId, token = engineState.play
  * @param {string} message - Frame message text.
  * @returns {string|null} Extracted skill name or null.
  */
-function extractSkillFromMessage(message) {
+export function extractSkillFromMessage(message) {
     if (!message) return null;
     const pattern = /(?:(?!(?:造成|受到|回復|恢復|損失|失去|衝向|飛向|瞄準|盯上|閃過|躲過|看見|附上|燒掉)了)(?:[^\s，,。！!：:]{1,4}了|進入))\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
     let m;
@@ -121,6 +121,56 @@ function extractSkillFromMessage(message) {
         }
     }
     return null;
+}
+
+/**
+ * Evaluates whether an ultimate frame should defer its full-screen Cut-In presentation
+ * to a subsequent frame in the same turn.
+ *
+ * For multi-line ultimates (e.g. character monologue, prologue actions, or dramatic build-up lines
+ * before the climactic skill execution), playback allows character speech bubbles and actions to play
+ * on stage first, triggering the Cut-In when the actual skill invocation or chant climax frame is reached.
+ *
+ * @param {object} frame - Current combat frame.
+ * @returns {boolean} True if cut-in presentation should defer to a subsequent climax frame.
+ */
+export function shouldDeferUltimateCutIn(frame) {
+    if (!engineState.frames || !frame || frame.index == null) return false;
+
+    // If current frame has a spoken chant quote (<= 20 chars) or explicit skill cast, it IS the climax!
+    const currentMsg = String(frame.message || '');
+    const currentQuote = currentMsg.match(/[：:]\s*「([^」]+)」/);
+    if (currentQuote && currentQuote[1].length <= 20) {
+        return false;
+    }
+    if (extractSkillFromMessage(currentMsg)) {
+        return false;
+    }
+
+    // Otherwise, check if a subsequent frame in the same turn for this actor contains the climax cast
+    for (let i = frame.index + 1; i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
+        const candidate = engineState.frames[i];
+        if (
+            candidate &&
+            candidate.turnNumber === frame.turnNumber &&
+            candidate.actorId === frame.actorId &&
+            candidate.skillTier === 'ultimate'
+        ) {
+            const candMsg = String(candidate.message || '');
+            const candQuote = candMsg.match(/[：:]\s*「([^」]+)」/);
+            if (candQuote && candQuote[1].length <= 20) {
+                return true;
+            }
+            if (extractSkillFromMessage(candMsg)) {
+                return true;
+            }
+            if (/把「([^」]+)」拋向/.test(candMsg)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 /**

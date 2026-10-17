@@ -265,8 +265,8 @@ export const STAGE_STYLES = `
     .seek-track-wrapper input[type="range"] { width: 100%; margin: 0; position: relative; z-index: 2; }
     .seek-markers-layer { position: absolute; left: 7px; right: 7px; top: 0; height: 100%; pointer-events: none; z-index: 3; }
     .seek-pin { position: absolute; top: 1px; transform: translateX(-50%) scale(0.6); width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #fff; cursor: pointer; pointer-events: none; opacity: 0; padding: 0; transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease; z-index: 4; }
-    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
-    .seek-container:hover .seek-pin:hover, .seek-track-wrapper:hover .seek-pin:hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
+    .seek-container:hover .seek-pin, .seek-track-wrapper:hover .seek-pin { opacity: 1; transform: translateX(-50%) scale(1); }
+    .seek-pin.pin-hover { transform: translateX(-50%) scale(1.65); z-index: 50; }
     .seek-pin.pin-ultimate { background: #f6e05e; box-shadow: 0 0 8px #f6e05e; }
     .seek-pin.pin-death { background: #fc8181; box-shadow: 0 0 8px #e53e3e; }
     .seek-pin.pin-rebirth { background: #48bb78; box-shadow: 0 0 10px #48bb78; }
@@ -275,11 +275,15 @@ export const STAGE_STYLES = `
     .seek-pin-tooltip { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-4px); background: rgba(15, 23, 42, 0.98); color: #f8fafc; border: 1px solid #4fd1c5; border-radius: 6px; padding: 6px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s ease, transform 0.15s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9); z-index: 9999; text-align: left; }
     .seek-pin-tooltip.tooltip-align-left { left: 0; transform: translateY(-4px); }
     .seek-pin-tooltip.tooltip-align-right { left: auto; right: 0; transform: translateY(-4px); }
-    .seek-pin:hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .seek-pin:hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
-    .seek-pin:hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip.tooltip-align-left { transform: translateY(0); }
+    .seek-pin.pin-hover .seek-pin-tooltip.tooltip-align-right { transform: translateY(0); }
     .seek-pin-tooltip-title { color: #f6e05e; font-weight: 800; margin-bottom: 2px; display: block; }
     .seek-pin-tooltip-detail { color: #cbd5e1; font-size: 11px; font-weight: 500; display: block; max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Timeline Seek Frame Hover Tooltip */
+    .seek-hover-tooltip { position: absolute; bottom: 26px; left: 0; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); color: #e2e8f0; border: 1px solid rgba(79, 209, 197, 0.6); border-radius: 5px; padding: 3px 8px; font-size: 11px; font-weight: 700; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.1s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7); z-index: 100; letter-spacing: 0.3px; }
+    .seek-hover-tooltip.active { opacity: 1; visibility: visible; }
 
     /* Report Export/Import Buttons, Hotkey Popover & Drag-Drop Overlay */
     button.btn-io { background: #2b6cb0; border-color: #63b3ed; padding: 6px 10px; color: #ebf8ff; }

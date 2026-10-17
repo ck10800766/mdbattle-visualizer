@@ -26,7 +26,8 @@ import {
     spawnStatusOrDiceBadge,
     resolveDialogueSpeaker,
     isSceneNarrationFrame,
-    renderSceneNarrationBanner
+    renderSceneNarrationBanner,
+    shouldDeferUltimateCutIn
 } from './cinematics.js';
 import {
     spawnAOEFanWave,
@@ -546,7 +547,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
         if (!isInitialReset) {
             for (let i = 0; i < frameIndex; i++) {
                 const f = engineState.frames[i];
-                if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f)) {
+                if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f) && !shouldDeferUltimateCutIn(f)) {
                     actor.lastUltimateTurn = f.turnNumber;
                 }
             }
