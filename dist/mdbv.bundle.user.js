@@ -2101,6 +2101,19 @@
       }
     }
   }
+  function extractSkillFromMessage(message) {
+    if (!message) return null;
+    const pattern = /(?:(?!(?:造成|受到|回復|恢復|損失|失去|衝向|飛向|瞄準|盯上|閃過|躲過|看見|附上|燒掉)了)(?:[^\s，,。！!：:]{1,4}了|進入))\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+    let m;
+    while ((m = pattern.exec(message)) !== null) {
+      const token = m[1].replace(/^[「『\[【](.*?)[」』\]】]$/, "$1");
+      const isActor = engineState?.actors ? Array.from(engineState.actors.values()).some((a) => a.name === token) : false;
+      if (!isActor) {
+        return token;
+      }
+    }
+    return null;
+  }
   async function playUltimateCutIn(frame, sr, token) {
     const actor = engineState.actors.get(frame.actorId);
     if (!actor || engineState.playbackToken !== token) return;
@@ -2127,17 +2140,14 @@
     } else {
       let extractedSkillName = null;
       let skillSourceFrame = frame;
-      const skillVerbRegex = /(?:使出了|進入|綻放了|解放了|發動了|施展了|演化出了|喚出了|召喚了)\s*([^，,。！!—\s]+)/;
-      const skillMatchCurrent = frame.message.match(skillVerbRegex);
-      if (skillMatchCurrent) {
-        extractedSkillName = skillMatchCurrent[1];
-      } else {
+      extractedSkillName = extractSkillFromMessage(frame.message);
+      if (!extractedSkillName) {
         for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
           const candidate = engineState.frames[i];
           if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
-            const match = String(candidate.message || "").match(skillVerbRegex);
-            if (match) {
-              extractedSkillName = match[1];
+            const candidateSkill = extractSkillFromMessage(candidate.message);
+            if (candidateSkill) {
+              extractedSkillName = candidateSkill;
               skillSourceFrame = candidate;
               break;
             }
@@ -2166,7 +2176,7 @@
         if (!narrativeMsg || /造成了|受到|點傷害|會心一擊|防禦|閃避/.test(narrativeMsg)) {
           narrativeMsg = skillSourceFrame?.message || "";
         }
-        const rawRemaining = narrativeMsg.replace(new RegExp(`(?:\u4F7F\u51FA\u4E86|\u9032\u5165|\u7DBB\u653E\u4E86|\u89E3\u653E\u4E86|\u767C\u52D5\u4E86|\u65BD\u5C55\u4E86|\u6F14\u5316\u51FA\u4E86|\u559A\u51FA\u4E86|\u53EC\u559A\u4E86)\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
+        const rawRemaining = narrativeMsg.replace(new RegExp(`(?:[^\\s\uFF0C,\u3002\uFF01!\uFF1A:]{1,4}\u4E86|\u9032\u5165)\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
         subText = stripCombatOutcomeText(rawRemaining, actor.name);
       } else {
         let rawSkillId = frame.skillId || "ULTIMATE_SKILL";
