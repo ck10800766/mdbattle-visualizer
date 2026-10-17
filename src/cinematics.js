@@ -132,10 +132,11 @@ export async function playUltimateCutIn(frame, sr, token) {
     let subText = '';
 
     // Only match actual spoken dialogue quotes preceded by a colon (e.g., 低喝：「...」 or 角色：「...」),
+    // Only match actual spoken dialogue quotes preceded by a colon (e.g., 低喝：「...」 or 角色：「...」),
     // preventing inline object quotes like 把「火」拋向半空 from being hollowed out.
     const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
 
-    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 15) {
+    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 20) {
         mainText = spokenQuoteMatch[1];
         const rawRemainingText = frame.message
             .replace(actor.name, '')
@@ -145,9 +146,10 @@ export async function playUltimateCutIn(frame, sr, token) {
     } else {
         let extractedSkillName = null;
         let skillSourceFrame = frame;
+        const skillVerbRegex = /(?:使出了|進入|綻放了|解放了|發動了|施展了|演化出了|喚出了|召喚了)\s*([^，,。！!—\s]+)/;
 
         // 1. Direct match on current frame
-        const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
+        const skillMatchCurrent = frame.message.match(skillVerbRegex);
         if (skillMatchCurrent) {
             extractedSkillName = skillMatchCurrent[1];
         } else {
@@ -159,7 +161,7 @@ export async function playUltimateCutIn(frame, sr, token) {
                     candidate.turnNumber === frame.turnNumber &&
                     candidate.actorId === frame.actorId
                 ) {
-                    const match = String(candidate.message || '').match(/使出了\s*([^，,。！!—\s]+)/);
+                    const match = String(candidate.message || '').match(skillVerbRegex);
                     if (match) {
                         extractedSkillName = match[1];
                         skillSourceFrame = candidate;
@@ -197,7 +199,7 @@ export async function playUltimateCutIn(frame, sr, token) {
                 narrativeMsg = skillSourceFrame?.message || '';
             }
             const rawRemaining = narrativeMsg
-                .replace(new RegExp(`使出了\\s*${escapeRegExp(extractedSkillName)}[，,、\\s]*`), ' ')
+                .replace(new RegExp(`(?:使出了|進入|綻放了|解放了|發動了|施展了|演化出了|喚出了|召喚了)\\s*${escapeRegExp(extractedSkillName)}[，,、\\s]*`), ' ')
                 .trim();
             subText = stripCombatOutcomeText(rawRemaining, actor.name);
         } else {
@@ -213,7 +215,7 @@ export async function playUltimateCutIn(frame, sr, token) {
     const isEnglish = /[A-Za-z]/.test(mainText);
 
     const quoteEl = document.createElement('div');
-    quoteEl.className = `ult-quote ${isEnglish ? 'lang-en' : 'lang-zh'}`;
+    quoteEl.className = `ult-quote ${isEnglish ? 'lang-en' : 'lang-zh'}${mainText.length > 12 ? ' long-quote' : ''}`;
     quoteEl.textContent = mainText;
 
     const flavorEl = document.createElement('div');

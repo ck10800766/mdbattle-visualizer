@@ -1885,6 +1885,7 @@
     .ult-text-wrapper.right-side { left: 8%; }
     .ult-quote { display: inline-block; margin-left: 2vw; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8), -3px 3px 0px #000, -8px 8px 0px rgba(180, 0, 0, 0.9); animation: ult-stamp 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
     .ult-quote.lang-zh { font-size: clamp(30px, 7vh, 70px); text-orientation: mixed; letter-spacing: 1vh; }
+    .ult-quote.lang-zh.long-quote { font-size: clamp(22px, 5vh, 48px); letter-spacing: 0.6vh; }
     .ult-quote.lang-en { font-size: clamp(24px, 6vh, 60px); text-orientation: mixed; letter-spacing: 4px; }
     .ult-flavor { display: inline-block; font-family: "Yu Mincho", "Noto Serif TC", "PMingLiU", serif; font-size: clamp(14px, 2.5vh, 22px); color: #e2e8f0; text-shadow: -2px 2px 4px #000; text-orientation: mixed; letter-spacing: 0.5vh; animation: ult-stamp-delay 2.5s cubic-bezier(0.1, 1, 0.2, 1) forwards; }
 
@@ -2119,21 +2120,22 @@
     let mainText = "";
     let subText = "";
     const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
-    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 15) {
+    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 20) {
       mainText = spokenQuoteMatch[1];
       const rawRemainingText = frame.message.replace(actor.name, "").replace(/[：:]\s*「[^」]+」\s*/, " ").trim();
       subText = stripCombatOutcomeText(rawRemainingText, actor.name);
     } else {
       let extractedSkillName = null;
       let skillSourceFrame = frame;
-      const skillMatchCurrent = frame.message.match(/使出了\s*([^，,。！!—\s]+)/);
+      const skillVerbRegex = /(?:使出了|進入|綻放了|解放了|發動了|施展了|演化出了|喚出了|召喚了)\s*([^，,。！!—\s]+)/;
+      const skillMatchCurrent = frame.message.match(skillVerbRegex);
       if (skillMatchCurrent) {
         extractedSkillName = skillMatchCurrent[1];
       } else {
         for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
           const candidate = engineState.frames[i];
           if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId) {
-            const match = String(candidate.message || "").match(/使出了\s*([^，,。！!—\s]+)/);
+            const match = String(candidate.message || "").match(skillVerbRegex);
             if (match) {
               extractedSkillName = match[1];
               skillSourceFrame = candidate;
@@ -2164,7 +2166,7 @@
         if (!narrativeMsg || /造成了|受到|點傷害|會心一擊|防禦|閃避/.test(narrativeMsg)) {
           narrativeMsg = skillSourceFrame?.message || "";
         }
-        const rawRemaining = narrativeMsg.replace(new RegExp(`\u4F7F\u51FA\u4E86\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
+        const rawRemaining = narrativeMsg.replace(new RegExp(`(?:\u4F7F\u51FA\u4E86|\u9032\u5165|\u7DBB\u653E\u4E86|\u89E3\u653E\u4E86|\u767C\u52D5\u4E86|\u65BD\u5C55\u4E86|\u6F14\u5316\u51FA\u4E86|\u559A\u51FA\u4E86|\u53EC\u559A\u4E86)\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
         subText = stripCombatOutcomeText(rawRemaining, actor.name);
       } else {
         let rawSkillId = frame.skillId || "ULTIMATE_SKILL";
@@ -2177,7 +2179,7 @@
     }
     const isEnglish = /[A-Za-z]/.test(mainText);
     const quoteEl = document.createElement("div");
-    quoteEl.className = `ult-quote ${isEnglish ? "lang-en" : "lang-zh"}`;
+    quoteEl.className = `ult-quote ${isEnglish ? "lang-en" : "lang-zh"}${mainText.length > 12 ? " long-quote" : ""}`;
     quoteEl.textContent = mainText;
     const flavorEl = document.createElement("div");
     flavorEl.className = "ult-flavor";
