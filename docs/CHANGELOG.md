@@ -88,3 +88,4 @@
   - 將早期單檔重構為 16+ 原生 ES Modules（`src/*.js`）。
   - 引進無頭黃金快照測試系統（`scripts/snapshot-runner.mjs`）與 `esbuild` 打包流程。
   - 實作防劇透遮罩（`spoilerGuard.js`）與多錨點 HP 校正器（`calibrator.js`）。
+
