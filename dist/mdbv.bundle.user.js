@@ -1592,6 +1592,7 @@
     .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); }
     .status-badge.status-fatigue { border-color: #ed8936; background: rgba(192, 86, 33, 0.35); }
     .status-badge.status-silenced { border-color: #fc8181; background: rgba(197, 48, 48, 0.35); }
+    .status-badge.status-bond { border-color: #f687b3; background: rgba(213, 63, 140, 0.35); box-shadow: 0 0 6px rgba(246, 135, 179, 0.6); }
 
     /* Dice Check & Status Badges */
     .dice-badge { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; z-index: 55; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.6); animation: slideInUp 0.2s ease-out forwards; }
@@ -1709,7 +1710,6 @@
 
     /* Persistent Marriage Bond Aura & Cover Shield */
     .actor.bond-active .avatar { border-color: #f687b3; box-shadow: 0 0 16px rgba(246, 135, 179, 0.85); }
-    .bond-ring-badge { position: absolute; top: -10px; right: -12px; background: linear-gradient(135deg, #d53f8c, #b83280); color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1.5px solid #fbb6ce; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 30; white-space: nowrap; pointer-events: none; }
     .bridal-cover-shield { position: absolute; inset: -10px; border: 3px solid #fbb6ce; border-radius: 14px; background: radial-gradient(circle, rgba(246, 135, 179, 0.35) 0%, transparent 75%); box-shadow: 0 0 20px #f687b3; display: flex; align-items: flex-start; justify-content: center; z-index: 20; pointer-events: none; }
     .bridal-cover-shield span { margin-top: -12px; background: #d53f8c; color: #fff; font-size: 11px; font-weight: 900; padding: 1px 8px; border-radius: 999px; border: 1px solid #fff; }
 
@@ -3582,24 +3582,17 @@
       const wrapperEl = sr.getElementById(`actor-${actor.id}`);
       if (!wrapperEl) return;
       const bondInfo = bondStateMap ? bondStateMap.get(actor.id) : null;
-      const existingBadge = wrapperEl.querySelector(".bond-ring-badge");
-      if (bondInfo) {
-        const profile = getContractSkillProfile(bondInfo.skillId);
+      const isDead = wrapperEl.classList.contains("dead");
+      if (bondInfo && !isDead) {
         wrapperEl.classList.add("bond-active");
-        if (!existingBadge) {
-          const badge = document.createElement("div");
-          badge.className = "bond-ring-badge";
-          const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
-          badge.textContent = partner ? `${profile?.badgeIcon || "\u{1F48D}"} ${partner.name}` : `${profile?.badgeIcon || "\u{1F48D}"} ${profile?.badgeText || "\u5951\u7D04"}`;
-          wrapperEl.appendChild(badge);
-        }
       } else {
         wrapperEl.classList.remove("bond-active");
-        if (existingBadge) existingBadge.remove();
       }
+      const existingBadge = wrapperEl.querySelector(".bond-ring-badge");
+      if (existingBadge) existingBadge.remove();
     });
   }
-  function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null) {
+  function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null, bondStateMap = null) {
     engineState.actors.forEach((actor) => {
       const hpContainer = sr.getElementById(`hp-container-${actor.id}`) || sr.querySelector(`#actor-${actor.id} .hp-container`);
       const statusTray = sr.getElementById(`status-tray-${actor.id}`);
@@ -3611,7 +3604,18 @@
         else hpContainer.classList.remove("shield-active");
       }
       if (statusTray) {
-        const statuses = !isDead && statusStateMap ? statusStateMap.get(actor.id) || [] : [];
+        const statuses = !isDead && statusStateMap ? [...statusStateMap.get(actor.id) || []] : [];
+        const bondInfo = !isDead && bondStateMap ? bondStateMap.get(actor.id) : null;
+        if (bondInfo) {
+          const profile = getContractSkillProfile(bondInfo.skillId);
+          const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
+          statuses.unshift({
+            id: "bond",
+            name: partner ? `${profile?.badgeIcon || "\u{1F48D}"} ${partner.name}` : `${profile?.badgeIcon || "\u{1F48D}"} ${profile?.badgeText || "\u5951\u7D04"}`,
+            category: "bond",
+            icon: profile?.badgeIcon || "\u{1F48D}"
+          });
+        }
         if (statuses.length === 0) {
           statusTray.innerHTML = "";
         } else {
@@ -3887,7 +3891,7 @@
       });
       updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
       syncActorBondVisuals(sr, frame.actorsBondState);
-      syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
+      syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
       if (showActivePreview) {
         renderSeekPreviewState(sr, stateFrameIndex);
       }
@@ -4586,7 +4590,7 @@
     }
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
-    syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState);
+    syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
     const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
     const hasCritShake = waveFrames.some((wf) => wf.vfx.includes("screen-shake"));
     if (hasCritShake && arena) {
@@ -4635,7 +4639,7 @@
           syncSummonVisibility: false,
           deferDeadClassForActorId: waveDeadActorIds
         });
-        syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState);
+        syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
       }, hitDelay);
     });
     await new Promise((resolve) => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
@@ -4745,7 +4749,7 @@
     }
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
-    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
     if (frame.contractEvent === "ACCEPT") {
       await playContractCutIn(frame, sr, token);
       if (engineState.playbackToken !== token) return;
@@ -4832,7 +4836,7 @@
       syncSummonVisibility: false,
       deferDeadClassForActorId: triggeredFatality ? deadActorId : null
     });
-    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
     if (triggeredFatality && deadActorId) {
       await playFatalitySequence(sr, deadActorId, token);
       if (engineState.playbackToken !== token) return;

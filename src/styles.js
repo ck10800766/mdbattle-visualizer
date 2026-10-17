@@ -70,6 +70,7 @@ export const STAGE_STYLES = `
     .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); }
     .status-badge.status-fatigue { border-color: #ed8936; background: rgba(192, 86, 33, 0.35); }
     .status-badge.status-silenced { border-color: #fc8181; background: rgba(197, 48, 48, 0.35); }
+    .status-badge.status-bond { border-color: #f687b3; background: rgba(213, 63, 140, 0.35); box-shadow: 0 0 6px rgba(246, 135, 179, 0.6); }
 
     /* Dice Check & Status Badges */
     .dice-badge { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; z-index: 55; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.6); animation: slideInUp 0.2s ease-out forwards; }
@@ -187,7 +188,6 @@ export const STAGE_STYLES = `
 
     /* Persistent Marriage Bond Aura & Cover Shield */
     .actor.bond-active .avatar { border-color: #f687b3; box-shadow: 0 0 16px rgba(246, 135, 179, 0.85); }
-    .bond-ring-badge { position: absolute; top: -10px; right: -12px; background: linear-gradient(135deg, #d53f8c, #b83280); color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1.5px solid #fbb6ce; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 30; white-space: nowrap; pointer-events: none; }
     .bridal-cover-shield { position: absolute; inset: -10px; border: 3px solid #fbb6ce; border-radius: 14px; background: radial-gradient(circle, rgba(246, 135, 179, 0.35) 0%, transparent 75%); box-shadow: 0 0 20px #f687b3; display: flex; align-items: flex-start; justify-content: center; z-index: 20; pointer-events: none; }
     .bridal-cover-shield span { margin-top: -12px; background: #d53f8c; color: #fff; font-size: 11px; font-weight: 900; padding: 1px 8px; border-radius: 999px; border: 1px solid #fff; }
 

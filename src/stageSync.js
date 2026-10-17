@@ -63,7 +63,7 @@ export function createLogLineElement(frame) {
 }
 
 /**
- * Synchronizes persistent contract/marriage aura and ring badge visuals across all actors.
+ * Synchronizes persistent contract/marriage aura across all actors.
  *
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
  * @param {Map<string, {partnerId: string|null, skillId: string}>|null} [bondStateMap=null] - Active bond state map.
@@ -74,35 +74,29 @@ export function syncActorBondVisuals(sr, bondStateMap = null) {
         if (!wrapperEl) return;
 
         const bondInfo = bondStateMap ? bondStateMap.get(actor.id) : null;
-        const existingBadge = wrapperEl.querySelector('.bond-ring-badge');
+        const isDead = wrapperEl.classList.contains('dead');
 
-        if (bondInfo) {
-            const profile = getContractSkillProfile(bondInfo.skillId);
+        if (bondInfo && !isDead) {
             wrapperEl.classList.add('bond-active');
-            if (!existingBadge) {
-                const badge = document.createElement('div');
-                badge.className = 'bond-ring-badge';
-                const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
-                badge.textContent = partner
-                    ? `${profile?.badgeIcon || '💍'} ${partner.name}`
-                    : `${profile?.badgeIcon || '💍'} ${profile?.badgeText || '契約'}`;
-                wrapperEl.appendChild(badge);
-            }
         } else {
             wrapperEl.classList.remove('bond-active');
-            if (existingBadge) existingBadge.remove();
         }
+
+        const existingBadge = wrapperEl.querySelector('.bond-ring-badge');
+        if (existingBadge) existingBadge.remove();
     });
 }
 
 /**
- * Synchronizes persistent status tray badges (DOT, HOT, FATIGUE, SILENCED) and shield border highlights across all actors.
+ * Synchronizes persistent status tray badges (marriage/bond, DOT, HOT, FATIGUE, SILENCED)
+ * and shield border highlights across all actors.
  *
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
  * @param {Map<string, Array<{ id: string, name: string, category: string, icon: string }>>|null} [statusStateMap=null] - Active status state map.
  * @param {Map<string, boolean>|null} [shieldStateMap=null] - Active shield state map.
+ * @param {Map<string, {partnerId: string|null, skillId: string}>|null} [bondStateMap=null] - Active bond state map.
  */
-export function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null) {
+export function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldStateMap = null, bondStateMap = null) {
     engineState.actors.forEach(actor => {
         const hpContainer = sr.getElementById(`hp-container-${actor.id}`) || sr.querySelector(`#actor-${actor.id} .hp-container`);
         const statusTray = sr.getElementById(`status-tray-${actor.id}`);
@@ -116,9 +110,21 @@ export function syncActorStatusAndShieldDOM(sr, statusStateMap = null, shieldSta
             else hpContainer.classList.remove('shield-active');
         }
 
-        // 2. Sync status badges
+        // 2. Sync status badges (including marriage/contract bond)
         if (statusTray) {
-            const statuses = (!isDead && statusStateMap) ? (statusStateMap.get(actor.id) || []) : [];
+            const statuses = (!isDead && statusStateMap) ? [...(statusStateMap.get(actor.id) || [])] : [];
+            const bondInfo = (!isDead && bondStateMap) ? bondStateMap.get(actor.id) : null;
+            if (bondInfo) {
+                const profile = getContractSkillProfile(bondInfo.skillId);
+                const partner = bondInfo.partnerId ? engineState.actors.get(bondInfo.partnerId) : null;
+                statuses.unshift({
+                    id: 'bond',
+                    name: partner ? `${profile?.badgeIcon || '💍'} ${partner.name}` : `${profile?.badgeIcon || '💍'} ${profile?.badgeText || '契約'}`,
+                    category: 'bond',
+                    icon: profile?.badgeIcon || '💍'
+                });
+            }
+
             if (statuses.length === 0) {
                 statusTray.innerHTML = '';
             } else {
@@ -503,7 +509,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
         // Restore ATB progress, contract bond visual auras, and status/shield DOM
         updateATBUI(frame.turnNumber, true, frame.actorsSummonState);
         syncActorBondVisuals(sr, frame.actorsBondState);
-        syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
+        syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
 
         // When paused or stepping, render active combat situation preview
         if (showActivePreview) {

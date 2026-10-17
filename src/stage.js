@@ -585,7 +585,7 @@ async function renderAOEWaveBatch(waveFrames, token) {
     // 2. Update ATB timeline and bond state
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
-    syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState);
+    syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
 
     // 3. Launch center-stage AOE caster animation, crescent shockwave, and projectile barrage
     const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
@@ -645,7 +645,7 @@ async function renderAOEWaveBatch(waveFrames, token) {
                 syncSummonVisibility: false,
                 deferDeadClassForActorId: waveDeadActorIds
             });
-            syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState);
+            syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
         }, hitDelay);
     });
 
@@ -801,7 +801,7 @@ export async function renderFrame(frame, token) {
     // 5. Update ATB bar and persistent marriage/contract bond indicators
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
-    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
 
     // 6. Play full-screen Contract Cut-In, Rosario Cross inscription, or Ultimate Cut-In
     if (frame.contractEvent === 'ACCEPT') {
@@ -907,7 +907,7 @@ export async function renderFrame(frame, token) {
         syncSummonVisibility: false,
         deferDeadClassForActorId: triggeredFatality ? deadActorId : null
     });
-    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState);
+    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
 
     if (triggeredFatality && deadActorId) {
         await playFatalitySequence(sr, deadActorId, token);
