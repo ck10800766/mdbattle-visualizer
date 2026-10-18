@@ -37,7 +37,8 @@ import {
     isSceneNarrationFrame,
     renderSceneNarrationBanner,
     shouldDeferUltimateCutIn,
-    isUltimateCutInQuoteFrame
+    isUltimateCutInQuoteFrame,
+    hasUpcomingDialogueInBattle
 } from './cinematics.js';
 import {
     lookaheadComboState,
@@ -907,15 +908,30 @@ export async function renderFrame(frame, token) {
     // 3. Render speech bubble for dialogue (only on resolved on-field speaker) OR scene narration subtitle banner
     const speaker = resolveDialogueSpeaker(frame);
     if (speaker) {
-        // Ensure all combatants return to home positions before speaking (do not stick to enemies)
+        // Ensure all combatants return smoothly to home positions before speaking (do not stick to enemies or snap)
         engineState.actors.forEach(actor => {
             if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
                 const el = sr.getElementById(`actor-${actor.id}`);
                 if (el && !el.classList.contains('spawning') && !el.classList.contains('despawning')) {
-                    if (el.getAnimations) {
-                        el.getAnimations().forEach(anim => anim.cancel());
+                    const currentTransform = el.style.transform;
+                    if (currentTransform && currentTransform !== 'none') {
+                        el.animate([
+                            { transform: currentTransform },
+                            { transform: 'translate(0px, 0px) scale(1)' }
+                        ], {
+                            duration: 200 / getEffectiveSpeed(),
+                            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                            fill: 'forwards'
+                        }).onfinish = () => {
+                            if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());
+                            el.style.transform = '';
+                        };
+                    } else {
+                        if (el.getAnimations) {
+                            el.getAnimations().forEach(anim => anim.cancel());
+                        }
+                        el.style.transform = '';
                     }
-                    el.style.transform = '';
                 }
             }
         });
@@ -930,10 +946,25 @@ export async function renderFrame(frame, token) {
             if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
                 const el = sr.getElementById(`actor-${actor.id}`);
                 if (el && !el.classList.contains('spawning') && !el.classList.contains('despawning')) {
-                    if (el.getAnimations) {
-                        el.getAnimations().forEach(anim => anim.cancel());
+                    const currentTransform = el.style.transform;
+                    if (currentTransform && currentTransform !== 'none') {
+                        el.animate([
+                            { transform: currentTransform },
+                            { transform: 'translate(0px, 0px) scale(1)' }
+                        ], {
+                            duration: 200 / getEffectiveSpeed(),
+                            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                            fill: 'forwards'
+                        }).onfinish = () => {
+                            if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());
+                            el.style.transform = '';
+                        };
+                    } else {
+                        if (el.getAnimations) {
+                            el.getAnimations().forEach(anim => anim.cancel());
+                        }
+                        el.style.transform = '';
                     }
-                    el.style.transform = '';
                 }
             }
         });
@@ -1075,7 +1106,7 @@ export async function renderFrame(frame, token) {
         await playFatalitySequence(sr, deadActorId, token);
         if (engineState.playbackToken !== token) return;
         const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
-        if (deadWrapper) {
+        if (deadWrapper && !hasUpcomingDialogueInBattle(deadActorId, frame.index)) {
             deadWrapper.classList.add('dead');
         }
     }

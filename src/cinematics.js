@@ -426,6 +426,28 @@ export function resolveDialogueSpeaker(frame) {
 }
 
 /**
+ * Checks whether an actor has any upcoming spoken dialogue in subsequent frames of the battle.
+ * Used to defer grayscale K.O. styling (.dead) on units (especially Bosses or tragic allies)
+ * who still have defeat monologues, yielding speeches, or dying lines to deliver.
+ *
+ * @param {string} actorId - ID of the actor.
+ * @param {number} currentFrameIndex - Active frame index.
+ * @returns {boolean} True if the actor speaks in a future frame.
+ */
+export function hasUpcomingDialogueInBattle(actorId, currentFrameIndex) {
+    if (!actorId || !engineState.frames) return false;
+    for (let i = currentFrameIndex + 1; i < engineState.frames.length; i++) {
+        const f = engineState.frames[i];
+        if (!f) continue;
+        const speaker = resolveDialogueSpeaker(f);
+        if (speaker && speaker.actorId === actorId) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Spawns a typewriter-animated speech bubble next to a speaking actor on the battlefield.
  * If the speaker is off-field or disembodied, does nothing on stage (the dialogue is
  * displayed cleanly in the bottom combat log box or scene narration subtitle banner).

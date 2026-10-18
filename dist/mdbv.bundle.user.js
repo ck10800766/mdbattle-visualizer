@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.5
+// @version      7.5.6
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.5";
+  var APP_VERSION = "7.5.6";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -2315,6 +2315,18 @@
     }
     return null;
   }
+  function hasUpcomingDialogueInBattle(actorId, currentFrameIndex) {
+    if (!actorId || !engineState.frames) return false;
+    for (let i = currentFrameIndex + 1; i < engineState.frames.length; i++) {
+      const f = engineState.frames[i];
+      if (!f) continue;
+      const speaker = resolveDialogueSpeaker(f);
+      if (speaker && speaker.actorId === actorId) {
+        return true;
+      }
+    }
+    return false;
+  }
   function renderSpeechBubble(frame, sr, token) {
     const speaker = resolveDialogueSpeaker(frame);
     if (!speaker) return 0;
@@ -2597,7 +2609,7 @@
         shouldReturnToOrigin = true;
         continue;
       }
-      if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type) || isSceneNarrationFrame(lookahead) || lookahead.diceCheck) {
+      if (["HEAL", "SP_RECOVER", "BOSS_DIALOGUE", "SUMMON"].includes(lookahead.type) || isSceneNarrationFrame(lookahead) || resolveDialogueSpeaker(lookahead) || lookahead.diceCheck) {
         shouldReturnToOrigin = true;
         continue;
       }
@@ -2609,7 +2621,7 @@
         continue;
       }
       if (lookahead.type === "SKILL_TEXT") {
-        if (lookahead.isCoverEvent || isSceneNarrationFrame(lookahead)) {
+        if (lookahead.isCoverEvent || isSceneNarrationFrame(lookahead) || resolveDialogueSpeaker(lookahead)) {
           shouldReturnToOrigin = true;
         }
         continue;
@@ -3060,8 +3072,18 @@
     } else {
       const actorRect = actorEl.getBoundingClientRect();
       const targetRect = targetEl.getBoundingClientRect();
-      moveX = targetRect.left - actorRect.left + (side === "left" ? -60 : 60);
-      deltaY = targetRect.top - actorRect.top;
+      const actorObj = engineState.actors.get(frame.actorId);
+      const targetObj = engineState.actors.get(frame.targetId);
+      const isSameSide = actorObj && targetObj && actorObj.side === targetObj.side;
+      if (isSameSide) {
+        const inwardStep = side === "left" ? 35 : -35;
+        const rawDeltaY = targetRect.top - actorRect.top;
+        moveX = targetRect.left - actorRect.left + inwardStep;
+        deltaY = rawDeltaY === 0 ? 0 : rawDeltaY * 0.75;
+      } else {
+        moveX = targetRect.left - actorRect.left + (side === "left" ? -60 : 60);
+        deltaY = targetRect.top - actorRect.top;
+      }
       if (!frame.isCounter && frame.type !== "COUNTER") {
         engineState.currentCombo.moveX = moveX;
         engineState.currentCombo.deltaY = deltaY;
@@ -4145,8 +4167,11 @@
         const statusTray = sr.getElementById(`status-tray-${actorId}`);
         if (statusTray) statusTray.innerHTML = "";
         const shouldDefer = deferDeadClassForActorId instanceof Set ? deferDeadClassForActorId.has(actorId) : deferDeadClassForActorId === actorId;
-        if (!shouldDefer) {
+        const hasPendingSpeech = hasUpcomingDialogueInBattle(actorId, frame.index);
+        if (!shouldDefer && !hasPendingSpeech) {
           wrapperEl.classList.add("dead");
+        } else {
+          wrapperEl.classList.remove("dead");
         }
         wrapperEl.classList.remove("danger-state");
       } else if (!isDead && wrapperEl) {
@@ -4259,9 +4284,18 @@
       const tRect = targetEl.getBoundingClientRect();
       const side = actorObj?.side || "left";
       const targetSide = targetObj?.side || (side === "left" ? "right" : "left");
-      const shadowColor = side === "left" ? "#63b3ed" : "#fc8181";
-      const moveX = tRect.left - aRect.left + (side === "left" ? -60 : 60);
-      const deltaY = tRect.top - aRect.top;
+      const isSameSide = side === targetSide;
+      const shadowColor = isSameSide ? "#f6ad55" : side === "left" ? "#63b3ed" : "#fc8181";
+      let moveX, deltaY;
+      if (isSameSide) {
+        const inwardStep = side === "left" ? 35 : -35;
+        const rawDeltaY = tRect.top - aRect.top;
+        moveX = tRect.left - aRect.left + inwardStep;
+        deltaY = rawDeltaY === 0 ? 0 : rawDeltaY * 0.75;
+      } else {
+        moveX = tRect.left - aRect.left + (side === "left" ? -60 : 60);
+        deltaY = tRect.top - aRect.top;
+      }
       actorEl.style.zIndex = "10";
       actorEl.style.transform = `translate(${moveX}px, ${deltaY}px) scale(1.1)`;
       actorEl.style.filter = `drop-shadow(0 0 12px ${shadowColor})`;
@@ -5315,10 +5349,25 @@
         if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
           const el = sr.getElementById(`actor-${actor.id}`);
           if (el && !el.classList.contains("spawning") && !el.classList.contains("despawning")) {
-            if (el.getAnimations) {
-              el.getAnimations().forEach((anim) => anim.cancel());
+            const currentTransform = el.style.transform;
+            if (currentTransform && currentTransform !== "none") {
+              el.animate([
+                { transform: currentTransform },
+                { transform: "translate(0px, 0px) scale(1)" }
+              ], {
+                duration: 200 / getEffectiveSpeed(),
+                easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                fill: "forwards"
+              }).onfinish = () => {
+                if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
+                el.style.transform = "";
+              };
+            } else {
+              if (el.getAnimations) {
+                el.getAnimations().forEach((anim) => anim.cancel());
+              }
+              el.style.transform = "";
             }
-            el.style.transform = "";
           }
         }
       });
@@ -5332,10 +5381,25 @@
         if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
           const el = sr.getElementById(`actor-${actor.id}`);
           if (el && !el.classList.contains("spawning") && !el.classList.contains("despawning")) {
-            if (el.getAnimations) {
-              el.getAnimations().forEach((anim) => anim.cancel());
+            const currentTransform = el.style.transform;
+            if (currentTransform && currentTransform !== "none") {
+              el.animate([
+                { transform: currentTransform },
+                { transform: "translate(0px, 0px) scale(1)" }
+              ], {
+                duration: 200 / getEffectiveSpeed(),
+                easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                fill: "forwards"
+              }).onfinish = () => {
+                if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
+                el.style.transform = "";
+              };
+            } else {
+              if (el.getAnimations) {
+                el.getAnimations().forEach((anim) => anim.cancel());
+              }
+              el.style.transform = "";
             }
-            el.style.transform = "";
           }
         }
       });
@@ -5446,7 +5510,7 @@
       await playFatalitySequence(sr, deadActorId, token);
       if (engineState.playbackToken !== token) return;
       const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
-      if (deadWrapper) {
+      if (deadWrapper && !hasUpcomingDialogueInBattle(deadActorId, frame.index)) {
         deadWrapper.classList.add("dead");
       }
     }

@@ -47782,7 +47782,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
