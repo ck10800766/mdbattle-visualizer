@@ -786,11 +786,13 @@ async function renderAOEWaveBatch(waveFrames, token) {
     // 5. Play K.O. fatality sequence for any target(s) defeated during this AOE wave
     for (const wf of waveFrames) {
         if (wf.isDeathEvent && wf.deadActorId) {
-            await playFatalitySequence(sr, wf.deadActorId, token);
-            if (engineState.playbackToken !== token) return;
-            const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
-            if (deadWrapper) {
-                deadWrapper.classList.add('dead');
+            if (!hasUpcomingDialogueInBattle(wf.deadActorId, wf.index)) {
+                await playFatalitySequence(sr, wf.deadActorId, token);
+                if (engineState.playbackToken !== token) return;
+                const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
+                if (deadWrapper) {
+                    deadWrapper.classList.add('dead');
+                }
             }
         }
     }
@@ -1103,11 +1105,13 @@ export async function renderFrame(frame, token) {
     syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
 
     if (triggeredFatality && deadActorId) {
-        await playFatalitySequence(sr, deadActorId, token);
-        if (engineState.playbackToken !== token) return;
-        const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
-        if (deadWrapper && !hasUpcomingDialogueInBattle(deadActorId, frame.index)) {
-            deadWrapper.classList.add('dead');
+        if (!hasUpcomingDialogueInBattle(deadActorId, frame.index)) {
+            await playFatalitySequence(sr, deadActorId, token);
+            if (engineState.playbackToken !== token) return;
+            const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
+            if (deadWrapper) {
+                deadWrapper.classList.add('dead');
+            }
         }
     }
 

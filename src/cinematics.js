@@ -436,7 +436,7 @@ export function resolveDialogueSpeaker(frame) {
  */
 export function hasUpcomingDialogueInBattle(actorId, currentFrameIndex) {
     if (!actorId || !engineState.frames) return false;
-    for (let i = currentFrameIndex + 1; i < engineState.frames.length; i++) {
+    for (let i = currentFrameIndex; i < engineState.frames.length; i++) {
         const f = engineState.frames[i];
         if (!f) continue;
         const speaker = resolveDialogueSpeaker(f);
@@ -555,9 +555,17 @@ export function isSceneNarrationFrame(frame) {
         return !resolveDialogueSpeaker(frame);
     }
 
-    // Story narrative TEXT frames
+    // Story narrative TEXT frames or off-field dialogue
     if (frame.type === 'TEXT') {
-        return frame.message.trim().length >= 15 || /風雪|斗篷|跪了|站了起來|每走一步|踩碎|咳出|結晶|軍刀|柴犬|敬禮|畢業/.test(frame.message);
+        if (resolveDialogueSpeaker(frame)) return false;
+        return true;
+    }
+
+    // SKILL_TEXT with off-field dialogue or narrative quotes
+    if (frame.type === 'SKILL_TEXT' && !resolveDialogueSpeaker(frame)) {
+        if (/^[^\n：:]{1,25}[：:]\s*[「『"“]|^[「『"“]/.test(frame.message.trim())) {
+            return true;
+        }
     }
 
     return false;

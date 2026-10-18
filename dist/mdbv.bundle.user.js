@@ -2317,7 +2317,7 @@
   }
   function hasUpcomingDialogueInBattle(actorId, currentFrameIndex) {
     if (!actorId || !engineState.frames) return false;
-    for (let i = currentFrameIndex + 1; i < engineState.frames.length; i++) {
+    for (let i = currentFrameIndex; i < engineState.frames.length; i++) {
       const f = engineState.frames[i];
       if (!f) continue;
       const speaker = resolveDialogueSpeaker(f);
@@ -2392,7 +2392,13 @@
       return !resolveDialogueSpeaker(frame);
     }
     if (frame.type === "TEXT") {
-      return frame.message.trim().length >= 15 || /風雪|斗篷|跪了|站了起來|每走一步|踩碎|咳出|結晶|軍刀|柴犬|敬禮|畢業/.test(frame.message);
+      if (resolveDialogueSpeaker(frame)) return false;
+      return true;
+    }
+    if (frame.type === "SKILL_TEXT" && !resolveDialogueSpeaker(frame)) {
+      if (/^[^\n：:]{1,25}[：:]\s*[「『"“]|^[「『"“]/.test(frame.message.trim())) {
+        return true;
+      }
     }
     return false;
   }
@@ -5256,11 +5262,13 @@
     if (engineState.playbackToken !== token) return;
     for (const wf of waveFrames) {
       if (wf.isDeathEvent && wf.deadActorId) {
-        await playFatalitySequence(sr, wf.deadActorId, token);
-        if (engineState.playbackToken !== token) return;
-        const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
-        if (deadWrapper) {
-          deadWrapper.classList.add("dead");
+        if (!hasUpcomingDialogueInBattle(wf.deadActorId, wf.index)) {
+          await playFatalitySequence(sr, wf.deadActorId, token);
+          if (engineState.playbackToken !== token) return;
+          const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
+          if (deadWrapper) {
+            deadWrapper.classList.add("dead");
+          }
         }
       }
     }
@@ -5507,11 +5515,13 @@
     });
     syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
     if (triggeredFatality && deadActorId) {
-      await playFatalitySequence(sr, deadActorId, token);
-      if (engineState.playbackToken !== token) return;
-      const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
-      if (deadWrapper && !hasUpcomingDialogueInBattle(deadActorId, frame.index)) {
-        deadWrapper.classList.add("dead");
+      if (!hasUpcomingDialogueInBattle(deadActorId, frame.index)) {
+        await playFatalitySequence(sr, deadActorId, token);
+        if (engineState.playbackToken !== token) return;
+        const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
+        if (deadWrapper) {
+          deadWrapper.classList.add("dead");
+        }
       }
     }
     const actualDelay = frameDuration / getEffectiveSpeed();
