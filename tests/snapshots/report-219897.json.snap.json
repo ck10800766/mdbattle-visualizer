@@ -13,7 +13,7 @@
       "name": "同人",
       "ownerId": null,
       "side": "left",
-      "totalDamageDealt": 12254,
+      "totalDamageDealt": 10318,
       "totalDamageTaken": 4338,
       "totalHealingDealt": 18245,
       "turnNumbers": [
@@ -39,7 +39,7 @@
       "name": "有紀",
       "ownerId": null,
       "side": "left",
-      "totalDamageDealt": 27611,
+      "totalDamageDealt": 26159,
       "totalDamageTaken": 12225,
       "totalHealingDealt": 0,
       "turnNumbers": [
@@ -72,7 +72,7 @@
       "name": "迪盧克",
       "ownerId": null,
       "side": "left",
-      "totalDamageDealt": 43925,
+      "totalDamageDealt": 43084,
       "totalDamageTaken": 7871,
       "totalHealingDealt": 0,
       "turnNumbers": [
@@ -44936,25 +44936,25 @@
         "actorId": "6aa7de14cc943baeed96be1f",
         "actorName": "同人",
         "totalHealing": 18369,
-        "totalOutput": 15518,
+        "totalOutput": 13582,
         "totalTaken": 4478
       },
       {
         "actorId": "6ab08d63da9c7ee989f18102",
         "actorName": "迪盧克",
         "totalHealing": 0,
-        "totalOutput": 43925,
+        "totalOutput": 43084,
         "totalTaken": 7871
       },
       {
         "actorId": "6aae0e1e32a990089bdaf160",
         "actorName": "有紀",
         "totalHealing": 0,
-        "totalOutput": 32312,
+        "totalOutput": 30860,
         "totalTaken": 15225
       }
     ],
-    "maxTotalDamage": 43925,
+    "maxTotalDamage": 43084,
     "mvpId": "6ab08d63da9c7ee989f18102",
     "mvpName": "迪盧克"
   },
@@ -47782,7 +47782,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {

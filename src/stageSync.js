@@ -487,9 +487,19 @@ export function renderSeekPreviewState(sr, frameIndex) {
         const tRect = targetEl.getBoundingClientRect();
         const side = actorObj?.side || 'left';
         const targetSide = targetObj?.side || (side === 'left' ? 'right' : 'left');
-        const shadowColor = side === 'left' ? '#63b3ed' : '#fc8181';
-        const moveX = (tRect.left - aRect.left) + (side === 'left' ? -60 : 60);
-        const deltaY = tRect.top - aRect.top;
+        const isSameSide = side === targetSide;
+        const shadowColor = isSameSide ? '#f6ad55' : (side === 'left' ? '#63b3ed' : '#fc8181');
+
+        let moveX, deltaY;
+        if (isSameSide) {
+            const inwardStep = side === 'left' ? 35 : -35;
+            const rawDeltaY = tRect.top - aRect.top;
+            moveX = (tRect.left - aRect.left) + inwardStep;
+            deltaY = rawDeltaY === 0 ? 0 : rawDeltaY * 0.75;
+        } else {
+            moveX = (tRect.left - aRect.left) + (side === 'left' ? -60 : 60);
+            deltaY = tRect.top - aRect.top;
+        }
 
         actorEl.style.zIndex = '10';
         actorEl.style.transform = `translate(${moveX}px, ${deltaY}px) scale(1.1)`;

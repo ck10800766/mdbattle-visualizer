@@ -22,7 +22,6 @@ import {
     getContractSkillProfile,
     getCrossFinisherProfile,
     SUMMON_DESPAWN_REGEX,
-    REBIRTH_RULES,
     isBeneficialBuffSkill
 } from './profiles.js';
 
@@ -905,7 +904,7 @@ export function buildStateSnapshots(logs) {
                     if (frame.blocked) frame.vfx.push('shield-block');
                 }
 
-                if (attacker && realDamage > 0 && log.type !== 'BLOCK' && attacker.id !== target?.id) {
+                if (attacker && realDamage > 0 && log.type !== 'BLOCK' && (!target || attacker.side !== target.side)) {
                     attacker.totalDamageDealt += realDamage;
                 }
             }
@@ -914,7 +913,7 @@ export function buildStateSnapshots(logs) {
             const target = engineState.actors.get(log.targetId);
             const luckValue = frame.value;
 
-            if (opponent) {
+            if (opponent && (!target || opponent.side !== target.side)) {
                 opponent.luckDamageDealt += luckValue;
             }
             if (target) {
@@ -1097,32 +1096,6 @@ export function buildStateSnapshots(logs) {
             });
         }
 
-        // 2. Semantic unit revival / standing back up
-        if (
-            ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(log.type) &&
-            REBIRTH_RULES.dialogueRegex.test(frame.message)
-        ) {
-            let revivingActorId = null;
-            if (log.actorId && engineState.actors.has(log.actorId)) {
-                revivingActorId = log.actorId;
-            } else if (log.targetId && engineState.actors.has(log.targetId)) {
-                revivingActorId = log.targetId;
-            } else {
-                for (const [id, a] of engineState.actors.entries()) {
-                    if (a.name && frame.message.includes(a.name) && actorsDeathState.get(id)) {
-                        revivingActorId = id;
-                        break;
-                    }
-                }
-            }
-            if (revivingActorId && actorsDeathState.get(revivingActorId)) {
-                actorsDeathState.set(revivingActorId, false);
-                const revivingActor = engineState.actors.get(revivingActorId);
-                if (revivingActor) {
-                    revivingActor.currentHp = revivingActor.maxHp;
-                }
-            }
-        }
 
         // 3. Safety nets: an actor actively acting or targeted in combat cannot remain dead
         if (

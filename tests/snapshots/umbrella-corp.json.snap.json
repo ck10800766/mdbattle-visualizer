@@ -52046,7 +52046,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -53369,7 +53369,7 @@
       "lookahead": {
         "isNextFrameSameCombo": true,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {
@@ -54395,7 +54395,7 @@
       "lookahead": {
         "isNextFrameSameCombo": false,
         "isNextTargetDifferent": false,
-        "shouldReturnToOrigin": false
+        "shouldReturnToOrigin": true
       }
     },
     {

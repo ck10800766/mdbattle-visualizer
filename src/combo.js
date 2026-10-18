@@ -7,7 +7,7 @@
  */
 
 import { engineState, createEmptyCombo } from './state.js';
-import { isSceneNarrationFrame } from './cinematics.js';
+import { isSceneNarrationFrame, resolveDialogueSpeaker } from './cinematics.js';
 import { ULTIMATE_SUBFRAME_REGEX } from './profiles.js';
 
 /**
@@ -76,6 +76,7 @@ export function lookaheadComboState(currentIndex, frame) {
         if (
             ['HEAL', 'SP_RECOVER', 'BOSS_DIALOGUE', 'SUMMON'].includes(lookahead.type) ||
             isSceneNarrationFrame(lookahead) ||
+            resolveDialogueSpeaker(lookahead) ||
             lookahead.diceCheck
         ) {
             shouldReturnToOrigin = true;
@@ -93,9 +94,13 @@ export function lookaheadComboState(currentIndex, frame) {
             continue;
         }
 
-        // 5. Interruption: Skill text that breaks flow (cover guard, etc.)
+        // 5. Interruption: Skill text that breaks flow (cover guard, dialogues, etc.)
         if (lookahead.type === 'SKILL_TEXT') {
-            if (lookahead.isCoverEvent || isSceneNarrationFrame(lookahead)) {
+            if (
+                lookahead.isCoverEvent ||
+                isSceneNarrationFrame(lookahead) ||
+                resolveDialogueSpeaker(lookahead)
+            ) {
                 shouldReturnToOrigin = true;
             }
             continue;

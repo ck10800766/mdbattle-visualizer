@@ -497,8 +497,22 @@ function playSingleTargetChoreography(
     } else {
         const actorRect = actorEl.getBoundingClientRect();
         const targetRect = targetEl.getBoundingClientRect();
-        moveX = (targetRect.left - actorRect.left) + (side === 'left' ? -60 : 60);
-        deltaY = targetRect.top - actorRect.top;
+        const actorObj = engineState.actors.get(frame.actorId);
+        const targetObj = engineState.actors.get(frame.targetId);
+        const isSameSide = actorObj && targetObj && actorObj.side === targetObj.side;
+
+        if (isSameSide) {
+            // Friendly fire redirection (e.g. Qiankun Danuoyi):
+            // Both units are in the same team column.
+            // Step slightly inward into the arena (+X for left, -X for right) while lunging toward teammate Y.
+            const inwardStep = side === 'left' ? 35 : -35;
+            const rawDeltaY = targetRect.top - actorRect.top;
+            moveX = (targetRect.left - actorRect.left) + inwardStep;
+            deltaY = rawDeltaY === 0 ? 0 : rawDeltaY * 0.75;
+        } else {
+            moveX = (targetRect.left - actorRect.left) + (side === 'left' ? -60 : 60);
+            deltaY = targetRect.top - actorRect.top;
+        }
 
         if (!frame.isCounter && frame.type !== 'COUNTER') {
             engineState.currentCombo.moveX = moveX;
