@@ -1471,7 +1471,7 @@
             if (frame.isCrit && !frame.blocked) frame.vfx.push("screen-shake", "flash-red");
             if (frame.blocked) frame.vfx.push("shield-block");
           }
-          if (attacker && realDamage > 0 && log.type !== "BLOCK" && attacker.id !== target?.id) {
+          if (attacker && realDamage > 0 && log.type !== "BLOCK" && (!target || attacker.side !== target.side)) {
             attacker.totalDamageDealt += realDamage;
           }
         }
@@ -1479,7 +1479,7 @@
         const opponent = engineState.actors.get(log.opponentId);
         const target = engineState.actors.get(log.targetId);
         const luckValue = frame.value;
-        if (opponent) {
+        if (opponent && (!target || opponent.side !== target.side)) {
           opponent.luckDamageDealt += luckValue;
         }
         if (target) {

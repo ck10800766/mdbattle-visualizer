@@ -904,7 +904,7 @@ export function buildStateSnapshots(logs) {
                     if (frame.blocked) frame.vfx.push('shield-block');
                 }
 
-                if (attacker && realDamage > 0 && log.type !== 'BLOCK' && attacker.id !== target?.id) {
+                if (attacker && realDamage > 0 && log.type !== 'BLOCK' && (!target || attacker.side !== target.side)) {
                     attacker.totalDamageDealt += realDamage;
                 }
             }
@@ -913,7 +913,7 @@ export function buildStateSnapshots(logs) {
             const target = engineState.actors.get(log.targetId);
             const luckValue = frame.value;
 
-            if (opponent) {
+            if (opponent && (!target || opponent.side !== target.side)) {
                 opponent.luckDamageDealt += luckValue;
             }
             if (target) {
