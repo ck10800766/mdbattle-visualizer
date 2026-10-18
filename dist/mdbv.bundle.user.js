@@ -1645,28 +1645,6 @@
           }
         });
       }
-      if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(log.type) && REBIRTH_RULES.dialogueRegex.test(frame.message)) {
-        let revivingActorId = null;
-        if (log.actorId && engineState.actors.has(log.actorId)) {
-          revivingActorId = log.actorId;
-        } else if (log.targetId && engineState.actors.has(log.targetId)) {
-          revivingActorId = log.targetId;
-        } else {
-          for (const [id, a] of engineState.actors.entries()) {
-            if (a.name && frame.message.includes(a.name) && actorsDeathState.get(id)) {
-              revivingActorId = id;
-              break;
-            }
-          }
-        }
-        if (revivingActorId && actorsDeathState.get(revivingActorId)) {
-          actorsDeathState.set(revivingActorId, false);
-          const revivingActor = engineState.actors.get(revivingActorId);
-          if (revivingActor) {
-            revivingActor.currentHp = revivingActor.maxHp;
-          }
-        }
-      }
       if (log.actorId && actorsDeathState.get(log.actorId) && ["DAMAGE", "MISS", "COUNTER", "HEAL", "SKILL_TEXT", "BUFF_APPLY"].includes(log.type)) {
         actorsDeathState.set(log.actorId, false);
         const actingActor = engineState.actors.get(log.actorId);
