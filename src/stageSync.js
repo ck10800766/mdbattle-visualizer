@@ -28,8 +28,7 @@ import {
     isSceneNarrationFrame,
     renderSceneNarrationBanner,
     shouldDeferUltimateCutIn,
-    isUltimateCutInQuoteFrame,
-    hasUpcomingDialogueInBattle
+    isUltimateCutInQuoteFrame
 } from './cinematics.js';
 import {
     spawnAOEFanWave,
@@ -333,11 +332,8 @@ export function syncActorHpAndDeathDOM(
                 deferDeadClassForActorId instanceof Set
                     ? deferDeadClassForActorId.has(actorId)
                     : deferDeadClassForActorId === actorId;
-            const hasPendingSpeech = hasUpcomingDialogueInBattle(actorId, frame.index);
-            if (!shouldDefer && !hasPendingSpeech) {
+            if (!shouldDefer) {
                 wrapperEl.classList.add('dead');
-            } else {
-                wrapperEl.classList.remove('dead');
             }
             wrapperEl.classList.remove('danger-state');
         } else if (!isDead && wrapperEl) {

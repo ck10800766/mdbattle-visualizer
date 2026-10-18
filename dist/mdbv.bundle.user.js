@@ -2315,18 +2315,6 @@
     }
     return null;
   }
-  function hasUpcomingDialogueInBattle(actorId, currentFrameIndex) {
-    if (!actorId || !engineState.frames) return false;
-    for (let i = currentFrameIndex; i < engineState.frames.length; i++) {
-      const f = engineState.frames[i];
-      if (!f) continue;
-      const speaker = resolveDialogueSpeaker(f);
-      if (speaker && speaker.actorId === actorId) {
-        return true;
-      }
-    }
-    return false;
-  }
   function renderSpeechBubble(frame, sr, token) {
     const speaker = resolveDialogueSpeaker(frame);
     if (!speaker) return 0;
@@ -4173,11 +4161,8 @@
         const statusTray = sr.getElementById(`status-tray-${actorId}`);
         if (statusTray) statusTray.innerHTML = "";
         const shouldDefer = deferDeadClassForActorId instanceof Set ? deferDeadClassForActorId.has(actorId) : deferDeadClassForActorId === actorId;
-        const hasPendingSpeech = hasUpcomingDialogueInBattle(actorId, frame.index);
-        if (!shouldDefer && !hasPendingSpeech) {
+        if (!shouldDefer) {
           wrapperEl.classList.add("dead");
-        } else {
-          wrapperEl.classList.remove("dead");
         }
         wrapperEl.classList.remove("danger-state");
       } else if (!isDead && wrapperEl) {
@@ -5262,13 +5247,11 @@
     if (engineState.playbackToken !== token) return;
     for (const wf of waveFrames) {
       if (wf.isDeathEvent && wf.deadActorId) {
-        if (!hasUpcomingDialogueInBattle(wf.deadActorId, wf.index)) {
-          await playFatalitySequence(sr, wf.deadActorId, token);
-          if (engineState.playbackToken !== token) return;
-          const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
-          if (deadWrapper) {
-            deadWrapper.classList.add("dead");
-          }
+        await playFatalitySequence(sr, wf.deadActorId, token);
+        if (engineState.playbackToken !== token) return;
+        const deadWrapper = sr.getElementById(`actor-${wf.deadActorId}`);
+        if (deadWrapper) {
+          deadWrapper.classList.add("dead");
         }
       }
     }
@@ -5515,13 +5498,11 @@
     });
     syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
     if (triggeredFatality && deadActorId) {
-      if (!hasUpcomingDialogueInBattle(deadActorId, frame.index)) {
-        await playFatalitySequence(sr, deadActorId, token);
-        if (engineState.playbackToken !== token) return;
-        const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
-        if (deadWrapper) {
-          deadWrapper.classList.add("dead");
-        }
+      await playFatalitySequence(sr, deadActorId, token);
+      if (engineState.playbackToken !== token) return;
+      const deadWrapper = sr.getElementById(`actor-${deadActorId}`);
+      if (deadWrapper) {
+        deadWrapper.classList.add("dead");
       }
     }
     const actualDelay = frameDuration / getEffectiveSpeed();
