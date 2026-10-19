@@ -78,32 +78,58 @@ export function inferSummonName(logs, summonIndex, summonId, ownerName) {
         if (!log || typeof log !== 'object') continue;
         const msg = String(log.message || '');
 
-        if (log.actorId === summonId) {
-            if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(log.type)) {
-                const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
-                if (deathMatch) return deathMatch[1];
-            }
-            const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
-            if (dialogueMatch) return dialogueMatch[1];
+        // 1a. Death of this summon (<Name> 倒下了！)
+        if (log.actorId === summonId && ['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(log.type)) {
+            const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
+            if (deathMatch && deathMatch[1] !== ownerName) return deathMatch[1];
+        }
 
-            const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
-            if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
-                return actorPrefixMatch[1];
+        // 1b. Spoken dialogue or narrative quote (<Name>：「...」 or <Name> 低聲說：「...」)
+        if (log.actorId === summonId && ['DIALOGUE', 'BOSS_DIALOGUE', 'TEXT', 'SKILL_TEXT'].includes(log.type)) {
+            const dialogueMatch = msg.match(/([^\s，,。！!：「]+)\s*(?:[：:]\s*[「『"“]|低聲說[：:]\s*[「『"“])/);
+            if (dialogueMatch && dialogueMatch[1] !== ownerName) return dialogueMatch[1];
+        }
+
+        // 1c. Target of single-target attack, projectile, or heal
+        if (log.targetId === summonId && ['DAMAGE', 'BLOCK', 'HEAL'].includes(log.type)) {
+            const targetMatch = msg.match(/(?:對|砸向|撞向|斬向|射向|刺向|削向|挑向|撲向|使)\s+(\S+?)(?:[，,。！!、\s]|造成|回復|恢復)/);
+            if (targetMatch && targetMatch[1] !== ownerName) {
+                const token = targetMatch[1].replace(/^[「『\[【](.*?)[」』\]】]$/, '$1');
+                const isExistingActor = engineState.actors.has(token);
+                if (token && token !== ownerName && !isExistingActor) return token;
             }
         }
 
-        if (log.targetId === summonId && ['DAMAGE', 'BLOCK', 'HEAL'].includes(log.type)) {
-            const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
-            if (targetMatch) return targetMatch[1];
+        // 1d. Target or victim of random LUCK_EVENT
+        if ((log.targetId === summonId || log.actorId === summonId) && log.type === 'LUCK_EVENT') {
+            const luckMatch = msg.match(/(?:劈中|刺中|砸中|襲擊|射中|命中|撞中)\s+(\S+?)(?:[，,。！!、\s]|的)/);
+            if (luckMatch && luckMatch[1] !== ownerName) return luckMatch[1];
+        }
+
+        // 1e. Active combat action by the summon (strictly exclude LUCK_EVENT, TEXT, DEATH)
+        if (log.actorId === summonId && ['DAMAGE', 'BLOCK', 'MISS', 'HEAL', 'SKILL_TEXT', 'BUFF_APPLY'].includes(log.type)) {
+            const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
+            if (actorPrefixMatch) {
+                const name = actorPrefixMatch[1];
+                const isExistingActor = Array.from(engineState.actors.values()).some(a => a.name === name);
+                if (!isExistingActor && name !== ownerName) {
+                    return name;
+                }
+            }
         }
     }
 
-    // 2. Fallback: tokenize the SUMMON log message itself (e.g. "有紀 發出公會訊號，沉睡騎士的 詩烏涅 趕來助陣！")
+    // 2. Direct entrance pattern from SUMMON log message (e.g. "同人的影分身 從白煙裡滾了出來。", "荒坂特勤 從電梯裡走了出來。")
     const summonMsg = String(summonLog.message || '').trim();
+    const summonEntranceMatch = summonMsg.match(/(?:[，,。！!、\s]|^)(?:穿著[^\s]+的\s+|沉睡騎士的\s+)?([^\s，,。！!]+)\s+(?:從|走進|走了出來|盤腿|趕到|趕來|弓著背|倒掛|站起身|出現在|降臨|現身)/);
+    if (summonEntranceMatch && summonEntranceMatch[1] !== ownerName) {
+        return summonEntranceMatch[1];
+    }
+
+    // 3. Fallback: tokenize the SUMMON log message itself
     const whitespaceTokens = summonMsg.split(/\s+/);
-    if (whitespaceTokens.length >= 3) {
-        const candidate = whitespaceTokens[whitespaceTokens.length - 2]
-            .split(/[，,。！!、的]/).pop();
+    if (whitespaceTokens.length >= 2) {
+        const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、]/).pop();
         if (candidate && candidate !== ownerName) {
             return candidate;
         }
