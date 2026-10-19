@@ -92,18 +92,12 @@ export function inferSummonName(logs, summonIndex, summonId, ownerName) {
 
         // 1c. Target of single-target attack, projectile, or heal
         if (log.targetId === summonId && ['DAMAGE', 'BLOCK', 'HEAL'].includes(log.type)) {
-            const targetMatch = msg.match(/(?:對|砸向|撞向|斬向|射向|刺向|削向|挑向|撲向|使)\s+(\S+?)(?:[，,。！!、\s]|造成|回復|恢復)/);
+            const targetMatch = msg.match(/(?:對|\S{1,4}向|\S{1,4}使)\s+(\S+?)(?:[，,。！!、\s]|造成|回復|恢復)/);
             if (targetMatch && targetMatch[1] !== ownerName) {
                 const token = targetMatch[1].replace(/^[「『\[【](.*?)[」』\]】]$/, '$1');
                 const isExistingActor = engineState.actors.has(token);
                 if (token && token !== ownerName && !isExistingActor) return token;
             }
-        }
-
-        // 1d. Target or victim of random LUCK_EVENT
-        if ((log.targetId === summonId || log.actorId === summonId) && log.type === 'LUCK_EVENT') {
-            const luckMatch = msg.match(/(?:劈中|刺中|砸中|襲擊|射中|命中|撞中)\s+(\S+?)(?:[，,。！!、\s]|的)/);
-            if (luckMatch && luckMatch[1] !== ownerName) return luckMatch[1];
         }
 
         // 1e. Active combat action by the summon (strictly exclude LUCK_EVENT, TEXT, DEATH)
