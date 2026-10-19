@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.6
+// @version      7.5.7
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.6";
+  var APP_VERSION = "7.5.7";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -135,27 +135,45 @@
       const log = logs[i];
       if (!log || typeof log !== "object") continue;
       const msg = String(log.message || "");
-      if (log.actorId === summonId) {
-        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
-          const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
-          if (deathMatch) return deathMatch[1];
-        }
-        const dialogueMatch = msg.match(/^\s*([^：「\s]+)\s*：「/);
-        if (dialogueMatch) return dialogueMatch[1];
-        const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
-        if (actorPrefixMatch && actorPrefixMatch[1] !== ownerName) {
-          return actorPrefixMatch[1];
-        }
+      if (log.actorId === summonId && ["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(log.type)) {
+        const deathMatch = msg.match(/^\s*(\S+?)\s+倒下了/);
+        if (deathMatch && deathMatch[1] !== ownerName) return deathMatch[1];
+      }
+      if (log.actorId === summonId && ["DIALOGUE", "BOSS_DIALOGUE", "TEXT", "SKILL_TEXT"].includes(log.type)) {
+        const dialogueMatch = msg.match(/([^\s，,。！!：「]+)\s*(?:[：:]\s*[「『"“]|低聲說[：:]\s*[「『"“])/);
+        if (dialogueMatch && dialogueMatch[1] !== ownerName) return dialogueMatch[1];
       }
       if (log.targetId === summonId && ["DAMAGE", "BLOCK", "HEAL"].includes(log.type)) {
-        const targetMatch = msg.match(/對\s+(\S+?)\s+造成/);
-        if (targetMatch) return targetMatch[1];
+        const targetMatch = msg.match(/(?:對|砸向|撞向|斬向|射向|刺向|削向|挑向|撲向|使)\s+(\S+?)(?:[，,。！!、\s]|造成|回復|恢復)/);
+        if (targetMatch && targetMatch[1] !== ownerName) {
+          const token = targetMatch[1].replace(/^[「『\[【](.*?)[」』\]】]$/, "$1");
+          const isExistingActor = engineState.actors.has(token);
+          if (token && token !== ownerName && !isExistingActor) return token;
+        }
+      }
+      if ((log.targetId === summonId || log.actorId === summonId) && log.type === "LUCK_EVENT") {
+        const luckMatch = msg.match(/(?:劈中|刺中|砸中|襲擊|射中|命中|撞中)\s+(\S+?)(?:[，,。！!、\s]|的)/);
+        if (luckMatch && luckMatch[1] !== ownerName) return luckMatch[1];
+      }
+      if (log.actorId === summonId && ["DAMAGE", "BLOCK", "MISS", "HEAL", "SKILL_TEXT", "BUFF_APPLY"].includes(log.type)) {
+        const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
+        if (actorPrefixMatch) {
+          const name = actorPrefixMatch[1];
+          const isExistingActor = Array.from(engineState.actors.values()).some((a) => a.name === name);
+          if (!isExistingActor && name !== ownerName) {
+            return name;
+          }
+        }
       }
     }
     const summonMsg = String(summonLog.message || "").trim();
+    const summonEntranceMatch = summonMsg.match(/(?:[，,。！!、\s]|^)(?:穿著[^\s]+的\s+|沉睡騎士的\s+)?([^\s，,。！!]+)\s+(?:從|走進|走了出來|盤腿|趕到|趕來|弓著背|倒掛|站起身|出現在|降臨|現身)/);
+    if (summonEntranceMatch && summonEntranceMatch[1] !== ownerName) {
+      return summonEntranceMatch[1];
+    }
     const whitespaceTokens = summonMsg.split(/\s+/);
-    if (whitespaceTokens.length >= 3) {
-      const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、的]/).pop();
+    if (whitespaceTokens.length >= 2) {
+      const candidate = whitespaceTokens[whitespaceTokens.length - 2].split(/[，,。！!、]/).pop();
       if (candidate && candidate !== ownerName) {
         return candidate;
       }
