@@ -1101,7 +1101,7 @@ export function buildStateSnapshots(logs) {
         if (
             log.actorId &&
             actorsDeathState.get(log.actorId) &&
-            ['DAMAGE', 'MISS', 'COUNTER', 'HEAL', 'SKILL_TEXT', 'BUFF_APPLY'].includes(log.type)
+            ['DAMAGE', 'MISS', 'COUNTER', 'HEAL'].includes(log.type)
         ) {
             actorsDeathState.set(log.actorId, false);
             const actingActor = engineState.actors.get(log.actorId);
