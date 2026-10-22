@@ -63,7 +63,8 @@ import {
     syncActorBondVisuals,
     syncActorStatusAndShieldDOM,
     syncActorHpAndDeathDOM,
-    syncStageToAbsoluteState
+    syncStageToAbsoluteState,
+    updateDynamicTeamLayout
 } from './stageSync.js';
 import {
     exportCurrentBattleReport,
@@ -89,6 +90,14 @@ function formatSeekLabelText(frameIndex) {
  * releases the spoiler guard, and restores the original host page content.
  */
 export function closeBattleStage() {
+    if (engineState.stageResizeObserver) {
+        engineState.stageResizeObserver.disconnect();
+        engineState.stageResizeObserver = null;
+    }
+    if (engineState.stageResizeHandler) {
+        window.removeEventListener('resize', engineState.stageResizeHandler);
+        engineState.stageResizeHandler = null;
+    }
     if (engineState.activeKeydownHandler) {
         window.removeEventListener('keydown', engineState.activeKeydownHandler);
         engineState.activeKeydownHandler = null;
@@ -455,20 +464,11 @@ export function createBattleStage() {
     arena.className = 'arena';
     arena.id = 'arena';
 
-    let leftCount = 0;
-    let rightCount = 0;
-    engineState.actors.forEach(actor => {
-        if (actor.side === 'left') leftCount++;
-        else rightCount++;
-    });
-
     const leftTeam = document.createElement('div');
-    const leftDensity = leftCount > 12 ? ' raid-team' : leftCount > 5 ? ' large-team' : '';
-    leftTeam.className = `team left-team${leftDensity}`;
+    leftTeam.className = 'team left-team';
 
     const rightTeam = document.createElement('div');
-    const rightDensity = rightCount > 12 ? ' raid-team' : rightCount > 5 ? ' large-team' : '';
-    rightTeam.className = `team right-team${rightDensity}`;
+    rightTeam.className = 'team right-team';
 
     engineState.actors.forEach(actor => {
         const el = document.createElement('div');
@@ -494,6 +494,21 @@ export function createBattleStage() {
 
     arena.appendChild(leftTeam);
     arena.appendChild(rightTeam);
+
+    const updateLayout = () => {
+        updateDynamicTeamLayout(arena, leftTeam, rightTeam);
+    };
+
+    if (typeof ResizeObserver !== 'undefined') {
+        const resizeObserver = new ResizeObserver(updateLayout);
+        resizeObserver.observe(arena);
+        engineState.stageResizeObserver = resizeObserver;
+    }
+
+    window.addEventListener('resize', updateLayout);
+    engineState.stageResizeHandler = updateLayout;
+
+    requestAnimationFrame(updateLayout);
 
     const dialogBox = document.createElement('div');
     dialogBox.className = 'dialog-box';
@@ -559,6 +574,7 @@ export function createBattleStage() {
     stage.appendChild(fatalityOverlay);
     stage.appendChild(dragDropOverlay);
     engineState.shadowRoot.appendChild(stage);
+    updateLayout();
 
     const handleKeydown = (e) => {
         if (!engineState.hostElement || !engineState.hostElement.isConnected) return;
@@ -893,6 +909,10 @@ export async function renderFrame(frame, token) {
                 }
             }, 550 / getEffectiveSpeed());
         }
+        const arena = sr.getElementById('arena');
+        const leftTeam = arena?.querySelector('.left-team');
+        const rightTeam = arena?.querySelector('.right-team');
+        if (arena && leftTeam) updateDynamicTeamLayout(arena, leftTeam, rightTeam);
     }
 
     if (frame.isDespawnEvent && frame.despawnedActorId) {
@@ -904,6 +924,10 @@ export async function renderFrame(frame, token) {
                 if (engineState.playbackToken === token && despawnedEl.isConnected) {
                     despawnedEl.classList.remove('despawning');
                     despawnedEl.classList.add('unspawned');
+                    const arena = sr.getElementById('arena');
+                    const leftTeam = arena?.querySelector('.left-team');
+                    const rightTeam = arena?.querySelector('.right-team');
+                    if (arena && leftTeam) updateDynamicTeamLayout(arena, leftTeam, rightTeam);
                 }
             }, 550 / getEffectiveSpeed());
         }

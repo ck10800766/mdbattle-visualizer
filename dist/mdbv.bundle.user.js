@@ -1787,92 +1787,30 @@
     }
 
     /* ATB / CTB Timeline Track */
-    .ctb-container { height: 70px; background: rgba(0,0,0,0.8); border-bottom: 2px solid #4a5568; position: relative; z-index: 10; padding: 0 80px 0 40px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .ctb-container { height: clamp(46px, 7.5vh, 70px); background: rgba(0,0,0,0.8); border-bottom: 2px solid #4a5568; position: relative; z-index: 10; padding: 0 clamp(40px, 5vw, 80px) 0 clamp(20px, 3vw, 40px); display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     .ctb-track { position: relative; width: 100%; height: 4px; background: #4a5568; border-radius: 2px; }
     .ctb-action-point { position: absolute; right: -40px; top: -20px; width: 40px; height: 44px; border-left: 3px solid #f6e05e; display: flex; align-items: center; padding-left: 8px; color: #f6e05e; font-weight: bold; font-size: 12px; font-style: italic; box-shadow: -4px 0 8px -4px rgba(246,224,94,0.8); }
-    .ctb-icon { position: absolute; top: -18px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #a0aec0; background: #1a202c; transform: translateX(-50%); transition: left 0.4s linear, opacity 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+    .ctb-icon { position: absolute; top: -18px; width: clamp(30px, 3.5vw, 40px); height: clamp(30px, 3.5vw, 40px); border-radius: 50%; border: 2px solid #a0aec0; background: #1a202c; transform: translateX(-50%); transition: left 0.4s linear, opacity 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
     .ctb-icon img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    .ctb-icon.acting { border-color: #f6e05e; box-shadow: 0 0 15px #f6e05e; width: 50px; height: 50px; top: -23px; z-index: 999 !important; }
+    .ctb-icon.acting { border-color: #f6e05e; box-shadow: 0 0 15px #f6e05e; width: clamp(38px, 4.5vw, 50px); height: clamp(38px, 4.5vw, 50px); top: -23px; z-index: 999 !important; }
     .ctb-icon.left { border-color: #63b3ed; }
     .ctb-icon.right { border-color: #fc8181; }
 
     /* Battle Arena & Actor Cards */
     .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 4vw; position: relative; min-height: 0; overflow: hidden; }
-    .team { display: flex; flex-direction: column; gap: 15px; align-items: center; align-content: center; max-height: 100%; min-width: 0; }
-    .left-team { justify-content: center; flex-wrap: wrap; width: 42%; max-width: 55%; }
-    .right-team { justify-content: center; flex-wrap: wrap-reverse; width: 38%; max-width: 45%; }
-
-    /* Density Scaling: Large Parties (6-12 combatants) */
-    .team.large-team { gap: 8px 10px; width: 46%; max-width: 55%; }
-    .team.large-team .avatar-wrapper, .team.large-team .avatar { width: 56px; height: 56px; border-radius: 6px; }
-    .team.large-team .actor-name { font-size: 11px; padding: 1px 6px; margin-bottom: 4px; max-width: 74px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .team.large-team .hp-container { width: 56px; height: 10px; margin-top: 4px; }
-    .team.large-team .hp-text { font-size: 8px; }
-    .team.large-team .status-badge { width: 13px; height: 13px; font-size: 8px; }
-    .team.large-team .status-tray { top: 1px; gap: 2px; }
-    .team.large-team .speech-bubble { max-width: 270px; font-size: 13.5px; padding: 9px 14px; }
-
-    /* Density Scaling: Raid Battles (13+ combatants, e.g. 20-player Raids) */
-    .team.raid-team { gap: 5px 8px; width: 52%; max-width: 60%; }
-    .team.raid-team .avatar-wrapper, .team.raid-team .avatar { width: 42px; height: 42px; border-radius: 5px; }
-    .team.raid-team .actor-name { font-size: 10px; padding: 1px 4px; margin-bottom: 3px; max-width: 56px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .team.raid-team .hp-container { width: 44px; height: 8px; margin-top: 3px; border-radius: 4px; }
-    .team.raid-team .hp-text { font-size: 7px; }
-    .team.raid-team .status-badge { width: 11px; height: 11px; font-size: 7px; }
-    .team.raid-team .status-tray { top: 0px; gap: 2px; }
-    .team.raid-team .speech-bubble { max-width: 230px; font-size: 12.5px; padding: 7px 11px; }
-
-    /* Responsive Viewports: Medium / Small Laptops (Height <= 768px or Width <= 1024px) */
-    @media (max-height: 768px), (max-width: 1024px) {
-        .arena { padding: 6px 3vw; }
-        .ctb-container { height: 56px; padding: 0 60px 0 30px; }
-        .ctb-icon { width: 34px; height: 34px; top: -15px; }
-        .ctb-icon.acting { width: 42px; height: 42px; top: -19px; }
-        .dialog-box { height: 125px; font-size: 13px; padding: 8px 12px; }
-        .controls { padding: 8px 14px; gap: 10px; }
-
-        .team:not(.large-team):not(.raid-team) { gap: 10px; }
-        .team:not(.large-team):not(.raid-team) .avatar-wrapper,
-        .team:not(.large-team):not(.raid-team) .avatar { width: 64px; height: 64px; }
-        .team:not(.large-team):not(.raid-team) .actor-name { font-size: 12px; margin-bottom: 5px; max-width: 80px; }
-        .team:not(.large-team):not(.raid-team) .hp-container { width: 64px; height: 11px; margin-top: 5px; }
-
-        .team.large-team { gap: 6px 8px; }
-        .team.large-team .avatar-wrapper, .team.large-team .avatar { width: 48px; height: 48px; }
-        .team.large-team .actor-name { font-size: 10px; max-width: 62px; }
-        .team.large-team .hp-container { width: 48px; height: 8px; }
-
-        .team.raid-team { gap: 4px 6px; }
-        .team.raid-team .avatar-wrapper, .team.raid-team .avatar { width: 36px; height: 36px; }
-        .team.raid-team .actor-name { font-size: 9px; max-width: 48px; }
-        .team.raid-team .hp-container { width: 36px; height: 7px; }
+    .team {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: var(--unit-gap, 12px);
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        max-height: 100%;
+        min-width: 0;
     }
-
-    /* Ultra-compact Viewports (Height <= 600px or Width <= 768px) */
-    @media (max-height: 600px), (max-width: 768px) {
-        .arena { padding: 4px 2vw; }
-        .ctb-container { height: 44px; padding: 0 45px 0 20px; }
-        .ctb-icon { width: 28px; height: 28px; top: -12px; }
-        .ctb-icon.acting { width: 34px; height: 34px; top: -15px; }
-        .dialog-box { height: 95px; font-size: 12px; padding: 6px 10px; }
-        .controls { padding: 6px 10px; gap: 6px; }
-
-        .team:not(.large-team):not(.raid-team) { gap: 6px; }
-        .team:not(.large-team):not(.raid-team) .avatar-wrapper,
-        .team:not(.large-team):not(.raid-team) .avatar { width: 50px; height: 50px; }
-        .team:not(.large-team):not(.raid-team) .actor-name { font-size: 10px; margin-bottom: 3px; max-width: 65px; }
-        .team:not(.large-team):not(.raid-team) .hp-container { width: 50px; height: 9px; margin-top: 3px; }
-
-        .team.large-team { gap: 4px 6px; }
-        .team.large-team .avatar-wrapper, .team.large-team .avatar { width: 40px; height: 40px; }
-        .team.large-team .actor-name { font-size: 9px; max-width: 52px; }
-        .team.large-team .hp-container { width: 40px; height: 7px; }
-
-        .team.raid-team { gap: 3px 5px; }
-        .team.raid-team .avatar-wrapper, .team.raid-team .avatar { width: 30px; height: 30px; }
-        .team.raid-team .actor-name { font-size: 8px; max-width: 40px; }
-        .team.raid-team .hp-container { width: 30px; height: 6px; }
-    }
+    .left-team { justify-content: center; }
+    .right-team { justify-content: center; flex-wrap: wrap-reverse; }
 
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
     .actor.unspawned { display: none !important; }
@@ -1884,23 +1822,91 @@
     .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .actor.despawning { animation: summonDespawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
-    .actor-name { color: #e2e8f0; font-size: 14px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 4px; border: 1px solid #4a5568; }
-    .avatar-wrapper { position: relative; width: 80px; height: 80px; }
-    .avatar { width: 80px; height: 80px; border-radius: 8px; border: 2px solid #4a5568; object-fit: cover; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6); transition: border-color 0.4s ease, box-shadow 0.4s ease; }
 
-    .hp-container { width: 80px; height: 13px; background: #2d3748; border-radius: 6px; margin-top: 8px; overflow: hidden; position: relative; border: 1.5px solid #1a202c; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .actor-name {
+        color: #e2e8f0;
+        font-size: var(--name-size, 13px);
+        font-weight: bold;
+        line-height: 1.2;
+        margin-bottom: calc(var(--unit-gap, 12px) * 0.4);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        background: rgba(0,0,0,0.6);
+        padding: 1px 6px;
+        border-radius: 4px;
+        border: 1px solid #4a5568;
+        max-width: calc(var(--avatar-size, 80px) * 1.32);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+    }
+    .avatar-wrapper {
+        position: relative;
+        width: var(--avatar-size, 80px);
+        height: var(--avatar-size, 80px);
+    }
+    .avatar {
+        width: var(--avatar-size, 80px);
+        height: var(--avatar-size, 80px);
+        border-radius: calc(var(--avatar-size, 80px) * 0.1);
+        border: 2px solid #4a5568;
+        object-fit: cover;
+        box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6);
+        transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .hp-container {
+        width: var(--avatar-size, 80px);
+        height: var(--hp-height, 12px);
+        background: #2d3748;
+        border-radius: calc(var(--hp-height, 12px) * 0.45);
+        margin-top: calc(var(--unit-gap, 12px) * 0.4);
+        overflow: hidden;
+        position: relative;
+        border: 1.5px solid #1a202c;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
     .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
     .hp-fill { height: 100%; background: #48bb78; transition: width 0.3s ease-out, background-color 0.3s; }
     .hp-fill.warning { background: #ecc94b; }
     .hp-fill.danger { background: #f56565; }
-    .hp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; color: #fff; font-weight: 800; text-shadow: 0 1px 2px #000; pointer-events: none; letter-spacing: -0.2px; }
+    .hp-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: max(7px, calc(var(--hp-height, 12px) * 0.78));
+        line-height: 1;
+        color: #fff;
+        font-weight: 800;
+        text-shadow: 0 1px 2px #000;
+        pointer-events: none;
+        letter-spacing: -0.2px;
+    }
 
     /* Actor Status Tray & Badges (Vertical column on avatar outer side) */
-    .status-tray { position: absolute; top: 2px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; z-index: 25; pointer-events: auto; }
+    .status-tray { position: absolute; top: 0px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 2px; z-index: 25; pointer-events: auto; }
     .status-tray:empty { display: none; }
-    .actor.left .status-tray { right: calc(100% + 6px); }
-    .actor.right .status-tray { left: calc(100% + 6px); }
-    .status-badge { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; cursor: default; animation: slideInUp 0.15s ease-out forwards; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 23, 42, 0.7); user-select: none; transition: transform 0.15s ease, box-shadow 0.15s ease; flex-shrink: 0; }
+    .actor.left .status-tray { right: calc(100% + 4px); }
+    .actor.right .status-tray { left: calc(100% + 4px); }
+    .status-badge {
+        width: var(--status-size, 14px);
+        height: var(--status-size, 14px);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: calc(var(--status-size, 14px) * 0.65);
+        line-height: 1;
+        cursor: default;
+        animation: slideInUp 0.15s ease-out forwards;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(15, 23, 42, 0.7);
+        user-select: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        flex-shrink: 0;
+    }
     .status-badge:hover { transform: scale(1.18); }
     .status-badge.status-dot { border-color: #9f7aea; background: rgba(85, 60, 154, 0.35); box-shadow: 0 0 6px rgba(159, 122, 234, 0.6); }
     .status-badge.status-hot { border-color: #48bb78; background: rgba(47, 133, 90, 0.35); box-shadow: 0 0 6px rgba(72, 187, 120, 0.6); }
@@ -1916,7 +1922,7 @@
     .dice-warn { background: rgba(183, 121, 31, 0.95); border: 1px solid #f6e05e; }
 
     /* Combat Log Dialog Box */
-    .dialog-box { height: 160px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 10px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: 14px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
+    .dialog-box { height: clamp(95px, 16vh, 160px); background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 8px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: clamp(12px, 1.2vw, 14px); overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; cursor: pointer; transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; user-select: text; border-left: 3px solid transparent; }
     .log-line:hover { background: rgba(255, 255, 255, 0.08); padding-left: 12px; }
     .log-line:hover .log-index { color: #81e6d9 !important; font-weight: 700; }
@@ -1930,7 +1936,7 @@
     .actor-name-right { font-weight: bold; color: #feb2b2; }
 
     /* Actor Speech Bubbles */
-    .speech-bubble { position: absolute; top: -25px; background: rgba(15, 23, 42, 0.95); color: #f8fafc; padding: 12px 18px; border-radius: 12px; font-weight: normal; font-size: 15px; line-height: 1.5; max-width: 350px; width: max-content; word-wrap: break-word; box-shadow: 0 8px 16px rgba(0,0,0,0.6); z-index: 60; pointer-events: none; backdrop-filter: blur(4px); border: 1px solid; }
+    .speech-bubble { position: absolute; top: -25px; background: rgba(15, 23, 42, 0.95); color: #f8fafc; padding: 10px 16px; border-radius: 12px; font-weight: normal; font-size: clamp(12px, 1.4vw, 15px); line-height: 1.45; max-width: min(320px, 35vw); width: max-content; word-wrap: break-word; box-shadow: 0 8px 16px rgba(0,0,0,0.6); z-index: 60; pointer-events: none; backdrop-filter: blur(4px); border: 1px solid; }
     .left-bubble { left: 85%; border-bottom-left-radius: 0; border-color: #63b3ed; }
     .left-bubble::after { content: ''; position: absolute; bottom: -10px; left: -1px; border-width: 10px 15px 0 0; border-style: solid; border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent; }
     .right-bubble { right: 85%; border-bottom-right-radius: 0; border-color: #fc8181; }
@@ -4245,6 +4251,85 @@
         wrapperEl.classList.remove("dead");
       }
     });
+    if (syncSummonVisibility) {
+      const arena = sr.getElementById("arena");
+      const leftTeam = arena?.querySelector(".left-team");
+      const rightTeam = arena?.querySelector(".right-team");
+      if (arena && leftTeam) {
+        updateDynamicTeamLayout(arena, leftTeam, rightTeam);
+      }
+    }
+  }
+  function getActorDimensions(s) {
+    const avatarSize = s;
+    const gap = Math.max(2, Math.min(12, Math.floor(s * 0.14)));
+    const nameSize = Math.max(9, Math.min(14, Math.floor(s * 0.19)));
+    const hpHeight = Math.max(5, Math.min(13, Math.floor(s * 0.16)));
+    const statusSize = Math.max(8, Math.min(15, Math.floor(s * 0.2)));
+    const actorH = avatarSize + hpHeight + (Math.ceil(nameSize * 1.2) + 4) + Math.floor(gap * 0.8);
+    const actorW = avatarSize * 1.32;
+    return { avatarSize, gap, nameSize, hpHeight, statusSize, actorH, actorW };
+  }
+  function updateDynamicTeamLayout(arena, leftTeam, rightTeam) {
+    if (!arena || !leftTeam) return;
+    const rect = arena.getBoundingClientRect ? arena.getBoundingClientRect() : null;
+    const arenaW = rect && rect.width > 0 ? rect.width : arena.clientWidth || window.innerWidth || 1200;
+    const arenaH = rect && rect.height > 0 ? rect.height : arena.clientHeight || window.innerHeight - 250 || 500;
+    const padW = arenaW * 0.08;
+    const availableW = Math.max(120, arenaW - padW);
+    const availableH = Math.max(80, arenaH - 20);
+    const teams = [
+      { el: leftTeam, maxW: availableW * 0.46 },
+      { el: rightTeam, maxW: availableW * 0.44 }
+    ];
+    teams.forEach(({ el, maxW }) => {
+      if (!el) return;
+      const visibleUnits = Array.from(el.querySelectorAll(".actor:not(.unspawned)"));
+      const n = Math.max(1, visibleUnits.length);
+      const maxH = availableH;
+      let bestConfig = null;
+      for (let r = 1; r <= n; r++) {
+        const c = Math.ceil(n / r);
+        for (let s = 80; s >= 20; s--) {
+          const dims2 = getActorDimensions(s);
+          const totalH = r * dims2.actorH + Math.max(0, r - 1) * dims2.gap;
+          const totalW = c * dims2.actorW + Math.max(0, c - 1) * dims2.gap;
+          if (totalH <= maxH && totalW <= maxW) {
+            if (!bestConfig || s > bestConfig.s || s === bestConfig.s && Math.abs(r - c) < Math.abs(bestConfig.r - bestConfig.c)) {
+              bestConfig = { s, r, c, totalH, totalW, dims: dims2 };
+            }
+            break;
+          }
+        }
+      }
+      if (!bestConfig) {
+        let minOverflow = Infinity;
+        for (let r = 1; r <= n; r++) {
+          const c = Math.ceil(n / r);
+          const dims2 = getActorDimensions(20);
+          const totalH = r * dims2.actorH + Math.max(0, r - 1) * dims2.gap;
+          const totalW = c * dims2.actorW + Math.max(0, c - 1) * dims2.gap;
+          const overflow = Math.max(0, totalH - maxH) + Math.max(0, totalW - maxW);
+          if (overflow < minOverflow) {
+            minOverflow = overflow;
+            bestConfig = { s: 20, r, c, totalH, totalW, dims: dims2 };
+          }
+        }
+      }
+      const { s: avatarSize, r: bestR, c: bestC, dims } = bestConfig;
+      const { gap, nameSize, hpHeight, statusSize, actorH } = dims;
+      const neededHeight = Math.ceil(bestR * actorH + Math.max(0, bestR - 1) * gap);
+      const neededWidth = Math.ceil(bestC * (avatarSize * 1.32) + Math.max(0, bestC - 1) * gap);
+      el.style.height = `${Math.min(maxH, neededHeight + 2)}px`;
+      el.style.width = `${Math.min(maxW, neededWidth)}px`;
+      el.style.setProperty("--avatar-size", `${avatarSize}px`);
+      el.style.setProperty("--unit-gap", `${gap}px`);
+      el.style.setProperty("--name-size", `${nameSize}px`);
+      el.style.setProperty("--hp-height", `${hpHeight}px`);
+      el.style.setProperty("--status-size", `${statusSize}px`);
+      el.style.setProperty("--team-rows", `${bestR}`);
+      el.style.setProperty("--team-cols", `${bestC}`);
+    });
   }
   function renderSeekPreviewState(sr, frameIndex) {
     const arena = sr.getElementById("arena");
@@ -4759,6 +4844,14 @@
     return `${Math.min(frameIndex, total)} / ${total}`;
   }
   function closeBattleStage() {
+    if (engineState.stageResizeObserver) {
+      engineState.stageResizeObserver.disconnect();
+      engineState.stageResizeObserver = null;
+    }
+    if (engineState.stageResizeHandler) {
+      window.removeEventListener("resize", engineState.stageResizeHandler);
+      engineState.stageResizeHandler = null;
+    }
     if (engineState.activeKeydownHandler) {
       window.removeEventListener("keydown", engineState.activeKeydownHandler);
       engineState.activeKeydownHandler = null;
@@ -5065,18 +5158,10 @@
     const arena = document.createElement("div");
     arena.className = "arena";
     arena.id = "arena";
-    let leftCount = 0;
-    let rightCount = 0;
-    engineState.actors.forEach((actor) => {
-      if (actor.side === "left") leftCount++;
-      else rightCount++;
-    });
     const leftTeam = document.createElement("div");
-    const leftDensity = leftCount > 12 ? " raid-team" : leftCount > 5 ? " large-team" : "";
-    leftTeam.className = `team left-team${leftDensity}`;
+    leftTeam.className = "team left-team";
     const rightTeam = document.createElement("div");
-    const rightDensity = rightCount > 12 ? " raid-team" : rightCount > 5 ? " large-team" : "";
-    rightTeam.className = `team right-team${rightDensity}`;
+    rightTeam.className = "team right-team";
     engineState.actors.forEach((actor) => {
       const el = document.createElement("div");
       const unspawnedClass = actor.initiallySpawned === false ? "unspawned" : "";
@@ -5100,6 +5185,17 @@
     });
     arena.appendChild(leftTeam);
     arena.appendChild(rightTeam);
+    const updateLayout = () => {
+      updateDynamicTeamLayout(arena, leftTeam, rightTeam);
+    };
+    if (typeof ResizeObserver !== "undefined") {
+      const resizeObserver = new ResizeObserver(updateLayout);
+      resizeObserver.observe(arena);
+      engineState.stageResizeObserver = resizeObserver;
+    }
+    window.addEventListener("resize", updateLayout);
+    engineState.stageResizeHandler = updateLayout;
+    requestAnimationFrame(updateLayout);
     const dialogBox = document.createElement("div");
     dialogBox.className = "dialog-box";
     dialogBox.id = "dialog-box";
@@ -5157,6 +5253,7 @@
     stage.appendChild(fatalityOverlay);
     stage.appendChild(dragDropOverlay);
     engineState.shadowRoot.appendChild(stage);
+    updateLayout();
     const handleKeydown = (e) => {
       if (!engineState.hostElement || !engineState.hostElement.isConnected) return;
       if (e.ctrlKey || e.altKey || e.metaKey) return;
@@ -5401,6 +5498,10 @@
           }
         }, 550 / getEffectiveSpeed());
       }
+      const arena2 = sr.getElementById("arena");
+      const leftTeam = arena2?.querySelector(".left-team");
+      const rightTeam = arena2?.querySelector(".right-team");
+      if (arena2 && leftTeam) updateDynamicTeamLayout(arena2, leftTeam, rightTeam);
     }
     if (frame.isDespawnEvent && frame.despawnedActorId) {
       const despawnedEl = sr.getElementById(`actor-${frame.despawnedActorId}`);
@@ -5411,6 +5512,10 @@
           if (engineState.playbackToken === token && despawnedEl.isConnected) {
             despawnedEl.classList.remove("despawning");
             despawnedEl.classList.add("unspawned");
+            const arena2 = sr.getElementById("arena");
+            const leftTeam = arena2?.querySelector(".left-team");
+            const rightTeam = arena2?.querySelector(".right-team");
+            if (arena2 && leftTeam) updateDynamicTeamLayout(arena2, leftTeam, rightTeam);
           }
         }, 550 / getEffectiveSpeed());
       }

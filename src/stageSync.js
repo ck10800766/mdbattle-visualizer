@@ -340,6 +340,114 @@ export function syncActorHpAndDeathDOM(
             wrapperEl.classList.remove('dead');
         }
     });
+
+    if (syncSummonVisibility) {
+        const arena = sr.getElementById('arena');
+        const leftTeam = arena?.querySelector('.left-team');
+        const rightTeam = arena?.querySelector('.right-team');
+        if (arena && leftTeam) {
+            updateDynamicTeamLayout(arena, leftTeam, rightTeam);
+        }
+    }
+}
+
+/**
+ * Helper to compute dimensions of an actor given avatar size S.
+ *
+ * @param {number} s - Avatar size in pixels.
+ * @returns {Object} Dimension map for avatar, gap, name, HP container, and status badges.
+ */
+function getActorDimensions(s) {
+    const avatarSize = s;
+    const gap = Math.max(2, Math.min(12, Math.floor(s * 0.14)));
+    const nameSize = Math.max(9, Math.min(14, Math.floor(s * 0.19)));
+    const hpHeight = Math.max(5, Math.min(13, Math.floor(s * 0.16)));
+    const statusSize = Math.max(8, Math.min(15, Math.floor(s * 0.20)));
+    const actorH = avatarSize + hpHeight + (Math.ceil(nameSize * 1.2) + 4) + Math.floor(gap * 0.8);
+    const actorW = avatarSize * 1.32;
+    return { avatarSize, gap, nameSize, hpHeight, statusSize, actorH, actorW };
+}
+
+/**
+ * Dynamically calculates optimal combatant avatar scale, column count, and spacing
+ * based on real-time arena dimensions and visible unit count.
+ * Completely responsive without relying on hardcoded viewport breakpoints.
+ *
+ * @param {HTMLElement} arena - Arena container element.
+ * @param {HTMLElement} leftTeam - Left team container element.
+ * @param {HTMLElement} [rightTeam] - Right team container element.
+ */
+export function updateDynamicTeamLayout(arena, leftTeam, rightTeam) {
+    if (!arena || !leftTeam) return;
+
+    const rect = arena.getBoundingClientRect ? arena.getBoundingClientRect() : null;
+    const arenaW = (rect && rect.width > 0) ? rect.width : (arena.clientWidth || window.innerWidth || 1200);
+    const arenaH = (rect && rect.height > 0) ? rect.height : (arena.clientHeight || (window.innerHeight - 250) || 500);
+
+    const padW = arenaW * 0.08;
+    const availableW = Math.max(120, arenaW - padW);
+    const availableH = Math.max(80, arenaH - 20);
+
+    const teams = [
+        { el: leftTeam, maxW: availableW * 0.46 },
+        { el: rightTeam, maxW: availableW * 0.44 }
+    ];
+
+    teams.forEach(({ el, maxW }) => {
+        if (!el) return;
+        const visibleUnits = Array.from(el.querySelectorAll('.actor:not(.unspawned)'));
+        const n = Math.max(1, visibleUnits.length);
+        const maxH = availableH;
+
+        let bestConfig = null;
+
+        for (let r = 1; r <= n; r++) {
+            const c = Math.ceil(n / r);
+
+            for (let s = 80; s >= 20; s--) {
+                const dims = getActorDimensions(s);
+                const totalH = r * dims.actorH + Math.max(0, r - 1) * dims.gap;
+                const totalW = c * dims.actorW + Math.max(0, c - 1) * dims.gap;
+                if (totalH <= maxH && totalW <= maxW) {
+                    if (!bestConfig || s > bestConfig.s || (s === bestConfig.s && Math.abs(r - c) < Math.abs(bestConfig.r - bestConfig.c))) {
+                        bestConfig = { s, r, c, totalH, totalW, dims };
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (!bestConfig) {
+            let minOverflow = Infinity;
+            for (let r = 1; r <= n; r++) {
+                const c = Math.ceil(n / r);
+                const dims = getActorDimensions(20);
+                const totalH = r * dims.actorH + Math.max(0, r - 1) * dims.gap;
+                const totalW = c * dims.actorW + Math.max(0, c - 1) * dims.gap;
+                const overflow = Math.max(0, totalH - maxH) + Math.max(0, totalW - maxW);
+                if (overflow < minOverflow) {
+                    minOverflow = overflow;
+                    bestConfig = { s: 20, r, c, totalH, totalW, dims };
+                }
+            }
+        }
+
+        const { s: avatarSize, r: bestR, c: bestC, dims } = bestConfig;
+        const { gap, nameSize, hpHeight, statusSize, actorH } = dims;
+
+        const neededHeight = Math.ceil(bestR * actorH + Math.max(0, bestR - 1) * gap);
+        const neededWidth = Math.ceil(bestC * (avatarSize * 1.32) + Math.max(0, bestC - 1) * gap);
+
+        el.style.height = `${Math.min(maxH, neededHeight + 2)}px`;
+        el.style.width = `${Math.min(maxW, neededWidth)}px`;
+        el.style.setProperty('--avatar-size', `${avatarSize}px`);
+        el.style.setProperty('--unit-gap', `${gap}px`);
+        el.style.setProperty('--name-size', `${nameSize}px`);
+        el.style.setProperty('--hp-height', `${hpHeight}px`);
+        el.style.setProperty('--status-size', `${statusSize}px`);
+        el.style.setProperty('--team-rows', `${bestR}`);
+        el.style.setProperty('--team-cols', `${bestC}`);
+    });
 }
 
 /**
