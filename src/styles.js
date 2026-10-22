@@ -44,10 +44,83 @@ export const STAGE_STYLES = `
     .ctb-icon.right { border-color: #fc8181; }
 
     /* Battle Arena & Actor Cards */
-    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 5vw; position: relative; min-height: 0; overflow: hidden; }
-    .team { display: flex; flex-direction: column; gap: 15px; align-items: center; align-content: center; width: 40%; max-height: 100%; }
-    .left-team { justify-content: center; flex-wrap: wrap; }
-    .right-team { justify-content: center; flex-wrap: wrap-reverse; }
+    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 4vw; position: relative; min-height: 0; overflow: hidden; }
+    .team { display: flex; flex-direction: column; gap: 15px; align-items: center; align-content: center; max-height: 100%; min-width: 0; }
+    .left-team { justify-content: center; flex-wrap: wrap; width: 42%; max-width: 55%; }
+    .right-team { justify-content: center; flex-wrap: wrap-reverse; width: 38%; max-width: 45%; }
+
+    /* Density Scaling: Large Parties (6-12 combatants) */
+    .team.large-team { gap: 8px 10px; width: 46%; max-width: 55%; }
+    .team.large-team .avatar-wrapper, .team.large-team .avatar { width: 56px; height: 56px; border-radius: 6px; }
+    .team.large-team .actor-name { font-size: 11px; padding: 1px 6px; margin-bottom: 4px; max-width: 74px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .team.large-team .hp-container { width: 56px; height: 10px; margin-top: 4px; }
+    .team.large-team .hp-text { font-size: 8px; }
+    .team.large-team .status-badge { width: 13px; height: 13px; font-size: 8px; }
+    .team.large-team .status-tray { top: 1px; gap: 2px; }
+    .team.large-team .speech-bubble { max-width: 270px; font-size: 13.5px; padding: 9px 14px; }
+
+    /* Density Scaling: Raid Battles (13+ combatants, e.g. 20-player Raids) */
+    .team.raid-team { gap: 5px 8px; width: 52%; max-width: 60%; }
+    .team.raid-team .avatar-wrapper, .team.raid-team .avatar { width: 42px; height: 42px; border-radius: 5px; }
+    .team.raid-team .actor-name { font-size: 10px; padding: 1px 4px; margin-bottom: 3px; max-width: 56px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .team.raid-team .hp-container { width: 44px; height: 8px; margin-top: 3px; border-radius: 4px; }
+    .team.raid-team .hp-text { font-size: 7px; }
+    .team.raid-team .status-badge { width: 11px; height: 11px; font-size: 7px; }
+    .team.raid-team .status-tray { top: 0px; gap: 2px; }
+    .team.raid-team .speech-bubble { max-width: 230px; font-size: 12.5px; padding: 7px 11px; }
+
+    /* Responsive Viewports: Medium / Small Laptops (Height <= 768px or Width <= 1024px) */
+    @media (max-height: 768px), (max-width: 1024px) {
+        .arena { padding: 6px 3vw; }
+        .ctb-container { height: 56px; padding: 0 60px 0 30px; }
+        .ctb-icon { width: 34px; height: 34px; top: -15px; }
+        .ctb-icon.acting { width: 42px; height: 42px; top: -19px; }
+        .dialog-box { height: 125px; font-size: 13px; padding: 8px 12px; }
+        .controls { padding: 8px 14px; gap: 10px; }
+
+        .team:not(.large-team):not(.raid-team) { gap: 10px; }
+        .team:not(.large-team):not(.raid-team) .avatar-wrapper,
+        .team:not(.large-team):not(.raid-team) .avatar { width: 64px; height: 64px; }
+        .team:not(.large-team):not(.raid-team) .actor-name { font-size: 12px; margin-bottom: 5px; max-width: 80px; }
+        .team:not(.large-team):not(.raid-team) .hp-container { width: 64px; height: 11px; margin-top: 5px; }
+
+        .team.large-team { gap: 6px 8px; }
+        .team.large-team .avatar-wrapper, .team.large-team .avatar { width: 48px; height: 48px; }
+        .team.large-team .actor-name { font-size: 10px; max-width: 62px; }
+        .team.large-team .hp-container { width: 48px; height: 8px; }
+
+        .team.raid-team { gap: 4px 6px; }
+        .team.raid-team .avatar-wrapper, .team.raid-team .avatar { width: 36px; height: 36px; }
+        .team.raid-team .actor-name { font-size: 9px; max-width: 48px; }
+        .team.raid-team .hp-container { width: 36px; height: 7px; }
+    }
+
+    /* Ultra-compact Viewports (Height <= 600px or Width <= 768px) */
+    @media (max-height: 600px), (max-width: 768px) {
+        .arena { padding: 4px 2vw; }
+        .ctb-container { height: 44px; padding: 0 45px 0 20px; }
+        .ctb-icon { width: 28px; height: 28px; top: -12px; }
+        .ctb-icon.acting { width: 34px; height: 34px; top: -15px; }
+        .dialog-box { height: 95px; font-size: 12px; padding: 6px 10px; }
+        .controls { padding: 6px 10px; gap: 6px; }
+
+        .team:not(.large-team):not(.raid-team) { gap: 6px; }
+        .team:not(.large-team):not(.raid-team) .avatar-wrapper,
+        .team:not(.large-team):not(.raid-team) .avatar { width: 50px; height: 50px; }
+        .team:not(.large-team):not(.raid-team) .actor-name { font-size: 10px; margin-bottom: 3px; max-width: 65px; }
+        .team:not(.large-team):not(.raid-team) .hp-container { width: 50px; height: 9px; margin-top: 3px; }
+
+        .team.large-team { gap: 4px 6px; }
+        .team.large-team .avatar-wrapper, .team.large-team .avatar { width: 40px; height: 40px; }
+        .team.large-team .actor-name { font-size: 9px; max-width: 52px; }
+        .team.large-team .hp-container { width: 40px; height: 7px; }
+
+        .team.raid-team { gap: 3px 5px; }
+        .team.raid-team .avatar-wrapper, .team.raid-team .avatar { width: 30px; height: 30px; }
+        .team.raid-team .actor-name { font-size: 8px; max-width: 40px; }
+        .team.raid-team .hp-container { width: 30px; height: 6px; }
+    }
+
     .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
     .actor.unspawned { display: none !important; }
     .actor.spawning, .actor.despawning { transition: none !important; z-index: 50; }

@@ -455,11 +455,20 @@ export function createBattleStage() {
     arena.className = 'arena';
     arena.id = 'arena';
 
+    let leftCount = 0;
+    let rightCount = 0;
+    engineState.actors.forEach(actor => {
+        if (actor.side === 'left') leftCount++;
+        else rightCount++;
+    });
+
     const leftTeam = document.createElement('div');
-    leftTeam.className = 'team left-team';
+    const leftDensity = leftCount > 12 ? ' raid-team' : leftCount > 5 ? ' large-team' : '';
+    leftTeam.className = `team left-team${leftDensity}`;
 
     const rightTeam = document.createElement('div');
-    rightTeam.className = 'team right-team';
+    const rightDensity = rightCount > 12 ? ' raid-team' : rightCount > 5 ? ' large-team' : '';
+    rightTeam.className = `team right-team${rightDensity}`;
 
     engineState.actors.forEach(actor => {
         const el = document.createElement('div');
@@ -469,7 +478,7 @@ export function createBattleStage() {
         const hpContainerStyle = actor.hideHp ? ' style="display: none;"' : '';
         const hpTextContent = actor.hideHp ? '' : `${actor.maxHp}/${actor.maxHp}`;
         el.innerHTML = `
-            <div class="actor-name">${escapeHtml(actor.name)}</div>
+            <div class="actor-name" title="${escapeHtml(actor.name)}">${escapeHtml(actor.name)}</div>
             <div class="avatar-wrapper">
                 <img class="avatar" src="${escapeHtml(actor.avatar)}" onerror="this.src='${DEFAULT_AVATAR_URL}'">
                 <div class="status-tray" id="status-tray-${escapeHtml(actor.id)}"></div>
