@@ -95,8 +95,8 @@ export function inferSummonName(logs, summonIndex, summonId, ownerName) {
             const targetMatch = msg.match(/(?:對|\S{1,4}向|\S{1,4}使)\s+(\S+?)(?:[，,。！!、\s]|造成|回復|恢復)/);
             if (targetMatch && targetMatch[1] !== ownerName) {
                 const token = targetMatch[1].replace(/^[「『\[【](.*?)[」』\]】]$/, '$1');
-                const isExistingActor = engineState.actors.has(token);
-                if (token && token !== ownerName && !isExistingActor) return token;
+                const isExistingNonSummon = Array.from(engineState.actors.values()).some(a => !a.isSummon && a.name === token);
+                if (token && token !== ownerName && !isExistingNonSummon) return token;
             }
         }
 
@@ -105,9 +105,11 @@ export function inferSummonName(logs, summonIndex, summonId, ownerName) {
             const actorPrefixMatch = msg.match(/^\s*([^，,。！!：「\s]+)\s+/);
             if (actorPrefixMatch) {
                 const name = actorPrefixMatch[1];
-                const isExistingActor = Array.from(engineState.actors.values()).some(a => a.name === name);
-                if (!isExistingActor && name !== ownerName) {
-                    return name;
+                if (name.length > 1 && !/^(?:對|向|在|從|由|被|使|與|和|給|第)$/.test(name)) {
+                    const isExistingNonSummon = Array.from(engineState.actors.values()).some(a => !a.isSummon && a.name === name);
+                    if (!isExistingNonSummon && name !== ownerName) {
+                        return name;
+                    }
                 }
             }
         }
@@ -115,7 +117,7 @@ export function inferSummonName(logs, summonIndex, summonId, ownerName) {
 
     // 2. Direct entrance pattern from SUMMON log message (e.g. "同人的影分身 從白煙裡滾了出來。", "荒坂特勤 從電梯裡走了出來。")
     const summonMsg = String(summonLog.message || '').trim();
-    const summonEntranceMatch = summonMsg.match(/(?:[，,。！!、\s]|^)(?:穿著[^\s]+的\s+|沉睡騎士的\s+)?([^\s，,。！!]+)\s+(?:從|走進|走了出來|盤腿|趕到|趕來|弓著背|倒掛|站起身|出現在|降臨|現身)/);
+    const summonEntranceMatch = summonMsg.match(/(?:[，,。！!、\s]|^)(?:\S+?的\s+)?([^\s，,。！!]+)\s+(?:從|走進|走了出來|盤腿|趕到|趕來|弓著背|倒掛|站起身|出現在|降臨|現身|按著)/);
     if (summonEntranceMatch && summonEntranceMatch[1] !== ownerName) {
         return summonEntranceMatch[1];
     }
