@@ -112,10 +112,14 @@ export async function playFatalitySequence(sr, actorId, token = engineState.play
  */
 export function extractSkillFromMessage(message) {
     if (!message) return null;
-    const pattern = /(?:(?!(?:造成|受到|回復|恢復|損失|失去|衝向|飛向|瞄準|盯上|閃過|躲過|看見|附上|燒掉)了)(?:[^\s，,。！!：:]{1,4}了|進入))\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+    const pattern = /(?:[^\s，,。！!：:]{1,4}了|進入)\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
     let m;
     while ((m = pattern.exec(message)) !== null) {
         const token = m[1].replace(/^[「『\[【](.*?)[」』\]】]$/, '$1');
+        // Exclude spatial direction/movement prepositions
+        if (/^(?:半空|空中|地面|身前|陣前|身旁|長桌旁|電梯|暗處|四周|前方|後方|頭頂)$/.test(token)) {
+            continue;
+        }
         const isActor = engineState?.actors ? Array.from(engineState.actors.values()).some(a => a.name === token) : false;
         if (!isActor) {
             return token;
@@ -362,13 +366,7 @@ export function resolveDialogueSpeaker(frame) {
     if (!frame || !frame.message) return null;
     const msg = frame.message.trim();
 
-    // 1. Disembodied, mysterious, or off-field voice markers
-    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
-    if (disembodiedPattern.test(msg)) {
-        return null;
-    }
-
-    // 2. Switch dialogue pattern: 「Switch！」<actorName> 從...
+    // 1. Switch dialogue pattern: 「Switch！」<actorName> 從...
     const switchMatch = msg.match(/^[「『"“]Switch[！!]?[」』"”]\s*([^\s，,。]+)/i);
     if (switchMatch) {
         const candidateName = switchMatch[1].trim();
@@ -386,15 +384,11 @@ export function resolveDialogueSpeaker(frame) {
         return null;
     }
 
-    // 3. Colon quote pattern: <SpeakerName>：[「『"“]<Quote>[」』"”]
+    // 2. Colon quote pattern: <SpeakerName>：[「『"“]<Quote>[」』"”]
     const colonQuoteMatch = msg.match(/^([^\n：:]{1,25})[：:]\s*[「『"“]([^」』"”]+)[」』"”]/);
     if (colonQuoteMatch) {
         const speakerPrefix = colonQuoteMatch[1].trim();
         const quote = `「${colonQuoteMatch[2].trim()}」`;
-
-        if (disembodiedPattern.test(speakerPrefix)) {
-            return null;
-        }
 
         if (frame.actorId) {
             const frameActor = engineState.actors.get(frame.actorId);
@@ -411,7 +405,7 @@ export function resolveDialogueSpeaker(frame) {
         return null;
     }
 
-    // 4. Standalone quote if message contains actor name followed by colon/quote or quote followed by actor
+    // 3. Standalone quote if message contains actor name followed by colon/quote or quote followed by actor
     const standaloneQuoteMatch = msg.match(/[「『"“]([^」』"”]+)[」』"”]/);
     if (standaloneQuoteMatch && (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE')) {
         if (frame.actorId) {
@@ -452,6 +446,18 @@ export function renderSpeechBubble(frame, sr, token) {
     textSpan.className = 'typewriter-text';
     bubble.appendChild(textSpan);
     actorEl.appendChild(bubble);
+
+    // Dynamic vertical boundary clamping to prevent bubble from clipping into CTB timeline bar
+    const arena = sr.getElementById('arena');
+    if (arena) {
+        const arenaRect = arena.getBoundingClientRect();
+        const bubbleRect = bubble.getBoundingClientRect();
+        const topOverflow = (arenaRect.top + 10) - bubbleRect.top;
+        if (topOverflow > 0) {
+            bubble.style.top = `${-25 + topOverflow}px`;
+            bubble.classList.add('top-adjusted');
+        }
+    }
 
     const textContent = speaker.quote;
     const readTime = getMessageReadingDuration(textContent);
@@ -524,23 +530,16 @@ export function isSceneNarrationFrame(frame) {
     if (['DAMAGE', 'BLOCK', 'MISS', 'HEAL', 'LUCK_EVENT', 'COUNTER'].includes(frame.type)) return false;
     if (frame.value != null && frame.value > 0) return false;
 
-    // Disembodied or off-field voice markers
-    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
-    if (disembodiedPattern.test(frame.message)) return true;
+    // If an on-field combatant is speaking, it's a character speech bubble, not scene narration
+    if (resolveDialogueSpeaker(frame)) return false;
 
-    // BOSS_DIALOGUE or DIALOGUE without an on-field speaker is always scene narration
-    if (frame.type === 'BOSS_DIALOGUE' || frame.type === 'DIALOGUE') {
-        return !resolveDialogueSpeaker(frame);
-    }
-
-    // Story narrative TEXT frames or off-field dialogue
-    if (frame.type === 'TEXT') {
-        if (resolveDialogueSpeaker(frame)) return false;
+    // BOSS_DIALOGUE, DIALOGUE, or story narrative TEXT frames without an on-field speaker are scene narration
+    if (['BOSS_DIALOGUE', 'DIALOGUE', 'TEXT'].includes(frame.type)) {
         return true;
     }
 
     // SKILL_TEXT with off-field dialogue or narrative quotes
-    if (frame.type === 'SKILL_TEXT' && !resolveDialogueSpeaker(frame)) {
+    if (frame.type === 'SKILL_TEXT') {
         if (/^[^\n：:]{1,25}[：:]\s*[「『"“]|^[「『"“]/.test(frame.message.trim())) {
             return true;
         }

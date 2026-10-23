@@ -46,28 +46,29 @@ export function showMVPPanel() {
         .jrpg-bg-stripes { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px); animation: bgScroll 8s linear infinite; z-index: 1; pointer-events: none; }
         .mvp-splash { position: absolute; right: -5%; top: 0; height: 100%; width: 60%; background: ${theme.dark}; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); z-index: 2; border-left: none; animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; display: flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
         .mvp-avatar { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transform: scale(1.05); filter: drop-shadow(10px 10px 0px rgba(0,0,0,0.5)); z-index: 1; }
-        .ui-container { position: absolute; left: 5%; top: 6%; height: 88%; width: 52%; max-width: 680px; z-index: 3; display: flex; flex-direction: column; }
-        .title-group { flex-shrink: 0; margin-bottom: 12px; transform: skewX(-10deg); animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .title-main { font-size: clamp(48px, 8vw, 100px); color: transparent; -webkit-text-stroke: 3px ${theme.main}; letter-spacing: 10px; margin: 0; line-height: 1; text-shadow: 6px 6px 0px ${theme.accent}; }
-        .title-sub { font-size: 26px; background: ${theme.main}; display: inline-block; padding: 4px 18px; color: ${theme.dark}; font-weight: 900; letter-spacing: 8px; }
-        .stats-container { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; padding-right: 14px; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: ${theme.main} rgba(255,255,255,0.08); }
+        .ui-container { position: absolute; left: 5%; top: 8%; height: 84%; width: 52%; max-width: 720px; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; }
+        .title-group { flex-shrink: 0; transform: skewX(-10deg); animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .title-main { font-size: clamp(56px, 9vw, 110px); color: transparent; -webkit-text-stroke: 3px ${theme.main}; letter-spacing: 10px; margin: 0; line-height: 1; text-shadow: 6px 6px 0px ${theme.accent}; }
+        .title-sub { font-size: 28px; background: ${theme.main}; display: inline-block; padding: 4px 20px; color: ${theme.dark}; font-weight: 900; letter-spacing: 8px; }
+        .stats-container { display: flex; flex-direction: column; gap: 12px; padding: 6px 20px 6px 28px; margin-left: -16px; scrollbar-width: thin; scrollbar-color: ${theme.main} rgba(255,255,255,0.08); }
+        .stats-container.scrollable { max-height: clamp(260px, 50vh, 480px); overflow-y: auto; overflow-x: hidden; }
         .stats-container::-webkit-scrollbar { width: 6px; }
         .stats-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
         .stats-container::-webkit-scrollbar-thumb { background: ${theme.main}; border-radius: 3px; }
-        .stat-row { flex-shrink: 0; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 9px 15px 9px 20px; border-left: 5px solid ${theme.main}; backdrop-filter: blur(4px); opacity: 0; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .stat-name { width: 130px; padding-left: 5px; font-size: 19px; color: #fff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: skewX(10deg); }
-        .stat-bar-wrapper { flex: 1; height: 22px; background: rgba(255,255,255,0.1); margin: 0 16px; position: relative; overflow: hidden; }
+        .stat-row { flex-shrink: 0; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 11px 18px 11px 22px; border-left: 5px solid ${theme.main}; backdrop-filter: blur(4px); opacity: 0; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .stat-name { width: 135px; padding-left: 5px; font-size: 20px; color: #fff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: skewX(10deg); }
+        .stat-bar-wrapper { flex: 1; height: 24px; background: rgba(255,255,255,0.1); margin: 0 18px; position: relative; overflow: hidden; }
         .stat-bar-fill { height: 100%; background: ${theme.main}; box-shadow: inset 0 -5px 0 rgba(0,0,0,0.3); width: 0; animation: barGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .stat-numbers { width: 140px; text-align: right; transform: skewX(10deg); }
-        .stat-dmg { font-size: 22px; color: ${theme.main}; }
-        .stat-taken { font-size: 13px; color: #a0aec0; }
-        .stats-container.compact { gap: 6px; }
-        .stats-container.compact .stat-row { padding: 5px 12px 5px 16px; }
+        .stat-dmg { font-size: 24px; color: ${theme.main}; }
+        .stat-taken { font-size: 14px; color: #a0aec0; }
+        .stats-container.compact { gap: 7px; }
+        .stats-container.compact .stat-row { padding: 6px 14px 6px 18px; }
         .stats-container.compact .stat-name { font-size: 16px; width: 115px; }
-        .stats-container.compact .stat-bar-wrapper { height: 18px; margin: 0 12px; }
-        .stats-container.compact .stat-dmg { font-size: 18px; }
-        .stats-container.compact .stat-taken { font-size: 11px; }
-        .close-btn { flex-shrink: 0; align-self: flex-start; margin-top: 14px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 12px 36px; font-size: 22px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; z-index: 10; }
+        .stats-container.compact .stat-bar-wrapper { height: 19px; margin: 0 12px; }
+        .stats-container.compact .stat-dmg { font-size: 19px; }
+        .stats-container.compact .stat-taken { font-size: 12px; }
+        .close-btn { flex-shrink: 0; align-self: flex-start; margin-top: 16px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 14px 38px; font-size: 22px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; z-index: 10; }
         .close-btn:hover { transform: skewX(-10deg) translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
         .close-btn:active { transform: skewX(-10deg) translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
         .mvp-label { position: absolute; left: 12%; top: 40px; background: ${theme.main}; color: ${theme.dark}; padding: 10px 30px; font-size: 28px; font-weight: 900; transform: skewX(-15deg); box-shadow: 5px 5px 0 rgba(0,0,0,0.5); z-index: 10; letter-spacing: 4px; }
@@ -107,13 +108,14 @@ export function showMVPPanel() {
     `;
     uiContainer.appendChild(titleGroup);
 
+    const memberCount = Array.from(consolidated.values()).filter(s => !s.actor?.isSummon).length;
     const statsContainer = document.createElement('div');
-    statsContainer.className = `stats-container${consolidated.size > 7 ? ' compact' : ''}`;
+    statsContainer.className = `stats-container${memberCount > 5 ? ' scrollable compact' : ''}`;
 
     const headerRow = document.createElement('div');
-    headerRow.style.cssText = 'flex-shrink: 0; display: flex; color: #a0aec0; font-family: sans-serif; font-size: 12px; margin-bottom: 5px; padding-left: 15px;';
+    headerRow.style.cssText = 'flex-shrink: 0; display: flex; color: #a0aec0; font-family: sans-serif; font-size: 12px; margin-bottom: 5px; padding-left: 24px; padding-right: 14px;';
     headerRow.innerHTML = `
-        <div style="width: 120px;">MEMBER</div>
+        <div style="width: 125px;">MEMBER</div>
         <div style="flex: 1; margin: 0 20px;">CONTRIBUTION</div>
         <div style="width: 140px; text-align: right;">OUTPUT / STATS</div>
     `;

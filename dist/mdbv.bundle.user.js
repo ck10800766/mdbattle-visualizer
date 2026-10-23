@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.8
+// @version      7.5.10
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.8";
+  var APP_VERSION = "7.5.10";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -144,11 +144,20 @@
         if (dialogueMatch && dialogueMatch[1] !== ownerName) return dialogueMatch[1];
       }
       if (log.targetId === summonId && ["DAMAGE", "BLOCK", "HEAL"].includes(log.type)) {
-        const targetMatch = msg.match(/(?:對|\S{1,4}向|\S{1,4}使)\s+(\S+?)(?:[，,。！!、\s]|造成|回復|恢復)/);
+        const targetMatch = msg.match(/(?:對|使)\s+([^\s，,。！!]+(?:\s+[A-Za-z0-9_-]+)?)\s+(?:造成了?|受到了?|回復了?|恢復了?)/);
         if (targetMatch && targetMatch[1] !== ownerName) {
           const token = targetMatch[1].replace(/^[「『\[【](.*?)[」』\]】]$/, "$1");
           const isExistingNonSummon = Array.from(engineState.actors.values()).some((a) => !a.isSummon && a.name === token);
-          if (token && token !== ownerName && !isExistingNonSummon) return token;
+          if (token && token.length > 1 && !isExistingNonSummon && !/^(?:對|向|在|從|由|被|使|與|和|給|第)$/.test(token)) {
+            return token;
+          }
+        }
+      }
+      if (log.actorId === summonId && log.type === "HP_REMAINING") {
+        const hpMatch = msg.match(/^\s*(\S+?)\s+剩餘/);
+        if (hpMatch && hpMatch[1] !== ownerName) {
+          const isExistingNonSummon = Array.from(engineState.actors.values()).some((a) => !a.isSummon && a.name === hpMatch[1]);
+          if (!isExistingNonSummon) return hpMatch[1];
         }
       }
       if (log.actorId === summonId && ["DAMAGE", "BLOCK", "MISS", "HEAL", "SKILL_TEXT", "BUFF_APPLY"].includes(log.type)) {
@@ -165,9 +174,18 @@
       }
     }
     const summonMsg = String(summonLog.message || "").trim();
-    const summonEntranceMatch = summonMsg.match(/(?:[，,。！!、\s]|^)(?:\S+?的\s+)?([^\s，,。！!]+)\s+(?:從|走進|走了出來|盤腿|趕到|趕來|弓著背|倒掛|站起身|出現在|降臨|現身|按著)/);
-    if (summonEntranceMatch && summonEntranceMatch[1] !== ownerName) {
-      return summonEntranceMatch[1];
+    const clauses = summonMsg.split(/[，,。！!]/).map((s) => s.trim()).filter(Boolean);
+    for (let c = clauses.length - 1; c >= 0; c--) {
+      const clause = clauses[c];
+      const stripped = clause.replace(/^(?:.*?[，,。、\s])?(?:\S+?的\s+)/, "");
+      const match = stripped.match(/^([^\s，,。！!]+(?:\s+[A-Za-z0-9_-]+)?)\s+/);
+      if (match) {
+        const name = match[1].trim();
+        const isExistingNonSummon = Array.from(engineState.actors.values()).some((a) => !a.isSummon && a.name === name);
+        if (name.length > 1 && !isExistingNonSummon && name !== ownerName && !/^(?:對|向|在|從|由|被|使|與|和|給|第)$/.test(name)) {
+          return name;
+        }
+      }
     }
     const whitespaceTokens = summonMsg.split(/\s+/);
     if (whitespaceTokens.length >= 2) {
@@ -1797,7 +1815,7 @@
     .ctb-icon.right { border-color: #fc8181; }
 
     /* Battle Arena & Actor Cards */
-    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 4vw; position: relative; min-height: 0; overflow: hidden; }
+    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px clamp(70px, 8.5vw, 150px); position: relative; min-height: 0; overflow: hidden; }
     .team {
         display: flex;
         flex-direction: column;
@@ -1808,11 +1826,12 @@
         justify-content: center;
         max-height: 100%;
         min-width: 0;
+        transition: width 0.3s ease, height 0.3s ease, gap 0.3s ease;
     }
     .left-team { justify-content: center; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
 
-    .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+    .actor { display: flex; flex-direction: column; align-items: center; transition: filter 0.3s ease, opacity 0.3s ease; position: relative; }
     .actor.unspawned { display: none !important; }
     .actor.spawning, .actor.despawning { transition: none !important; z-index: 50; }
     .actor.left.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -1852,7 +1871,7 @@
         border: 2px solid #4a5568;
         object-fit: cover;
         box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6);
-        transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        transition: width 0.3s ease, height 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     }
 
     .hp-container {
@@ -1864,7 +1883,7 @@
         overflow: hidden;
         position: relative;
         border: 1.5px solid #1a202c;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition: width 0.3s ease, height 0.3s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
     .hp-fill { height: 100%; background: #48bb78; transition: width 0.3s ease-out, background-color 0.3s; }
@@ -1922,7 +1941,7 @@
     .dice-warn { background: rgba(183, 121, 31, 0.95); border: 1px solid #f6e05e; }
 
     /* Combat Log Dialog Box */
-    .dialog-box { height: clamp(95px, 16vh, 160px); background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 8px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: clamp(12px, 1.2vw, 14px); overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
+    .dialog-box { height: clamp(95px, 16vh, 160px); background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 8px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: clamp(12px, 1.2vw, 14px); overflow-y: auto; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; cursor: pointer; transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; user-select: text; border-left: 3px solid transparent; }
     .log-line:hover { background: rgba(255, 255, 255, 0.08); padding-left: 12px; }
     .log-line:hover .log-index { color: #81e6d9 !important; font-weight: 700; }
@@ -1948,6 +1967,7 @@
     .floating-block { color: #90cdf4; font-size: 26px; font-style: italic; text-shadow: 0 0 10px rgba(66, 153, 225, 0.9), 0 2px 4px #000; letter-spacing: 1px; }
 
     .combo-text { position: absolute; top: 10%; right: -60px; font-size: 40px; font-weight: 900; color: #f6ad55; font-style: italic; text-shadow: 0 4px 10px rgba(221, 107, 32, 0.8); animation: comboPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; pointer-events: none; z-index: 25; white-space: nowrap; }
+    .actor.right .combo-text { right: auto; left: -60px; }
     .break-stamp { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg) scale(1); font-size: 24px; font-weight: 900; color: #fc8181; border: 3px solid #e53e3e; padding: 2px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.88); text-shadow: 0 2px 6px rgba(0,0,0,0.9); box-shadow: 0 0 12px rgba(229, 62, 62, 0.6); opacity: 0; animation: stampDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; z-index: 45; white-space: nowrap; }
     .luck-drop { position: absolute; top: -90px; left: 50%; transform: translateX(-50%); font-size: 44px; animation: dropDown 0.45s ease-in forwards; z-index: 40; pointer-events: none; }
 
@@ -2184,10 +2204,13 @@
   }
   function extractSkillFromMessage(message) {
     if (!message) return null;
-    const pattern = /(?:(?!(?:造成|受到|回復|恢復|損失|失去|衝向|飛向|瞄準|盯上|閃過|躲過|看見|附上|燒掉)了)(?:[^\s，,。！!：:]{1,4}了|進入))\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+    const pattern = /(?:[^\s，,。！!：:]{1,4}了|進入)\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
     let m;
     while ((m = pattern.exec(message)) !== null) {
       const token = m[1].replace(/^[「『\[【](.*?)[」』\]】]$/, "$1");
+      if (/^(?:半空|空中|地面|身前|陣前|身旁|長桌旁|電梯|暗處|四周|前方|後方|頭頂)$/.test(token)) {
+        continue;
+      }
       const isActor = engineState?.actors ? Array.from(engineState.actors.values()).some((a) => a.name === token) : false;
       if (!isActor) {
         return token;
@@ -2337,10 +2360,6 @@
   function resolveDialogueSpeaker(frame) {
     if (!frame || !frame.message) return null;
     const msg = frame.message.trim();
-    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
-    if (disembodiedPattern.test(msg)) {
-      return null;
-    }
     const switchMatch = msg.match(/^[「『"“]Switch[！!]?[」』"”]\s*([^\s，,。]+)/i);
     if (switchMatch) {
       const candidateName = switchMatch[1].trim();
@@ -2361,9 +2380,6 @@
     if (colonQuoteMatch) {
       const speakerPrefix = colonQuoteMatch[1].trim();
       const quote = `\u300C${colonQuoteMatch[2].trim()}\u300D`;
-      if (disembodiedPattern.test(speakerPrefix)) {
-        return null;
-      }
       if (frame.actorId) {
         const frameActor = engineState.actors.get(frame.actorId);
         if (frameActor && (speakerPrefix.startsWith(frameActor.name) || speakerPrefix.includes(frameActor.name))) {
@@ -2402,6 +2418,16 @@
     textSpan.className = "typewriter-text";
     bubble.appendChild(textSpan);
     actorEl.appendChild(bubble);
+    const arena = sr.getElementById("arena");
+    if (arena) {
+      const arenaRect = arena.getBoundingClientRect();
+      const bubbleRect = bubble.getBoundingClientRect();
+      const topOverflow = arenaRect.top + 10 - bubbleRect.top;
+      if (topOverflow > 0) {
+        bubble.style.top = `${-25 + topOverflow}px`;
+        bubble.classList.add("top-adjusted");
+      }
+    }
     const textContent = speaker.quote;
     const readTime = getMessageReadingDuration(textContent);
     let charIndex = 0;
@@ -2447,16 +2473,11 @@
     if (frame.diceCheck || frame.isEnvironmentalPulse) return false;
     if (["DAMAGE", "BLOCK", "MISS", "HEAL", "LUCK_EVENT", "COUNTER"].includes(frame.type)) return false;
     if (frame.value != null && frame.value > 0) return false;
-    const disembodiedPattern = /不知道(?:從|由)?哪裡傳來|不知何處傳來|不知何方傳來|傳來(?:一個|一聲|陣陣|了)?.*聲音|耳邊響起|耳邊傳來|虛空中|空中傳來|四面八方傳來|四周傳來|遠處傳來|深處傳來|冥冥中|系統廣播|系統提示|^旁白[：:]/;
-    if (disembodiedPattern.test(frame.message)) return true;
-    if (frame.type === "BOSS_DIALOGUE" || frame.type === "DIALOGUE") {
-      return !resolveDialogueSpeaker(frame);
-    }
-    if (frame.type === "TEXT") {
-      if (resolveDialogueSpeaker(frame)) return false;
+    if (resolveDialogueSpeaker(frame)) return false;
+    if (["BOSS_DIALOGUE", "DIALOGUE", "TEXT"].includes(frame.type)) {
       return true;
     }
-    if (frame.type === "SKILL_TEXT" && !resolveDialogueSpeaker(frame)) {
+    if (frame.type === "SKILL_TEXT") {
       if (/^[^\n：:]{1,25}[：:]\s*[「『"“]|^[「『"“]/.test(frame.message.trim())) {
         return true;
       }
@@ -2974,7 +2995,9 @@
         duration: waveSweepMs / speed,
         easing: "cubic-bezier(0.22, 1, 0.36, 1)",
         fill: "none"
-      });
+      }).onfinish = () => {
+        actorEl.style.transform = "";
+      };
       engineState.currentCombo.atCenterStage = false;
       engineState.currentCombo.knockedBack = true;
       engineState.currentCombo.aoeCenterX = void 0;
@@ -2989,7 +3012,9 @@
         duration: waveSweepMs / speed,
         easing: "cubic-bezier(0.22, 1, 0.36, 1)",
         fill: "forwards"
-      });
+      }).onfinish = () => {
+        actorEl.style.transform = pCenter;
+      };
       engineState.currentCombo.atCenterStage = true;
     }
     const centerStageX = arenaRect.width / 2;
@@ -3117,7 +3142,10 @@
       engineState.currentCombo.aoeCenterY = void 0;
       engineState.currentCombo.aoeCasterId = null;
     }
-    actorEl.animate(actorKeyframes, actorAnimConfig);
+    const aoeAnim = actorEl.animate(actorKeyframes, actorAnimConfig);
+    aoeAnim.onfinish = () => {
+      actorEl.style.transform = actorAnimConfig.fill === "forwards" ? pCenter : "";
+    };
     const centerStageX = arenaRect.width / 2;
     const centerStageY = arenaRect.height / 2;
     if (frame.isAOEFirst) {
@@ -3415,9 +3443,29 @@
         }, 450 / speed);
       }
     }
-    actorEl.animate(actorKeyframes, actorAnimConfig);
+    const actorAnim = actorEl.animate(actorKeyframes, actorAnimConfig);
+    actorAnim.onfinish = () => {
+      if (actorAnimConfig.fill === "forwards") {
+        const finalKeyframe = actorKeyframes[actorKeyframes.length - 1];
+        if (finalKeyframe && finalKeyframe.transform) {
+          actorEl.style.transform = finalKeyframe.transform;
+        }
+      } else {
+        actorEl.style.transform = "";
+      }
+    };
     if (targetKeyframes.length > 0) {
-      targetEl.animate(targetKeyframes, targetAnimConfig);
+      const targetAnim = targetEl.animate(targetKeyframes, targetAnimConfig);
+      targetAnim.onfinish = () => {
+        if (targetAnimConfig.fill === "forwards") {
+          const finalKeyframe = targetKeyframes[targetKeyframes.length - 1];
+          if (finalKeyframe && finalKeyframe.transform) {
+            targetEl.style.transform = finalKeyframe.transform;
+          }
+        } else {
+          targetEl.style.transform = "";
+        }
+      };
     }
     return frameDuration;
   }
@@ -3633,9 +3681,9 @@
     let finalX = centerX;
     let finalY = centerY - 20;
     if (isTargetCombo && displayValue > 0) {
-      const comboAvoidOffset = targetActor && targetActor.side === "left" ? 60 : -60;
+      const comboAvoidOffset = targetActor && targetActor.side === "left" ? 45 : -45;
       finalX += comboAvoidOffset;
-      finalY -= 30;
+      finalY -= 25;
     }
     if (isTargetCombo || isCriticalOrBig || frame.type === "BUFF_EFFECT" || frame.isBeneficial || frame.blocked) {
       let attempts = 0;
@@ -3666,6 +3714,7 @@
       hitDuration = 1800;
       hitScale = 1.5;
     }
+    finalX = Math.max(45, Math.min(arenaRect.width - 45, finalX));
     actorFloats.push({ x: finalX, y: finalY, expiresAt: now + hitDuration / getEffectiveSpeed() });
     engineState.floatTracker.set(affectedId, actorFloats);
     const floatEl = document.createElement("div");
@@ -3741,9 +3790,19 @@
         cumulativeEl.style.textShadow = "0 0 12px rgba(197, 48, 48, 1)";
         cumulativeEl.style.animation = "none";
         cumulativeEl.style.zIndex = "50";
-        const sideOffset = targetActor && targetActor.side === "left" ? -90 : 90;
-        cumulativeEl.style.left = `${centerX + sideOffset}px`;
-        cumulativeEl.style.top = `${centerY - 40}px`;
+        const sideOffset = targetActor && targetActor.side === "left" ? -85 : 85;
+        let targetX = centerX + sideOffset;
+        let targetY = centerY - 35;
+        const arenaW = arenaRect.width;
+        const maxSafeX = arenaW - 85;
+        const minSafeX = 85;
+        if (targetX > maxSafeX) {
+          targetX = maxSafeX;
+        } else if (targetX < minSafeX) {
+          targetX = minSafeX;
+        }
+        cumulativeEl.style.left = `${targetX}px`;
+        cumulativeEl.style.top = `${Math.max(25, targetY)}px`;
         cumulativeEl.dataset.targetId = affectedId;
         cumulativeEl.dataset.currentTotal = "0";
         arena.appendChild(cumulativeEl);
@@ -3825,28 +3884,29 @@
         .jrpg-bg-stripes { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px); animation: bgScroll 8s linear infinite; z-index: 1; pointer-events: none; }
         .mvp-splash { position: absolute; right: -5%; top: 0; height: 100%; width: 60%; background: ${theme.dark}; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); z-index: 2; border-left: none; animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; display: flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
         .mvp-avatar { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transform: scale(1.05); filter: drop-shadow(10px 10px 0px rgba(0,0,0,0.5)); z-index: 1; }
-        .ui-container { position: absolute; left: 5%; top: 6%; height: 88%; width: 52%; max-width: 680px; z-index: 3; display: flex; flex-direction: column; }
-        .title-group { flex-shrink: 0; margin-bottom: 12px; transform: skewX(-10deg); animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .title-main { font-size: clamp(48px, 8vw, 100px); color: transparent; -webkit-text-stroke: 3px ${theme.main}; letter-spacing: 10px; margin: 0; line-height: 1; text-shadow: 6px 6px 0px ${theme.accent}; }
-        .title-sub { font-size: 26px; background: ${theme.main}; display: inline-block; padding: 4px 18px; color: ${theme.dark}; font-weight: 900; letter-spacing: 8px; }
-        .stats-container { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; padding-right: 14px; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: ${theme.main} rgba(255,255,255,0.08); }
+        .ui-container { position: absolute; left: 5%; top: 8%; height: 84%; width: 52%; max-width: 720px; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; }
+        .title-group { flex-shrink: 0; transform: skewX(-10deg); animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .title-main { font-size: clamp(56px, 9vw, 110px); color: transparent; -webkit-text-stroke: 3px ${theme.main}; letter-spacing: 10px; margin: 0; line-height: 1; text-shadow: 6px 6px 0px ${theme.accent}; }
+        .title-sub { font-size: 28px; background: ${theme.main}; display: inline-block; padding: 4px 20px; color: ${theme.dark}; font-weight: 900; letter-spacing: 8px; }
+        .stats-container { display: flex; flex-direction: column; gap: 12px; padding: 6px 20px 6px 28px; margin-left: -16px; scrollbar-width: thin; scrollbar-color: ${theme.main} rgba(255,255,255,0.08); }
+        .stats-container.scrollable { max-height: clamp(260px, 50vh, 480px); overflow-y: auto; overflow-x: hidden; }
         .stats-container::-webkit-scrollbar { width: 6px; }
         .stats-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
         .stats-container::-webkit-scrollbar-thumb { background: ${theme.main}; border-radius: 3px; }
-        .stat-row { flex-shrink: 0; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 9px 15px 9px 20px; border-left: 5px solid ${theme.main}; backdrop-filter: blur(4px); opacity: 0; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .stat-name { width: 130px; padding-left: 5px; font-size: 19px; color: #fff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: skewX(10deg); }
-        .stat-bar-wrapper { flex: 1; height: 22px; background: rgba(255,255,255,0.1); margin: 0 16px; position: relative; overflow: hidden; }
+        .stat-row { flex-shrink: 0; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 11px 18px 11px 22px; border-left: 5px solid ${theme.main}; backdrop-filter: blur(4px); opacity: 0; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .stat-name { width: 135px; padding-left: 5px; font-size: 20px; color: #fff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: skewX(10deg); }
+        .stat-bar-wrapper { flex: 1; height: 24px; background: rgba(255,255,255,0.1); margin: 0 18px; position: relative; overflow: hidden; }
         .stat-bar-fill { height: 100%; background: ${theme.main}; box-shadow: inset 0 -5px 0 rgba(0,0,0,0.3); width: 0; animation: barGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .stat-numbers { width: 140px; text-align: right; transform: skewX(10deg); }
-        .stat-dmg { font-size: 22px; color: ${theme.main}; }
-        .stat-taken { font-size: 13px; color: #a0aec0; }
-        .stats-container.compact { gap: 6px; }
-        .stats-container.compact .stat-row { padding: 5px 12px 5px 16px; }
+        .stat-dmg { font-size: 24px; color: ${theme.main}; }
+        .stat-taken { font-size: 14px; color: #a0aec0; }
+        .stats-container.compact { gap: 7px; }
+        .stats-container.compact .stat-row { padding: 6px 14px 6px 18px; }
         .stats-container.compact .stat-name { font-size: 16px; width: 115px; }
-        .stats-container.compact .stat-bar-wrapper { height: 18px; margin: 0 12px; }
-        .stats-container.compact .stat-dmg { font-size: 18px; }
-        .stats-container.compact .stat-taken { font-size: 11px; }
-        .close-btn { flex-shrink: 0; align-self: flex-start; margin-top: 14px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 12px 36px; font-size: 22px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; z-index: 10; }
+        .stats-container.compact .stat-bar-wrapper { height: 19px; margin: 0 12px; }
+        .stats-container.compact .stat-dmg { font-size: 19px; }
+        .stats-container.compact .stat-taken { font-size: 12px; }
+        .close-btn { flex-shrink: 0; align-self: flex-start; margin-top: 16px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 14px 38px; font-size: 22px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; z-index: 10; }
         .close-btn:hover { transform: skewX(-10deg) translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
         .close-btn:active { transform: skewX(-10deg) translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
         .mvp-label { position: absolute; left: 12%; top: 40px; background: ${theme.main}; color: ${theme.dark}; padding: 10px 30px; font-size: 28px; font-weight: 900; transform: skewX(-15deg); box-shadow: 5px 5px 0 rgba(0,0,0,0.5); z-index: 10; letter-spacing: 4px; }
@@ -3880,12 +3940,13 @@
         <h1 class="title-main">${theme.text}</h1>
     `;
     uiContainer.appendChild(titleGroup);
+    const memberCount = Array.from(consolidated.values()).filter((s) => !s.actor?.isSummon).length;
     const statsContainer = document.createElement("div");
-    statsContainer.className = `stats-container${consolidated.size > 7 ? " compact" : ""}`;
+    statsContainer.className = `stats-container${memberCount > 5 ? " scrollable compact" : ""}`;
     const headerRow = document.createElement("div");
-    headerRow.style.cssText = "flex-shrink: 0; display: flex; color: #a0aec0; font-family: sans-serif; font-size: 12px; margin-bottom: 5px; padding-left: 15px;";
+    headerRow.style.cssText = "flex-shrink: 0; display: flex; color: #a0aec0; font-family: sans-serif; font-size: 12px; margin-bottom: 5px; padding-left: 24px; padding-right: 14px;";
     headerRow.innerHTML = `
-        <div style="width: 120px;">MEMBER</div>
+        <div style="width: 125px;">MEMBER</div>
         <div style="flex: 1; margin: 0 20px;">CONTRIBUTION</div>
         <div style="width: 140px; text-align: right;">OUTPUT / STATS</div>
     `;
@@ -4320,15 +4381,25 @@
       const { gap, nameSize, hpHeight, statusSize, actorH } = dims;
       const neededHeight = Math.ceil(bestR * actorH + Math.max(0, bestR - 1) * gap);
       const neededWidth = Math.ceil(bestC * (avatarSize * 1.32) + Math.max(0, bestC - 1) * gap);
-      el.style.height = `${Math.min(maxH, neededHeight + 2)}px`;
-      el.style.width = `${Math.min(maxW, neededWidth)}px`;
-      el.style.setProperty("--avatar-size", `${avatarSize}px`);
-      el.style.setProperty("--unit-gap", `${gap}px`);
-      el.style.setProperty("--name-size", `${nameSize}px`);
-      el.style.setProperty("--hp-height", `${hpHeight}px`);
-      el.style.setProperty("--status-size", `${statusSize}px`);
-      el.style.setProperty("--team-rows", `${bestR}`);
-      el.style.setProperty("--team-cols", `${bestC}`);
+      const targetH = `${Math.min(maxH, neededHeight + 2)}px`;
+      const targetW = `${Math.min(maxW, neededWidth)}px`;
+      const targetAvatar = `${avatarSize}px`;
+      if (el.dataset.lastAvatarSize !== targetAvatar || el.dataset.lastH !== targetH || el.dataset.lastW !== targetW || el.dataset.lastRows !== String(bestR) || el.dataset.lastCols !== String(bestC)) {
+        el.dataset.lastAvatarSize = targetAvatar;
+        el.dataset.lastH = targetH;
+        el.dataset.lastW = targetW;
+        el.dataset.lastRows = String(bestR);
+        el.dataset.lastCols = String(bestC);
+        el.style.height = targetH;
+        el.style.width = targetW;
+        el.style.setProperty("--avatar-size", targetAvatar);
+        el.style.setProperty("--unit-gap", `${gap}px`);
+        el.style.setProperty("--name-size", `${nameSize}px`);
+        el.style.setProperty("--hp-height", `${hpHeight}px`);
+        el.style.setProperty("--status-size", `${statusSize}px`);
+        el.style.setProperty("--team-rows", `${bestR}`);
+        el.style.setProperty("--team-cols", `${bestC}`);
+      }
     });
   }
   function renderSeekPreviewState(sr, frameIndex) {
@@ -4694,7 +4765,6 @@
       if (skipTransition || progress < prevProgress - 20) {
         icon.style.transition = "none";
         icon.style.left = `${progress}%`;
-        void icon.offsetHeight;
       } else {
         icon.style.transition = `left ${400 / getEffectiveSpeed()}ms linear`;
         icon.style.left = `${progress}%`;
@@ -5378,9 +5448,14 @@
     if (hasCritShake && arena) {
       setTimeout(() => {
         if (engineState.playbackToken === token && arena.isConnected) {
-          arena.classList.remove("shake-active");
-          void arena.offsetWidth;
-          arena.classList.add("shake-active");
+          arena.animate([
+            { transform: "translateX(0)" },
+            { transform: "translateX(-8px)", offset: 0.2 },
+            { transform: "translateX(8px)", offset: 0.4 },
+            { transform: "translateX(-8px)", offset: 0.6 },
+            { transform: "translateX(8px)", offset: 0.8 },
+            { transform: "translateX(0)", offset: 1 }
+          ], { duration: 300 / getEffectiveSpeed(), easing: "ease-in-out" });
         }
       }, impactDelayMs / getEffectiveSpeed());
     }
@@ -5421,11 +5496,14 @@
           syncSummonVisibility: false,
           deferDeadClassForActorId: waveDeadActorIds
         });
-        syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
       }, hitDelay);
     });
     await new Promise((resolve) => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
     if (engineState.playbackToken !== token) return;
+    const lastWf = waveFrames[waveFrames.length - 1];
+    if (lastWf) {
+      syncActorStatusAndShieldDOM(sr, lastWf.actorsStatusState, lastWf.actorsShieldState, lastWf.actorsBondState);
+    }
     for (const wf of waveFrames) {
       if (wf.isDeathEvent && wf.deadActorId) {
         await playFatalitySequence(sr, wf.deadActorId, token);
@@ -5473,6 +5551,33 @@
       showMVPPanel();
       engineState.currentFrameIndex = 0;
     }
+  }
+  function smoothlyReturnDisplacedActorsToOrigin(sr, heldActorId = null) {
+    const effectiveSpeed = getEffectiveSpeed();
+    engineState.actors.forEach((actor) => {
+      if (actor.id === heldActorId) return;
+      const el = sr.getElementById(`actor-${actor.id}`);
+      if (!el || el.classList.contains("spawning") || el.classList.contains("despawning")) return;
+      const anims = el.getAnimations ? el.getAnimations() : [];
+      const computedTransform = window.getComputedStyle ? window.getComputedStyle(el).transform : el.style.transform;
+      const isDisplaced = computedTransform && computedTransform !== "none" && computedTransform !== "matrix(1, 0, 0, 1, 0, 0)" || el.style.transform && el.style.transform !== "none";
+      if (isDisplaced) {
+        anims.forEach((anim) => anim.cancel());
+        el.animate([
+          { transform: computedTransform },
+          { transform: "translate(0px, 0px) scale(1)" }
+        ], {
+          duration: 220 / effectiveSpeed,
+          easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          fill: "none"
+        }).onfinish = () => {
+          el.style.transform = "";
+        };
+      } else {
+        anims.forEach((anim) => anim.cancel());
+        el.style.transform = "";
+      }
+    });
   }
   async function renderFrame(frame, token) {
     const sr = engineState.shadowRoot;
@@ -5525,64 +5630,14 @@
     }
     const speaker = resolveDialogueSpeaker(frame);
     if (speaker) {
-      engineState.actors.forEach((actor) => {
-        if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
-          const el = sr.getElementById(`actor-${actor.id}`);
-          if (el && !el.classList.contains("spawning") && !el.classList.contains("despawning")) {
-            const currentTransform = el.style.transform;
-            if (currentTransform && currentTransform !== "none") {
-              el.animate([
-                { transform: currentTransform },
-                { transform: "translate(0px, 0px) scale(1)" }
-              ], {
-                duration: 200 / getEffectiveSpeed(),
-                easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                fill: "forwards"
-              }).onfinish = () => {
-                if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
-                el.style.transform = "";
-              };
-            } else {
-              if (el.getAnimations) {
-                el.getAnimations().forEach((anim) => anim.cancel());
-              }
-              el.style.transform = "";
-            }
-          }
-        }
-      });
+      smoothlyReturnDisplacedActorsToOrigin(sr, engineState.currentCombo.heldForCoverActorId);
       if (!isUltimateCutInQuoteFrame(frame)) {
         const readTime = renderSpeechBubble(frame, sr, token);
         const textDuration = getMessageReadingDuration(speaker.quote);
         frameDuration = Math.max(frameDuration, textDuration, readTime);
       }
     } else if (isSceneNarrationFrame(frame)) {
-      engineState.actors.forEach((actor) => {
-        if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
-          const el = sr.getElementById(`actor-${actor.id}`);
-          if (el && !el.classList.contains("spawning") && !el.classList.contains("despawning")) {
-            const currentTransform = el.style.transform;
-            if (currentTransform && currentTransform !== "none") {
-              el.animate([
-                { transform: currentTransform },
-                { transform: "translate(0px, 0px) scale(1)" }
-              ], {
-                duration: 200 / getEffectiveSpeed(),
-                easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                fill: "forwards"
-              }).onfinish = () => {
-                if (el.getAnimations) el.getAnimations().forEach((anim) => anim.cancel());
-                el.style.transform = "";
-              };
-            } else {
-              if (el.getAnimations) {
-                el.getAnimations().forEach((anim) => anim.cancel());
-              }
-              el.style.transform = "";
-            }
-          }
-        }
-      });
+      smoothlyReturnDisplacedActorsToOrigin(sr, engineState.currentCombo.heldForCoverActorId);
       const readTime = renderSceneNarrationBanner(frame, sr, token);
       const textDuration = getMessageReadingDuration(frame.message);
       frameDuration = Math.max(frameDuration, textDuration, readTime);
@@ -5596,7 +5651,6 @@
     }
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
-    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
     if (frame.contractEvent === "ACCEPT") {
       await playContractCutIn(frame, sr, token);
       if (engineState.playbackToken !== token) return;
@@ -5636,9 +5690,14 @@
       );
     }
     if (frame.vfx.includes("screen-shake") && arena) {
-      arena.classList.remove("shake-active");
-      void arena.offsetWidth;
-      arena.classList.add("shake-active");
+      arena.animate([
+        { transform: "translateX(0)" },
+        { transform: "translateX(-8px)", offset: 0.2 },
+        { transform: "translateX(8px)", offset: 0.4 },
+        { transform: "translateX(-8px)", offset: 0.6 },
+        { transform: "translateX(8px)", offset: 0.8 },
+        { transform: "translateX(0)", offset: 1 }
+      ], { duration: 300 / getEffectiveSpeed(), easing: "ease-in-out" });
       frameDuration = Math.max(frameDuration, 600);
     }
     if (frame.vfx.includes("dodge-blink") && frame.targetId) {

@@ -438,15 +438,33 @@ export function updateDynamicTeamLayout(arena, leftTeam, rightTeam) {
         const neededHeight = Math.ceil(bestR * actorH + Math.max(0, bestR - 1) * gap);
         const neededWidth = Math.ceil(bestC * (avatarSize * 1.32) + Math.max(0, bestC - 1) * gap);
 
-        el.style.height = `${Math.min(maxH, neededHeight + 2)}px`;
-        el.style.width = `${Math.min(maxW, neededWidth)}px`;
-        el.style.setProperty('--avatar-size', `${avatarSize}px`);
-        el.style.setProperty('--unit-gap', `${gap}px`);
-        el.style.setProperty('--name-size', `${nameSize}px`);
-        el.style.setProperty('--hp-height', `${hpHeight}px`);
-        el.style.setProperty('--status-size', `${statusSize}px`);
-        el.style.setProperty('--team-rows', `${bestR}`);
-        el.style.setProperty('--team-cols', `${bestC}`);
+        const targetH = `${Math.min(maxH, neededHeight + 2)}px`;
+        const targetW = `${Math.min(maxW, neededWidth)}px`;
+        const targetAvatar = `${avatarSize}px`;
+
+        if (
+            el.dataset.lastAvatarSize !== targetAvatar ||
+            el.dataset.lastH !== targetH ||
+            el.dataset.lastW !== targetW ||
+            el.dataset.lastRows !== String(bestR) ||
+            el.dataset.lastCols !== String(bestC)
+        ) {
+            el.dataset.lastAvatarSize = targetAvatar;
+            el.dataset.lastH = targetH;
+            el.dataset.lastW = targetW;
+            el.dataset.lastRows = String(bestR);
+            el.dataset.lastCols = String(bestC);
+
+            el.style.height = targetH;
+            el.style.width = targetW;
+            el.style.setProperty('--avatar-size', targetAvatar);
+            el.style.setProperty('--unit-gap', `${gap}px`);
+            el.style.setProperty('--name-size', `${nameSize}px`);
+            el.style.setProperty('--hp-height', `${hpHeight}px`);
+            el.style.setProperty('--status-size', `${statusSize}px`);
+            el.style.setProperty('--team-rows', `${bestR}`);
+            el.style.setProperty('--team-cols', `${bestC}`);
+        }
     });
 }
 
