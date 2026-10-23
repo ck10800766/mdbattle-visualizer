@@ -76,9 +76,9 @@ export function spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetD
     let finalY = centerY - 20;
 
     if (isTargetCombo && displayValue > 0) {
-        const comboAvoidOffset = (targetActor && targetActor.side === 'left') ? 60 : -60;
+        const comboAvoidOffset = (targetActor && targetActor.side === 'left') ? 45 : -45;
         finalX += comboAvoidOffset;
-        finalY -= 30;
+        finalY -= 25;
     }
 
     // Radial collision avoidance to prevent rapid multi-hit numbers from stacking on top of each other
@@ -117,6 +117,7 @@ export function spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetD
         hitScale = 1.5;
     }
 
+    finalX = Math.max(45, Math.min(arenaRect.width - 45, finalX));
     actorFloats.push({ x: finalX, y: finalY, expiresAt: now + (hitDuration / getEffectiveSpeed()) });
     engineState.floatTracker.set(affectedId, actorFloats);
 
@@ -204,9 +205,22 @@ export function spawnFloatingText(frame, sr, isNextFrameSameCombo, isNextTargetD
             cumulativeEl.style.animation = 'none';
             cumulativeEl.style.zIndex = '50';
 
-            const sideOffset = (targetActor && targetActor.side === 'left') ? -90 : 90;
-            cumulativeEl.style.left = `${centerX + sideOffset}px`;
-            cumulativeEl.style.top = `${centerY - 40}px`;
+            const sideOffset = (targetActor && targetActor.side === 'left') ? -85 : 85;
+            let targetX = centerX + sideOffset;
+            let targetY = centerY - 35;
+
+            // Smart boundary clamping: smoothly push inward if nearing arena walls
+            const arenaW = arenaRect.width;
+            const maxSafeX = arenaW - 85;
+            const minSafeX = 85;
+            if (targetX > maxSafeX) {
+                targetX = maxSafeX;
+            } else if (targetX < minSafeX) {
+                targetX = minSafeX;
+            }
+
+            cumulativeEl.style.left = `${targetX}px`;
+            cumulativeEl.style.top = `${Math.max(25, targetY)}px`;
 
             cumulativeEl.dataset.targetId = affectedId;
             cumulativeEl.dataset.currentTotal = '0';

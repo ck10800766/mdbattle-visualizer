@@ -44,7 +44,7 @@ export const STAGE_STYLES = `
     .ctb-icon.right { border-color: #fc8181; }
 
     /* Battle Arena & Actor Cards */
-    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 4vw; position: relative; min-height: 0; overflow: hidden; }
+    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px clamp(70px, 8.5vw, 150px); position: relative; min-height: 0; overflow: hidden; }
     .team {
         display: flex;
         flex-direction: column;
@@ -196,6 +196,7 @@ export const STAGE_STYLES = `
     .floating-block { color: #90cdf4; font-size: 26px; font-style: italic; text-shadow: 0 0 10px rgba(66, 153, 225, 0.9), 0 2px 4px #000; letter-spacing: 1px; }
 
     .combo-text { position: absolute; top: 10%; right: -60px; font-size: 40px; font-weight: 900; color: #f6ad55; font-style: italic; text-shadow: 0 4px 10px rgba(221, 107, 32, 0.8); animation: comboPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; pointer-events: none; z-index: 25; white-space: nowrap; }
+    .actor.right .combo-text { right: auto; left: -60px; }
     .break-stamp { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg) scale(1); font-size: 24px; font-weight: 900; color: #fc8181; border: 3px solid #e53e3e; padding: 2px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.88); text-shadow: 0 2px 6px rgba(0,0,0,0.9); box-shadow: 0 0 12px rgba(229, 62, 62, 0.6); opacity: 0; animation: stampDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; z-index: 45; white-space: nowrap; }
     .luck-drop { position: absolute; top: -90px; left: 50%; transform: translateX(-50%); font-size: 44px; animation: dropDown 0.45s ease-in forwards; z-index: 40; pointer-events: none; }
 

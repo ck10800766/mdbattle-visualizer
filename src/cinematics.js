@@ -447,6 +447,18 @@ export function renderSpeechBubble(frame, sr, token) {
     bubble.appendChild(textSpan);
     actorEl.appendChild(bubble);
 
+    // Dynamic vertical boundary clamping to prevent bubble from clipping into CTB timeline bar
+    const arena = sr.getElementById('arena');
+    if (arena) {
+        const arenaRect = arena.getBoundingClientRect();
+        const bubbleRect = bubble.getBoundingClientRect();
+        const topOverflow = (arenaRect.top + 10) - bubbleRect.top;
+        if (topOverflow > 0) {
+            bubble.style.top = `${-25 + topOverflow}px`;
+            bubble.classList.add('top-adjusted');
+        }
+    }
+
     const textContent = speaker.quote;
     const readTime = getMessageReadingDuration(textContent);
 

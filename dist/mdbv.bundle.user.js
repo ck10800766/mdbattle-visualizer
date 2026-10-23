@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.9
+// @version      7.5.10
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.9";
+  var APP_VERSION = "7.5.10";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -1815,7 +1815,7 @@
     .ctb-icon.right { border-color: #fc8181; }
 
     /* Battle Arena & Actor Cards */
-    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px 4vw; position: relative; min-height: 0; overflow: hidden; }
+    .arena { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 10px clamp(70px, 8.5vw, 150px); position: relative; min-height: 0; overflow: hidden; }
     .team {
         display: flex;
         flex-direction: column;
@@ -1967,6 +1967,7 @@
     .floating-block { color: #90cdf4; font-size: 26px; font-style: italic; text-shadow: 0 0 10px rgba(66, 153, 225, 0.9), 0 2px 4px #000; letter-spacing: 1px; }
 
     .combo-text { position: absolute; top: 10%; right: -60px; font-size: 40px; font-weight: 900; color: #f6ad55; font-style: italic; text-shadow: 0 4px 10px rgba(221, 107, 32, 0.8); animation: comboPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; pointer-events: none; z-index: 25; white-space: nowrap; }
+    .actor.right .combo-text { right: auto; left: -60px; }
     .break-stamp { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg) scale(1); font-size: 24px; font-weight: 900; color: #fc8181; border: 3px solid #e53e3e; padding: 2px 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.88); text-shadow: 0 2px 6px rgba(0,0,0,0.9); box-shadow: 0 0 12px rgba(229, 62, 62, 0.6); opacity: 0; animation: stampDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; z-index: 45; white-space: nowrap; }
     .luck-drop { position: absolute; top: -90px; left: 50%; transform: translateX(-50%); font-size: 44px; animation: dropDown 0.45s ease-in forwards; z-index: 40; pointer-events: none; }
 
@@ -2417,6 +2418,16 @@
     textSpan.className = "typewriter-text";
     bubble.appendChild(textSpan);
     actorEl.appendChild(bubble);
+    const arena = sr.getElementById("arena");
+    if (arena) {
+      const arenaRect = arena.getBoundingClientRect();
+      const bubbleRect = bubble.getBoundingClientRect();
+      const topOverflow = arenaRect.top + 10 - bubbleRect.top;
+      if (topOverflow > 0) {
+        bubble.style.top = `${-25 + topOverflow}px`;
+        bubble.classList.add("top-adjusted");
+      }
+    }
     const textContent = speaker.quote;
     const readTime = getMessageReadingDuration(textContent);
     let charIndex = 0;
@@ -3670,9 +3681,9 @@
     let finalX = centerX;
     let finalY = centerY - 20;
     if (isTargetCombo && displayValue > 0) {
-      const comboAvoidOffset = targetActor && targetActor.side === "left" ? 60 : -60;
+      const comboAvoidOffset = targetActor && targetActor.side === "left" ? 45 : -45;
       finalX += comboAvoidOffset;
-      finalY -= 30;
+      finalY -= 25;
     }
     if (isTargetCombo || isCriticalOrBig || frame.type === "BUFF_EFFECT" || frame.isBeneficial || frame.blocked) {
       let attempts = 0;
@@ -3703,6 +3714,7 @@
       hitDuration = 1800;
       hitScale = 1.5;
     }
+    finalX = Math.max(45, Math.min(arenaRect.width - 45, finalX));
     actorFloats.push({ x: finalX, y: finalY, expiresAt: now + hitDuration / getEffectiveSpeed() });
     engineState.floatTracker.set(affectedId, actorFloats);
     const floatEl = document.createElement("div");
@@ -3778,9 +3790,19 @@
         cumulativeEl.style.textShadow = "0 0 12px rgba(197, 48, 48, 1)";
         cumulativeEl.style.animation = "none";
         cumulativeEl.style.zIndex = "50";
-        const sideOffset = targetActor && targetActor.side === "left" ? -90 : 90;
-        cumulativeEl.style.left = `${centerX + sideOffset}px`;
-        cumulativeEl.style.top = `${centerY - 40}px`;
+        const sideOffset = targetActor && targetActor.side === "left" ? -85 : 85;
+        let targetX = centerX + sideOffset;
+        let targetY = centerY - 35;
+        const arenaW = arenaRect.width;
+        const maxSafeX = arenaW - 85;
+        const minSafeX = 85;
+        if (targetX > maxSafeX) {
+          targetX = maxSafeX;
+        } else if (targetX < minSafeX) {
+          targetX = minSafeX;
+        }
+        cumulativeEl.style.left = `${targetX}px`;
+        cumulativeEl.style.top = `${Math.max(25, targetY)}px`;
         cumulativeEl.dataset.targetId = affectedId;
         cumulativeEl.dataset.currentTotal = "0";
         arena.appendChild(cumulativeEl);
@@ -3862,28 +3884,29 @@
         .jrpg-bg-stripes { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px); animation: bgScroll 8s linear infinite; z-index: 1; pointer-events: none; }
         .mvp-splash { position: absolute; right: -5%; top: 0; height: 100%; width: 60%; background: ${theme.dark}; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); z-index: 2; border-left: none; animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; display: flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
         .mvp-avatar { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transform: scale(1.05); filter: drop-shadow(10px 10px 0px rgba(0,0,0,0.5)); z-index: 1; }
-        .ui-container { position: absolute; left: 5%; top: 6%; height: 88%; width: 52%; max-width: 680px; z-index: 3; display: flex; flex-direction: column; }
-        .title-group { flex-shrink: 0; margin-bottom: 12px; transform: skewX(-10deg); animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .title-main { font-size: clamp(48px, 8vw, 100px); color: transparent; -webkit-text-stroke: 3px ${theme.main}; letter-spacing: 10px; margin: 0; line-height: 1; text-shadow: 6px 6px 0px ${theme.accent}; }
-        .title-sub { font-size: 26px; background: ${theme.main}; display: inline-block; padding: 4px 18px; color: ${theme.dark}; font-weight: 900; letter-spacing: 8px; }
-        .stats-container { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; padding-right: 14px; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: ${theme.main} rgba(255,255,255,0.08); }
+        .ui-container { position: absolute; left: 5%; top: 8%; height: 84%; width: 52%; max-width: 720px; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; }
+        .title-group { flex-shrink: 0; transform: skewX(-10deg); animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .title-main { font-size: clamp(56px, 9vw, 110px); color: transparent; -webkit-text-stroke: 3px ${theme.main}; letter-spacing: 10px; margin: 0; line-height: 1; text-shadow: 6px 6px 0px ${theme.accent}; }
+        .title-sub { font-size: 28px; background: ${theme.main}; display: inline-block; padding: 4px 20px; color: ${theme.dark}; font-weight: 900; letter-spacing: 8px; }
+        .stats-container { display: flex; flex-direction: column; gap: 12px; padding: 6px 20px 6px 28px; margin-left: -16px; scrollbar-width: thin; scrollbar-color: ${theme.main} rgba(255,255,255,0.08); }
+        .stats-container.scrollable { max-height: clamp(260px, 50vh, 480px); overflow-y: auto; overflow-x: hidden; }
         .stats-container::-webkit-scrollbar { width: 6px; }
         .stats-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
         .stats-container::-webkit-scrollbar-thumb { background: ${theme.main}; border-radius: 3px; }
-        .stat-row { flex-shrink: 0; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 9px 15px 9px 20px; border-left: 5px solid ${theme.main}; backdrop-filter: blur(4px); opacity: 0; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .stat-name { width: 130px; padding-left: 5px; font-size: 19px; color: #fff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: skewX(10deg); }
-        .stat-bar-wrapper { flex: 1; height: 22px; background: rgba(255,255,255,0.1); margin: 0 16px; position: relative; overflow: hidden; }
+        .stat-row { flex-shrink: 0; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 11px 18px 11px 22px; border-left: 5px solid ${theme.main}; backdrop-filter: blur(4px); opacity: 0; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .stat-name { width: 135px; padding-left: 5px; font-size: 20px; color: #fff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: skewX(10deg); }
+        .stat-bar-wrapper { flex: 1; height: 24px; background: rgba(255,255,255,0.1); margin: 0 18px; position: relative; overflow: hidden; }
         .stat-bar-fill { height: 100%; background: ${theme.main}; box-shadow: inset 0 -5px 0 rgba(0,0,0,0.3); width: 0; animation: barGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .stat-numbers { width: 140px; text-align: right; transform: skewX(10deg); }
-        .stat-dmg { font-size: 22px; color: ${theme.main}; }
-        .stat-taken { font-size: 13px; color: #a0aec0; }
-        .stats-container.compact { gap: 6px; }
-        .stats-container.compact .stat-row { padding: 5px 12px 5px 16px; }
+        .stat-dmg { font-size: 24px; color: ${theme.main}; }
+        .stat-taken { font-size: 14px; color: #a0aec0; }
+        .stats-container.compact { gap: 7px; }
+        .stats-container.compact .stat-row { padding: 6px 14px 6px 18px; }
         .stats-container.compact .stat-name { font-size: 16px; width: 115px; }
-        .stats-container.compact .stat-bar-wrapper { height: 18px; margin: 0 12px; }
-        .stats-container.compact .stat-dmg { font-size: 18px; }
-        .stats-container.compact .stat-taken { font-size: 11px; }
-        .close-btn { flex-shrink: 0; align-self: flex-start; margin-top: 14px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 12px 36px; font-size: 22px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; z-index: 10; }
+        .stats-container.compact .stat-bar-wrapper { height: 19px; margin: 0 12px; }
+        .stats-container.compact .stat-dmg { font-size: 19px; }
+        .stats-container.compact .stat-taken { font-size: 12px; }
+        .close-btn { flex-shrink: 0; align-self: flex-start; margin-top: 16px; background: ${theme.main}; color: ${theme.dark}; border: none; padding: 14px 38px; font-size: 22px; font-weight: 900; cursor: pointer; transform: skewX(-10deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.5); opacity: 0; transition: transform 0.1s, box-shadow 0.1s; animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; z-index: 10; }
         .close-btn:hover { transform: skewX(-10deg) translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
         .close-btn:active { transform: skewX(-10deg) translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
         .mvp-label { position: absolute; left: 12%; top: 40px; background: ${theme.main}; color: ${theme.dark}; padding: 10px 30px; font-size: 28px; font-weight: 900; transform: skewX(-15deg); box-shadow: 5px 5px 0 rgba(0,0,0,0.5); z-index: 10; letter-spacing: 4px; }
@@ -3917,12 +3940,13 @@
         <h1 class="title-main">${theme.text}</h1>
     `;
     uiContainer.appendChild(titleGroup);
+    const memberCount = Array.from(consolidated.values()).filter((s) => !s.actor?.isSummon).length;
     const statsContainer = document.createElement("div");
-    statsContainer.className = `stats-container${consolidated.size > 7 ? " compact" : ""}`;
+    statsContainer.className = `stats-container${memberCount > 5 ? " scrollable compact" : ""}`;
     const headerRow = document.createElement("div");
-    headerRow.style.cssText = "flex-shrink: 0; display: flex; color: #a0aec0; font-family: sans-serif; font-size: 12px; margin-bottom: 5px; padding-left: 15px;";
+    headerRow.style.cssText = "flex-shrink: 0; display: flex; color: #a0aec0; font-family: sans-serif; font-size: 12px; margin-bottom: 5px; padding-left: 24px; padding-right: 14px;";
     headerRow.innerHTML = `
-        <div style="width: 120px;">MEMBER</div>
+        <div style="width: 125px;">MEMBER</div>
         <div style="flex: 1; margin: 0 20px;">CONTRIBUTION</div>
         <div style="width: 140px; text-align: right;">OUTPUT / STATS</div>
     `;
