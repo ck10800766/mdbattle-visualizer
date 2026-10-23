@@ -55,11 +55,12 @@ export const STAGE_STYLES = `
         justify-content: center;
         max-height: 100%;
         min-width: 0;
+        transition: width 0.3s ease, height 0.3s ease, gap 0.3s ease;
     }
     .left-team { justify-content: center; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
 
-    .actor { display: flex; flex-direction: column; align-items: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+    .actor { display: flex; flex-direction: column; align-items: center; transition: filter 0.3s ease, opacity 0.3s ease; position: relative; }
     .actor.unspawned { display: none !important; }
     .actor.spawning, .actor.despawning { transition: none !important; z-index: 50; }
     .actor.left.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -99,7 +100,7 @@ export const STAGE_STYLES = `
         border: 2px solid #4a5568;
         object-fit: cover;
         box-shadow: 0 8px 12px -3px rgba(0,0,0,0.6);
-        transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        transition: width 0.3s ease, height 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     }
 
     .hp-container {
@@ -111,7 +112,7 @@ export const STAGE_STYLES = `
         overflow: hidden;
         position: relative;
         border: 1.5px solid #1a202c;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition: width 0.3s ease, height 0.3s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .hp-container.shield-active { border-color: #63b3ed !important; box-shadow: 0 0 8px rgba(99, 179, 237, 0.75), inset 0 0 4px rgba(99, 179, 237, 0.45); }
     .hp-fill { height: 100%; background: #48bb78; transition: width 0.3s ease-out, background-color 0.3s; }
@@ -169,7 +170,7 @@ export const STAGE_STYLES = `
     .dice-warn { background: rgba(183, 121, 31, 0.95); border: 1px solid #f6e05e; }
 
     /* Combat Log Dialog Box */
-    .dialog-box { height: clamp(95px, 16vh, 160px); background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 8px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: clamp(12px, 1.2vw, 14px); overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
+    .dialog-box { height: clamp(95px, 16vh, 160px); background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 8px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: clamp(12px, 1.2vw, 14px); overflow-y: auto; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; cursor: pointer; transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; user-select: text; border-left: 3px solid transparent; }
     .log-line:hover { background: rgba(255, 255, 255, 0.08); padding-left: 12px; }
     .log-line:hover .log-index { color: #81e6d9 !important; font-weight: 700; }

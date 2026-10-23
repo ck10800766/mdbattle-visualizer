@@ -52,6 +52,6 @@ export const SPEED_STORAGE_KEY = 'mdbv_playback_speed';
  * Application semantic version string.
  * @type {string}
  */
-export const APP_VERSION = '7.5.8';
+export const APP_VERSION = '7.5.9';
 
 

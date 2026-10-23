@@ -749,9 +749,14 @@ async function renderAOEWaveBatch(waveFrames, token) {
     if (hasCritShake && arena) {
         setTimeout(() => {
             if (engineState.playbackToken === token && arena.isConnected) {
-                arena.classList.remove('shake-active');
-                void arena.offsetWidth;
-                arena.classList.add('shake-active');
+                arena.animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(-8px)', offset: 0.2 },
+                    { transform: 'translateX(8px)', offset: 0.4 },
+                    { transform: 'translateX(-8px)', offset: 0.6 },
+                    { transform: 'translateX(8px)', offset: 0.8 },
+                    { transform: 'translateX(0)', offset: 1 }
+                ], { duration: 300 / getEffectiveSpeed(), easing: 'ease-in-out' });
             }
         }, impactDelayMs / getEffectiveSpeed());
     }
@@ -800,12 +805,16 @@ async function renderAOEWaveBatch(waveFrames, token) {
                 syncSummonVisibility: false,
                 deferDeadClassForActorId: waveDeadActorIds
             });
-            syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
         }, hitDelay);
     });
 
     await new Promise(resolve => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
     if (engineState.playbackToken !== token) return;
+
+    const lastWf = waveFrames[waveFrames.length - 1];
+    if (lastWf) {
+        syncActorStatusAndShieldDOM(sr, lastWf.actorsStatusState, lastWf.actorsShieldState, lastWf.actorsBondState);
+    }
 
     // 5. Play K.O. fatality sequence for any target(s) defeated during this AOE wave
     for (const wf of waveFrames) {
@@ -870,6 +879,46 @@ export async function playbackLoop(token) {
         showMVPPanel();
         engineState.currentFrameIndex = 0;
     }
+}
+
+/**
+ * Smoothly returns all displaced combatants back to their initial home positions (0, 0)
+ * before dialogue delivery or scene narration subtitle presentations.
+ * Uses window.getComputedStyle to detect real-time WAAPI positions, avoiding abrupt 0ms snaps.
+ *
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {string|null} [heldActorId=null] - Actor ID currently held in position for cover/combo.
+ */
+function smoothlyReturnDisplacedActorsToOrigin(sr, heldActorId = null) {
+    const effectiveSpeed = getEffectiveSpeed();
+    engineState.actors.forEach(actor => {
+        if (actor.id === heldActorId) return;
+        const el = sr.getElementById(`actor-${actor.id}`);
+        if (!el || el.classList.contains('spawning') || el.classList.contains('despawning')) return;
+
+        const anims = el.getAnimations ? el.getAnimations() : [];
+        const computedTransform = window.getComputedStyle ? window.getComputedStyle(el).transform : el.style.transform;
+        const isDisplaced =
+            (computedTransform && computedTransform !== 'none' && computedTransform !== 'matrix(1, 0, 0, 1, 0, 0)') ||
+            (el.style.transform && el.style.transform !== 'none');
+
+        if (isDisplaced) {
+            anims.forEach(anim => anim.cancel());
+            el.animate([
+                { transform: computedTransform },
+                { transform: 'translate(0px, 0px) scale(1)' }
+            ], {
+                duration: 220 / effectiveSpeed,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                fill: 'none'
+            }).onfinish = () => {
+                el.style.transform = '';
+            };
+        } else {
+            anims.forEach(anim => anim.cancel());
+            el.style.transform = '';
+        }
+    });
 }
 
 /**
@@ -941,32 +990,7 @@ export async function renderFrame(frame, token) {
     const speaker = resolveDialogueSpeaker(frame);
     if (speaker) {
         // Ensure all combatants return smoothly to home positions before speaking (do not stick to enemies or snap)
-        engineState.actors.forEach(actor => {
-            if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
-                const el = sr.getElementById(`actor-${actor.id}`);
-                if (el && !el.classList.contains('spawning') && !el.classList.contains('despawning')) {
-                    const currentTransform = el.style.transform;
-                    if (currentTransform && currentTransform !== 'none') {
-                        el.animate([
-                            { transform: currentTransform },
-                            { transform: 'translate(0px, 0px) scale(1)' }
-                        ], {
-                            duration: 200 / getEffectiveSpeed(),
-                            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            fill: 'forwards'
-                        }).onfinish = () => {
-                            if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());
-                            el.style.transform = '';
-                        };
-                    } else {
-                        if (el.getAnimations) {
-                            el.getAnimations().forEach(anim => anim.cancel());
-                        }
-                        el.style.transform = '';
-                    }
-                }
-            }
-        });
+        smoothlyReturnDisplacedActorsToOrigin(sr, engineState.currentCombo.heldForCoverActorId);
         if (!isUltimateCutInQuoteFrame(frame)) {
             const readTime = renderSpeechBubble(frame, sr, token);
             const textDuration = getMessageReadingDuration(speaker.quote);
@@ -974,32 +998,7 @@ export async function renderFrame(frame, token) {
         }
     } else if (isSceneNarrationFrame(frame)) {
         // Ensure all combatants are in their home positions during scene narration
-        engineState.actors.forEach(actor => {
-            if (actor.id !== engineState.currentCombo.heldForCoverActorId) {
-                const el = sr.getElementById(`actor-${actor.id}`);
-                if (el && !el.classList.contains('spawning') && !el.classList.contains('despawning')) {
-                    const currentTransform = el.style.transform;
-                    if (currentTransform && currentTransform !== 'none') {
-                        el.animate([
-                            { transform: currentTransform },
-                            { transform: 'translate(0px, 0px) scale(1)' }
-                        ], {
-                            duration: 200 / getEffectiveSpeed(),
-                            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            fill: 'forwards'
-                        }).onfinish = () => {
-                            if (el.getAnimations) el.getAnimations().forEach(anim => anim.cancel());
-                            el.style.transform = '';
-                        };
-                    } else {
-                        if (el.getAnimations) {
-                            el.getAnimations().forEach(anim => anim.cancel());
-                        }
-                        el.style.transform = '';
-                    }
-                }
-            }
-        });
+        smoothlyReturnDisplacedActorsToOrigin(sr, engineState.currentCombo.heldForCoverActorId);
         const readTime = renderSceneNarrationBanner(frame, sr, token);
         const textDuration = getMessageReadingDuration(frame.message);
         frameDuration = Math.max(frameDuration, textDuration, readTime);
@@ -1024,7 +1023,6 @@ export async function renderFrame(frame, token) {
     // 5. Update ATB bar and persistent marriage/contract bond indicators
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
     syncActorBondVisuals(sr, frame.actorsBondState);
-    syncActorStatusAndShieldDOM(sr, frame.actorsStatusState, frame.actorsShieldState, frame.actorsBondState);
 
     // 6. Play full-screen Contract Cut-In, Rosario Cross inscription, or Ultimate Cut-In
     if (frame.contractEvent === 'ACCEPT') {
@@ -1076,9 +1074,14 @@ export async function renderFrame(frame, token) {
 
     // 8. Trigger arena shake, dodge blink, luck drop, and BREAK! stamp VFX
     if (frame.vfx.includes('screen-shake') && arena) {
-        arena.classList.remove('shake-active');
-        void arena.offsetWidth;
-        arena.classList.add('shake-active');
+        arena.animate([
+            { transform: 'translateX(0)' },
+            { transform: 'translateX(-8px)', offset: 0.2 },
+            { transform: 'translateX(8px)', offset: 0.4 },
+            { transform: 'translateX(-8px)', offset: 0.6 },
+            { transform: 'translateX(8px)', offset: 0.8 },
+            { transform: 'translateX(0)', offset: 1 }
+        ], { duration: 300 / getEffectiveSpeed(), easing: 'ease-in-out' });
         frameDuration = Math.max(frameDuration, 600);
     }
 

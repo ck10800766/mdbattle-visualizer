@@ -243,7 +243,9 @@ export function playAOEWaveBatchChoreography(waveFrames, sr) {
             duration: waveSweepMs / speed,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             fill: 'none'
-        });
+        }).onfinish = () => {
+            actorEl.style.transform = '';
+        };
         engineState.currentCombo.atCenterStage = false;
         engineState.currentCombo.knockedBack = true;
         engineState.currentCombo.aoeCenterX = undefined;
@@ -258,7 +260,9 @@ export function playAOEWaveBatchChoreography(waveFrames, sr) {
             duration: waveSweepMs / speed,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             fill: 'forwards'
-        });
+        }).onfinish = () => {
+            actorEl.style.transform = pCenter;
+        };
         engineState.currentCombo.atCenterStage = true;
     }
 
@@ -436,7 +440,10 @@ function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSi
         engineState.currentCombo.aoeCasterId = null;
     }
 
-    actorEl.animate(actorKeyframes, actorAnimConfig);
+    const aoeAnim = actorEl.animate(actorKeyframes, actorAnimConfig);
+    aoeAnim.onfinish = () => {
+        actorEl.style.transform = actorAnimConfig.fill === 'forwards' ? pCenter : '';
+    };
 
     const centerStageX = arenaRect.width / 2;
     const centerStageY = arenaRect.height / 2;
@@ -819,9 +826,30 @@ function playSingleTargetChoreography(
         }
     }
 
-    actorEl.animate(actorKeyframes, actorAnimConfig);
+    const actorAnim = actorEl.animate(actorKeyframes, actorAnimConfig);
+    actorAnim.onfinish = () => {
+        if (actorAnimConfig.fill === 'forwards') {
+            const finalKeyframe = actorKeyframes[actorKeyframes.length - 1];
+            if (finalKeyframe && finalKeyframe.transform) {
+                actorEl.style.transform = finalKeyframe.transform;
+            }
+        } else {
+            actorEl.style.transform = '';
+        }
+    };
+
     if (targetKeyframes.length > 0) {
-        targetEl.animate(targetKeyframes, targetAnimConfig);
+        const targetAnim = targetEl.animate(targetKeyframes, targetAnimConfig);
+        targetAnim.onfinish = () => {
+            if (targetAnimConfig.fill === 'forwards') {
+                const finalKeyframe = targetKeyframes[targetKeyframes.length - 1];
+                if (finalKeyframe && finalKeyframe.transform) {
+                    targetEl.style.transform = finalKeyframe.transform;
+                }
+            } else {
+                targetEl.style.transform = '';
+            }
+        };
     }
 
     return frameDuration;

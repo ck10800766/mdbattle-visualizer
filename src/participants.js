@@ -90,13 +90,24 @@ export function inferSummonName(logs, summonIndex, summonId, ownerName) {
             if (dialogueMatch && dialogueMatch[1] !== ownerName) return dialogueMatch[1];
         }
 
-        // 1c. Target of single-target attack, projectile, or heal
+        // 1c. Standard combat resolution targeting this summon (對 <Target> 造成了 / 使 <Target> 回復了)
         if (log.targetId === summonId && ['DAMAGE', 'BLOCK', 'HEAL'].includes(log.type)) {
-            const targetMatch = msg.match(/(?:對|\S{1,4}向|\S{1,4}使)\s+(\S+?)(?:[，,。！!、\s]|造成|回復|恢復)/);
+            const targetMatch = msg.match(/(?:對|使)\s+([^\s，,。！!]+(?:\s+[A-Za-z0-9_-]+)?)\s+(?:造成了?|受到了?|回復了?|恢復了?)/);
             if (targetMatch && targetMatch[1] !== ownerName) {
                 const token = targetMatch[1].replace(/^[「『\[【](.*?)[」』\]】]$/, '$1');
                 const isExistingNonSummon = Array.from(engineState.actors.values()).some(a => !a.isSummon && a.name === token);
-                if (token && token !== ownerName && !isExistingNonSummon) return token;
+                if (token && token.length > 1 && !isExistingNonSummon && !/^(?:對|向|在|從|由|被|使|與|和|給|第)$/.test(token)) {
+                    return token;
+                }
+            }
+        }
+
+        // 1d. HP remaining log (<Name> 剩餘 ... HP)
+        if (log.actorId === summonId && log.type === 'HP_REMAINING') {
+            const hpMatch = msg.match(/^\s*(\S+?)\s+剩餘/);
+            if (hpMatch && hpMatch[1] !== ownerName) {
+                const isExistingNonSummon = Array.from(engineState.actors.values()).some(a => !a.isSummon && a.name === hpMatch[1]);
+                if (!isExistingNonSummon) return hpMatch[1];
             }
         }
 
@@ -115,11 +126,21 @@ export function inferSummonName(logs, summonIndex, summonId, ownerName) {
         }
     }
 
-    // 2. Direct entrance pattern from SUMMON log message (e.g. "同人的影分身 從白煙裡滾了出來。", "荒坂特勤 從電梯裡走了出來。")
+    // 2. Structural extraction from the SUMMON log message (zero hardcoded verb whitelist)
+    // Extracts the whitespace-delimited entity token from the final clause after stripping modifier prefix (...的 )
     const summonMsg = String(summonLog.message || '').trim();
-    const summonEntranceMatch = summonMsg.match(/(?:[，,。！!、\s]|^)(?:\S+?的\s+)?([^\s，,。！!]+)\s+(?:從|走進|走了出來|盤腿|趕到|趕來|弓著背|倒掛|站起身|出現在|降臨|現身|按著)/);
-    if (summonEntranceMatch && summonEntranceMatch[1] !== ownerName) {
-        return summonEntranceMatch[1];
+    const clauses = summonMsg.split(/[，,。！!]/).map(s => s.trim()).filter(Boolean);
+    for (let c = clauses.length - 1; c >= 0; c--) {
+        const clause = clauses[c];
+        const stripped = clause.replace(/^(?:.*?[，,。、\s])?(?:\S+?的\s+)/, '');
+        const match = stripped.match(/^([^\s，,。！!]+(?:\s+[A-Za-z0-9_-]+)?)\s+/);
+        if (match) {
+            const name = match[1].trim();
+            const isExistingNonSummon = Array.from(engineState.actors.values()).some(a => !a.isSummon && a.name === name);
+            if (name.length > 1 && !isExistingNonSummon && name !== ownerName && !/^(?:對|向|在|從|由|被|使|與|和|給|第)$/.test(name)) {
+                return name;
+            }
+        }
     }
 
     // 3. Fallback: tokenize the SUMMON log message itself

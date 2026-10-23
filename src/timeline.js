@@ -216,7 +216,6 @@ export function updateATBUI(currentTurn, skipTransition = false, summonStateMap 
         if (skipTransition || progress < prevProgress - 20) {
             icon.style.transition = 'none';
             icon.style.left = `${progress}%`;
-            void icon.offsetHeight;
         } else {
             icon.style.transition = `left ${400 / getEffectiveSpeed()}ms linear`;
             icon.style.left = `${progress}%`;
