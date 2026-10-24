@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         MDBattle-Visualizer (Ultimate Edition V7.5)
+// @name         MDBattle-Visualizer (Ultimate Edition V7.6)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.11
+// @version      7.6.0
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.11";
+  var APP_VERSION = "7.6.0";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -320,7 +320,11 @@
     "patriot_sacrifice",
     "hoarfrost_stomp",
     "guerrilla_mortar_shell",
-    "guerrilla_mortar_splash"
+    "guerrilla_mortar_splash",
+    "gleam_eyes_sweep",
+    "gleam_eyes_breath",
+    "yayoi_daisoujou_chant",
+    "mass_combustion"
   ]);
   var AOE_SKILL_PREFIX_MAP = {
     "guerrilla_mortar_": "guerrilla_mortar"
@@ -2101,10 +2105,13 @@
     .actor.seek-targeted .avatar { border-color: #fc8181 !important; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6) !important; }
 
     /* True AOE Fan Shockwave & Multi-Projectile Barrage VFX */
-    .aoe-fan-wave { position: absolute; width: 160px; height: 340px; pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
-    .aoe-fan-wave.wave-right { border-right: 14px solid var(--wave-color, #fc8181); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 0 180px 180px 0; box-shadow: 18px 0 28px -4px var(--wave-color, #fc8181), inset -14px 0 22px -6px #ffffff; }
-    .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
+    .aoe-fan-wave { position: absolute; width: var(--wave-width, 180px); height: var(--wave-height, clamp(340px, 75vh, 600px)); pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
+    .aoe-fan-wave.wave-right { border-right: 18px solid var(--wave-color, #fc8181); border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-radius: 0 220px 220px 0; box-shadow: 24px 0 36px -4px var(--wave-color, #fc8181), inset -18px 0 28px -6px #ffffff; }
+    .aoe-fan-wave.wave-left { border-left: 18px solid var(--wave-color, #4fd1c5); border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-radius: 220px 0 0 220px; box-shadow: -24px 0 36px -4px var(--wave-color, #4fd1c5), inset 18px 0 28px -6px #ffffff; }
     .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
+
+    /* Radiant Party Wave (Party-Wide Buffs & Mass Heals) */
+    .radiant-party-wave { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.2); width: clamp(260px, 50vw, 850px); height: clamp(260px, 50vw, 850px); border-radius: 50%; pointer-events: none; z-index: 17; opacity: 0.95; mix-blend-mode: screen; background: radial-gradient(circle, transparent 40%, var(--radiant-color, #48bb78) 70%, #ffffff 85%, transparent 100%); box-shadow: 0 0 45px var(--radiant-color, #48bb78), inset 0 0 30px #ffffff; filter: blur(2px); }
 
     /* Environmental Battlefield Hazard Wave & Scene Narration Subtitle Banner */
     .arena-field-wave { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 38; background: radial-gradient(circle at 50% 50%, rgba(229, 62, 62, 0.45) 0%, rgba(183, 28, 28, 0.22) 50%, transparent 80%); opacity: 0; animation: arenaFieldPulse 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -2878,13 +2885,31 @@
     waveEl.style.top = `${startY}px`;
     arena.appendChild(waveEl);
     const arenaRect = arena.getBoundingClientRect();
-    const sweepDist = (targetSide === "right" ? 1 : -1) * Math.max(220, arenaRect.width * 0.34);
+    const sweepDist = (targetSide === "right" ? 1 : -1) * Math.max(320, arenaRect.width * 0.55);
     const anim = waveEl.animate([
       { transform: "translate(-50%, -50%) scale(0.3, 0.45)", opacity: 0.95 },
       { transform: `translate(calc(-50% + ${sweepDist * 0.55}px), -50%) scale(1.25, 1.15)`, opacity: 1, offset: 0.45 },
       { transform: `translate(calc(-50% + ${sweepDist}px), -50%) scale(1.75, 1.45)`, opacity: 0, offset: 1 }
     ], {
       duration: 420 / speed,
+      easing: "cubic-bezier(0.16, 1, 0.3, 1)"
+    });
+    anim.onfinish = () => waveEl.remove();
+  }
+  function spawnRadiantPartyWave(arena, centerX, centerY, color = "#48bb78", speed = 1) {
+    if (!arena || !arena.isConnected) return;
+    const waveEl = document.createElement("div");
+    waveEl.className = "radiant-party-wave";
+    waveEl.style.setProperty("--radiant-color", color);
+    waveEl.style.left = `${centerX}px`;
+    waveEl.style.top = `${centerY}px`;
+    arena.appendChild(waveEl);
+    const anim = waveEl.animate([
+      { transform: "translate(-50%, -50%) scale(0.15)", opacity: 0.95 },
+      { transform: "translate(-50%, -50%) scale(1.15)", opacity: 0.85, offset: 0.6 },
+      { transform: "translate(-50%, -50%) scale(1.5)", opacity: 0, offset: 1 }
+    ], {
+      duration: 500 / speed,
       easing: "cubic-bezier(0.16, 1, 0.3, 1)"
     });
     anim.onfinish = () => waveEl.remove();
@@ -2942,6 +2967,14 @@
         { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
       ], { duration: 240 / speed, easing: "ease-out" });
       spawnClashSpark(arena, targetEl, 20, "#63b3ed", speed);
+    } else if (frame.type === "COUNTER" || frame.isCounter) {
+      const strikeDir = targetSide === "left" ? 28 : -28;
+      targetEl.animate([
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
+        { transform: `translate(${strikeDir}px, 0) scale(1.12)`, filter: "brightness(1.8) drop-shadow(0 0 14px #ecc94b)", offset: 0.3 },
+        { transform: "translate(0,0) scale(1)", filter: "brightness(1)", offset: 1 }
+      ], { duration: 280 / speed, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+      spawnClashSpark(arena, targetEl, 25, "#ecc94b", speed);
     } else {
       targetEl.animate([
         { transform: "translate(0,0) scale(1)", filter: "brightness(1)" },
@@ -2951,19 +2984,26 @@
       spawnClashSpark(arena, targetEl, 20, shadowColor, speed);
     }
   }
-  function playAOEWaveBatchChoreography(waveFrames, sr) {
+  function playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule = null) {
     const firstFrame = waveFrames[0];
     const lastFrame = waveFrames[waveFrames.length - 1];
     const speed = getEffectiveSpeed();
     const arena = sr.getElementById("arena");
-    const casterId = firstFrame.aoeCasterId || firstFrame.actorId;
+    const casterId = firstFrame.aoeCasterId || (firstFrame.type === "COUNTER" ? firstFrame.targetId : firstFrame.actorId);
     const actorEl = sr.getElementById(`actor-${casterId}`);
     const side = engineState.actors.get(casterId)?.side || "left";
-    const firstTargetSide = engineState.actors.get(firstFrame.targetId)?.side || (side === "left" ? "right" : "left");
+    const firstDefenderId = firstFrame.type === "COUNTER" || firstFrame.isCounter ? firstFrame.actorId : firstFrame.targetId;
+    const firstTargetSide = engineState.actors.get(firstDefenderId)?.side || (side === "left" ? "right" : "left");
     const shadowColor = side === "left" ? "#63b3ed" : "#fc8181";
     const staggerMs = 65;
     const impactDelayMs = 135;
-    const waveSweepMs = impactDelayMs + Math.max(0, waveFrames.length - 1) * staggerMs + 280;
+    let waveSweepMs;
+    if (targetSchedule && targetSchedule.size > 0) {
+      const maxScheduled = Math.max(...Array.from(targetSchedule.values()));
+      waveSweepMs = maxScheduled + 280;
+    } else {
+      waveSweepMs = impactDelayMs + Math.max(0, waveFrames.length - 1) * staggerMs + 280;
+    }
     if (!arena || !actorEl) {
       return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
     }
@@ -3025,9 +3065,14 @@
     const centerStageY = arenaRect.height / 2;
     spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
     waveFrames.forEach((wf, idx) => {
-      const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+      const isCounter = wf.type === "COUNTER" || wf.isCounter;
+      const targetId = isCounter ? wf.actorId : wf.targetId;
+      const targetEl = targetId ? sr.getElementById(`actor-${targetId}`) : null;
       if (targetEl) {
-        spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, idx * staggerMs, impactDelayMs, speed);
+        const hitDelay = targetSchedule ? targetSchedule.get(wf.index) ?? impactDelayMs + idx * staggerMs : impactDelayMs + idx * staggerMs;
+        const flightMs = 140;
+        const launchDelay = Math.max(0, hitDelay - flightMs);
+        spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, launchDelay, flightMs, speed);
       }
     });
     return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
@@ -5417,23 +5462,48 @@
   }
   function collectAOEWaveBatch(startIndex) {
     const first = engineState.frames[startIndex];
-    if (!first || !first.isAOE || first.isCounter || first.type === "COUNTER" || !["DAMAGE", "MISS", "BLOCK"].includes(first.type)) {
+    if (!first || !first.isAOE || !["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(first.type)) {
       return [];
     }
-    const casterId = first.aoeCasterId || first.actorId;
+    const casterId = first.aoeCasterId || (first.type === "COUNTER" ? first.targetId : first.actorId);
+    const batch = [first];
+    if (first.isAOELast) return batch;
+    let idx = startIndex + 1;
+    while (idx < engineState.frames.length) {
+      const cur = engineState.frames[idx];
+      if (cur && cur.isAOE && ["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(cur.type)) {
+        const curCasterId = cur.aoeCasterId || (cur.type === "COUNTER" ? cur.targetId : cur.actorId);
+        if (curCasterId === casterId) {
+          batch.push(cur);
+          if (cur.isAOELast) break;
+          idx++;
+          continue;
+        }
+      }
+      break;
+    }
+    return batch;
+  }
+  function collectPartyRadiantBatch(startIndex) {
+    const first = engineState.frames[startIndex];
+    if (!first || !["HEAL", "BUFF_APPLY"].includes(first.type) || first.isCounter || !first.skillId || !first.targetId) {
+      return [];
+    }
+    const casterId = first.actorId;
+    const skillId = first.skillId;
+    const type = first.type;
     const batch = [first];
     let idx = startIndex + 1;
     while (idx < engineState.frames.length) {
       const cur = engineState.frames[idx];
-      if (cur && cur.isAOE && !cur.isCounter && cur.type !== "COUNTER" && ["DAMAGE", "MISS", "BLOCK"].includes(cur.type) && (cur.aoeCasterId || cur.actorId) === casterId) {
+      if (cur && cur.type === type && cur.actorId === casterId && cur.skillId === skillId && !cur.isCounter && cur.targetId) {
         batch.push(cur);
-        if (cur.isAOELast) break;
         idx++;
       } else {
         break;
       }
     }
-    return batch;
+    return batch.length >= 2 ? batch : [];
   }
   async function renderAOEWaveBatch(waveFrames, token) {
     const sr = engineState.shadowRoot;
@@ -5457,7 +5527,62 @@
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
     syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
-    const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
+    const casterId = firstFrame.aoeCasterId || (firstFrame.type === "COUNTER" ? firstFrame.targetId : firstFrame.actorId);
+    const casterSide = engineState.actors.get(casterId)?.side || "left";
+    const targetSide = casterSide === "left" ? "right" : "left";
+    const scheduledItems = waveFrames.map((wf, idx) => {
+      const isCounter = wf.type === "COUNTER" || wf.isCounter;
+      const defenderId = isCounter ? wf.actorId : wf.targetId;
+      const targetEl = defenderId ? sr.getElementById(`actor-${defenderId}`) : null;
+      let progressX = 0;
+      if (arena && targetEl && arena.getBoundingClientRect && targetEl.getBoundingClientRect) {
+        const aRect = arena.getBoundingClientRect();
+        const tRect = targetEl.getBoundingClientRect();
+        if (aRect && aRect.width > 0 && tRect && tRect.width > 0) {
+          const targetCenterX = tRect.left - aRect.left + tRect.width / 2;
+          if (casterSide === "right") {
+            progressX = Math.max(0, aRect.width - targetCenterX);
+          } else {
+            progressX = Math.max(0, targetCenterX);
+          }
+        } else {
+          progressX = idx * 40;
+        }
+      } else {
+        progressX = idx * 40;
+      }
+      return { wf, idx, defenderId, targetEl, progressX, isCounter };
+    });
+    scheduledItems.sort((a, b) => a.progressX - b.progressX);
+    const COLUMN_TOLERANCE = 32;
+    const buckets = [];
+    let curBucket = [];
+    let lastProgress = -9999;
+    for (const item of scheduledItems) {
+      if (curBucket.length === 0 || Math.abs(item.progressX - lastProgress) <= COLUMN_TOLERANCE) {
+        curBucket.push(item);
+        lastProgress = item.progressX;
+      } else {
+        buckets.push(curBucket);
+        curBucket = [item];
+        lastProgress = item.progressX;
+      }
+    }
+    if (curBucket.length > 0) buckets.push(curBucket);
+    const impactDelayMs = 135;
+    const columnCount = Math.max(1, buckets.length);
+    const columnStaggerMs = columnCount <= 1 ? 0 : Math.max(65, Math.min(110, Math.round(360 / (columnCount - 1))));
+    const targetSchedule = /* @__PURE__ */ new Map();
+    buckets.forEach((bucket, bIdx) => {
+      const baseDelay = impactDelayMs + bIdx * columnStaggerMs;
+      bucket.forEach((item, inBucketIdx) => {
+        const hitDelay = baseDelay + inBucketIdx * 6;
+        targetSchedule.set(item.wf.index, hitDelay);
+      });
+    });
+    const maxHitDelay = buckets.length > 0 ? impactDelayMs + (buckets.length - 1) * columnStaggerMs : impactDelayMs;
+    const totalDurationMs = maxHitDelay + 280;
+    const { shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule);
     const hasCritShake = waveFrames.some((wf) => wf.vfx.includes("screen-shake"));
     if (hasCritShake && arena) {
       setTimeout(() => {
@@ -5476,8 +5601,9 @@
     const waveDeadActorIds = new Set(
       waveFrames.filter((wf) => wf.isDeathEvent && wf.deadActorId).map((wf) => wf.deadActorId)
     );
-    waveFrames.forEach((wf, idx) => {
-      const hitDelay = (impactDelayMs + idx * staggerMs) / getEffectiveSpeed();
+    scheduledItems.forEach((item) => {
+      const { wf, targetEl } = item;
+      const hitDelay = (targetSchedule.get(wf.index) || impactDelayMs) / getEffectiveSpeed();
       setTimeout(() => {
         if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
         if (wf.message && dialog) {
@@ -5491,10 +5617,9 @@
         const lookahead = lookaheadComboState(wf.index, wf);
         advanceComboState(wf, lookahead.isNextFrameSameCombo);
         renderComboBanner(arena, wf, speed);
-        const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
-        const targetSide = engineState.actors.get(wf.targetId)?.side || "right";
+        const thisTargetSide = engineState.actors.get(item.defenderId)?.side || targetSide;
         if (targetEl && arena) {
-          triggerAOETargetImpact(wf, arena, targetEl, targetSide, shadowColor, speed);
+          triggerAOETargetImpact(wf, arena, targetEl, thisTargetSide, shadowColor, speed);
           if (wf.vfx.includes("dodge-blink")) {
             targetEl.classList.add("blink-active");
             setTimeout(() => {
@@ -5529,6 +5654,84 @@
       }
     }
   }
+  async function renderPartyRadiantBatch(waveFrames, token) {
+    const sr = engineState.shadowRoot;
+    if (!sr || engineState.playbackToken !== token || waveFrames.length === 0) return;
+    const arena = sr.getElementById("arena");
+    const dialog = sr.getElementById("dialog-box");
+    const firstFrame = waveFrames[0];
+    const speed = getEffectiveSpeed();
+    if (isPrimaryUltimateTriggerFrame(firstFrame)) {
+      const actor = engineState.actors.get(firstFrame.actorId);
+      if (actor && actor.lastUltimateTurn !== firstFrame.turnNumber) {
+        actor.lastUltimateTurn = firstFrame.turnNumber;
+        await playUltimateCutIn(firstFrame, sr, token);
+        if (engineState.playbackToken !== token) return;
+      }
+    }
+    updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
+    syncActorBondVisuals(sr, firstFrame.actorsBondState);
+    const casterId = firstFrame.actorId;
+    const casterEl = sr.getElementById(`actor-${casterId}`);
+    const casterSide = engineState.actors.get(casterId)?.side || "left";
+    const isHeal = firstFrame.type === "HEAL";
+    const radiantColor = isHeal ? "#48bb78" : "#4fd1c5";
+    let waveOriginX = 0;
+    let waveOriginY = 0;
+    if (arena && casterEl && casterEl.getBoundingClientRect) {
+      const aRect = arena.getBoundingClientRect();
+      const cRect = casterEl.getBoundingClientRect();
+      waveOriginX = cRect.left - aRect.left + cRect.width / 2;
+      waveOriginY = cRect.top - aRect.top + cRect.height / 2;
+      casterEl.animate([
+        { transform: "scale(1)", filter: "brightness(1)" },
+        { transform: "scale(1.15)", filter: `brightness(1.5) drop-shadow(0 0 16px ${radiantColor})`, offset: 0.3 },
+        { transform: "scale(1)", filter: "brightness(1)", offset: 1 }
+      ], { duration: 420 / speed, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+    } else if (arena) {
+      const aRect = arena.getBoundingClientRect ? arena.getBoundingClientRect() : { width: 1e3, height: 400 };
+      waveOriginX = casterSide === "left" ? aRect.width * 0.25 : aRect.width * 0.75;
+      waveOriginY = aRect.height * 0.5;
+    }
+    if (arena) {
+      spawnRadiantPartyWave(arena, waveOriginX, waveOriginY, radiantColor, speed);
+    }
+    const rippleStaggerMs = Math.min(25, Math.max(10, Math.round(240 / waveFrames.length)));
+    const baseImpactDelayMs = 120;
+    const totalDurationMs = baseImpactDelayMs + (waveFrames.length - 1) * rippleStaggerMs + 340;
+    waveFrames.forEach((wf, idx) => {
+      const hitDelay = (baseImpactDelayMs + idx * rippleStaggerMs) / speed;
+      setTimeout(() => {
+        if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
+        if (wf.message && dialog) {
+          if (dialog.lastElementChild?.dataset?.frameIndex !== String(wf.index)) {
+            const msgEl = createLogLineElement(wf);
+            dialog.appendChild(msgEl);
+            dialog.scrollTop = dialog.scrollHeight;
+          }
+        }
+        const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+        if (targetEl) {
+          targetEl.animate([
+            { transform: "scale(1)", filter: "brightness(1)" },
+            { transform: "scale(1.08)", filter: `brightness(1.4) drop-shadow(0 0 12px ${radiantColor})`, offset: 0.4 },
+            { transform: "scale(1)", filter: "brightness(1)", offset: 1 }
+          ], { duration: 300 / speed, easing: "ease-out" });
+        }
+        spawnFloatingText(wf, sr, false, false);
+        if (isHeal) {
+          syncActorHpAndDeathDOM(sr, wf, { skipHpTransition: false });
+        }
+        syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
+      }, hitDelay);
+    });
+    await new Promise((resolve) => setTimeout(resolve, totalDurationMs / speed));
+    if (engineState.playbackToken !== token) return;
+    const lastWf = waveFrames[waveFrames.length - 1];
+    if (lastWf) {
+      syncActorStatusAndShieldDOM(sr, lastWf.actorsStatusState, lastWf.actorsShieldState, lastWf.actorsBondState);
+    }
+  }
   async function playbackLoop(token) {
     while (engineState.currentFrameIndex < engineState.frames.length && engineState.isPlaying && engineState.playbackToken === token) {
       const aoeBatch = collectAOEWaveBatch(engineState.currentFrameIndex);
@@ -5538,14 +5741,23 @@
           return;
         }
         engineState.currentFrameIndex += aoeBatch.length;
-      } else {
-        const frame = engineState.frames[engineState.currentFrameIndex];
-        await renderFrame(frame, token);
+        continue;
+      }
+      const radiantBatch = collectPartyRadiantBatch(engineState.currentFrameIndex);
+      if (radiantBatch.length >= 2) {
+        await renderPartyRadiantBatch(radiantBatch, token);
         if (engineState.playbackToken !== token || !engineState.isPlaying) {
           return;
         }
-        engineState.currentFrameIndex++;
+        engineState.currentFrameIndex += radiantBatch.length;
+        continue;
       }
+      const frame = engineState.frames[engineState.currentFrameIndex];
+      await renderFrame(frame, token);
+      if (engineState.playbackToken !== token || !engineState.isPlaying) {
+        return;
+      }
+      engineState.currentFrameIndex++;
       const sr = engineState.shadowRoot;
       if (sr) {
         const seekRange = sr.getElementById("seek-range");

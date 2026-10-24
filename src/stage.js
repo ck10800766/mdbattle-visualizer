@@ -48,7 +48,8 @@ import {
     playCombatAnimation,
     playCoverAnimation,
     playAOEWaveBatchChoreography,
-    triggerAOETargetImpact
+    triggerAOETargetImpact,
+    spawnRadiantPartyWave
 } from './choreography.js';
 import { spawnFloatingText } from './floatingText.js';
 import { showMVPPanel } from './mvp.js';
@@ -680,15 +681,14 @@ function collectAOEWaveBatch(startIndex) {
     if (
         !first ||
         !first.isAOE ||
-        first.isCounter ||
-        first.type === 'COUNTER' ||
-        !['DAMAGE', 'MISS', 'BLOCK'].includes(first.type)
+        !['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(first.type)
     ) {
         return [];
     }
 
-    const casterId = first.aoeCasterId || first.actorId;
+    const casterId = first.aoeCasterId || (first.type === 'COUNTER' ? first.targetId : first.actorId);
     const batch = [first];
+    if (first.isAOELast) return batch;
     let idx = startIndex + 1;
 
     while (idx < engineState.frames.length) {
@@ -696,25 +696,71 @@ function collectAOEWaveBatch(startIndex) {
         if (
             cur &&
             cur.isAOE &&
-            !cur.isCounter &&
-            cur.type !== 'COUNTER' &&
-            ['DAMAGE', 'MISS', 'BLOCK'].includes(cur.type) &&
-            (cur.aoeCasterId || cur.actorId) === casterId
+            ['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(cur.type)
         ) {
-            batch.push(cur);
-            if (cur.isAOELast) break;
-            idx++;
-        } else {
-            break;
+            const curCasterId = cur.aoeCasterId || (cur.type === 'COUNTER' ? cur.targetId : cur.actorId);
+            if (curCasterId === casterId) {
+                batch.push(cur);
+                if (cur.isAOELast) break;
+                idx++;
+                continue;
+            }
         }
+        break;
     }
 
     return batch;
 }
 
 /**
- * Renders a multi-target AOE wave batch as a unified sweeping shockwave and projectile barrage
- * with rapid staggered target impacts (65ms ripple), floating numbers, and HP bar updates.
+ * Detects consecutive beneficial party-wide frames (mass HEAL or mass BUFF_APPLY from the same caster)
+ * to be rendered simultaneously as an expanding radiant wave.
+ *
+ * @param {number} startIndex - Starting frame index in `engineState.frames`.
+ * @returns {Array<object>} Batch of consecutive radiant party frames (length >= 2), or empty array.
+ */
+function collectPartyRadiantBatch(startIndex) {
+    const first = engineState.frames[startIndex];
+    if (
+        !first ||
+        !['HEAL', 'BUFF_APPLY'].includes(first.type) ||
+        first.isCounter ||
+        !first.skillId ||
+        !first.targetId
+    ) {
+        return [];
+    }
+
+    const casterId = first.actorId;
+    const skillId = first.skillId;
+    const type = first.type;
+    const batch = [first];
+    let idx = startIndex + 1;
+
+    while (idx < engineState.frames.length) {
+        const cur = engineState.frames[idx];
+        if (
+            cur &&
+            cur.type === type &&
+            cur.actorId === casterId &&
+            cur.skillId === skillId &&
+            !cur.isCounter &&
+            cur.targetId
+        ) {
+            batch.push(cur);
+            idx++;
+        } else {
+            break;
+        }
+    }
+
+    return batch.length >= 2 ? batch : [];
+}
+
+/**
+ * Renders a multi-target AOE wave batch using Spatial Wavefront Scheduling.
+ * The sweeping shockwave propagates across the stage from caster towards defenders; targets in the same
+ * column take damage and show numbers simultaneously rather than in arbitrary battle log order.
  *
  * @param {Array<object>} waveFrames - Batch of consecutive AOE combat frames.
  * @param {number} token - Active playback token.
@@ -751,8 +797,78 @@ async function renderAOEWaveBatch(waveFrames, token) {
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
     syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
 
-    // 3. Launch center-stage AOE caster animation, crescent shockwave, and projectile barrage
-    const { staggerMs, impactDelayMs, totalDurationMs, shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr);
+    // 3. Compute spatial wavefront positions and schedule column impacts
+    const casterId = firstFrame.aoeCasterId || (firstFrame.type === 'COUNTER' ? firstFrame.targetId : firstFrame.actorId);
+    const casterSide = engineState.actors.get(casterId)?.side || 'left';
+    const targetSide = casterSide === 'left' ? 'right' : 'left';
+
+    const scheduledItems = waveFrames.map((wf, idx) => {
+        const isCounter = wf.type === 'COUNTER' || wf.isCounter;
+        const defenderId = isCounter ? wf.actorId : wf.targetId;
+        const targetEl = defenderId ? sr.getElementById(`actor-${defenderId}`) : null;
+        let progressX = 0;
+
+        if (arena && targetEl && arena.getBoundingClientRect && targetEl.getBoundingClientRect) {
+            const aRect = arena.getBoundingClientRect();
+            const tRect = targetEl.getBoundingClientRect();
+            if (aRect && aRect.width > 0 && tRect && tRect.width > 0) {
+                const targetCenterX = (tRect.left - aRect.left) + tRect.width / 2;
+                if (casterSide === 'right') {
+                    // Wave sweeps right -> left: larger X (closest to center stage) is reached first
+                    progressX = Math.max(0, aRect.width - targetCenterX);
+                } else {
+                    // Wave sweeps left -> right: smaller X (closest to center stage) is reached first
+                    progressX = Math.max(0, targetCenterX);
+                }
+            } else {
+                progressX = idx * 40;
+            }
+        } else {
+            progressX = idx * 40;
+        }
+
+        return { wf, idx, defenderId, targetEl, progressX, isCounter };
+    });
+
+    // Sort items by spatial wavefront arrival order
+    scheduledItems.sort((a, b) => a.progressX - b.progressX);
+
+    // Group into column buckets: targets in the same column take impact simultaneously
+    const COLUMN_TOLERANCE = 32;
+    const buckets = [];
+    let curBucket = [];
+    let lastProgress = -9999;
+
+    for (const item of scheduledItems) {
+        if (curBucket.length === 0 || Math.abs(item.progressX - lastProgress) <= COLUMN_TOLERANCE) {
+            curBucket.push(item);
+            lastProgress = item.progressX;
+        } else {
+            buckets.push(curBucket);
+            curBucket = [item];
+            lastProgress = item.progressX;
+        }
+    }
+    if (curBucket.length > 0) buckets.push(curBucket);
+
+    const impactDelayMs = 135;
+    const columnCount = Math.max(1, buckets.length);
+    const columnStaggerMs = columnCount <= 1 ? 0 : Math.max(65, Math.min(110, Math.round(360 / (columnCount - 1))));
+
+    const targetSchedule = new Map();
+    buckets.forEach((bucket, bIdx) => {
+        const baseDelay = impactDelayMs + bIdx * columnStaggerMs;
+        bucket.forEach((item, inBucketIdx) => {
+            const hitDelay = baseDelay + inBucketIdx * 6;
+            targetSchedule.set(item.wf.index, hitDelay);
+        });
+    });
+
+    const maxHitDelay = buckets.length > 0 ? (impactDelayMs + (buckets.length - 1) * columnStaggerMs) : impactDelayMs;
+    const totalDurationMs = maxHitDelay + 280;
+
+    // Launch caster center-stage animation, crescent sweep wave, and synchronized projectile fan
+    const { shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule);
 
     const hasCritShake = waveFrames.some(wf => wf.vfx.includes('screen-shake'));
     if (hasCritShake && arena) {
@@ -774,9 +890,10 @@ async function renderAOEWaveBatch(waveFrames, token) {
         waveFrames.filter(wf => wf.isDeathEvent && wf.deadActorId).map(wf => wf.deadActorId)
     );
 
-    // 4. Schedule rapid staggered impacts (65ms ripple) across all wave targets
-    waveFrames.forEach((wf, idx) => {
-        const hitDelay = (impactDelayMs + idx * staggerMs) / getEffectiveSpeed();
+    // 4. Schedule spatial wavefront impacts across all wave targets
+    scheduledItems.forEach((item) => {
+        const { wf, targetEl } = item;
+        const hitDelay = (targetSchedule.get(wf.index) || impactDelayMs) / getEffectiveSpeed();
         setTimeout(() => {
             if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
 
@@ -793,10 +910,9 @@ async function renderAOEWaveBatch(waveFrames, token) {
             advanceComboState(wf, lookahead.isNextFrameSameCombo);
             renderComboBanner(arena, wf, speed);
 
-            const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
-            const targetSide = engineState.actors.get(wf.targetId)?.side || 'right';
+            const thisTargetSide = engineState.actors.get(item.defenderId)?.side || targetSide;
             if (targetEl && arena) {
-                triggerAOETargetImpact(wf, arena, targetEl, targetSide, shadowColor, speed);
+                triggerAOETargetImpact(wf, arena, targetEl, thisTargetSide, shadowColor, speed);
                 if (wf.vfx.includes('dodge-blink')) {
                     targetEl.classList.add('blink-active');
                     setTimeout(() => {
@@ -839,8 +955,114 @@ async function renderAOEWaveBatch(waveFrames, token) {
 }
 
 /**
+ * Renders a batch of consecutive party-wide HEAL or BUFF_APPLY frames as an expanding radiant wave
+ * with synchronized floating numbers and smooth HP/shield updates.
+ *
+ * @param {Array<object>} waveFrames - Batch of party-wide frames.
+ * @param {number} token - Active playback token.
+ * @returns {Promise<void>}
+ */
+async function renderPartyRadiantBatch(waveFrames, token) {
+    const sr = engineState.shadowRoot;
+    if (!sr || engineState.playbackToken !== token || waveFrames.length === 0) return;
+
+    const arena = sr.getElementById('arena');
+    const dialog = sr.getElementById('dialog-box');
+    const firstFrame = waveFrames[0];
+    const speed = getEffectiveSpeed();
+
+    // 1. Check and play Ultimate Cut-In if this mass skill is an ultimate
+    if (isPrimaryUltimateTriggerFrame(firstFrame)) {
+        const actor = engineState.actors.get(firstFrame.actorId);
+        if (actor && actor.lastUltimateTurn !== firstFrame.turnNumber) {
+            actor.lastUltimateTurn = firstFrame.turnNumber;
+            await playUltimateCutIn(firstFrame, sr, token);
+            if (engineState.playbackToken !== token) return;
+        }
+    }
+
+    // 2. ATB and status tray updates
+    updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
+    syncActorBondVisuals(sr, firstFrame.actorsBondState);
+
+    const casterId = firstFrame.actorId;
+    const casterEl = sr.getElementById(`actor-${casterId}`);
+    const casterSide = engineState.actors.get(casterId)?.side || 'left';
+    const isHeal = firstFrame.type === 'HEAL';
+    const radiantColor = isHeal ? '#48bb78' : '#4fd1c5';
+
+    // 3. Caster pulse animation and expanding radiant wave
+    let waveOriginX = 0;
+    let waveOriginY = 0;
+    if (arena && casterEl && casterEl.getBoundingClientRect) {
+        const aRect = arena.getBoundingClientRect();
+        const cRect = casterEl.getBoundingClientRect();
+        waveOriginX = (cRect.left - aRect.left) + cRect.width / 2;
+        waveOriginY = (cRect.top - aRect.top) + cRect.height / 2;
+
+        casterEl.animate([
+            { transform: 'scale(1)', filter: 'brightness(1)' },
+            { transform: 'scale(1.15)', filter: `brightness(1.5) drop-shadow(0 0 16px ${radiantColor})`, offset: 0.3 },
+            { transform: 'scale(1)', filter: 'brightness(1)', offset: 1 }
+        ], { duration: 420 / speed, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+    } else if (arena) {
+        const aRect = arena.getBoundingClientRect ? arena.getBoundingClientRect() : { width: 1000, height: 400 };
+        waveOriginX = casterSide === 'left' ? aRect.width * 0.25 : aRect.width * 0.75;
+        waveOriginY = aRect.height * 0.5;
+    }
+
+    if (arena) {
+        spawnRadiantPartyWave(arena, waveOriginX, waveOriginY, radiantColor, speed);
+    }
+
+    // 4. Staggered target ripple across party members
+    const rippleStaggerMs = Math.min(25, Math.max(10, Math.round(240 / waveFrames.length)));
+    const baseImpactDelayMs = 120;
+    const totalDurationMs = baseImpactDelayMs + (waveFrames.length - 1) * rippleStaggerMs + 340;
+
+    waveFrames.forEach((wf, idx) => {
+        const hitDelay = (baseImpactDelayMs + idx * rippleStaggerMs) / speed;
+        setTimeout(() => {
+            if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
+
+            if (wf.message && dialog) {
+                if (dialog.lastElementChild?.dataset?.frameIndex !== String(wf.index)) {
+                    const msgEl = createLogLineElement(wf);
+                    dialog.appendChild(msgEl);
+                    dialog.scrollTop = dialog.scrollHeight;
+                }
+            }
+
+            const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+            if (targetEl) {
+                targetEl.animate([
+                    { transform: 'scale(1)', filter: 'brightness(1)' },
+                    { transform: 'scale(1.08)', filter: `brightness(1.4) drop-shadow(0 0 12px ${radiantColor})`, offset: 0.4 },
+                    { transform: 'scale(1)', filter: 'brightness(1)', offset: 1 }
+                ], { duration: 300 / speed, easing: 'ease-out' });
+            }
+
+            spawnFloatingText(wf, sr, false, false);
+
+            if (isHeal) {
+                syncActorHpAndDeathDOM(sr, wf, { skipHpTransition: false });
+            }
+            syncActorStatusAndShieldDOM(sr, wf.actorsStatusState, wf.actorsShieldState, wf.actorsBondState);
+        }, hitDelay);
+    });
+
+    await new Promise(resolve => setTimeout(resolve, totalDurationMs / speed));
+    if (engineState.playbackToken !== token) return;
+
+    const lastWf = waveFrames[waveFrames.length - 1];
+    if (lastWf) {
+        syncActorStatusAndShieldDOM(sr, lastWf.actorsStatusState, lastWf.actorsShieldState, lastWf.actorsBondState);
+    }
+}
+
+/**
  * Main asynchronous playback loop that steps through frames until paused, cancelled, or finished.
- * Automatically batches multi-target AOE wave frames into a fluid sweeping barrage.
+ * Automatically batches multi-target AOE wave frames into a fluid sweeping barrage and mass party buffs/heals into radiant waves.
  * Once the final frame finishes, releases the spoiler guard and displays the post-battle MVP overlay.
  *
  * @param {number} token - Playback token bound to this loop invocation.
@@ -859,14 +1081,25 @@ export async function playbackLoop(token) {
                 return;
             }
             engineState.currentFrameIndex += aoeBatch.length;
-        } else {
-            const frame = engineState.frames[engineState.currentFrameIndex];
-            await renderFrame(frame, token);
+            continue;
+        }
+
+        const radiantBatch = collectPartyRadiantBatch(engineState.currentFrameIndex);
+        if (radiantBatch.length >= 2) {
+            await renderPartyRadiantBatch(radiantBatch, token);
             if (engineState.playbackToken !== token || !engineState.isPlaying) {
                 return;
             }
-            engineState.currentFrameIndex++;
+            engineState.currentFrameIndex += radiantBatch.length;
+            continue;
         }
+
+        const frame = engineState.frames[engineState.currentFrameIndex];
+        await renderFrame(frame, token);
+        if (engineState.playbackToken !== token || !engineState.isPlaying) {
+            return;
+        }
+        engineState.currentFrameIndex++;
 
         const sr = engineState.shadowRoot;
         if (sr) {

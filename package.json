@@ -1,6 +1,6 @@
 {
   "name": "mdbattle-visualizer",
-  "version": "7.5.11",
+  "version": "7.6.0",
   "description": "Userscript battle report visualizer for mydoujin.online with ATB timeline, HP anchor calibration, anti-spoiler guard, and cinematic VFX.",
   "private": true,
   "type": "module",

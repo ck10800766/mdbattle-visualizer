@@ -70,7 +70,7 @@ export function spawnAOEFanWave(arena, startX, startY, targetSide, color = '#fc8
     arena.appendChild(waveEl);
 
     const arenaRect = arena.getBoundingClientRect();
-    const sweepDist = (targetSide === 'right' ? 1 : -1) * Math.max(220, arenaRect.width * 0.34);
+    const sweepDist = (targetSide === 'right' ? 1 : -1) * Math.max(320, arenaRect.width * 0.55);
 
     const anim = waveEl.animate([
         { transform: 'translate(-50%, -50%) scale(0.3, 0.45)', opacity: 0.95 },
@@ -78,6 +78,35 @@ export function spawnAOEFanWave(arena, startX, startY, targetSide, color = '#fc8
         { transform: `translate(calc(-50% + ${sweepDist}px), -50%) scale(1.75, 1.45)`, opacity: 0, offset: 1 }
     ], {
         duration: 420 / speed,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+    });
+    anim.onfinish = () => waveEl.remove();
+}
+
+/**
+ * Spawns an expanding radiant circular aura wave for party-wide mass heals and mass buffs.
+ *
+ * @param {HTMLElement} arena - Stage `#arena` element.
+ * @param {number} centerX - Origin X coordinate relative to `#arena`.
+ * @param {number} centerY - Origin Y coordinate relative to `#arena`.
+ * @param {string} color - Primary radiant glow color.
+ * @param {number} speed - Effective playback speed multiplier.
+ */
+export function spawnRadiantPartyWave(arena, centerX, centerY, color = '#48bb78', speed = 1) {
+    if (!arena || !arena.isConnected) return;
+    const waveEl = document.createElement('div');
+    waveEl.className = 'radiant-party-wave';
+    waveEl.style.setProperty('--radiant-color', color);
+    waveEl.style.left = `${centerX}px`;
+    waveEl.style.top = `${centerY}px`;
+    arena.appendChild(waveEl);
+
+    const anim = waveEl.animate([
+        { transform: 'translate(-50%, -50%) scale(0.15)', opacity: 0.95 },
+        { transform: 'translate(-50%, -50%) scale(1.15)', opacity: 0.85, offset: 0.6 },
+        { transform: 'translate(-50%, -50%) scale(1.5)', opacity: 0, offset: 1 }
+    ], {
+        duration: 500 / speed,
         easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
     });
     anim.onfinish = () => waveEl.remove();
@@ -162,6 +191,14 @@ export function triggerAOETargetImpact(frame, arena, targetEl, targetSide, shado
             { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)', offset: 1 }
         ], { duration: 240 / speed, easing: 'ease-out' });
         spawnClashSpark(arena, targetEl, 20, '#63b3ed', speed);
+    } else if (frame.type === 'COUNTER' || frame.isCounter) {
+        const strikeDir = targetSide === 'left' ? 28 : -28;
+        targetEl.animate([
+            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)' },
+            { transform: `translate(${strikeDir}px, 0) scale(1.12)`, filter: 'brightness(1.8) drop-shadow(0 0 14px #ecc94b)', offset: 0.3 },
+            { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)', offset: 1 }
+        ], { duration: 280 / speed, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        spawnClashSpark(arena, targetEl, 25, '#ecc94b', speed);
     } else {
         targetEl.animate([
             { transform: 'translate(0,0) scale(1)', filter: 'brightness(1)' },
@@ -175,26 +212,34 @@ export function triggerAOETargetImpact(frame, arena, targetEl, targetSide, shado
 /**
  * Orchestrates a unified multi-target AOE wave barrage across a batch of consecutive AOE frames.
  * The caster dashes to center stage once and unleashes a sweeping crescent shockwave plus
- * a rapid staggered fan of projectiles that strike all targets in a fluid ripple.
+ * a rapid staggered fan of projectiles that strike all targets in a fluid spatial wavefront ripple.
  *
  * @param {Array<object>} waveFrames - Consecutive AOE hit frames belonging to the current wave burst.
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {Map<number, number>|null} [targetSchedule=null] - Optional spatial schedule mapping frame indices to hit delays.
  * @returns {{ staggerMs: number, impactDelayMs: number, totalDurationMs: number, shadowColor: string }}
  */
-export function playAOEWaveBatchChoreography(waveFrames, sr) {
+export function playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule = null) {
     const firstFrame = waveFrames[0];
     const lastFrame = waveFrames[waveFrames.length - 1];
     const speed = getEffectiveSpeed();
     const arena = sr.getElementById('arena');
-    const casterId = firstFrame.aoeCasterId || firstFrame.actorId;
+    const casterId = firstFrame.aoeCasterId || (firstFrame.type === 'COUNTER' ? firstFrame.targetId : firstFrame.actorId);
     const actorEl = sr.getElementById(`actor-${casterId}`);
     const side = engineState.actors.get(casterId)?.side || 'left';
-    const firstTargetSide = engineState.actors.get(firstFrame.targetId)?.side || (side === 'left' ? 'right' : 'left');
+    const firstDefenderId = firstFrame.type === 'COUNTER' || firstFrame.isCounter ? firstFrame.actorId : firstFrame.targetId;
+    const firstTargetSide = engineState.actors.get(firstDefenderId)?.side || (side === 'left' ? 'right' : 'left');
     const shadowColor = side === 'left' ? '#63b3ed' : '#fc8181';
 
     const staggerMs = 65;
     const impactDelayMs = 135;
-    const waveSweepMs = impactDelayMs + Math.max(0, waveFrames.length - 1) * staggerMs + 280;
+    let waveSweepMs;
+    if (targetSchedule && targetSchedule.size > 0) {
+        const maxScheduled = Math.max(...Array.from(targetSchedule.values()));
+        waveSweepMs = maxScheduled + 280;
+    } else {
+        waveSweepMs = impactDelayMs + Math.max(0, waveFrames.length - 1) * staggerMs + 280;
+    }
 
     if (!arena || !actorEl) {
         return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
@@ -272,9 +317,14 @@ export function playAOEWaveBatchChoreography(waveFrames, sr) {
     // Launch sweeping crescent shockwave and staggered projectiles toward every target in the wave
     spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
     waveFrames.forEach((wf, idx) => {
-        const targetEl = wf.targetId ? sr.getElementById(`actor-${wf.targetId}`) : null;
+        const isCounter = wf.type === 'COUNTER' || wf.isCounter;
+        const targetId = isCounter ? wf.actorId : wf.targetId;
+        const targetEl = targetId ? sr.getElementById(`actor-${targetId}`) : null;
         if (targetEl) {
-            spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, idx * staggerMs, impactDelayMs, speed);
+            const hitDelay = targetSchedule ? (targetSchedule.get(wf.index) ?? (impactDelayMs + idx * staggerMs)) : (impactDelayMs + idx * staggerMs);
+            const flightMs = 140;
+            const launchDelay = Math.max(0, hitDelay - flightMs);
+            spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, launchDelay, flightMs, speed);
         }
     });
 
