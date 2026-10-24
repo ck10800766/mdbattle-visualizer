@@ -228,6 +228,9 @@ function processSummonLifecycle(
         });
         frame.isDespawnEvent = true;
         frame.despawnedActorId = candidateIds[0];
+        if (candidateIds.length > 1) {
+            frame.despawnedActorIds = candidateIds;
+        }
     }
 }
 

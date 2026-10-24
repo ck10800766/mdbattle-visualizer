@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.5)
 // @namespace    mydoujin-battle-vfx
-// @version      7.5.10
+// @version      7.5.11
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.5.10";
+  var APP_VERSION = "7.5.11";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -74,7 +74,8 @@
     totalTurns: 0,
     battleResult: "WIN",
     onImportReport: null,
-    activeKeydownHandler: null
+    activeKeydownHandler: null,
+    activePointerUpHandler: null
   };
   function setPlaybackSpeed(speed) {
     const validSpeed = PLAYBACK_SPEEDS.includes(speed) ? speed : 1;
@@ -974,6 +975,9 @@
       });
       frame.isDespawnEvent = true;
       frame.despawnedActorId = candidateIds[0];
+      if (candidateIds.length > 1) {
+        frame.despawnedActorIds = candidateIds;
+      }
     }
   }
   function processContractSkillLifecycle(frame, contractProfile, msg, target, actorsBondState, contractCutInCount, addHpDelta) {
@@ -2047,8 +2051,8 @@
     .contract-cutin-overlay { position: absolute; inset: 0; z-index: 1800; display: flex; align-items: center; justify-content: center; pointer-events: none; overflow: hidden; animation: contract-overlay-fade ease-out forwards; }
     @keyframes contract-overlay-fade { 0% { opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
     .contract-backdrop { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(20, 10, 28, 0.85) 0%, rgba(246, 135, 179, 0.28) 50%, rgba(15, 23, 42, 0.88) 100%); backdrop-filter: blur(4px); }
-    .contract-portraits-layer, .contract-Portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
-    .contract-cutin-overlay.solo-mode .contract-portraits-layer, .contract-cutin-overlay.solo-mode .contract-Portraits-layer { justify-content: center; }
+    .contract-portraits-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; }
+    .contract-cutin-overlay.solo-mode .contract-portraits-layer { justify-content: center; }
     .contract-portrait { display: flex; flex-direction: column; align-items: center; gap: 8px; filter: drop-shadow(0 0 24px rgba(246, 135, 179, 0.7)); }
     .contract-portrait img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #fbb6ce; background: #1a202c; }
     .contract-portrait.left-partner { animation: slide-in-left-partner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -2632,7 +2636,7 @@
     const headlineText = isDual ? `${safeActorName} <span>${safeBadgeIcon}</span> ${safePartnerName}` : `${safeActorName} <span>${safeBadgeIcon}</span> ${safeBadgeText}`;
     overlay.innerHTML = `
         <div class="contract-backdrop"></div>
-        <div class="contract-portraits-layer contract-Portraits-layer">${portraitsHtml}</div>
+        <div class="contract-portraits-layer">${portraitsHtml}</div>
         <div class="sao-modal-card">
             <div class="sao-modal-header">${safeSystemTitle}</div>
             <div class="sao-modal-body">
@@ -4491,7 +4495,8 @@
         triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
       }
     } else if (frame.isCoverEvent && actorEl) {
-      const protectedEl = frame.coverProtectedId ? sr.getElementById(`actor-${frame.coverProtectedId}`) : null;
+      const protectedId = frame.coverProtectedId || frame.targetId;
+      const protectedEl = protectedId ? sr.getElementById(`actor-${protectedId}`) : null;
       if (protectedEl) {
         const gRect = actorEl.getBoundingClientRect();
         const pRect = protectedEl.getBoundingClientRect();
@@ -4926,6 +4931,10 @@
       window.removeEventListener("keydown", engineState.activeKeydownHandler);
       engineState.activeKeydownHandler = null;
     }
+    if (engineState.activePointerUpHandler) {
+      window.removeEventListener("pointerup", engineState.activePointerUpHandler);
+      engineState.activePointerUpHandler = null;
+    }
     engineState.isPlaying = false;
     engineState.timeScale = 1;
     nextPlaybackToken();
@@ -4943,6 +4952,10 @@
     if (engineState.activeKeydownHandler) {
       window.removeEventListener("keydown", engineState.activeKeydownHandler);
       engineState.activeKeydownHandler = null;
+    }
+    if (engineState.activePointerUpHandler) {
+      window.removeEventListener("pointerup", engineState.activePointerUpHandler);
+      engineState.activePointerUpHandler = null;
     }
     if (engineState.hostElement) engineState.hostElement.remove();
     const host = document.createElement("div");
@@ -5061,6 +5074,7 @@
     const onPointerUpGlobal = () => {
       isDraggingSeek = false;
     };
+    engineState.activePointerUpHandler = onPointerUpGlobal;
     window.addEventListener("pointerup", onPointerUpGlobal);
     seekTrackWrapper.onpointermove = (e) => {
       if (isDraggingSeek || engineState.frames.length === 0) return;
@@ -5608,22 +5622,25 @@
       const rightTeam = arena2?.querySelector(".right-team");
       if (arena2 && leftTeam) updateDynamicTeamLayout(arena2, leftTeam, rightTeam);
     }
-    if (frame.isDespawnEvent && frame.despawnedActorId) {
-      const despawnedEl = sr.getElementById(`actor-${frame.despawnedActorId}`);
-      if (despawnedEl) {
-        despawnedEl.classList.remove("spawning");
-        despawnedEl.classList.add("despawning");
-        setTimeout(() => {
-          if (engineState.playbackToken === token && despawnedEl.isConnected) {
-            despawnedEl.classList.remove("despawning");
-            despawnedEl.classList.add("unspawned");
-            const arena2 = sr.getElementById("arena");
-            const leftTeam = arena2?.querySelector(".left-team");
-            const rightTeam = arena2?.querySelector(".right-team");
-            if (arena2 && leftTeam) updateDynamicTeamLayout(arena2, leftTeam, rightTeam);
-          }
-        }, 550 / getEffectiveSpeed());
-      }
+    if (frame.isDespawnEvent && (frame.despawnedActorIds?.length || frame.despawnedActorId)) {
+      const despawnIds = frame.despawnedActorIds?.length ? frame.despawnedActorIds : [frame.despawnedActorId];
+      despawnIds.forEach((id) => {
+        const despawnedEl = sr.getElementById(`actor-${id}`);
+        if (despawnedEl) {
+          despawnedEl.classList.remove("spawning");
+          despawnedEl.classList.add("despawning");
+          setTimeout(() => {
+            if (engineState.playbackToken === token && despawnedEl.isConnected) {
+              despawnedEl.classList.remove("despawning");
+              despawnedEl.classList.add("unspawned");
+              const arena2 = sr.getElementById("arena");
+              const leftTeam = arena2?.querySelector(".left-team");
+              const rightTeam = arena2?.querySelector(".right-team");
+              if (arena2 && leftTeam) updateDynamicTeamLayout(arena2, leftTeam, rightTeam);
+            }
+          }, 550 / getEffectiveSpeed());
+        }
+      });
     }
     if (frame.isSummonEvent || frame.isDespawnEvent) {
       frameDuration = Math.max(frameDuration, 750);

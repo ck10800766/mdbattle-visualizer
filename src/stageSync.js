@@ -590,7 +590,8 @@ export function renderSeekPreviewState(sr, frameIndex) {
             triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
         }
     } else if (frame.isCoverEvent && actorEl) {
-        const protectedEl = frame.coverProtectedId ? sr.getElementById(`actor-${frame.coverProtectedId}`) : null;
+        const protectedId = frame.coverProtectedId || frame.targetId;
+        const protectedEl = protectedId ? sr.getElementById(`actor-${protectedId}`) : null;
         if (protectedEl) {
             const gRect = actorEl.getBoundingClientRect();
             const pRect = protectedEl.getBoundingClientRect();
