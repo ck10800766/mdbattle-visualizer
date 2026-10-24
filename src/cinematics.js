@@ -744,7 +744,7 @@ export async function playContractCutIn(frame, sr, token) {
 
     overlay.innerHTML = `
         <div class="contract-backdrop"></div>
-        <div class="contract-portraits-layer contract-Portraits-layer">${portraitsHtml}</div>
+        <div class="contract-portraits-layer">${portraitsHtml}</div>
         <div class="sao-modal-card">
             <div class="sao-modal-header">${safeSystemTitle}</div>
             <div class="sao-modal-body">

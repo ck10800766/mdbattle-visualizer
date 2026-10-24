@@ -8,6 +8,18 @@
 
 ## [Unreleased]
 
+## [7.5.11] - 2026-10-24
+
+### Fixed
+- **修復時間軸進度條 Seek 預覽援護姿態失效問題（`src/stageSync.js`）**：
+  - 修復 `renderSeekPreviewState()` 中引用未定義欄位 `frame.coverProtectedId` 的錯誤，改為相容取值 `frame.coverProtectedId || frame.targetId`，確保使用者在時間軸拖曳或逐步檢視戰況時，擋刀護衛者能正確對準被保護隊友呈現前置護衛光環與防禦姿態。
+- **修復多召喚物同時自願退場時的畫面殘留問題（`src/parser.js`, `src/stage.js`）**：
+  - 修復解析器在單一敘事語境中觸發多個召喚物自願退場時，僅記錄首個 ID 的問題；於多退場時動態掛載 `frame.despawnedActorIds`，並在 `renderFrame` 遍歷執行離場淡出與收隊動效，防止次要召喚物在即時播放中殘留於戰場。
+- **修復全域 `pointerup` 事件監聽器未清理的記憶體洩漏隱患（`src/stage.js`, `src/state.js`）**：
+  - 將進度條拖曳釋放監聽器收納至 `engineState.activePointerUpHandler`，於舞台關閉（`closeBattleStage()`）與重新掛載時確實執行 `removeEventListener`，徹底防止反覆開關舞台累積殘留閉包。
+- **清理 SAO 契約彈窗 HTML 標籤冗餘 Class 筆誤（`src/cinematics.js`, `src/styles.js`）**：
+  - 移除 `contract-portraits-layer contract-Portraits-layer` 中的重複大寫拼寫殘留，保持 DOM 結構與樣式表簡潔一致。
+
 ## [7.5.10] - 2026-10-24
 
 ### Fixed

@@ -82,7 +82,8 @@ export const engineState = {
     totalTurns: 0,
     battleResult: 'WIN',
     onImportReport: null,
-    activeKeydownHandler: null
+    activeKeydownHandler: null,
+    activePointerUpHandler: null
 };
 
 /**

@@ -102,6 +102,10 @@ export function closeBattleStage() {
         window.removeEventListener('keydown', engineState.activeKeydownHandler);
         engineState.activeKeydownHandler = null;
     }
+    if (engineState.activePointerUpHandler) {
+        window.removeEventListener('pointerup', engineState.activePointerUpHandler);
+        engineState.activePointerUpHandler = null;
+    }
     engineState.isPlaying = false;
     engineState.timeScale = 1.0;
     nextPlaybackToken();
@@ -124,6 +128,10 @@ export function createBattleStage() {
     if (engineState.activeKeydownHandler) {
         window.removeEventListener('keydown', engineState.activeKeydownHandler);
         engineState.activeKeydownHandler = null;
+    }
+    if (engineState.activePointerUpHandler) {
+        window.removeEventListener('pointerup', engineState.activePointerUpHandler);
+        engineState.activePointerUpHandler = null;
     }
     if (engineState.hostElement) engineState.hostElement.remove();
 
@@ -267,6 +275,7 @@ export function createBattleStage() {
     const onPointerUpGlobal = () => {
         isDraggingSeek = false;
     };
+    engineState.activePointerUpHandler = onPointerUpGlobal;
     window.addEventListener('pointerup', onPointerUpGlobal);
 
     seekTrackWrapper.onpointermove = (e) => {
@@ -964,22 +973,25 @@ export async function renderFrame(frame, token) {
         if (arena && leftTeam) updateDynamicTeamLayout(arena, leftTeam, rightTeam);
     }
 
-    if (frame.isDespawnEvent && frame.despawnedActorId) {
-        const despawnedEl = sr.getElementById(`actor-${frame.despawnedActorId}`);
-        if (despawnedEl) {
-            despawnedEl.classList.remove('spawning');
-            despawnedEl.classList.add('despawning');
-            setTimeout(() => {
-                if (engineState.playbackToken === token && despawnedEl.isConnected) {
-                    despawnedEl.classList.remove('despawning');
-                    despawnedEl.classList.add('unspawned');
-                    const arena = sr.getElementById('arena');
-                    const leftTeam = arena?.querySelector('.left-team');
-                    const rightTeam = arena?.querySelector('.right-team');
-                    if (arena && leftTeam) updateDynamicTeamLayout(arena, leftTeam, rightTeam);
-                }
-            }, 550 / getEffectiveSpeed());
-        }
+    if (frame.isDespawnEvent && (frame.despawnedActorIds?.length || frame.despawnedActorId)) {
+        const despawnIds = frame.despawnedActorIds?.length ? frame.despawnedActorIds : [frame.despawnedActorId];
+        despawnIds.forEach(id => {
+            const despawnedEl = sr.getElementById(`actor-${id}`);
+            if (despawnedEl) {
+                despawnedEl.classList.remove('spawning');
+                despawnedEl.classList.add('despawning');
+                setTimeout(() => {
+                    if (engineState.playbackToken === token && despawnedEl.isConnected) {
+                        despawnedEl.classList.remove('despawning');
+                        despawnedEl.classList.add('unspawned');
+                        const arena = sr.getElementById('arena');
+                        const leftTeam = arena?.querySelector('.left-team');
+                        const rightTeam = arena?.querySelector('.right-team');
+                        if (arena && leftTeam) updateDynamicTeamLayout(arena, leftTeam, rightTeam);
+                    }
+                }, 550 / getEffectiveSpeed());
+            }
+        });
     }
 
     if (frame.isSummonEvent || frame.isDespawnEvent) {
