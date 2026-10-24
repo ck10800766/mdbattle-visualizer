@@ -314,8 +314,23 @@ export function playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule = nu
     const centerStageX = arenaRect.width / 2;
     const centerStageY = arenaRect.height / 2;
 
+    // Detect omni-directional AOE (hits both teams simultaneously, e.g. 邪經文大僧正)
+    const targetSides = new Set(
+        waveFrames.map(wf => {
+            const isCounter = wf.type === 'COUNTER' || wf.isCounter;
+            const defId = isCounter ? wf.actorId : wf.targetId;
+            return engineState.actors.get(defId)?.side;
+        }).filter(Boolean)
+    );
+    const isBothSides = targetSides.has('left') && targetSides.has('right');
+
     // Launch sweeping crescent shockwave toward targets (pure shockwave, no flying projectiles)
-    spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
+    if (isBothSides) {
+        spawnAOEFanWave(arena, centerStageX, centerStageY, 'left', shadowColor, speed);
+        spawnAOEFanWave(arena, centerStageX, centerStageY, 'right', shadowColor, speed);
+    } else {
+        spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
+    }
 
     return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
 }
