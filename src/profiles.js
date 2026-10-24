@@ -25,7 +25,11 @@ export const KNOWN_AOE_SKILLS = new Set([
     'patriot_sacrifice',
     'hoarfrost_stomp',
     'guerrilla_mortar_shell',
-    'guerrilla_mortar_splash'
+    'guerrilla_mortar_splash',
+    'gleam_eyes_sweep',
+    'gleam_eyes_breath',
+    'yayoi_daisoujou_chant',
+    'mass_combustion'
 ]);
 
 /**

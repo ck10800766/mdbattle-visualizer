@@ -57,7 +57,7 @@ export const STAGE_STYLES = `
         min-width: 0;
         transition: width 0.3s ease, height 0.3s ease, gap 0.3s ease;
     }
-    .left-team { justify-content: center; }
+    .left-team { justify-content: center; flex-wrap: wrap-reverse; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
 
     .actor { display: flex; flex-direction: column; align-items: center; transition: filter 0.3s ease, opacity 0.3s ease; position: relative; }
@@ -326,10 +326,13 @@ export const STAGE_STYLES = `
     .actor.seek-targeted .avatar { border-color: #fc8181 !important; box-shadow: 0 0 18px #fc8181, 0 0 28px rgba(252, 129, 129, 0.6) !important; }
 
     /* True AOE Fan Shockwave & Multi-Projectile Barrage VFX */
-    .aoe-fan-wave { position: absolute; width: 160px; height: 340px; pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
-    .aoe-fan-wave.wave-right { border-right: 14px solid var(--wave-color, #fc8181); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 0 180px 180px 0; box-shadow: 18px 0 28px -4px var(--wave-color, #fc8181), inset -14px 0 22px -6px #ffffff; }
-    .aoe-fan-wave.wave-left { border-left: 14px solid var(--wave-color, #4fd1c5); border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-radius: 180px 0 0 180px; box-shadow: -18px 0 28px -4px var(--wave-color, #4fd1c5), inset 14px 0 22px -6px #ffffff; }
+    .aoe-fan-wave { position: absolute; width: var(--wave-width, 180px); height: var(--wave-height, clamp(340px, 75vh, 600px)); pointer-events: none; z-index: 18; mix-blend-mode: screen; filter: blur(1px); }
+    .aoe-fan-wave.wave-right { border-right: 18px solid var(--wave-color, #fc8181); border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-radius: 0 220px 220px 0; box-shadow: 24px 0 36px -4px var(--wave-color, #fc8181), inset -18px 0 28px -6px #ffffff; }
+    .aoe-fan-wave.wave-left { border-left: 18px solid var(--wave-color, #4fd1c5); border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-radius: 220px 0 0 220px; box-shadow: -24px 0 36px -4px var(--wave-color, #4fd1c5), inset 18px 0 28px -6px #ffffff; }
     .aoe-projectile { position: absolute; width: 72px; height: 16px; border-radius: 999px; pointer-events: none; z-index: 19; mix-blend-mode: screen; background: linear-gradient(90deg, transparent 0%, var(--proj-color, #fc8181) 45%, #ffffff 90%, #ffffff 100%); box-shadow: 0 0 16px var(--proj-color, #fc8181), 0 0 28px #ffffff; transform-origin: center center; }
+
+    /* Radiant Party Wave (Party-Wide Buffs & Mass Heals) */
+    .radiant-party-wave { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.2); width: clamp(260px, 50vw, 850px); height: clamp(260px, 50vw, 850px); border-radius: 50%; pointer-events: none; z-index: 17; opacity: 0.95; mix-blend-mode: screen; background: radial-gradient(circle, transparent 40%, var(--radiant-color, #48bb78) 70%, #ffffff 85%, transparent 100%); box-shadow: 0 0 45px var(--radiant-color, #48bb78), inset 0 0 30px #ffffff; filter: blur(2px); }
 
     /* Environmental Battlefield Hazard Wave & Scene Narration Subtitle Banner */
     .arena-field-wave { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 38; background: radial-gradient(circle at 50% 50%, rgba(229, 62, 62, 0.45) 0%, rgba(183, 28, 28, 0.22) 50%, transparent 80%); opacity: 0; animation: arenaFieldPulse 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
