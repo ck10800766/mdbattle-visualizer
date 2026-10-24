@@ -57,7 +57,7 @@ export const STAGE_STYLES = `
         min-width: 0;
         transition: width 0.3s ease, height 0.3s ease, gap 0.3s ease;
     }
-    .left-team { justify-content: center; }
+    .left-team { justify-content: center; flex-wrap: wrap-reverse; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
 
     .actor { display: flex; flex-direction: column; align-items: center; transition: filter 0.3s ease, opacity 0.3s ease; position: relative; }

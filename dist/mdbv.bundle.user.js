@@ -1836,7 +1836,7 @@
         min-width: 0;
         transition: width 0.3s ease, height 0.3s ease, gap 0.3s ease;
     }
-    .left-team { justify-content: center; }
+    .left-team { justify-content: center; flex-wrap: wrap-reverse; }
     .right-team { justify-content: center; flex-wrap: wrap-reverse; }
 
     .actor { display: flex; flex-direction: column; align-items: center; transition: filter 0.3s ease, opacity 0.3s ease; position: relative; }
@@ -5463,26 +5463,55 @@
   function collectAOEWaveBatch(startIndex) {
     const first = engineState.frames[startIndex];
     if (!first || !first.isAOE || !["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(first.type)) {
-      return [];
+      return null;
     }
     const casterId = first.aoeCasterId || (first.type === "COUNTER" ? first.targetId : first.actorId);
-    const batch = [first];
-    if (first.isAOELast) return batch;
-    let idx = startIndex + 1;
+    const baseSkill = normalizeAOESkillGroup(first.incomingSkillId || first.skillId);
+    const hitFrames = [];
+    const reactionFrames = [];
+    let idx = startIndex;
     while (idx < engineState.frames.length) {
       const cur = engineState.frames[idx];
-      if (cur && cur.isAOE && ["DAMAGE", "MISS", "BLOCK", "COUNTER"].includes(cur.type)) {
-        const curCasterId = cur.aoeCasterId || (cur.type === "COUNTER" ? cur.targetId : cur.actorId);
-        if (curCasterId === casterId) {
-          batch.push(cur);
-          if (cur.isAOELast) break;
-          idx++;
-          continue;
+      if (!cur) break;
+      const isHit = ["DAMAGE", "MISS", "BLOCK"].includes(cur.type) && (cur.aoeCasterId === casterId || cur.actorId === casterId) && normalizeAOESkillGroup(cur.skillId) === baseSkill;
+      const isCounter = (cur.type === "COUNTER" || cur.isCounter) && cur.targetId === casterId;
+      if (isHit || isCounter) {
+        hitFrames.push(cur);
+        idx++;
+        continue;
+      }
+      let hasFurtherHits = false;
+      for (let k = idx + 1; k < engineState.frames.length; k++) {
+        const ahead = engineState.frames[k];
+        if (!ahead) break;
+        const aheadIsHit = ["DAMAGE", "MISS", "BLOCK"].includes(ahead.type) && (ahead.aoeCasterId === casterId || ahead.actorId === casterId) && normalizeAOESkillGroup(ahead.skillId) === baseSkill;
+        const aheadIsCounter = (ahead.type === "COUNTER" || ahead.isCounter) && ahead.targetId === casterId;
+        if (aheadIsHit || aheadIsCounter) {
+          hasFurtherHits = true;
+          break;
         }
+        if (["DAMAGE", "MISS", "BLOCK"].includes(ahead.type) && ahead.actorId !== casterId && !ahead.isCounter && ahead.type !== "COUNTER") {
+          break;
+        }
+        if (["DAMAGE", "MISS", "BLOCK"].includes(ahead.type) && ahead.actorId === casterId && normalizeAOESkillGroup(ahead.skillId) !== baseSkill) {
+          break;
+        }
+      }
+      if (hasFurtherHits) {
+        reactionFrames.push(cur);
+        idx++;
+        continue;
       }
       break;
     }
-    return batch;
+    if (hitFrames.length < 2) return null;
+    return {
+      casterId,
+      baseSkill,
+      hitFrames,
+      reactionFrames,
+      totalLength: idx - startIndex
+    };
   }
   function collectPartyRadiantBatch(startIndex) {
     const first = engineState.frames[startIndex];
@@ -5505,12 +5534,15 @@
     }
     return batch.length >= 2 ? batch : [];
   }
-  async function renderAOEWaveBatch(waveFrames, token) {
+  async function renderAOEWaveBatch(aoeBatch, token) {
     const sr = engineState.shadowRoot;
-    if (!sr || engineState.playbackToken !== token || waveFrames.length === 0) return;
+    if (!sr || engineState.playbackToken !== token || !aoeBatch) return;
+    const { hitFrames, reactionFrames, casterId } = aoeBatch;
+    if (!hitFrames || hitFrames.length === 0) return;
     const arena = sr.getElementById("arena");
     const dialog = sr.getElementById("dialog-box");
-    const firstFrame = waveFrames[0];
+    const firstFrame = hitFrames[0];
+    const speed = getEffectiveSpeed();
     if (isPrimaryUltimateTriggerFrame(firstFrame)) {
       const actor = engineState.actors.get(firstFrame.actorId);
       const isMultiHitSubFrame = ULTIMATE_SUBFRAME_REGEX.test(firstFrame.message.trim()) || firstFrame.rosarioEvent === "INSCRIBE_CROSS";
@@ -5527,10 +5559,9 @@
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
     syncActorBondVisuals(sr, firstFrame.actorsBondState);
     syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
-    const casterId = firstFrame.aoeCasterId || (firstFrame.type === "COUNTER" ? firstFrame.targetId : firstFrame.actorId);
     const casterSide = engineState.actors.get(casterId)?.side || "left";
     const targetSide = casterSide === "left" ? "right" : "left";
-    const scheduledItems = waveFrames.map((wf, idx) => {
+    const scheduledItems = hitFrames.map((wf, idx) => {
       const isCounter = wf.type === "COUNTER" || wf.isCounter;
       const defenderId = isCounter ? wf.actorId : wf.targetId;
       const targetEl = defenderId ? sr.getElementById(`actor-${defenderId}`) : null;
@@ -5581,9 +5612,9 @@
       });
     });
     const maxHitDelay = buckets.length > 0 ? impactDelayMs + (buckets.length - 1) * columnStaggerMs : impactDelayMs;
-    const totalDurationMs = maxHitDelay + 280;
-    const { shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule);
-    const hasCritShake = waveFrames.some((wf) => wf.vfx.includes("screen-shake"));
+    const totalSweepDurationMs = maxHitDelay + 280;
+    const { shadowColor } = playAOEWaveBatchChoreography(hitFrames, sr, targetSchedule);
+    const hasCritShake = hitFrames.some((wf) => wf.vfx.includes("screen-shake"));
     if (hasCritShake && arena) {
       setTimeout(() => {
         if (engineState.playbackToken === token && arena.isConnected) {
@@ -5594,16 +5625,16 @@
             { transform: "translateX(-8px)", offset: 0.6 },
             { transform: "translateX(8px)", offset: 0.8 },
             { transform: "translateX(0)", offset: 1 }
-          ], { duration: 300 / getEffectiveSpeed(), easing: "ease-in-out" });
+          ], { duration: 300 / speed, easing: "ease-in-out" });
         }
-      }, impactDelayMs / getEffectiveSpeed());
+      }, impactDelayMs / speed);
     }
     const waveDeadActorIds = new Set(
-      waveFrames.filter((wf) => wf.isDeathEvent && wf.deadActorId).map((wf) => wf.deadActorId)
+      hitFrames.filter((wf) => wf.isDeathEvent && wf.deadActorId).map((wf) => wf.deadActorId)
     );
     scheduledItems.forEach((item) => {
       const { wf, targetEl } = item;
-      const hitDelay = (targetSchedule.get(wf.index) || impactDelayMs) / getEffectiveSpeed();
+      const hitDelay = (targetSchedule.get(wf.index) || impactDelayMs) / speed;
       setTimeout(() => {
         if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
         if (wf.message && dialog) {
@@ -5613,7 +5644,6 @@
             dialog.scrollTop = dialog.scrollHeight;
           }
         }
-        const speed = getEffectiveSpeed();
         const lookahead = lookaheadComboState(wf.index, wf);
         advanceComboState(wf, lookahead.isNextFrameSameCombo);
         renderComboBanner(arena, wf, speed);
@@ -5637,13 +5667,43 @@
         });
       }, hitDelay);
     });
-    await new Promise((resolve) => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
+    await new Promise((resolve) => setTimeout(resolve, totalSweepDurationMs / speed));
     if (engineState.playbackToken !== token) return;
-    const lastWf = waveFrames[waveFrames.length - 1];
+    if (reactionFrames && reactionFrames.length > 0) {
+      for (const rf of reactionFrames) {
+        if (engineState.playbackToken !== token || !engineState.isPlaying) return;
+        if (rf.message && dialog) {
+          if (dialog.lastElementChild?.dataset?.frameIndex !== String(rf.index)) {
+            const msgEl = createLogLineElement(rf);
+            dialog.appendChild(msgEl);
+            dialog.scrollTop = dialog.scrollHeight;
+          }
+        }
+        if (rf.type === "HEAL") {
+          syncActorHpAndDeathDOM(sr, rf, { skipHpTransition: false });
+          spawnFloatingText(rf, sr, false, false);
+        }
+        if (rf.type === "BUFF_APPLY") {
+          syncActorStatusAndShieldDOM(sr, rf.actorsStatusState, rf.actorsShieldState, rf.actorsBondState);
+          spawnFloatingText(rf, sr, false, false);
+        }
+        const speaker = resolveDialogueSpeaker(rf);
+        if (speaker && !isUltimateCutInQuoteFrame(rf)) {
+          smoothlyReturnDisplacedActorsToOrigin(sr);
+          const readTime = renderSpeechBubble(rf, sr, token);
+          const textDuration = getMessageReadingDuration(speaker.quote);
+          const waitMs = Math.max(textDuration, readTime, 400);
+          await new Promise((resolve) => setTimeout(resolve, waitMs / speed));
+        } else if (rf.type === "TEXT" || rf.type === "SKILL_TEXT") {
+          await new Promise((resolve) => setTimeout(resolve, 200 / speed));
+        }
+      }
+    }
+    const lastWf = hitFrames[hitFrames.length - 1];
     if (lastWf) {
       syncActorStatusAndShieldDOM(sr, lastWf.actorsStatusState, lastWf.actorsShieldState, lastWf.actorsBondState);
     }
-    for (const wf of waveFrames) {
+    for (const wf of hitFrames) {
       if (wf.isDeathEvent && wf.deadActorId) {
         await playFatalitySequence(sr, wf.deadActorId, token);
         if (engineState.playbackToken !== token) return;
@@ -5735,12 +5795,12 @@
   async function playbackLoop(token) {
     while (engineState.currentFrameIndex < engineState.frames.length && engineState.isPlaying && engineState.playbackToken === token) {
       const aoeBatch = collectAOEWaveBatch(engineState.currentFrameIndex);
-      if (aoeBatch.length >= 2) {
+      if (aoeBatch && aoeBatch.hitFrames.length >= 2) {
         await renderAOEWaveBatch(aoeBatch, token);
         if (engineState.playbackToken !== token || !engineState.isPlaying) {
           return;
         }
-        engineState.currentFrameIndex += aoeBatch.length;
+        engineState.currentFrameIndex += aoeBatch.totalLength;
         continue;
       }
       const radiantBatch = collectPartyRadiantBatch(engineState.currentFrameIndex);

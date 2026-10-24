@@ -14,7 +14,8 @@ import {
 } from './constants.js';
 import {
     getLuckDropEmoji,
-    ULTIMATE_SUBFRAME_REGEX
+    ULTIMATE_SUBFRAME_REGEX,
+    normalizeAOESkillGroup
 } from './profiles.js';
 import {
     engineState,
@@ -676,6 +677,14 @@ export function createBattleStage() {
  * @param {number} startIndex - Starting frame index.
  * @returns {Array<object>} Batch of consecutive AOE frames (length >= 1, or empty if not an AOE hit).
  */
+/**
+ * Packages an entire multi-target Area-of-Effect (AOE) attack sequence into a single unified event.
+ * Collects all combat hits (DAMAGE, MISS, BLOCK, COUNTER) and bridges over any intermediate reaction
+ * dialogues, emergency heals, checks, and quotes so they do not fracture the sweeping shockwave.
+ *
+ * @param {number} startIndex - Starting frame index in `engineState.frames`.
+ * @returns {{ casterId: string, baseSkill: string, hitFrames: Array<object>, reactionFrames: Array<object>, totalLength: number }|null} Packaged AOE event, or null if not a multi-target AOE.
+ */
 function collectAOEWaveBatch(startIndex) {
     const first = engineState.frames[startIndex];
     if (
@@ -683,33 +692,81 @@ function collectAOEWaveBatch(startIndex) {
         !first.isAOE ||
         !['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(first.type)
     ) {
-        return [];
+        return null;
     }
 
     const casterId = first.aoeCasterId || (first.type === 'COUNTER' ? first.targetId : first.actorId);
-    const batch = [first];
-    if (first.isAOELast) return batch;
-    let idx = startIndex + 1;
+    const baseSkill = normalizeAOESkillGroup(first.incomingSkillId || first.skillId);
+
+    const hitFrames = [];
+    const reactionFrames = [];
+    let idx = startIndex;
 
     while (idx < engineState.frames.length) {
         const cur = engineState.frames[idx];
-        if (
-            cur &&
-            cur.isAOE &&
-            ['DAMAGE', 'MISS', 'BLOCK', 'COUNTER'].includes(cur.type)
-        ) {
-            const curCasterId = cur.aoeCasterId || (cur.type === 'COUNTER' ? cur.targetId : cur.actorId);
-            if (curCasterId === casterId) {
-                batch.push(cur);
-                if (cur.isAOELast) break;
-                idx++;
-                continue;
+        if (!cur) break;
+
+        const isHit = ['DAMAGE', 'MISS', 'BLOCK'].includes(cur.type) &&
+                      (cur.aoeCasterId === casterId || cur.actorId === casterId) &&
+                      normalizeAOESkillGroup(cur.skillId) === baseSkill;
+
+        const isCounter = (cur.type === 'COUNTER' || cur.isCounter) &&
+                          (cur.targetId === casterId);
+
+        if (isHit || isCounter) {
+            hitFrames.push(cur);
+            idx++;
+            continue;
+        }
+
+        // Check if there are further hits of this same AOE wave ahead
+        let hasFurtherHits = false;
+        for (let k = idx + 1; k < engineState.frames.length; k++) {
+            const ahead = engineState.frames[k];
+            if (!ahead) break;
+
+            const aheadIsHit = ['DAMAGE', 'MISS', 'BLOCK'].includes(ahead.type) &&
+                               (ahead.aoeCasterId === casterId || ahead.actorId === casterId) &&
+                               normalizeAOESkillGroup(ahead.skillId) === baseSkill;
+            const aheadIsCounter = (ahead.type === 'COUNTER' || ahead.isCounter) &&
+                                   (ahead.targetId === casterId);
+
+            if (aheadIsHit || aheadIsCounter) {
+                hasFurtherHits = true;
+                break;
+            }
+
+            // Stop bridging if another actor initiates an independent active attack
+            if (['DAMAGE', 'MISS', 'BLOCK'].includes(ahead.type) &&
+                ahead.actorId !== casterId &&
+                !ahead.isCounter && ahead.type !== 'COUNTER') {
+                break;
+            }
+            // Stop bridging if this caster performs a different active attack
+            if (['DAMAGE', 'MISS', 'BLOCK'].includes(ahead.type) &&
+                ahead.actorId === casterId &&
+                normalizeAOESkillGroup(ahead.skillId) !== baseSkill) {
+                break;
             }
         }
+
+        if (hasFurtherHits) {
+            reactionFrames.push(cur);
+            idx++;
+            continue;
+        }
+
         break;
     }
 
-    return batch;
+    if (hitFrames.length < 2) return null;
+    return {
+        casterId,
+        baseSkill,
+        hitFrames,
+        reactionFrames,
+        totalLength: idx - startIndex
+    };
 }
 
 /**
@@ -758,21 +815,27 @@ function collectPartyRadiantBatch(startIndex) {
 }
 
 /**
- * Renders a multi-target AOE wave batch using Spatial Wavefront Scheduling.
- * The sweeping shockwave propagates across the stage from caster towards defenders; targets in the same
- * column take damage and show numbers simultaneously rather than in arbitrary battle log order.
+ * Renders a packaged multi-target AOE wave event.
+ * Phase 1: Physical Spatial Wavefront Sweep — the crescent shockwave and energy blades sweep across
+ * all targets in the wave synchronously/column-by-column without any mid-wave speech interruptions.
+ * Phase 2: Post-Wave Reactions — plays all dialogues, quotes, emergency first-aids and check results smoothly
+ * after the smoke clears.
  *
- * @param {Array<object>} waveFrames - Batch of consecutive AOE combat frames.
+ * @param {{ casterId: string, baseSkill: string, hitFrames: Array<object>, reactionFrames: Array<object>, totalLength: number }} aoeBatch - Packaged AOE event payload.
  * @param {number} token - Active playback token.
  * @returns {Promise<void>}
  */
-async function renderAOEWaveBatch(waveFrames, token) {
+async function renderAOEWaveBatch(aoeBatch, token) {
     const sr = engineState.shadowRoot;
-    if (!sr || engineState.playbackToken !== token || waveFrames.length === 0) return;
+    if (!sr || engineState.playbackToken !== token || !aoeBatch) return;
+
+    const { hitFrames, reactionFrames, casterId } = aoeBatch;
+    if (!hitFrames || hitFrames.length === 0) return;
 
     const arena = sr.getElementById('arena');
     const dialog = sr.getElementById('dialog-box');
-    const firstFrame = waveFrames[0];
+    const firstFrame = hitFrames[0];
+    const speed = getEffectiveSpeed();
 
     // 1. Check and play Ultimate Cut-In on the first frame of the AOE wave if applicable
     if (isPrimaryUltimateTriggerFrame(firstFrame)) {
@@ -798,11 +861,10 @@ async function renderAOEWaveBatch(waveFrames, token) {
     syncActorStatusAndShieldDOM(sr, firstFrame.actorsStatusState, firstFrame.actorsShieldState, firstFrame.actorsBondState);
 
     // 3. Compute spatial wavefront positions and schedule column impacts
-    const casterId = firstFrame.aoeCasterId || (firstFrame.type === 'COUNTER' ? firstFrame.targetId : firstFrame.actorId);
     const casterSide = engineState.actors.get(casterId)?.side || 'left';
     const targetSide = casterSide === 'left' ? 'right' : 'left';
 
-    const scheduledItems = waveFrames.map((wf, idx) => {
+    const scheduledItems = hitFrames.map((wf, idx) => {
         const isCounter = wf.type === 'COUNTER' || wf.isCounter;
         const defenderId = isCounter ? wf.actorId : wf.targetId;
         const targetEl = defenderId ? sr.getElementById(`actor-${defenderId}`) : null;
@@ -814,10 +876,10 @@ async function renderAOEWaveBatch(waveFrames, token) {
             if (aRect && aRect.width > 0 && tRect && tRect.width > 0) {
                 const targetCenterX = (tRect.left - aRect.left) + tRect.width / 2;
                 if (casterSide === 'right') {
-                    // Wave sweeps right -> left: larger X (closest to center stage) is reached first
+                    // Wave sweeps right -> left: larger X (closest to center stage / boss) is reached first
                     progressX = Math.max(0, aRect.width - targetCenterX);
                 } else {
-                    // Wave sweeps left -> right: smaller X (closest to center stage) is reached first
+                    // Wave sweeps left -> right: smaller X (closest to center stage / boss) is reached first
                     progressX = Math.max(0, targetCenterX);
                 }
             } else {
@@ -865,12 +927,12 @@ async function renderAOEWaveBatch(waveFrames, token) {
     });
 
     const maxHitDelay = buckets.length > 0 ? (impactDelayMs + (buckets.length - 1) * columnStaggerMs) : impactDelayMs;
-    const totalDurationMs = maxHitDelay + 280;
+    const totalSweepDurationMs = maxHitDelay + 280;
 
     // Launch caster center-stage animation, crescent sweep wave, and synchronized projectile fan
-    const { shadowColor } = playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule);
+    const { shadowColor } = playAOEWaveBatchChoreography(hitFrames, sr, targetSchedule);
 
-    const hasCritShake = waveFrames.some(wf => wf.vfx.includes('screen-shake'));
+    const hasCritShake = hitFrames.some(wf => wf.vfx.includes('screen-shake'));
     if (hasCritShake && arena) {
         setTimeout(() => {
             if (engineState.playbackToken === token && arena.isConnected) {
@@ -881,19 +943,19 @@ async function renderAOEWaveBatch(waveFrames, token) {
                     { transform: 'translateX(-8px)', offset: 0.6 },
                     { transform: 'translateX(8px)', offset: 0.8 },
                     { transform: 'translateX(0)', offset: 1 }
-                ], { duration: 300 / getEffectiveSpeed(), easing: 'ease-in-out' });
+                ], { duration: 300 / speed, easing: 'ease-in-out' });
             }
-        }, impactDelayMs / getEffectiveSpeed());
+        }, impactDelayMs / speed);
     }
 
     const waveDeadActorIds = new Set(
-        waveFrames.filter(wf => wf.isDeathEvent && wf.deadActorId).map(wf => wf.deadActorId)
+        hitFrames.filter(wf => wf.isDeathEvent && wf.deadActorId).map(wf => wf.deadActorId)
     );
 
     // 4. Schedule spatial wavefront impacts across all wave targets
     scheduledItems.forEach((item) => {
         const { wf, targetEl } = item;
-        const hitDelay = (targetSchedule.get(wf.index) || impactDelayMs) / getEffectiveSpeed();
+        const hitDelay = (targetSchedule.get(wf.index) || impactDelayMs) / speed;
         setTimeout(() => {
             if (engineState.playbackToken !== token || !engineState.hostElement?.isConnected) return;
 
@@ -905,7 +967,6 @@ async function renderAOEWaveBatch(waveFrames, token) {
                 }
             }
 
-            const speed = getEffectiveSpeed();
             const lookahead = lookaheadComboState(wf.index, wf);
             advanceComboState(wf, lookahead.isNextFrameSameCombo);
             renderComboBanner(arena, wf, speed);
@@ -933,16 +994,52 @@ async function renderAOEWaveBatch(waveFrames, token) {
         }, hitDelay);
     });
 
-    await new Promise(resolve => setTimeout(resolve, totalDurationMs / getEffectiveSpeed()));
+    // Wait for physical shockwave sweep across all targets to finish
+    await new Promise(resolve => setTimeout(resolve, totalSweepDurationMs / speed));
     if (engineState.playbackToken !== token) return;
 
-    const lastWf = waveFrames[waveFrames.length - 1];
+    // 5. PHASE 2: Play after-wave reactions (dialogues, speech bubbles, emergency saves, time rewinds)
+    if (reactionFrames && reactionFrames.length > 0) {
+        for (const rf of reactionFrames) {
+            if (engineState.playbackToken !== token || !engineState.isPlaying) return;
+
+            if (rf.message && dialog) {
+                if (dialog.lastElementChild?.dataset?.frameIndex !== String(rf.index)) {
+                    const msgEl = createLogLineElement(rf);
+                    dialog.appendChild(msgEl);
+                    dialog.scrollTop = dialog.scrollHeight;
+                }
+            }
+
+            if (rf.type === 'HEAL') {
+                syncActorHpAndDeathDOM(sr, rf, { skipHpTransition: false });
+                spawnFloatingText(rf, sr, false, false);
+            }
+            if (rf.type === 'BUFF_APPLY') {
+                syncActorStatusAndShieldDOM(sr, rf.actorsStatusState, rf.actorsShieldState, rf.actorsBondState);
+                spawnFloatingText(rf, sr, false, false);
+            }
+
+            const speaker = resolveDialogueSpeaker(rf);
+            if (speaker && !isUltimateCutInQuoteFrame(rf)) {
+                smoothlyReturnDisplacedActorsToOrigin(sr);
+                const readTime = renderSpeechBubble(rf, sr, token);
+                const textDuration = getMessageReadingDuration(speaker.quote);
+                const waitMs = Math.max(textDuration, readTime, 400);
+                await new Promise(resolve => setTimeout(resolve, waitMs / speed));
+            } else if (rf.type === 'TEXT' || rf.type === 'SKILL_TEXT') {
+                await new Promise(resolve => setTimeout(resolve, 200 / speed));
+            }
+        }
+    }
+
+    const lastWf = hitFrames[hitFrames.length - 1];
     if (lastWf) {
         syncActorStatusAndShieldDOM(sr, lastWf.actorsStatusState, lastWf.actorsShieldState, lastWf.actorsBondState);
     }
 
-    // 5. Play K.O. fatality sequence for any target(s) defeated during this AOE wave
-    for (const wf of waveFrames) {
+    // 6. Play K.O. fatality sequence for any target(s) defeated during this AOE wave
+    for (const wf of hitFrames) {
         if (wf.isDeathEvent && wf.deadActorId) {
             await playFatalitySequence(sr, wf.deadActorId, token);
             if (engineState.playbackToken !== token) return;
@@ -1075,12 +1172,12 @@ export async function playbackLoop(token) {
         engineState.playbackToken === token
     ) {
         const aoeBatch = collectAOEWaveBatch(engineState.currentFrameIndex);
-        if (aoeBatch.length >= 2) {
+        if (aoeBatch && aoeBatch.hitFrames.length >= 2) {
             await renderAOEWaveBatch(aoeBatch, token);
             if (engineState.playbackToken !== token || !engineState.isPlaying) {
                 return;
             }
-            engineState.currentFrameIndex += aoeBatch.length;
+            engineState.currentFrameIndex += aoeBatch.totalLength;
             continue;
         }
 
