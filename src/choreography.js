@@ -314,19 +314,8 @@ export function playAOEWaveBatchChoreography(waveFrames, sr, targetSchedule = nu
     const centerStageX = arenaRect.width / 2;
     const centerStageY = arenaRect.height / 2;
 
-    // Launch sweeping crescent shockwave and staggered projectiles toward every target in the wave
+    // Launch sweeping crescent shockwave toward targets (pure shockwave, no flying projectiles)
     spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
-    waveFrames.forEach((wf, idx) => {
-        const isCounter = wf.type === 'COUNTER' || wf.isCounter;
-        const targetId = isCounter ? wf.actorId : wf.targetId;
-        const targetEl = targetId ? sr.getElementById(`actor-${targetId}`) : null;
-        if (targetEl) {
-            const hitDelay = targetSchedule ? (targetSchedule.get(wf.index) ?? (impactDelayMs + idx * staggerMs)) : (impactDelayMs + idx * staggerMs);
-            const flightMs = 140;
-            const launchDelay = Math.max(0, hitDelay - flightMs);
-            spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, launchDelay, flightMs, speed);
-        }
-    });
 
     return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
 }

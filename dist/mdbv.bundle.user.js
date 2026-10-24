@@ -3064,17 +3064,6 @@
     const centerStageX = arenaRect.width / 2;
     const centerStageY = arenaRect.height / 2;
     spawnAOEFanWave(arena, centerStageX, centerStageY, firstTargetSide, shadowColor, speed);
-    waveFrames.forEach((wf, idx) => {
-      const isCounter = wf.type === "COUNTER" || wf.isCounter;
-      const targetId = isCounter ? wf.actorId : wf.targetId;
-      const targetEl = targetId ? sr.getElementById(`actor-${targetId}`) : null;
-      if (targetEl) {
-        const hitDelay = targetSchedule ? targetSchedule.get(wf.index) ?? impactDelayMs + idx * staggerMs : impactDelayMs + idx * staggerMs;
-        const flightMs = 140;
-        const launchDelay = Math.max(0, hitDelay - flightMs);
-        spawnAOEProjectile(arena, centerStageX, centerStageY, targetEl, shadowColor, launchDelay, flightMs, speed);
-      }
-    });
     return { staggerMs, impactDelayMs, totalDurationMs: waveSweepMs, shadowColor };
   }
   function playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed) {
@@ -5571,11 +5560,8 @@
         const tRect = targetEl.getBoundingClientRect();
         if (aRect && aRect.width > 0 && tRect && tRect.width > 0) {
           const targetCenterX = tRect.left - aRect.left + tRect.width / 2;
-          if (casterSide === "right") {
-            progressX = Math.max(0, aRect.width - targetCenterX);
-          } else {
-            progressX = Math.max(0, targetCenterX);
-          }
+          const waveOriginX = aRect.width / 2;
+          progressX = Math.abs(targetCenterX - waveOriginX);
         } else {
           progressX = idx * 40;
         }

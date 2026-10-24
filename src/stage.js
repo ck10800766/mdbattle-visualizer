@@ -875,13 +875,9 @@ async function renderAOEWaveBatch(aoeBatch, token) {
             const tRect = targetEl.getBoundingClientRect();
             if (aRect && aRect.width > 0 && tRect && tRect.width > 0) {
                 const targetCenterX = (tRect.left - aRect.left) + tRect.width / 2;
-                if (casterSide === 'right') {
-                    // Wave sweeps right -> left: larger X (closest to center stage / boss) is reached first
-                    progressX = Math.max(0, aRect.width - targetCenterX);
-                } else {
-                    // Wave sweeps left -> right: smaller X (closest to center stage / boss) is reached first
-                    progressX = Math.max(0, targetCenterX);
-                }
+                const waveOriginX = aRect.width / 2;
+                // Pure physical distance from the center-stage wave origin to target
+                progressX = Math.abs(targetCenterX - waveOriginX);
             } else {
                 progressX = idx * 40;
             }
