@@ -566,7 +566,7 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
         if (actor.isSummon) {
             summonIds.add(id);
             if (actor.name) summonNames.set(id, actor.name);
-            summonSpawnIdx.set(id, actor.initiallySpawned ? 0 : 0);
+            summonSpawnIdx.set(id, actor.initiallySpawned ? 0 : -1);
         }
     });
 
@@ -575,12 +575,21 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
         if (l.type === 'SUMMON' && l.targetId) {
             summonIds.add(l.targetId);
             summonSpawnIdx.set(l.targetId, idx);
+        } else if (
+            l.actorId &&
+            summonIds.has(l.actorId) &&
+            summonSpawnIdx.get(l.actorId) === -1 &&
+            !SUMMON_DESPAWN_REGEX.test(l.message || '') &&
+            !['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(l.type)
+        ) {
+            summonSpawnIdx.set(l.actorId, idx);
         }
     });
 
     summonIds.forEach(id => {
         const name = summonNames.get(id);
         const spawnIdx = summonSpawnIdx.get(id) ?? 0;
+        if (spawnIdx < 0) return;
         let lastCombatIdx = -1;
         let lastDeathIdx = -1;
         let hasHpRemaining = false;
@@ -619,12 +628,22 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
             const nameMentioned = name && msg.includes(name);
 
             if (['TEXT', 'SKILL_TEXT', 'BOSS_DIALOGUE'].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+                if (l.actorId && summonIds.has(l.actorId) && l.actorId !== id) {
+                    continue;
+                }
                 let futureCombat = false;
                 for (let k = idx + 1; k < logs.length; k++) {
                     const fl = logs[k];
                     if (!fl) continue;
                     if (fl.actorId === id || fl.targetId === id || fl.opponentId === id) {
                         if (['DAMAGE', 'BLOCK', 'MISS', 'COUNTER', 'HEAL', 'LUCK_EVENT', 'BUFF_EFFECT', 'DEATH'].includes(fl.type)) {
+                            futureCombat = true;
+                            break;
+                        }
+                    }
+                    if (lastCombatIdx < spawnIdx && ['TEXT', 'SKILL_TEXT', 'BOSS_DIALOGUE'].includes(fl.type)) {
+                        const flMentioned = name && (fl.message || '').includes(name) && !(fl.actorId && summonIds.has(fl.actorId) && fl.actorId !== id);
+                        if (fl.actorId === id || fl.targetId === id || flMentioned) {
                             futureCombat = true;
                             break;
                         }

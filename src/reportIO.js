@@ -78,7 +78,8 @@ export function buildExportableReportPayload() {
 
     let participants = raw.participants ? structuredClone(raw.participants) : { players: [], enemies: [] };
 
-    // If participants were missing or lacked HP stats, synthesize them from engineState.actors
+    // If participants were missing, synthesize them from engineState.actors;
+    // otherwise enrich any existing entries that lack stats.hp or imagePath
     if (!hasPlayers && !hasEnemies && engineState.actors.size > 0) {
         const players = [];
         const enemies = [];
@@ -96,6 +97,27 @@ export function buildExportableReportPayload() {
             else enemies.push(entry);
         });
         participants = { players, enemies };
+    } else if (engineState.actors.size > 0) {
+        const enrichEntry = (entry) => {
+            if (!entry || typeof entry !== 'object') return;
+            const id = entry.userId || entry.entityId || entry._id;
+            const actor = id ? engineState.actors.get(id) : null;
+            if (!actor) return;
+            if (!entry.characterName && !entry.name && actor.name) {
+                entry.characterName = actor.name;
+            }
+            if (!entry.imagePath && actor.avatar) {
+                entry.imagePath = toSerializableImagePath(actor.avatar);
+            }
+            if (!entry.stats || typeof entry.stats !== 'object') {
+                entry.stats = {};
+            }
+            if (!actor.hideHp && (!(Number(entry.stats.hp) > 1) || actor.maxHp > Number(entry.stats.hp))) {
+                entry.stats.hp = actor.maxHp;
+            }
+        };
+        (participants.players || []).forEach(enrichEntry);
+        (participants.enemies || []).forEach(enrichEntry);
     }
 
     return {

@@ -391,6 +391,10 @@ function createToggleButton() {
         const clientY = e.clientY ?? e.touches?.[0]?.clientY;
         if (clientX == null || clientY == null) return;
 
+        if (e.pointerType === 'touch') {
+            dock.classList.add('menu-open');
+        }
+
         isDragging = false;
         didDrag = false;
         startX = clientX;
@@ -402,6 +406,12 @@ function createToggleButton() {
 
         window.addEventListener('pointermove', onPointerMove);
         window.addEventListener('pointerup', onPointerUp);
+    });
+
+    document.addEventListener('pointerdown', (e) => {
+        if (dock.classList.contains('menu-open') && !dock.contains(e.target)) {
+            dock.classList.remove('menu-open');
+        }
     });
 
     window.addEventListener('resize', () => {

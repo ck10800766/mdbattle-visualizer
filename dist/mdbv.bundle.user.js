@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.6)
 // @namespace    mydoujin-battle-vfx
-// @version      7.6.1
+// @version      7.6.2
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.6.1";
+  var APP_VERSION = "7.6.2";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -1237,7 +1237,7 @@
       if (actor.isSummon) {
         summonIds.add(id);
         if (actor.name) summonNames.set(id, actor.name);
-        summonSpawnIdx.set(id, actor.initiallySpawned ? 0 : 0);
+        summonSpawnIdx.set(id, actor.initiallySpawned ? 0 : -1);
       }
     });
     logs.forEach((l, idx) => {
@@ -1245,11 +1245,14 @@
       if (l.type === "SUMMON" && l.targetId) {
         summonIds.add(l.targetId);
         summonSpawnIdx.set(l.targetId, idx);
+      } else if (l.actorId && summonIds.has(l.actorId) && summonSpawnIdx.get(l.actorId) === -1 && !SUMMON_DESPAWN_REGEX.test(l.message || "") && !["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(l.type)) {
+        summonSpawnIdx.set(l.actorId, idx);
       }
     });
     summonIds.forEach((id) => {
       const name = summonNames.get(id);
       const spawnIdx = summonSpawnIdx.get(id) ?? 0;
+      if (spawnIdx < 0) return;
       let lastCombatIdx = -1;
       let lastDeathIdx = -1;
       let hasHpRemaining = false;
@@ -1281,12 +1284,22 @@
         const isTarget = l.targetId === id;
         const nameMentioned = name && msg.includes(name);
         if (["TEXT", "SKILL_TEXT", "BOSS_DIALOGUE"].includes(l.type) && (isActor || isTarget || nameMentioned)) {
+          if (l.actorId && summonIds.has(l.actorId) && l.actorId !== id) {
+            continue;
+          }
           let futureCombat = false;
           for (let k = idx + 1; k < logs.length; k++) {
             const fl = logs[k];
             if (!fl) continue;
             if (fl.actorId === id || fl.targetId === id || fl.opponentId === id) {
               if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL", "LUCK_EVENT", "BUFF_EFFECT", "DEATH"].includes(fl.type)) {
+                futureCombat = true;
+                break;
+              }
+            }
+            if (lastCombatIdx < spawnIdx && ["TEXT", "SKILL_TEXT", "BOSS_DIALOGUE"].includes(fl.type)) {
+              const flMentioned = name && (fl.message || "").includes(name) && !(fl.actorId && summonIds.has(fl.actorId) && fl.actorId !== id);
+              if (fl.actorId === id || fl.targetId === id || flMentioned) {
                 futureCombat = true;
                 break;
               }
@@ -1846,8 +1859,6 @@
     .actor.left.despawning { animation: summonDespawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.right.spawning { animation: summonSpawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .actor.right.despawning { animation: summonDespawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
-    .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .actor.despawning { animation: summonDespawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
 
     .actor-name {
@@ -2033,8 +2044,6 @@
         30% { filter: blur(1px) brightness(1.4) drop-shadow(0 0 12px #fc8181); opacity: 1; }
         100% { opacity: 0; transform: translate3d(calc(50vw + 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 0 transparent); }
     }
-    @keyframes summonSpawn { 0% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 16px #63b3ed); } 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } }
-    @keyframes summonDespawn { 0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } 100% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
     @keyframes ult-bg-zoom { 0% { transform: scale(1.15); filter: grayscale(0%) contrast(100%) brightness(0.9); } 10% { filter: grayscale(70%) contrast(160%) brightness(0.55); } 100% { transform: scale(1); filter: grayscale(70%) contrast(160%) brightness(0.55); } }
@@ -2148,17 +2157,7 @@
     .seek-hover-tooltip { position: absolute; bottom: 26px; left: 0; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); color: #e2e8f0; border: 1px solid rgba(79, 209, 197, 0.6); border-radius: 5px; padding: 3px 8px; font-size: 11px; font-weight: 700; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.1s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7); z-index: 100; letter-spacing: 0.3px; }
     .seek-hover-tooltip.active { opacity: 1; visibility: visible; }
 
-    /* Report Export/Import Buttons, Hotkey Popover & Drag-Drop Overlay */
-    button.btn-io { background: #2b6cb0; border-color: #63b3ed; padding: 6px 10px; color: #ebf8ff; }
-    button.btn-io:hover { background: #3182ce; }
-    .hotkey-wrapper { position: relative; display: inline-flex; align-items: center; }
-    button.btn-hotkey { background: #1a202c; border-color: #4a5568; padding: 6px 9px; color: #a0aec0; font-size: 12px; }
-    button.btn-hotkey:hover { color: #fff; border-color: #4fd1c5; }
-    .hotkey-popover { position: absolute; top: calc(100% + 8px); right: 0; background: rgba(15, 23, 42, 0.97); border: 1px solid #4fd1c5; border-radius: 8px; padding: 10px 14px; color: #e2e8f0; font-size: 12px; line-height: 1.7; white-space: nowrap; box-shadow: 0 12px 28px rgba(0,0,0,0.85); z-index: 2600; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease; min-width: 250px; }
-    .hotkey-wrapper:hover .hotkey-popover { opacity: 1; visibility: visible; }
-    .hotkey-title { font-weight: 800; color: #4fd1c5; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 3px; margin-bottom: 4px; font-size: 12px; }
-    .hotkey-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .hotkey-popover kbd, .hotkey-kbd { background: #2d3748; border: 1px solid #718096; border-radius: 4px; padding: 0px 6px; font-family: monospace; font-size: 11px; color: #f6e05e; }
+    /* Drag-Drop Report Overlay */
     .drag-drop-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.88); border: 4px dashed #4fd1c5; z-index: 4000; display: none; align-items: center; justify-content: center; color: #f6e05e; pointer-events: none; backdrop-filter: blur(4px); }
     .drag-drop-overlay.active { display: flex; }
     .drag-drop-box { text-align: center; padding: 28px 40px; border-radius: 16px; background: rgba(26, 32, 44, 0.9); border: 1px solid rgba(79, 209, 197, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
@@ -2167,14 +2166,22 @@
 `;
 
   // src/cinematics.js
-  function stripCombatOutcomeText(rawText, actorName = "") {
+  var NON_SKILL_VERBS = /^(?:受到了?|造成了?|回復了?|恢復了?|失去了?|剩餘了?|擋下了?|躲開了?|避開了?|接下了?|離開了?|回到了?|變成了?|化作了?|放進了?|拔出了?|清除了?|轉好了?|停在了?|蓄滿了?|看了一眼)$/;
+  function stripCombatOutcomeText(rawText, actorName = "", targetName = "") {
     let text = String(rawText || "");
     if (actorName) {
       const escapedActorName = escapeRegExp(actorName);
       text = text.replace(new RegExp(`^${escapedActorName}[\uFF1A:]?\\s*(\u7684\\s*)?`), "");
     }
     text = text.replace(/^[的之裝]\s*/, "");
-    text = text.replace(/^[第輪次]\s*\d+\s*[擊輪次劍枚][，,、\s]*/g, "").replace(/[，,、]?\s*(?:會心一擊|精準劃過要害|正中要害)[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, "").replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*(?:(?:對|在)\s*.+?\s*|(?:[^\s，,。]+?\s*))?(?:命中並\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, "").replace(/[，,、]?\s*(?:回復了?|恢復了?)\s*\d+\s*點?(?:生命|HP)[！!。.]?/g, "").replace(/[—─ー―-]+$/g, "").replace(/^[，,、：:\s]+/, "").replace(/[，,、\s]+$/, "").trim();
+    if (targetName && targetName !== actorName) {
+      const escapedTarget = escapeRegExp(targetName);
+      text = text.replace(
+        new RegExp(`[\uFF0C,\u3001\uFF01!]?\\s*${escapedTarget}\\s*(?:\u8EAB\u4E0A[^\u3002\uFF01!]*?[\uFF0C,\u3001]?\\s*(?:\u9020\u6210\u4E86?|\u53D7\u5230)\\s*\\d+\\s*\u9EDE(?:\u771F\u5BE6)?\u50B7\u5BB3[\uFF01!\u3002.]?|(?:\u9020\u6210\u4E86?|\u53D7\u5230)\\s*\\d+\\s*\u9EDE(?:\u771F\u5BE6)?\u50B7\u5BB3[\uFF01!\u3002.]?|\u8D95\u5728[^\u3002\uFF01!]*)[\uFF01!\u3002.]?`, "g"),
+        ""
+      );
+    }
+    text = text.replace(/^[第輪次]\s*\d+\s*[擊輪次劍枚][，,、\s]*/g, "").replace(/[，,、]?\s*(?:會心一擊|精準劃過要害|正中要害)[！!]?\s*/g, "\uFF0C").replace(/[，,、]?\s*但是被\s*.+?\s*用.+?抵擋[，,]?\s*(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, "").replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, "").replace(/[，,、]?\s*(?:(?:對|在)\s*.+?\s*|(?:[^\s，,。]+?\s*))?(?:命中並\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, "").replace(/[，,、]?\s*(?:回復了?|恢復了?)\s*\d+\s*點?(?:生命值?|HP)[！!。.]?/g, "").replace(/([，,、])\s*[，,、]+/g, "$1").replace(/[—─ー―-]+$/g, "").replace(/^[，,、：:\s]+/, "").replace(/[，,、\s]+$/, "").trim();
     if (text.length > 0 && !/[。！!?.」…]$/.test(text)) {
       text += "\u2026\u2026";
     }
@@ -2216,11 +2223,24 @@
   }
   function extractSkillFromMessage(message) {
     if (!message) return null;
-    const verbPattern = /(?:使出了|使用了|施展了|發動了|施放了|吟唱了|喚出了|召喚了|唱起了|祭出了|進入)\s*([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+    const verbPattern = /(?:使出了|使用了|施展了|發動了|施放了|吟唱了|喚出了|召喚了|唱起了|祭出了|綻放了|展開了|解放了|進入)\s*([^，,。！!—\s\d][^，,。！!—\s]*)/g;
     let m;
     while ((m = verbPattern.exec(message)) !== null) {
       const token = m[1].replace(/^[「『\[【](.*?)[」』\]】]$/, "$1");
       if (/^(?:半空|空中|地面|身前|陣前|身旁|長桌旁|電梯|暗處|四周|前方|後方|頭頂)$/.test(token)) {
+        continue;
+      }
+      const isActor = engineState?.actors ? Array.from(engineState.actors.values()).some((a) => a.name === token) : false;
+      if (!isActor) {
+        return token;
+      }
+    }
+    const structuralPattern = /(?:^|[，,。！!\s])([^\s，,。！!：:「」『』]{1,4}了)\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+    while ((m = structuralPattern.exec(message)) !== null) {
+      const verb = m[1];
+      if (NON_SKILL_VERBS.test(verb)) continue;
+      const token = m[2].replace(/^[「『\[【](.*?)[」』\]】]$/, "$1");
+      if (!token || token === "\u5B8C\u5168\u71C3\u71D2" || /^(?:半空|空中|地面|身前|陣前|身旁|長桌旁|電梯|暗處|四周|前方|後方|頭頂)$/.test(token)) {
         continue;
       }
       const isActor = engineState?.actors ? Array.from(engineState.actors.values()).some((a) => a.name === token) : false;
@@ -2236,9 +2256,9 @@
     if (objMatch) {
       return objMatch[1];
     }
-    const cardMatch = message.match(/把「([^」]+)」拋向/);
-    if (cardMatch) {
-      return `${cardMatch[1]}\u4E4B\u724C`;
+    const transformMatch = message.match(/變成了\s+([^，,。！!—\s\d][^，,。！!—\s]*)/);
+    if (transformMatch) {
+      return transformMatch[1];
     }
     return null;
   }
@@ -2254,7 +2274,7 @@
     }
     for (let i = frame.index + 1; i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
       const candidate = engineState.frames[i];
-      if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId && candidate.skillTier === "ultimate") {
+      if (candidate && candidate.turnNumber === frame.turnNumber && candidate.actorId === frame.actorId && candidate.skillTier === "ultimate" && isPrimaryUltimateTriggerFrame(candidate) && !ULTIMATE_SUBFRAME_REGEX.test(String(candidate.message || "").trim()) && candidate.rosarioEvent !== "INSCRIBE_CROSS") {
         const candMsg = String(candidate.message || "");
         const candQuote = candMsg.match(/[：:]\s*「([^」]+)」/);
         if (candQuote && candQuote[1].length <= 30) {
@@ -2296,21 +2316,46 @@
     textWrapper.className = `ult-text-wrapper ${actor.side === "left" ? "left-side" : "right-side"}`;
     let mainText = "";
     let subText = "";
+    const target = frame.targetId ? engineState.actors.get(frame.targetId) : null;
+    const targetName = target?.name || "";
     const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
     if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 30) {
       const fullQuote = spokenQuoteMatch[1];
       if (fullQuote.length <= 16) {
         mainText = fullQuote;
-        const rawRemainingText = frame.message.replace(actor.name, "").replace(/[：:]\s*「[^」]+」\s*/, " ").trim();
-        subText = stripCombatOutcomeText(rawRemainingText, actor.name);
+        const quoteSpanMatch = frame.message.match(/(?:(?:低喝|大喝|高呼|大喊|喊道|說道|喝道|低語|輕聲說|冷冷說道|沉聲道|開口|說))?[：:]\s*「[^」]+」\s*/);
+        let rawRemainingText = frame.message;
+        if (quoteSpanMatch) {
+          const before = frame.message.slice(0, quoteSpanMatch.index).trim().replace(/[，,、。！!]+$/, "");
+          const after = frame.message.slice(quoteSpanMatch.index + quoteSpanMatch[0].length).trim().replace(/^[，,、。！!]+/, "");
+          if (before && after) {
+            rawRemainingText = `${before}\uFF0C${after}`;
+          } else {
+            rawRemainingText = before || after;
+          }
+        }
+        subText = stripCombatOutcomeText(rawRemainingText, actor.name, targetName);
+        if (!subText && engineState.frames) {
+          const next = engineState.frames[frame.index + 1];
+          if (next && next.turnNumber === frame.turnNumber && next.actorId === frame.actorId && next.skillTier === "ultimate" && !ULTIMATE_SUBFRAME_REGEX.test(String(next.message || "").trim()) && !/[：:]\s*「/.test(String(next.message || ""))) {
+            const nextTarget = next.targetId ? engineState.actors.get(next.targetId) : null;
+            subText = stripCombatOutcomeText(next.message, actor.name, nextTarget?.name || targetName);
+          }
+        }
       } else {
-        const parts = fullQuote.split(/[，,！!]/).filter(Boolean);
-        if (parts.length >= 2) {
-          mainText = parts[parts.length - 1] + (fullQuote.endsWith("\uFF01") || fullQuote.endsWith("!") ? "\uFF01" : "");
-          subText = stripCombatOutcomeText(parts.slice(0, -1).join("\uFF0C"), actor.name);
+        const strongBreakMatch = fullQuote.match(/^(.+?)(?:——|[！!。？?]\s*)([^——！!。？?]+[！!。？?]?)$/);
+        if (strongBreakMatch && strongBreakMatch[2].trim().length >= 4 && strongBreakMatch[2].trim().length <= 18) {
+          mainText = strongBreakMatch[2].trim().replace(/[。.]$/, "");
+          subText = stripCombatOutcomeText(strongBreakMatch[1].trim(), actor.name, targetName);
         } else {
-          mainText = fullQuote;
-          subText = "";
+          const parts = fullQuote.split(/[，,！!]/).filter(Boolean);
+          if (parts.length >= 2) {
+            mainText = parts[parts.length - 1] + (fullQuote.endsWith("\uFF01") || fullQuote.endsWith("!") ? "\uFF01" : "");
+            subText = stripCombatOutcomeText(parts.slice(0, -1).join("\uFF0C"), actor.name, targetName);
+          } else {
+            mainText = fullQuote;
+            subText = "";
+          }
         }
       }
     } else {
@@ -2349,6 +2394,38 @@
           }
         }
       }
+      if (!extractedSkillName && frame.skillId && engineState.frames) {
+        for (let i = 0; i < frame.index; i++) {
+          const candidate = engineState.frames[i];
+          if (candidate && candidate.actorId === frame.actorId && candidate.skillId === frame.skillId) {
+            const candQuote = String(candidate.message || "").match(/[：:]\s*「([^」]+)」/);
+            if (candQuote && candQuote[1].length <= 30) {
+              extractedSkillName = candQuote[1];
+              break;
+            }
+            const candidateSkill = extractSkillFromMessage(candidate.message);
+            if (candidateSkill) {
+              extractedSkillName = candidateSkill;
+              break;
+            }
+          }
+        }
+        if (!extractedSkillName && engineState.frames) {
+          for (let i = 0; i < frame.index; i++) {
+            const candidate = engineState.frames[i];
+            if (candidate && candidate.actorId === frame.actorId && candidate.skillId === frame.skillId) {
+              const nextInTurn = engineState.frames[i + 1];
+              if (nextInTurn && nextInTurn.turnNumber === candidate.turnNumber && nextInTurn.actorId === frame.actorId) {
+                const candQuote = String(nextInTurn.message || "").match(/[：:]\s*「([^」]+)」/);
+                if (candQuote && candQuote[1].length <= 30) {
+                  extractedSkillName = candQuote[1];
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
       if (!extractedSkillName && frame.skillName) {
         extractedSkillName = frame.skillName;
       }
@@ -2358,13 +2435,20 @@
         if (!narrativeMsg || /造成了|受到|點傷害|會心一擊|防禦|閃避/.test(narrativeMsg)) {
           narrativeMsg = skillSourceFrame?.message || "";
         }
-        const rawRemaining = narrativeMsg.replace(new RegExp(`(?:[^\\s\uFF0C,\u3002\uFF01!\uFF1A:]{1,4}\u4E86|\u9032\u5165)\\s*${escapeRegExp(extractedSkillName)}[\uFF0C,\u3001\\s]*`), " ").trim();
-        subText = stripCombatOutcomeText(rawRemaining, actor.name);
+        const escSkill = escapeRegExp(extractedSkillName);
+        const rawRemaining = narrativeMsg.replace(new RegExp(`^[^\\s\uFF0C,\u3002\uFF01!\uFF1A:]+\\s*\u8B8A\u6210\u4E86\\s*${escSkill}[\uFF0C,\u3001\uFF01!\u3002\\s]*`), " ").replace(new RegExp(`(?:${escapeRegExp(actor.name)}\\s*)?(?:[^\\s\uFF0C,\u3002\uFF01!\uFF1A:]{1,4}\u4E86|\u9032\u5165)\\s*${escSkill}[\uFF0C,\u3001\uFF01!\u3002\\s]*`), " ").replace(new RegExp(`\u628A\\s*${escSkill}[^\uFF0C,\u3002\uFF01!]*[\uFF0C,\u3002\u3001\\s]*`), " ").replace(new RegExp(`\u2014\u2014\\s*${escSkill}[\uFF01!\uFF0C,\u3002\u3001\\s]*`), " ").trim();
+        subText = stripCombatOutcomeText(rawRemaining, actor.name, targetName);
+        if (!subText && frame.index > 0 && engineState.frames) {
+          const prev = engineState.frames[frame.index - 1];
+          if (prev && prev.turnNumber === frame.turnNumber && prev.actorId === frame.actorId && prev.skillTier === "ultimate" && !/[：:]\s*「/.test(String(prev.message || ""))) {
+            subText = stripCombatOutcomeText(prev.message, actor.name, targetName);
+          }
+        }
       } else {
-        const clauses = frame.message.replace(new RegExp(`^${escapeRegExp(actor.name)}[\uFF1A:]?\\s*(\u7684\\s*)?`), "").split(/[，,。！!]/).map((s) => stripCombatOutcomeText(s, actor.name).replace(/……$/, "")).filter((s) => s.length >= 2);
+        const clauses = frame.message.replace(new RegExp(`^${escapeRegExp(actor.name)}[\uFF1A:]?\\s*(\u7684\\s*)?`), "").split(/[，,。！!]/).map((s) => stripCombatOutcomeText(s, actor.name, targetName).replace(/……$/, "")).filter((s) => s.length >= 2);
         if (clauses.length >= 2) {
           mainText = clauses[1];
-          subText = stripCombatOutcomeText(clauses[0], actor.name);
+          subText = stripCombatOutcomeText(clauses[0], actor.name, targetName);
         } else if (clauses.length === 1) {
           mainText = clauses[0];
           subText = "";
@@ -2374,7 +2458,7 @@
             rawSkillId = rawSkillId.substring(rawSkillId.indexOf("_") + 1);
           }
           mainText = rawSkillId.replace(/_/g, " ").toUpperCase();
-          subText = stripCombatOutcomeText(frame.message, actor.name);
+          subText = stripCombatOutcomeText(frame.message, actor.name, targetName);
         }
       }
     }
@@ -2433,7 +2517,7 @@
       const quote = `\u300C${colonQuoteMatch[2].trim()}\u300D`;
       if (frame.actorId) {
         const frameActor = engineState.actors.get(frame.actorId);
-        if (frameActor && (speakerPrefix.startsWith(frameActor.name) || speakerPrefix.includes(frameActor.name))) {
+        if (frameActor && (speakerPrefix.startsWith(frameActor.name) || speakerPrefix.includes(frameActor.name) || frame.type === "BOSS_DIALOGUE")) {
           return { actorId: frameActor.id, quote };
         }
       }
@@ -3467,14 +3551,12 @@
         actorAnimConfig.duration = 150 / speed;
         frameDuration = 180;
         if (targetEl) {
-          targetEl.style.filter = "brightness(2) contrast(1.5)";
-          targetEl.style.transform = `translateX(${side === "left" ? 10 : -10}px)`;
-          setTimeout(() => {
-            if (targetEl.isConnected) {
-              targetEl.style.filter = "";
-              targetEl.style.transform = "";
-            }
-          }, 80 / speed);
+          targetKeyframes = [
+            { transform: "translateX(0)", filter: "brightness(1)" },
+            { transform: `translateX(${side === "left" ? 10 : -10}px)`, filter: "brightness(2) contrast(1.5)", offset: 0.4 },
+            { transform: "translateX(0)", filter: "brightness(1)", offset: 1 }
+          ];
+          targetAnimConfig.duration = 150 / speed;
         }
       } else {
         actorKeyframes = [
@@ -3588,7 +3670,7 @@
     if (actorEl && targetEl) {
       const side = engineState.actors.get(frame.actorId)?.side || "left";
       const targetSide = engineState.actors.get(frame.targetId)?.side || "right";
-      const shadowColor = side === "left" ? "#fc8181" : "#4fd1c5";
+      const shadowColor = side === "left" ? "#63b3ed" : "#fc8181";
       if (frame.isAOE) {
         return playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed);
       }
@@ -4582,7 +4664,7 @@
         triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
       }
     } else if (frame.isCoverEvent && actorEl) {
-      const protectedId = frame.coverProtectedId || frame.targetId;
+      const protectedId = frame.targetId || frame.actorsBondState?.get(frame.actorId)?.partnerId;
       const protectedEl = protectedId ? sr.getElementById(`actor-${protectedId}`) : null;
       if (protectedEl) {
         const gRect = actorEl.getBoundingClientRect();
@@ -4644,7 +4726,7 @@
       if (!isInitialReset) {
         for (let i = 0; i < frameIndex; i++) {
           const f = engineState.frames[i];
-          if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f) && !shouldDeferUltimateCutIn(f)) {
+          if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f) && !ULTIMATE_SUBFRAME_REGEX.test(String(f.message || "").trim()) && f.rosarioEvent !== "INSCRIBE_CROSS" && !shouldDeferUltimateCutIn(f)) {
             actor.lastUltimateTurn = f.turnNumber;
           }
         }
@@ -4665,7 +4747,7 @@
       if (!isInitialReset && engineState.frames.length > 0) {
         const fragment = document.createDocumentFragment();
         const limit = showActivePreview ? Math.min(stateFrameIndex, engineState.frames.length - 1) : Math.min(stateFrameIndex - 1, engineState.frames.length - 1);
-        const startLogIdx = Math.max(0, limit - 30);
+        const startLogIdx = 0;
         for (let i = startLogIdx; i <= limit; i++) {
           const f = engineState.frames[i];
           if (f && f.message) {
@@ -4803,6 +4885,13 @@
     });
     return markers;
   }
+  function formatSeekLabelText(frameIndex) {
+    const total = engineState.frames.length;
+    if (total === 0) return "T1 (#0/0)";
+    const clamped = Math.max(0, Math.min(frameIndex, total - 1));
+    const turn = engineState.frames[clamped]?.turnNumber || 1;
+    return `T${turn} (#${clamped + 1}/${total})`;
+  }
   function updateATBUI(currentTurn, skipTransition = false, summonStateMap = null) {
     const sr = engineState.shadowRoot;
     if (!sr) return;
@@ -4922,6 +5011,27 @@
         else enemies.push(entry);
       });
       participants = { players, enemies };
+    } else if (engineState.actors.size > 0) {
+      const enrichEntry = (entry) => {
+        if (!entry || typeof entry !== "object") return;
+        const id = entry.userId || entry.entityId || entry._id;
+        const actor = id ? engineState.actors.get(id) : null;
+        if (!actor) return;
+        if (!entry.characterName && !entry.name && actor.name) {
+          entry.characterName = actor.name;
+        }
+        if (!entry.imagePath && actor.avatar) {
+          entry.imagePath = toSerializableImagePath(actor.avatar);
+        }
+        if (!entry.stats || typeof entry.stats !== "object") {
+          entry.stats = {};
+        }
+        if (!actor.hideHp && (!(Number(entry.stats.hp) > 1) || actor.maxHp > Number(entry.stats.hp))) {
+          entry.stats.hp = actor.maxHp;
+        }
+      };
+      (participants.players || []).forEach(enrichEntry);
+      (participants.enemies || []).forEach(enrichEntry);
     }
     return {
       ...raw,
@@ -5000,11 +5110,6 @@
   }
 
   // src/stage.js
-  function formatSeekLabelText(frameIndex) {
-    const total = engineState.frames.length;
-    if (total === 0) return "0 / 0";
-    return `${Math.min(frameIndex, total)} / ${total}`;
-  }
   function closeBattleStage() {
     if (engineState.stageResizeObserver) {
       engineState.stageResizeObserver.disconnect();
@@ -5430,6 +5535,13 @@
       if (e.ctrlKey || e.altKey || e.metaKey) return;
       const activeTag = document.activeElement?.tagName;
       if (activeTag === "INPUT" || activeTag === "TEXTAREA" || activeTag === "SELECT") return;
+      if (engineState.shadowRoot?.getElementById("mdbv-mvp-panel")) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          closeBattleStage();
+        }
+        return;
+      }
       switch (e.key) {
         case " ":
           e.preventDefault();
@@ -5594,8 +5706,6 @@
           await playUltimateCutIn(firstFrame, sr, token);
           if (engineState.playbackToken !== token) return;
         }
-      } else if (actor && isMultiHitSubFrame) {
-        actor.lastUltimateTurn = firstFrame.turnNumber;
       }
     }
     updateATBUI(firstFrame.turnNumber, false, firstFrame.actorsSummonState);
@@ -5726,11 +5836,20 @@
           syncActorStatusAndShieldDOM(sr, rf.actorsStatusState, rf.actorsShieldState, rf.actorsBondState);
           spawnFloatingText(rf, sr, false, false);
         }
+        if (["DICE", "STATUS", "SKILL_TEXT", "BUFF_APPLY", "DEBUFF_APPLY"].includes(rf.type) || rf.diceRoll) {
+          spawnStatusOrDiceBadge(rf, sr);
+        }
         const speaker = resolveDialogueSpeaker(rf);
         if (speaker && !isUltimateCutInQuoteFrame(rf)) {
           smoothlyReturnDisplacedActorsToOrigin(sr);
           const readTime = renderSpeechBubble(rf, sr, token);
           const textDuration = getMessageReadingDuration(speaker.quote);
+          const waitMs = Math.max(textDuration, readTime, 400);
+          await new Promise((resolve) => setTimeout(resolve, waitMs / speed));
+        } else if (isSceneNarrationFrame(rf)) {
+          smoothlyReturnDisplacedActorsToOrigin(sr);
+          const readTime = renderSceneNarrationBanner(rf, sr, token);
+          const textDuration = getMessageReadingDuration(rf.message);
           const waitMs = Math.max(textDuration, readTime, 400);
           await new Promise((resolve) => setTimeout(resolve, waitMs / speed));
         } else if (rf.type === "TEXT" || rf.type === "SKILL_TEXT") {
@@ -5997,8 +6116,6 @@
           await playUltimateCutIn(frame, sr, token);
           if (engineState.playbackToken !== token) return;
         }
-      } else if (actor && isMultiHitSubFrame) {
-        actor.lastUltimateTurn = frame.turnNumber;
       }
     }
     const {
@@ -6390,6 +6507,9 @@
       const clientX = e.clientX ?? e.touches?.[0]?.clientX;
       const clientY = e.clientY ?? e.touches?.[0]?.clientY;
       if (clientX == null || clientY == null) return;
+      if (e.pointerType === "touch") {
+        dock.classList.add("menu-open");
+      }
       isDragging = false;
       didDrag = false;
       startX = clientX;
@@ -6399,6 +6519,11 @@
       startTop = rect.top;
       window.addEventListener("pointermove", onPointerMove);
       window.addEventListener("pointerup", onPointerUp);
+    });
+    document.addEventListener("pointerdown", (e) => {
+      if (dock.classList.contains("menu-open") && !dock.contains(e.target)) {
+        dock.classList.remove("menu-open");
+      }
     });
     window.addEventListener("resize", () => {
       const rect = dock.getBoundingClientRect();

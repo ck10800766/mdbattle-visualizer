@@ -67,8 +67,6 @@ export const STAGE_STYLES = `
     .actor.left.despawning { animation: summonDespawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.right.spawning { animation: summonSpawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .actor.right.despawning { animation: summonDespawnRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
-    .actor.spawning { animation: summonSpawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .actor.despawning { animation: summonDespawnLeft 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: none; }
     .actor.dead { filter: grayscale(100%) brightness(50%) contrast(120%); opacity: 0.7; transition: filter 0.3s ease, opacity 0.3s ease; pointer-events: none; }
 
     .actor-name {
@@ -254,8 +252,6 @@ export const STAGE_STYLES = `
         30% { filter: blur(1px) brightness(1.4) drop-shadow(0 0 12px #fc8181); opacity: 1; }
         100% { opacity: 0; transform: translate3d(calc(50vw + 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 0 transparent); }
     }
-    @keyframes summonSpawn { 0% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8) drop-shadow(0 0 16px #63b3ed); } 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } }
-    @keyframes summonDespawn { 0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0) brightness(1); } 100% { opacity: 0; transform: translate3d(calc(-50vw - 160px), 0, 0) scale(0.85); filter: blur(4px) brightness(1.8); } }
     @keyframes ult-bg-hold { 0%, 100% { opacity: 0; } 5%, 95% { opacity: 1; } }
     @keyframes ult-flash-bang { 0% { opacity: 1; } 12% { opacity: 0; } 100% { opacity: 0; } }
     @keyframes ult-bg-zoom { 0% { transform: scale(1.15); filter: grayscale(0%) contrast(100%) brightness(0.9); } 10% { filter: grayscale(70%) contrast(160%) brightness(0.55); } 100% { transform: scale(1); filter: grayscale(70%) contrast(160%) brightness(0.55); } }
@@ -369,17 +365,7 @@ export const STAGE_STYLES = `
     .seek-hover-tooltip { position: absolute; bottom: 26px; left: 0; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); color: #e2e8f0; border: 1px solid rgba(79, 209, 197, 0.6); border-radius: 5px; padding: 3px 8px; font-size: 11px; font-weight: 700; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.1s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7); z-index: 100; letter-spacing: 0.3px; }
     .seek-hover-tooltip.active { opacity: 1; visibility: visible; }
 
-    /* Report Export/Import Buttons, Hotkey Popover & Drag-Drop Overlay */
-    button.btn-io { background: #2b6cb0; border-color: #63b3ed; padding: 6px 10px; color: #ebf8ff; }
-    button.btn-io:hover { background: #3182ce; }
-    .hotkey-wrapper { position: relative; display: inline-flex; align-items: center; }
-    button.btn-hotkey { background: #1a202c; border-color: #4a5568; padding: 6px 9px; color: #a0aec0; font-size: 12px; }
-    button.btn-hotkey:hover { color: #fff; border-color: #4fd1c5; }
-    .hotkey-popover { position: absolute; top: calc(100% + 8px); right: 0; background: rgba(15, 23, 42, 0.97); border: 1px solid #4fd1c5; border-radius: 8px; padding: 10px 14px; color: #e2e8f0; font-size: 12px; line-height: 1.7; white-space: nowrap; box-shadow: 0 12px 28px rgba(0,0,0,0.85); z-index: 2600; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease; min-width: 250px; }
-    .hotkey-wrapper:hover .hotkey-popover { opacity: 1; visibility: visible; }
-    .hotkey-title { font-weight: 800; color: #4fd1c5; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 3px; margin-bottom: 4px; font-size: 12px; }
-    .hotkey-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .hotkey-popover kbd, .hotkey-kbd { background: #2d3748; border: 1px solid #718096; border-radius: 4px; padding: 0px 6px; font-family: monospace; font-size: 11px; color: #f6e05e; }
+    /* Drag-Drop Report Overlay */
     .drag-drop-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.88); border: 4px dashed #4fd1c5; z-index: 4000; display: none; align-items: center; justify-content: center; color: #f6e05e; pointer-events: none; backdrop-filter: blur(4px); }
     .drag-drop-overlay.active { display: flex; }
     .drag-drop-box { text-align: center; padding: 28px 40px; border-radius: 16px; background: rgba(26, 32, 44, 0.9); border: 1px solid rgba(79, 209, 197, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }

@@ -8,7 +8,7 @@
  */
 
 import { DEFAULT_AVATAR_URL } from './constants.js';
-import { getContractSkillProfile, isPrimaryUltimateTriggerFrame } from './profiles.js';
+import { getContractSkillProfile, isPrimaryUltimateTriggerFrame, ULTIMATE_SUBFRAME_REGEX } from './profiles.js';
 import {
     engineState,
     createEmptyCombo,
@@ -590,7 +590,7 @@ export function renderSeekPreviewState(sr, frameIndex) {
             triggerAOETargetImpact(frame, arena, targetEl, targetSide, shadowColor, speed);
         }
     } else if (frame.isCoverEvent && actorEl) {
-        const protectedId = frame.coverProtectedId || frame.targetId;
+        const protectedId = frame.targetId || frame.actorsBondState?.get(frame.actorId)?.partnerId;
         const protectedEl = protectedId ? sr.getElementById(`actor-${protectedId}`) : null;
         if (protectedEl) {
             const gRect = actorEl.getBoundingClientRect();
@@ -685,7 +685,14 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
         if (!isInitialReset) {
             for (let i = 0; i < frameIndex; i++) {
                 const f = engineState.frames[i];
-                if (f && f.actorId === actor.id && isPrimaryUltimateTriggerFrame(f) && !shouldDeferUltimateCutIn(f)) {
+                if (
+                    f &&
+                    f.actorId === actor.id &&
+                    isPrimaryUltimateTriggerFrame(f) &&
+                    !ULTIMATE_SUBFRAME_REGEX.test(String(f.message || '').trim()) &&
+                    f.rosarioEvent !== 'INSCRIBE_CROSS' &&
+                    !shouldDeferUltimateCutIn(f)
+                ) {
                     actor.lastUltimateTurn = f.turnNumber;
                 }
             }
@@ -711,7 +718,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
             const limit = showActivePreview
                 ? Math.min(stateFrameIndex, engineState.frames.length - 1)
                 : Math.min(stateFrameIndex - 1, engineState.frames.length - 1);
-            const startLogIdx = Math.max(0, limit - 30);
+            const startLogIdx = 0;
             for (let i = startLogIdx; i <= limit; i++) {
                 const f = engineState.frames[i];
                 if (f && f.message) {
