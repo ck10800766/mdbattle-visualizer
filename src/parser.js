@@ -954,7 +954,7 @@ export function buildStateSnapshots(logs) {
             const target = engineState.actors.get(log.actorId);
             // Do not unhide HP for dynamic summons at the end of the battle to prevent spoilers
             if (target && log.maxHp && !target.isSummon) {
-                target.maxHp = Number(log.maxHp);
+                target.maxHp = Math.max(target.maxHp || 0, Number(log.maxHp));
                 target.hideHp = false;
             }
         } else if (log.type === 'SP_RECOVER') {

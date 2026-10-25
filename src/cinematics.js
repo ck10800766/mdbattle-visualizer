@@ -31,6 +31,7 @@ function stripCombatOutcomeText(rawText, actorName = '') {
         const escapedActorName = escapeRegExp(actorName);
         text = text.replace(new RegExp(`^${escapedActorName}[：:]?\\s*(的\\s*)?`), '');
     }
+    text = text.replace(/^[的之裝]\s*/, '');
 
     text = text
         .replace(/^[第輪次]\s*\d+\s*[擊輪次劍枚][，,、\s]*/g, '')
@@ -39,6 +40,7 @@ function stripCombatOutcomeText(rawText, actorName = '') {
         .replace(/[，,、]?\s*但是被\s*.+?\s*躲開了[！!]?/g, '')
         .replace(/[，,、]?\s*但是遭\s*.+?\s*反擊[，,]?\s*(?:會心一擊[！!]?\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!]?/g, '')
         .replace(/[，,、]?\s*(?:(?:對|在)\s*.+?\s*|(?:[^\s，,。]+?\s*))?(?:命中並\s*)?(?:造成了?|受到)\s*\d+\s*點(?:真實)?傷害[！!。.]?/g, '')
+        .replace(/[，,、]?\s*(?:回復了?|恢復了?)\s*\d+\s*點?(?:生命|HP)[！!。.]?/g, '')
         .replace(/[—─ー―-]+$/g, '')
         .replace(/^[，,、：:\s]+/, '')
         .replace(/[，,、\s]+$/, '')
@@ -112,9 +114,11 @@ export async function playFatalitySequence(sr, actorId, token = engineState.play
  */
 export function extractSkillFromMessage(message) {
     if (!message) return null;
-    const pattern = /(?:[^\s，,。！!：:]{1,4}了|進入)\s+([^，,。！!—\s\d][^，,。！!—\s]*)/g;
+
+    // 1. Explicit action verb (allows 0 or more spaces)
+    const verbPattern = /(?:使出了|使用了|施展了|發動了|施放了|吟唱了|喚出了|召喚了|唱起了|祭出了|進入)\s*([^，,。！!—\s\d][^，,。！!—\s]*)/g;
     let m;
-    while ((m = pattern.exec(message)) !== null) {
+    while ((m = verbPattern.exec(message)) !== null) {
         const token = m[1].replace(/^[「『\[【](.*?)[」』\]】]$/, '$1');
         // Exclude spatial direction/movement prepositions
         if (/^(?:半空|空中|地面|身前|陣前|身旁|長桌旁|電梯|暗處|四周|前方|後方|頭頂)$/.test(token)) {
@@ -125,6 +129,25 @@ export function extractSkillFromMessage(message) {
             return token;
         }
     }
+
+    // 2. Em-dash emphasis: e.g. 收刀前踏——氣刃兜割！
+    const dashMatch = message.match(/——\s*([^，,。！!—\s\d]{2,10})[！!]?(?:$|[，,。])/);
+    if (dashMatch) {
+        return dashMatch[1];
+    }
+
+    // 3. Object / weapon action: e.g. 把天頂劍往前一甩
+    const objMatch = message.match(/把\s*([^，,。！!—\s\d]{2,10}?)\s*(?:往前一甩|一甩|甩出|拋出|擲出|推出|拔出|高高舉起|全壓進|往前一送|砸在)/);
+    if (objMatch) {
+        return objMatch[1];
+    }
+
+    // 4. Bracketed card invocation: e.g. 把「火」拋向半空 -> 火之牌
+    const cardMatch = message.match(/把「([^」]+)」拋向/);
+    if (cardMatch) {
+        return `${cardMatch[1]}之牌`;
+    }
+
     return null;
 }
 
@@ -142,10 +165,10 @@ export function extractSkillFromMessage(message) {
 export function shouldDeferUltimateCutIn(frame) {
     if (!engineState.frames || !frame || frame.index == null) return false;
 
-    // If current frame has a spoken chant quote (<= 20 chars) or explicit skill cast, it IS the climax!
+    // If current frame has a spoken chant quote (<= 30 chars) or explicit skill cast, it IS the climax!
     const currentMsg = String(frame.message || '');
     const currentQuote = currentMsg.match(/[：:]\s*「([^」]+)」/);
-    if (currentQuote && currentQuote[1].length <= 20) {
+    if (currentQuote && currentQuote[1].length <= 30) {
         return false;
     }
     if (extractSkillFromMessage(currentMsg)) {
@@ -163,7 +186,7 @@ export function shouldDeferUltimateCutIn(frame) {
         ) {
             const candMsg = String(candidate.message || '');
             const candQuote = candMsg.match(/[：:]\s*「([^」]+)」/);
-            if (candQuote && candQuote[1].length <= 20) {
+            if (candQuote && candQuote[1].length <= 30) {
                 return true;
             }
             if (extractSkillFromMessage(candMsg)) {
@@ -192,7 +215,7 @@ export function isUltimateCutInQuoteFrame(frame) {
     if (shouldDeferUltimateCutIn(frame)) return false;
     const msg = String(frame.message || '');
     const spokenQuoteMatch = msg.match(/[：:]\s*「([^」]+)」/);
-    return Boolean(spokenQuoteMatch && spokenQuoteMatch[1].length <= 20);
+    return Boolean(spokenQuoteMatch && spokenQuoteMatch[1].length <= 30);
 }
 
 /**
@@ -236,13 +259,29 @@ export async function playUltimateCutIn(frame, sr, token) {
     // preventing inline object quotes like 把「火」拋向半空 from being hollowed out.
     const spokenQuoteMatch = frame.message.match(/[：:]\s*「([^」]+)」/);
 
-    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 20) {
-        mainText = spokenQuoteMatch[1];
-        const rawRemainingText = frame.message
-            .replace(actor.name, '')
-            .replace(/[：:]\s*「[^」]+」\s*/, ' ')
-            .trim();
-        subText = stripCombatOutcomeText(rawRemainingText, actor.name);
+    if (spokenQuoteMatch && spokenQuoteMatch[1].length <= 30) {
+        const fullQuote = spokenQuoteMatch[1];
+        if (fullQuote.length <= 16) {
+            mainText = fullQuote;
+            const rawRemainingText = frame.message
+                .replace(actor.name, '')
+                .replace(/[：:]\s*「[^」]+」\s*/, ' ')
+                .trim();
+            subText = stripCombatOutcomeText(rawRemainingText, actor.name);
+        } else {
+            // For longer dramatic quotes (> 16 chars), split at natural punctuation for high-impact vertical typesetting:
+            // e.g. "亞絲娜、克萊因，拜託了！幫我撐個10秒左右就好！"
+            // Punchline: "幫我撐個10秒左右就好！"
+            // Subtitle flavor: "亞絲娜、克萊因，拜託了……"
+            const parts = fullQuote.split(/[，,！!]/).filter(Boolean);
+            if (parts.length >= 2) {
+                mainText = parts[parts.length - 1] + (fullQuote.endsWith('！') || fullQuote.endsWith('!') ? '！' : '');
+                subText = stripCombatOutcomeText(parts.slice(0, -1).join('，'), actor.name);
+            } else {
+                mainText = fullQuote;
+                subText = '';
+            }
+        }
     } else {
         let extractedSkillName = null;
         let skillSourceFrame = frame;
@@ -250,7 +289,7 @@ export async function playUltimateCutIn(frame, sr, token) {
         // 1. Direct match on current frame
         extractedSkillName = extractSkillFromMessage(frame.message);
         if (!extractedSkillName) {
-            // 2. Scan nearby frames within the same turn for the primary cast frame of this skill
+            // 2. Scan nearby frames within the same turn for the primary cast frame of this skill OR spoken quote
             for (let i = Math.max(0, frame.index - 6); i <= Math.min(engineState.frames.length - 1, frame.index + 6); i++) {
                 const candidate = engineState.frames[i];
                 if (
@@ -258,6 +297,12 @@ export async function playUltimateCutIn(frame, sr, token) {
                     candidate.turnNumber === frame.turnNumber &&
                     candidate.actorId === frame.actorId
                 ) {
+                    const candQuote = candidate.message.match(/[：:]\s*「([^」]+)」/);
+                    if (candQuote && candQuote[1].length <= 30) {
+                        extractedSkillName = candQuote[1];
+                        skillSourceFrame = candidate;
+                        break;
+                    }
                     const candidateSkill = extractSkillFromMessage(candidate.message);
                     if (candidateSkill) {
                         extractedSkillName = candidateSkill;
@@ -300,12 +345,27 @@ export async function playUltimateCutIn(frame, sr, token) {
                 .trim();
             subText = stripCombatOutcomeText(rawRemaining, actor.name);
         } else {
-            let rawSkillId = frame.skillId || 'ULTIMATE_SKILL';
-            if (rawSkillId.includes('_')) {
-                rawSkillId = rawSkillId.substring(rawSkillId.indexOf('_') + 1);
+            // 5. Narrative climax clause extraction before uppercase ID fallback
+            const clauses = frame.message
+                .replace(new RegExp(`^${escapeRegExp(actor.name)}[：:]?\\s*(的\\s*)?`), '')
+                .split(/[，,。！!]/)
+                .map(s => stripCombatOutcomeText(s, actor.name).replace(/……$/, ''))
+                .filter(s => s.length >= 2);
+
+            if (clauses.length >= 2) {
+                mainText = clauses[1];
+                subText = stripCombatOutcomeText(clauses[0], actor.name);
+            } else if (clauses.length === 1) {
+                mainText = clauses[0];
+                subText = '';
+            } else {
+                let rawSkillId = frame.skillId || 'ULTIMATE_SKILL';
+                if (rawSkillId.includes('_')) {
+                    rawSkillId = rawSkillId.substring(rawSkillId.indexOf('_') + 1);
+                }
+                mainText = rawSkillId.replace(/_/g, ' ').toUpperCase();
+                subText = stripCombatOutcomeText(frame.message, actor.name);
             }
-            mainText = rawSkillId.replace(/_/g, ' ').toUpperCase();
-            subText = stripCombatOutcomeText(frame.message, actor.name);
         }
     }
 
