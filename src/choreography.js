@@ -806,14 +806,12 @@ function playSingleTargetChoreography(
             frameDuration = 180;
 
             if (targetEl) {
-                targetEl.style.filter = 'brightness(2) contrast(1.5)';
-                targetEl.style.transform = `translateX(${side === 'left' ? 10 : -10}px)`;
-                setTimeout(() => {
-                    if (targetEl.isConnected) {
-                        targetEl.style.filter = '';
-                        targetEl.style.transform = '';
-                    }
-                }, 80 / speed);
+                targetKeyframes = [
+                    { transform: 'translateX(0)', filter: 'brightness(1)' },
+                    { transform: `translateX(${side === 'left' ? 10 : -10}px)`, filter: 'brightness(2) contrast(1.5)', offset: 0.4 },
+                    { transform: 'translateX(0)', filter: 'brightness(1)', offset: 1 }
+                ];
+                targetAnimConfig.duration = 150 / speed;
             }
         } else {
             actorKeyframes = [
@@ -962,7 +960,7 @@ export function playCombatAnimation(
     if (actorEl && targetEl) {
         const side = engineState.actors.get(frame.actorId)?.side || 'left';
         const targetSide = engineState.actors.get(frame.targetId)?.side || 'right';
-        const shadowColor = side === 'left' ? '#fc8181' : '#4fd1c5';
+        const shadowColor = side === 'left' ? '#63b3ed' : '#fc8181';
 
         if (frame.isAOE) {
             return playAOEWaveChoreography(frame, arena, actorEl, targetEl, side, targetSide, shadowColor, speed);

@@ -58,6 +58,7 @@ import { armSpoilerGuard, releaseSpoilerGuard } from './spoilerGuard.js';
 import {
     isPrimaryUltimateTriggerFrame,
     extractTimelineMarkers,
+    formatSeekLabelText,
     updateATBUI
 } from './timeline.js';
 import {
@@ -75,17 +76,6 @@ import {
 } from './reportIO.js';
 
 export { updateATBUI, syncStageToAbsoluteState };
-
-/**
- * Formats the timeline seek counter label (`current / total`).
- * @param {number} frameIndex - Current frame index.
- * @returns {string} Formatted label string.
- */
-function formatSeekLabelText(frameIndex) {
-    const total = engineState.frames.length;
-    if (total === 0) return '0 / 0';
-    return `${Math.min(frameIndex, total)} / ${total}`;
-}
 
 /**
  * Cleanly unmounts the battle stage, stops active playback and keyboard listeners,
@@ -593,6 +583,16 @@ export function createBattleStage() {
         const activeTag = document.activeElement?.tagName;
         if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
 
+        // While the full-screen MVP settlement panel is open, disable playback/seek hotkeys
+        // so keyboard navigation does not mutate stage playback behind the overlay.
+        if (engineState.shadowRoot?.getElementById('mdbv-mvp-panel')) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeBattleStage();
+            }
+            return;
+        }
+
         switch (e.key) {
             case ' ':
                 e.preventDefault();
@@ -850,8 +850,6 @@ async function renderAOEWaveBatch(aoeBatch, token) {
                 await playUltimateCutIn(firstFrame, sr, token);
                 if (engineState.playbackToken !== token) return;
             }
-        } else if (actor && isMultiHitSubFrame) {
-            actor.lastUltimateTurn = firstFrame.turnNumber;
         }
     }
 
@@ -1015,12 +1013,21 @@ async function renderAOEWaveBatch(aoeBatch, token) {
                 syncActorStatusAndShieldDOM(sr, rf.actorsStatusState, rf.actorsShieldState, rf.actorsBondState);
                 spawnFloatingText(rf, sr, false, false);
             }
+            if (['DICE', 'STATUS', 'SKILL_TEXT', 'BUFF_APPLY', 'DEBUFF_APPLY'].includes(rf.type) || rf.diceRoll) {
+                spawnStatusOrDiceBadge(rf, sr);
+            }
 
             const speaker = resolveDialogueSpeaker(rf);
             if (speaker && !isUltimateCutInQuoteFrame(rf)) {
                 smoothlyReturnDisplacedActorsToOrigin(sr);
                 const readTime = renderSpeechBubble(rf, sr, token);
                 const textDuration = getMessageReadingDuration(speaker.quote);
+                const waitMs = Math.max(textDuration, readTime, 400);
+                await new Promise(resolve => setTimeout(resolve, waitMs / speed));
+            } else if (isSceneNarrationFrame(rf)) {
+                smoothlyReturnDisplacedActorsToOrigin(sr);
+                const readTime = renderSceneNarrationBanner(rf, sr, token);
+                const textDuration = getMessageReadingDuration(rf.message);
                 const waitMs = Math.max(textDuration, readTime, 400);
                 await new Promise(resolve => setTimeout(resolve, waitMs / speed));
             } else if (rf.type === 'TEXT' || rf.type === 'SKILL_TEXT') {
@@ -1386,8 +1393,6 @@ export async function renderFrame(frame, token) {
                 await playUltimateCutIn(frame, sr, token);
                 if (engineState.playbackToken !== token) return;
             }
-        } else if (actor && isMultiHitSubFrame) {
-            actor.lastUltimateTurn = frame.turnNumber;
         }
     }
 

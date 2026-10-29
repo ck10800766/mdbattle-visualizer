@@ -139,7 +139,7 @@ export function formatSeekLabelText(frameIndex) {
     const total = engineState.frames.length;
     if (total === 0) return 'T1 (#0/0)';
     const clamped = Math.max(0, Math.min(frameIndex, total - 1));
-    const turn = engineState.frames[clamped]?.turnNumber ?? 1;
+    const turn = engineState.frames[clamped]?.turnNumber || 1;
     return `T${turn} (#${clamped + 1}/${total})`;
 }
 

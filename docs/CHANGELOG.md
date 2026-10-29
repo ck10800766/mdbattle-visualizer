@@ -8,6 +8,27 @@
 
 ## [Unreleased]
 
+## [7.6.2] - 2026-10-25
+
+### Fixed
+- **大招 Cut-In 延遲判定與主副標題萃取全面優化（`src/cinematics.js`, `src/stage.js`, `src/stageSync.js`）**：
+  - **保留最佳延遲判定並防止吞噬 Cut-In**：`shouldDeferUltimateCutIn` 在向後掃描同回合高潮影格時，嚴格確認候選影格本身具備主觸發資格且非連段子影格（`!ULTIMATE_SUBFRAME_REGEX`），並移除 `stage.js` 中將連段子影格（如「還沒完。」）寫入 `lastUltimateTurn` 的邏輯，徹底修復前導短句意外鎖死同回合大招 Cut-In 的問題。
+  - **卡牌前導句延遲至正式發動影格**：將 `把「X」拋向` 移出 `extractSkillFromMessage` 主動匹配（保留為 `playUltimateCutIn` 兜底），使木之本櫻「把『火』拋向半空」能自然延遲至下一影格「使出了 火之牌，牌面燃起……」，完美呈現「火之牌」主標題與完整意境副標。
+  - **結構化 `<動詞>了 <招式名>` 擴充、二階段變身特寫與前導意境回溯**：擴充 `綻放了/展開了/解放了`、`<1~4字動詞>了 <招式名>` 與 Boss 階段變身句型（`變成了 <新形態>`，如「柊千雨 變成了 DF：囚錮鋒！」）識別；當高潮影格僅含招式/變身宣告或短促引言（如御坂美琴「——給我躲開！」）時，自動關聯同回合前後影格的環境與動作鋪陳作為意境副標，並支援無台詞二階段重複施放大招時回溯首發招式名。
+  - **清理副標題沾黏、殘留語助動詞與重複招式詞**：
+    - 修復 `stripCombatOutcomeText` 移除「會心一擊！」時以空字串替換導致前後子句無標點黏合的問題，並精準剝離受擊目標傷勢與傷害結算子句（如艾莉絲「劍神流奧義・光之太刀」副標乾淨呈現「劍比光還快……」）。
+    - 剝離引言冒號前的說話動詞（如源氏「握住背上的刀柄低喝：『……』」不再殘留「低喝」而自然銜接為「握住背上的刀柄，綠光沿著刀身亮起，龍神之劍出鞘了。」）。
+    - 移除招式物件句型重複殘留（如天命人「三段棍勢」副標不再重複「把三段棍勢全壓進棍身」）。
+    - 長台詞（17~30 字）優先依破折號 `——` 或句末強標點切分主副標（如迪盧克「黎明前的夜最暗。同人、有紀——這把火，給你們照路。」切分為主標「這把火，給你們照路」與副標「黎明前的夜最暗。同人、有紀……」）。
+- **MVP 全螢幕結算面板鍵盤防誤觸與舞台互動體驗修復（`src/stage.js`, `src/stageSync.js`, `src/index.js`）**：
+  - **MVP 面板開啟時禁用背景鍵盤熱鍵**：維持 MVP 全螢幕演出設計，於 `#mdbv-mvp-panel` 顯示期間在 `handleKeydown` 攔截空白鍵、方向鍵、數字鍵與 `S` 鍵，僅保留 `Escape` 關閉舞台，防止結算畫面背後誤觸重播或跳幀。
+  - **時間軸進度標籤統一與完整戰報日誌保留**：移除 `stage.js` 重複定義的 `formatSeekLabelText`，統一採用 `timeline.js` 的 `T<回合> (#<當前>/<總計>)` 格式；解除 `syncStageToAbsoluteState` 僅重建最後 30 筆日誌的限制，使暫停或拖曳時間軸後仍可向上捲動查閱從開場至今的完整戰鬥紀錄。
+  - **行動裝置觸控支援與懸浮預覽修正**：為右下角 `#mdbv-floating-dock` 補齊觸控展開選單與點擊外部收合邏輯；修正 `stageSync.js` 援護事件預覽目標的 `partnerId` 回退，以及 `renderAOEWaveBatch` 第二階段波後反應的場景旁白橫幅與檢定徽章顯示。
+- **後端解析、戰報匯出與武打動畫穩定性修正（`src/parser.js`, `src/reportIO.js`, `src/choreography.js`, `src/styles.js`）**：
+  - **召喚物結構化退場起算點修正**：修正 `computeStructuralSummonDepartures` 將中場召喚物 `summonSpawnIdx` 誤設為 `0` 的問題，確保僅從實際召喚登場影格後計算最後互動點。
+  - **戰報匯出校準血量補齊**：`buildExportableReportPayload` 於原戰報已有 `participants` 時，自動將引擎逆推校準後的 `maxHp`（`stats.hp`）、角色名稱與頭像路徑回填至匯出 JSON，確保離線重播血條 100% 精準。
+  - **連擊中段受擊動效改採 WAAPI 與陣營光暈一致化**：將 `playSingleTargetChoreography` 的 `isMiddleHit` 受擊位移與閃白改由 Web Animations API 驅動，確保快轉或跳幀時能由 `getAnimations()` 乾淨取消；統一 `playCombatAnimation` 左右陣營光暈色票（左藍 `#63b3ed`、右紅 `#fc8181`），並清理 `styles.js` 冗餘未使用之 CSS 規則。
+
 ## [7.6.1] - 2026-10-25
 
 ### Fixed
