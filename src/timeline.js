@@ -98,13 +98,14 @@ export function extractTimelineMarkers(frames) {
         }
 
         // 5. Dynamic Summon Spawn
-        if (f.isSummonEvent && f.summonedActorId) {
-            const summonName = engineState.actors.get(f.summonedActorId)?.name || f.summonedActorId;
+        if (f.isSummonEvent && (f.summonedActorIds?.length || f.summonedActorId)) {
+            const summonIds = f.summonedActorIds?.length ? f.summonedActorIds : [f.summonedActorId];
+            const summonNames = summonIds.map(id => engineState.actors.get(id)?.name || id).join('、');
             events.push({
                 priority: 1,
                 category: 'summon',
                 icon: '🌀',
-                title: `🌀 召喚登場：${summonName}`
+                title: `🌀 召喚登場：${summonNames}`
             });
         }
 
