@@ -22,6 +22,7 @@ import {
     getContractSkillProfile,
     getCrossFinisherProfile,
     SUMMON_DESPAWN_REGEX,
+    REBIRTH_RULES,
     isBeneficialBuffSkill
 } from './profiles.js';
 
@@ -125,9 +126,21 @@ function processSummonLifecycle(
     actorsSummonState,
     explicitlySummonedIds,
     despawnedActors,
-    structuralDepartures
+    structuralDepartures,
+    structuralSpawns
 ) {
-    // 1. Explicit SUMMON log entry (always keep hideHp: true for dynamic summons)
+    const spawnedCandidateIds = [];
+
+    // 1a. Pre-computed structural spawn heuristic
+    if (structuralSpawns) {
+        for (const [sId, spIdx] of structuralSpawns.entries()) {
+            if (spIdx === index && actorsSummonState.get(sId) === false && !actorsDeathState.get(sId) && !despawnedActors.has(sId)) {
+                spawnedCandidateIds.push(sId);
+            }
+        }
+    }
+
+    // 1b. Explicit SUMMON log entry (always keep hideHp: true for dynamic summons)
     if (log.type === 'SUMMON' && log.targetId) {
         const owner = engineState.actors.get(log.actorId);
         const summonName = inferSummonName(logs, index, log.targetId, owner?.name || '');
@@ -152,26 +165,44 @@ function processSummonLifecycle(
         }
         despawnedActors.delete(log.targetId);
         actorsSummonState.set(log.targetId, true);
-        frame.isSummonEvent = true;
-        frame.summonedActorId = log.targetId;
+        if (!spawnedCandidateIds.includes(log.targetId)) {
+            spawnedCandidateIds.push(log.targetId);
+        }
     }
 
-    // 2. Narrative summon spawn (units in participants with summonerId but no explicit SUMMON log)
+    // 2. Active combat interaction fallback: if an unspawned summon is targeted or acts in combat, ensure it is spawned
     if (
-        log.actorId &&
-        actorsSummonState.get(log.actorId) === false &&
-        !explicitlySummonedIds.has(log.actorId) &&
-        !despawnedActors.has(log.actorId) &&
-        !SUMMON_DESPAWN_REGEX.test(frame.message) &&
-        !['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(log.type)
+        !['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(log.type) &&
+        !SUMMON_DESPAWN_REGEX.test(frame.message)
     ) {
-        const summonActor = engineState.actors.get(log.actorId);
-        if (summonActor && summonActor.isSummon) {
-            summonActor.currentHp = summonActor.maxHp;
-            actorsDeathState.set(log.actorId, false);
-            actorsSummonState.set(log.actorId, true);
-            frame.isSummonEvent = true;
-            frame.summonedActorId = log.actorId;
+        const candidateCombatIds = [log.actorId, log.targetId, log.opponentId].filter(Boolean);
+        candidateCombatIds.forEach(id => {
+            const actor = engineState.actors.get(id);
+            if (
+                actor &&
+                actor.isSummon &&
+                actorsSummonState.get(id) === false &&
+                !actorsDeathState.get(id) &&
+                !despawnedActors.has(id) &&
+                !spawnedCandidateIds.includes(id)
+            ) {
+                spawnedCandidateIds.push(id);
+            }
+        });
+    }
+
+    if (spawnedCandidateIds.length > 0) {
+        spawnedCandidateIds.forEach(id => {
+            const summonActor = engineState.actors.get(id);
+            if (summonActor) summonActor.currentHp = summonActor.maxHp;
+            actorsDeathState.set(id, false);
+            actorsSummonState.set(id, true);
+            despawnedActors.delete(id);
+        });
+        frame.isSummonEvent = true;
+        frame.summonedActorId = spawnedCandidateIds[0];
+        if (spawnedCandidateIds.length > 1) {
+            frame.summonedActorIds = spawnedCandidateIds;
         }
     }
 
@@ -544,19 +575,161 @@ function computeActiveStatusAndShieldIntervals(logs) {
 }
 
 /**
+ * Pre-computes deterministic summon spawn log indices using universal structural heuristics.
+ * Matches explicit `SUMMON` logs, phase narrative announcements (exact registered name),
+ * or active combat interactions (targetId/actorId/opponentId) for all registered summons.
+ *
+ * @param {Array<object>} logs - Raw combat logs.
+ * @param {Map<string, object>} actorsMap - Registered actors map.
+ * @returns {Map<string, number>} Map from summonId to spawn log index.
+ */
+function computeStructuralSummonSpawns(logs, actorsMap) {
+    const spawns = new Map();
+    const spawnedSummons = new Set();
+    const deadSummons = new Set();
+    const explicitlySummonedIds = new Set();
+    const summonList = Array.from(actorsMap.values()).filter(a => a.isSummon);
+
+    // Build structural tokens for each summon:
+    // 1. Full name: a.name
+    // 2. Base name stripped of trailing serial numbers: a.name.replace(/\d+$/, '') (e.g. '觸手2' -> '觸手')
+    // 3. Shared common suffix among peers of the same owner (e.g. '聖杯', '寶玉')
+    const groupTokensMap = new Map();
+    summonList.forEach(a => {
+        const tokens = [a.name];
+        const base = a.name.replace(/\d+$/, '');
+        if (base && base.length >= 2 && !tokens.includes(base)) {
+            tokens.push(base);
+        }
+        groupTokensMap.set(a.id, tokens);
+    });
+
+    for (let i = 0; i < summonList.length; i++) {
+        for (let j = i + 1; j < summonList.length; j++) {
+            const a = summonList[i];
+            const b = summonList[j];
+            if (a.ownerId && a.ownerId === b.ownerId) {
+                const nameA = a.name.replace(/\d+$/, '');
+                const nameB = b.name.replace(/\d+$/, '');
+                let sufLen = 0;
+                while (
+                    sufLen < nameA.length &&
+                    sufLen < nameB.length &&
+                    nameA[nameA.length - 1 - sufLen] === nameB[nameB.length - 1 - sufLen]
+                ) {
+                    sufLen++;
+                }
+                if (sufLen >= 2) {
+                    const fullSuffix = nameA.slice(nameA.length - sufLen);
+                    for (let len = 2; len <= fullSuffix.length; len++) {
+                        const sub = fullSuffix.slice(fullSuffix.length - len);
+                        if (!groupTokensMap.get(a.id).includes(sub)) groupTokensMap.get(a.id).push(sub);
+                        if (!groupTokensMap.get(b.id).includes(sub)) groupTokensMap.get(b.id).push(sub);
+                    }
+                }
+            }
+        }
+    }
+
+    logs.forEach(l => {
+        if (l && l.type === 'SUMMON' && l.targetId) {
+            explicitlySummonedIds.add(l.targetId);
+        }
+    });
+
+    const firstCombatMap = new Map();
+    summonList.forEach(actor => {
+        for (let idx = 0; idx < logs.length; idx++) {
+            const l = logs[idx];
+            if (!l) continue;
+            if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(l.type)) continue;
+            if (l.actorId === actor.id || l.targetId === actor.id || l.opponentId === actor.id) {
+                firstCombatMap.set(actor.id, idx);
+                break;
+            }
+        }
+    });
+
+    logs.forEach((l, idx) => {
+        if (!l) return;
+
+        // 1. Explicit SUMMON log
+        if (l.type === 'SUMMON' && l.targetId) {
+            if (!spawnedSummons.has(l.targetId)) {
+                spawnedSummons.add(l.targetId);
+                spawns.set(l.targetId, idx);
+            }
+        }
+
+        // 2. Narrative spawn on TEXT messages
+        if (l.type === 'TEXT') {
+            const msg = l.message || '';
+            if (!SUMMON_DESPAWN_REGEX.test(msg)) {
+                const spawnedNamesInLog = new Set();
+                summonList.forEach(a => {
+                    if (spawnedSummons.has(a.id) || deadSummons.has(a.id)) return;
+                    if (explicitlySummonedIds.has(a.id)) return;
+
+                    const firstCombat = firstCombatMap.get(a.id);
+                    if (firstCombat != null && firstCombat < idx) return;
+
+                    const tokens = groupTokensMap.get(a.id) || [a.name];
+                    const matched = tokens.some(token => token && msg.includes(token));
+                    if (matched) {
+                        if (msg.includes(a.name)) {
+                            if (!spawnedNamesInLog.has(a.name)) {
+                                spawnedNamesInLog.add(a.name);
+                                spawnedSummons.add(a.id);
+                                spawns.set(a.id, idx);
+                            }
+                        } else {
+                            spawnedSummons.add(a.id);
+                            spawns.set(a.id, idx);
+                        }
+                    }
+                });
+            }
+        }
+
+        // 3. Fallback: Combat interaction (if an unspawned summon is involved in combat, it must be on stage)
+        const combatIds = [l.actorId, l.targetId, l.opponentId].filter(Boolean);
+        combatIds.forEach(id => {
+            const a = actorsMap.get(id);
+            if (a && a.isSummon && !spawnedSummons.has(id) && !deadSummons.has(id)) {
+                if (
+                    !['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT', 'HP_REMAINING', 'EXP_GAIN'].includes(l.type) &&
+                    !SUMMON_DESPAWN_REGEX.test(l.message || '')
+                ) {
+                    spawnedSummons.add(id);
+                    spawns.set(id, idx);
+                }
+            }
+        });
+
+        // Track deaths
+        if (['DEATH', 'PLAYER_DEATH', 'PLAYER_DEFEAT'].includes(l.type) && l.actorId) {
+            deadSummons.add(l.actorId);
+        }
+    });
+
+    return spawns;
+}
+
+/**
  * Structurally detects voluntary summon departures across the entire combat log.
  * Invariant: A summon voluntarily departs if:
  * 1. It is a summon unit.
  * 2. It did not have an end-of-battle HP_REMAINING log (meaning it did not survive to the end).
- * 3. It did not suffer an un-revived terminal DEATH log.
+ * 3. It did not suffer an un-revived terminal DEATH log, UNLESS it had post-mortem actions (death explosion).
  * 4. It has a narrative text/skill/dialogue log at or after its last combat event,
  *    and NEVER participates in combat again for the rest of the battle.
  *
  * @param {Array<object>} logs - Raw combat logs.
  * @param {Map<string, object>} actorsMap - Registered actors map.
+ * @param {Map<string, number>} [structuralSpawns] - Pre-computed summon spawn log indices.
  * @returns {Map<string, number>} Map from summonId to departure log index.
  */
-function computeStructuralSummonDepartures(logs, actorsMap) {
+function computeStructuralSummonDepartures(logs, actorsMap, structuralSpawns) {
     const departures = new Map();
     const summonIds = new Set();
     const summonNames = new Map();
@@ -588,7 +761,7 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
 
     summonIds.forEach(id => {
         const name = summonNames.get(id);
-        const spawnIdx = summonSpawnIdx.get(id) ?? 0;
+        const spawnIdx = structuralSpawns?.get(id) ?? summonSpawnIdx.get(id) ?? 0;
         if (spawnIdx < 0) return;
         let lastCombatIdx = -1;
         let lastDeathIdx = -1;
@@ -608,7 +781,7 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
                 lastDeathIdx = idx;
             }
 
-            if (['DAMAGE', 'BLOCK', 'MISS', 'COUNTER', 'HEAL', 'LUCK_EVENT', 'BUFF_EFFECT'].includes(l.type)) {
+            if (['DAMAGE', 'BLOCK', 'MISS', 'COUNTER', 'HEAL', 'LUCK_EVENT', 'BUFF_EFFECT', 'BUFF_APPLY'].includes(l.type)) {
                 if (isActor || isTarget || isOpponent) {
                     lastCombatIdx = Math.max(lastCombatIdx, idx);
                 }
@@ -658,6 +831,8 @@ function computeStructuralSummonDepartures(logs, actorsMap) {
 
         if (candidateNarrativeIdx !== -1) {
             departures.set(id, candidateNarrativeIdx);
+        } else if (lastDeathIdx !== -1 && lastCombatIdx >= lastDeathIdx) {
+            departures.set(id, lastCombatIdx);
         }
     });
 
@@ -692,6 +867,49 @@ function computeStructuralRevivals(logs, actorsMap) {
 
         deathIndices.forEach((deathIdx, i) => {
             const nextDeathIdx = i + 1 < deathIndices.length ? deathIndices[i + 1] : logs.length;
+
+            // Check if summon's post-death actions are purely immediate on-death reactions (with no later battle reports)
+            if (actor?.isSummon) {
+                let lastPostDeathIdx = -1;
+                let hasLaterSummonOrRebirth = false;
+                let hasHpRemaining = false;
+
+                for (let k = deathIdx + 1; k < logs.length; k++) {
+                    const l = logs[k];
+                    if (!l) continue;
+                    const isActor = l.actorId === actorId;
+                    const isTarget = l.targetId === actorId;
+                    const isOpponent = l.opponentId === actorId;
+                    const nameMentioned = actorName && (l.message || '').includes(actorName);
+
+                    if (isActor || isTarget || isOpponent || nameMentioned) {
+                        lastPostDeathIdx = Math.max(lastPostDeathIdx, k);
+                    }
+                    if (l.type === 'SUMMON' && l.targetId === actorId) {
+                        hasLaterSummonOrRebirth = true;
+                    }
+                    if (
+                        ['TEXT', 'BOSS_DIALOGUE', 'SKILL_TEXT'].includes(l.type) &&
+                        REBIRTH_RULES.dialogueRegex.test(l.message || '') &&
+                        (isActor || isTarget || nameMentioned)
+                    ) {
+                        hasLaterSummonOrRebirth = true;
+                    }
+                    if (l.type === 'HP_REMAINING' && (isActor || isTarget)) {
+                        hasHpRemaining = true;
+                    }
+                }
+
+                // If this summon has no subsequent re-summoning/rebirth, no HP_REMAINING,
+                // no subsequent deaths (i === deathIndices.length - 1),
+                // and its only post-death mentions are immediately after being killed (lastPostDeathIdx - deathIdx <= 15):
+                // Further down the line, there are no related battle reports at all.
+                // It counts as a death with immediate post-mortem effects (not a revival).
+                const isOnlyImmediatePostDeath = lastPostDeathIdx === -1 || (lastPostDeathIdx - deathIdx <= 15);
+                if (!hasLaterSummonOrRebirth && !hasHpRemaining && i === deathIndices.length - 1 && isOnlyImmediatePostDeath) {
+                    return;
+                }
+            }
 
             let resumeCombatIdx = -1;
             for (let k = deathIdx + 1; k < nextDeathIdx; k++) {
@@ -762,7 +980,8 @@ export function buildStateSnapshots(logs) {
     const contractCutInCount = new Map();
     const despawnedActors = new Set();
     const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
-    const structuralDepartures = computeStructuralSummonDepartures(logs, engineState.actors);
+    const structuralSpawns = computeStructuralSummonSpawns(logs, engineState.actors);
+    const structuralDepartures = computeStructuralSummonDepartures(logs, engineState.actors, structuralSpawns);
     const structuralRevivals = computeStructuralRevivals(logs, engineState.actors);
 
     const explicitlySummonedIds = new Set();
@@ -891,7 +1110,8 @@ export function buildStateSnapshots(logs) {
             actorsSummonState,
             explicitlySummonedIds,
             despawnedActors,
-            structuralDepartures
+            structuralDepartures,
+            structuralSpawns
         );
 
         // Track debuff application sources so subsequent DoT ticks can be attributed to the caster
@@ -1125,10 +1345,12 @@ export function buildStateSnapshots(logs) {
             actorsDeathState.get(log.actorId) &&
             ['DAMAGE', 'MISS', 'COUNTER', 'HEAL'].includes(log.type)
         ) {
-            actorsDeathState.set(log.actorId, false);
             const actingActor = engineState.actors.get(log.actorId);
-            if (actingActor && actingActor.currentHp <= 0) {
-                actingActor.currentHp = actingActor.maxHp;
+            if (actingActor && !actingActor.isSummon) {
+                actorsDeathState.set(log.actorId, false);
+                if (actingActor.currentHp <= 0) {
+                    actingActor.currentHp = actingActor.maxHp;
+                }
             }
         }
         if (

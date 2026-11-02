@@ -1,0 +1,5107 @@
+{
+  "_id": "6ae7e0781dfecb94e67cf7e1",
+  "reportId": 430196,
+  "userIds": [
+    "6ab08d63da9c7ee989f18102",
+    "6acb4c34f3b98cafba397d52",
+    "6ab39f23def0c4254d4f959c",
+    "6aa7de14cc943baeed96be1f"
+  ],
+  "battleType": "BOSS",
+  "boss": {
+    "floorNumber": 85,
+    "name": "深淵的克塔尼德",
+    "title": "七大最強種",
+    "imagePath": "/images/boss/kutanid.webp"
+  },
+  "participants": {
+    "players": [
+      {
+        "userId": "6ab08d63da9c7ee989f18102",
+        "characterId": "6ae3669a27b4363b07d5b25d",
+        "name": "Dandi",
+        "characterName": "銀月露娜",
+        "imagePath": "/images/characters/silvermoon-luna.webp",
+        "title": "sorceryntax",
+        "level": 100,
+        "stats": {
+          "hp": 10120,
+          "atk": 149,
+          "def": 347,
+          "sta": 375,
+          "agi": 282,
+          "spd": 296,
+          "tec": 794,
+          "int": 1442,
+          "luk": 406
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e2"
+      },
+      {
+        "userId": "6acb4c34f3b98cafba397d52",
+        "characterId": "6add0a5a4382cf5129e9b8ab",
+        "name": "傑尼龜小人",
+        "characterName": "御坂美琴",
+        "imagePath": "/images/characters/misaka-mikoto.webp",
+        "title": "超電磁砲",
+        "level": 100,
+        "stats": {
+          "hp": 10090,
+          "atk": 160,
+          "def": 303,
+          "sta": 389,
+          "agi": 377,
+          "spd": 289,
+          "tec": 684,
+          "int": 1455,
+          "luk": 447
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e3"
+      },
+      {
+        "userId": "6ab39f23def0c4254d4f959c",
+        "characterId": "6add58674382cf5129ea0df5",
+        "name": "傑尼龜大人",
+        "characterName": "利姆路·坦派斯特",
+        "imagePath": "/images/characters/rimuru-tempest.webp",
+        "title": "史萊姆",
+        "level": 100,
+        "stats": {
+          "hp": 10010,
+          "atk": 170,
+          "def": 314,
+          "sta": 342,
+          "agi": 291,
+          "spd": 281,
+          "tec": 716,
+          "int": 1463,
+          "luk": 433
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e4"
+      },
+      {
+        "userId": "6aa7de14cc943baeed96be1f",
+        "characterId": "6acb167ef3b98cafba391d6c",
+        "name": "茶茶丸o",
+        "characterName": "同人",
+        "imagePath": "/images/characters/kirito.webp",
+        "doujinAppearance": {
+          "frontHair": "#facb73",
+          "backHair": "#facb73",
+          "brows": "#e6a429",
+          "eyes": "#29d9b6",
+          "skin": "#ffdfba",
+          "outfit": "#4d8ceb",
+          "frontHairStyle": "blunt",
+          "browStyle": "bold",
+          "eyeStyle": "round",
+          "outfitStyle": "armor"
+        },
+        "title": "我的同人",
+        "level": 100,
+        "stats": {
+          "hp": 10760,
+          "atk": 280,
+          "def": 414,
+          "sta": 344,
+          "agi": 339,
+          "spd": 304,
+          "tec": 759,
+          "int": 1033,
+          "luk": 370
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e5"
+      }
+    ],
+    "enemies": [
+      {
+        "entityId": "mob_0_kutanid",
+        "monsterId": "kutanid",
+        "name": "深淵的克塔尼德",
+        "imagePath": "/images/boss/kutanid.webp",
+        "title": "七大最強種",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 100000,
+          "atk": 1730,
+          "def": 260,
+          "sta": 900,
+          "agi": 250,
+          "spd": 650,
+          "tec": 550,
+          "int": 1730,
+          "luk": 300
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e6"
+      },
+      {
+        "entityId": "summon_3",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e7"
+      },
+      {
+        "entityId": "summon_4",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手2",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e8"
+      },
+      {
+        "entityId": "summon_5",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手3",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7e9"
+      },
+      {
+        "entityId": "summon_6",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手4",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7ea"
+      },
+      {
+        "entityId": "summon_7",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手5",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7eb"
+      },
+      {
+        "entityId": "summon_8",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手6",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7ec"
+      },
+      {
+        "entityId": "summon_9",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手7",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7ed"
+      },
+      {
+        "entityId": "summon_10",
+        "monsterId": "kutanid_tentacle",
+        "summonerId": "mob_0_kutanid",
+        "name": "觸手8",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "幻想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 6000,
+          "atk": 900,
+          "def": 220,
+          "sta": 400,
+          "agi": 150,
+          "spd": 300,
+          "tec": 250,
+          "int": 100,
+          "luk": 50
+        },
+        "_id": "6ae7e0781dfecb94e67cf7ee"
+      },
+      {
+        "entityId": "summon_11",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "紅色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7ef"
+      },
+      {
+        "entityId": "summon_12",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "橙色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f0"
+      },
+      {
+        "entityId": "summon_13",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "黃色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f1"
+      },
+      {
+        "entityId": "summon_14",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "黃綠色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f2"
+      },
+      {
+        "entityId": "summon_15",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "綠色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f3"
+      },
+      {
+        "entityId": "summon_16",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "藍色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f4"
+      },
+      {
+        "entityId": "summon_17",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "靛色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f5"
+      },
+      {
+        "entityId": "summon_18",
+        "monsterId": "kutanid_cup",
+        "summonerId": "mob_0_kutanid",
+        "name": "紫色聖杯",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "空想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 5000,
+          "atk": 1,
+          "def": 260,
+          "sta": 400,
+          "agi": 50,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f6"
+      },
+      {
+        "entityId": "summon_19",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "深淵魚人",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f7"
+      },
+      {
+        "entityId": "summon_20",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "盲眼深海鰻",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f8"
+      },
+      {
+        "entityId": "summon_21",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "鐵甲螯蝦",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7f9"
+      },
+      {
+        "entityId": "summon_22",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "提燈鮟鱇",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7fa"
+      },
+      {
+        "entityId": "summon_23",
+        "monsterId": "kutanid_bombfish",
+        "summonerId": "mob_0_kutanid",
+        "name": "深海炸彈魚",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 8000,
+          "atk": 1,
+          "def": 180,
+          "sta": 400,
+          "agi": 50,
+          "spd": 150,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf7fb"
+      },
+      {
+        "entityId": "summon_24",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "鋸齒海蛇",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7fc"
+      },
+      {
+        "entityId": "summon_25",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "黑殼寄居蟹",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7fd"
+      },
+      {
+        "entityId": "summon_26",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "深淵魚人",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7fe"
+      },
+      {
+        "entityId": "summon_27",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "盲眼深海鰻",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf7ff"
+      },
+      {
+        "entityId": "summon_28",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "鐵甲螯蝦",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf800"
+      },
+      {
+        "entityId": "summon_29",
+        "monsterId": "kutanid_spawn",
+        "summonerId": "mob_0_kutanid",
+        "name": "提燈鮟鱇",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "假想態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 4000,
+          "atk": 750,
+          "def": 200,
+          "sta": 400,
+          "agi": 200,
+          "spd": 420,
+          "tec": 250,
+          "int": 100,
+          "luk": 100
+        },
+        "_id": "6ae7e0781dfecb94e67cf801"
+      },
+      {
+        "entityId": "summon_30",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "銀月露娜的寶玉",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf802"
+      },
+      {
+        "entityId": "summon_31",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "御坂美琴的寶玉",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf803"
+      },
+      {
+        "entityId": "summon_32",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "利姆路·坦派斯特的寶玉",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf804"
+      },
+      {
+        "entityId": "summon_33",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "同人的寶玉",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf805"
+      },
+      {
+        "entityId": "summon_34",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "深淵寶玉",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf806"
+      },
+      {
+        "entityId": "summon_35",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "深淵寶玉2",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf807"
+      },
+      {
+        "entityId": "summon_36",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "深淵寶玉3",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf808"
+      },
+      {
+        "entityId": "summon_37",
+        "monsterId": "kutanid_orb",
+        "summonerId": "mob_0_kutanid",
+        "name": "深淵寶玉4",
+        "imagePath": "/images/boss/default-boss.webp",
+        "title": "想像態",
+        "floor": 85,
+        "level": 185,
+        "stats": {
+          "hp": 3000,
+          "atk": 1,
+          "def": 300,
+          "sta": 400,
+          "agi": 100,
+          "spd": 200,
+          "tec": 1,
+          "int": 1,
+          "luk": 1
+        },
+        "_id": "6ae7e0781dfecb94e67cf809"
+      }
+    ]
+  },
+  "result": "WIN",
+  "outcomes": [
+    {
+      "userId": "6ab08d63da9c7ee989f18102",
+      "name": "銀月露娜",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 86
+    },
+    {
+      "userId": "6acb4c34f3b98cafba397d52",
+      "name": "御坂美琴",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 86
+    },
+    {
+      "userId": "6ab39f23def0c4254d4f959c",
+      "name": "利姆路·坦派斯特",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 86
+    },
+    {
+      "userId": "6aa7de14cc943baeed96be1f",
+      "name": "同人",
+      "expGained": 0,
+      "isDead": false,
+      "newFloor": 86
+    }
+  ],
+  "createdAt": "2026-11-02T00:59:36.548Z",
+  "__v": 0,
+  "logsArchived": true,
+  "logs": [
+    {
+      "type": "BATTLE_START",
+      "message": "戰鬥開始！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "message": "沉在海底的反轉都市魯魯伊亞斯，天與地是顛倒的，王城的大廳裡，一隻巨大的黑章魚盤在王座上。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "message": "牠看起來並不難對付，甚至讓人覺得，一口氣就能打倒。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_generals",
+      "message": "魯魯伊亞斯的四座塔裡，各有一名封將守著，在進王城之前，挑戰者們分頭上了塔。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_generals",
+      "message": "魔法封鎖的塔裡，克里歐・克提拉張開了禁咒的結界。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "kutanid_generals",
+      "message": "封將判定：利姆路·坦派斯特 智力（1463 → 101） + 骰出 11 = 112，克里歐・克提拉 智力（700 → 48） + 骰出 96 = 144。",
+      "targetId": "mob_0_kutanid",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 101,
+          "modifier": 0,
+          "baseText": "智力（1463 → 101）",
+          "roll": 11,
+          "total": 112
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 48,
+          "modifier": 0,
+          "baseText": "智力（700 → 48）",
+          "roll": 96,
+          "total": 144
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "kutanid_generals",
+      "message": "利姆路·坦派斯特 的魔力被結界一層層吞掉，克里歐・克提拉退回了塔頂。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_generals",
+      "message": "阿蒙・歐托姆封住了所有遠距離的手段，舉起劍要求一場近身的決鬥。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_generals",
+      "message": "封將判定：銀月露娜 技巧（794 → 55） + 骰出 13 = 68，阿蒙・歐托姆 技巧（700 → 48） + 骰出 96 = 144。",
+      "targetId": "mob_0_kutanid",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 55,
+          "modifier": 0,
+          "baseText": "技巧（794 → 55）",
+          "roll": 13,
+          "total": 68
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 48,
+          "modifier": 0,
+          "baseText": "技巧（700 → 48）",
+          "roll": 96,
+          "total": 144
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_generals",
+      "message": "銀月露娜 被阿蒙・歐托姆的劍逼出了決鬥圈。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_generals",
+      "message": "巴修德・梅爾納克爾架起了近身攻擊打不穿的守勢。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "kutanid_generals",
+      "message": "封將判定：同人 攻擊（280 → 19） + 骰出 22 = 41，巴修德・梅爾納克爾 防禦（700 → 48） + 骰出 91 = 139。",
+      "targetId": "mob_0_kutanid",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 19,
+          "modifier": 0,
+          "baseText": "攻擊（280 → 19）",
+          "roll": 22,
+          "total": 41
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 48,
+          "modifier": 0,
+          "baseText": "防禦（700 → 48）",
+          "roll": 91,
+          "total": 139
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "kutanid_generals",
+      "message": "同人 的攻擊全被巴修德・梅爾納克爾擋了下來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_generals",
+      "message": "斯雷比爾・達貢與海朵拉並肩站著，物理攻擊與技能碰到他們都會失效。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "kutanid_generals",
+      "message": "封將判定：御坂美琴 敏捷（377 → 26） + 骰出 22 = 48，斯雷比爾・達貢與海朵拉 敏捷（700 → 48） + 骰出 61 = 109。",
+      "targetId": "mob_0_kutanid",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 26,
+          "modifier": 0,
+          "baseText": "敏捷（377 → 26）",
+          "roll": 22,
+          "total": 48
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 48,
+          "modifier": 0,
+          "baseText": "敏捷（700 → 48）",
+          "roll": 61,
+          "total": 109
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "kutanid_generals",
+      "message": "御坂美琴 怎麼繞都繞不到達貢與海朵拉的身後。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_opening",
+      "message": "銀月露娜：「……開始吧。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_level5",
+      "isNormalAttack": false,
+      "message": "御坂美琴：「常盤台中學，御坂美琴。要打的話，我奉陪。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_greeting",
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特：「我不是壞史萊姆喔！」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_clue",
+      "message": "調查判定：銀月露娜 調查（智力 1442＋技巧 794 → 154） + 骰出 5 = 159，門檻 60。",
+      "diceCheck": {
+        "kind": "threshold",
+        "dice": {
+          "min": 1,
+          "max": 100,
+          "base": 154,
+          "modifier": 0,
+          "baseText": "調查（智力 1442＋技巧 794 → 154）",
+          "roll": 5,
+          "total": 159
+        },
+        "dc": 60,
+        "critical": null,
+        "isSuccess": true
+      }
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_clue",
+      "message": "銀月露娜 在王城的書庫裡翻到了女王的日記，最後一頁的字跡寫著：「吾名為克塔尼德。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kutanid",
+      "targetId": "mob_0_kutanid",
+      "opponentId": "6acb4c34f3b98cafba397d52",
+      "value": 363,
+      "actionCancelled": true,
+      "eventId": "red_5",
+      "message": "一顆雄三飛彈把 深淵的克塔尼德 的頭頂當作降落點，造成 363 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 4999,
+      "actualDamage": 4999,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 4999 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_thunderfall",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "御坂美琴 使出了 落雷，舉起一隻手指向天空——下一瞬間，真正的雷劈了下來！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_thunderfall",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 4964,
+      "actualDamage": 4964,
+      "isCrit": true,
+      "blocked": false,
+      "message": "雷光砸在 深淵的克塔尼德 身上，會心一擊！造成了 4964 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "targetId": "mob_0_kutanid",
+      "skillId": "misaka_thunderfall",
+      "buffId": "paralysis",
+      "isNormalAttack": false,
+      "message": "深淵的克塔尼德 被電得全身麻痺了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 1673,
+      "actualDamage": 1673,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 深淵的克塔尼德，會心一擊！造成了 1673 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_fake",
+      "message": "黑章魚的身體被打散了，煙一樣的碎片又在原地聚了回來，連一道傷口都沒留下。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 573,
+      "actualDamage": 573,
+      "isCrit": false,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 深淵的克塔尼德，造成了 573 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_slam",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 557,
+      "actualDamage": 557,
+      "isCrit": false,
+      "blocked": false,
+      "message": "深淵的克塔尼德 舉起一根觸手，重重砸在 御坂美琴 身上，對 御坂美琴 造成了 557 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "shadow_clone_jutsu",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 把葉冠左右交疊，用葉片飛快地結出十字印：「砰——！」白煙猛然炸開。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "summon_1",
+      "skillId": "shadow_clone_jutsu",
+      "isNormalAttack": false,
+      "message": "同人的影分身 從白煙裡滾了出來。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 2071,
+      "actualDamage": 2071,
+      "isCrit": false,
+      "blocked": false,
+      "message": "銀月露娜 把佈滿冰刺的冰球砸向 深淵的克塔尼德，對 深淵的克塔尼德 造成了 2071 點傷害！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kutanid",
+      "targetId": "mob_0_kutanid",
+      "opponentId": "6acb4c34f3b98cafba397d52",
+      "value": 341,
+      "actionCancelled": true,
+      "eventId": "red_1",
+      "message": "一顆迷路的隕石精準突破大氣層，直接命中 深淵的克塔尼德 的天靈蓋，造成 341 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 4467,
+      "actualDamage": 4467,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 深淵的克塔尼德，會心一擊！造成了 4467 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_clue",
+      "message": "調查判定：銀月露娜 調查（智力 1442＋技巧 794 → 154） + 骰出 71 = 225，門檻 60。",
+      "diceCheck": {
+        "kind": "threshold",
+        "dice": {
+          "min": 1,
+          "max": 100,
+          "base": 154,
+          "modifier": 0,
+          "baseText": "調查（智力 1442＋技巧 794 → 154）",
+          "roll": 71,
+          "total": 225
+        },
+        "dc": 60,
+        "critical": null,
+        "isSuccess": true
+      }
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_clue",
+      "message": "銀月露娜 在寶物庫的角落找到了昔日的王冠，王冠上少了一顆寶石。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_sweep",
+      "message": "深淵的克塔尼德 的觸手貼著地面橫掃過來——",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 236,
+      "actualDamage": 236,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 銀月露娜 造成了 236 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 1075,
+      "actualDamage": 1075,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 御坂美琴 造成了 1075 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 1032,
+      "actualDamage": 1032,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 利姆路·坦派斯特 造成了 1032 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 206,
+      "actualDamage": 206,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 206 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_1",
+      "value": 232,
+      "actualDamage": 1,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人的影分身 造成了 232 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_1",
+      "message": "同人的影分身 倒下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "shadow_clone_jutsu",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 把葉冠左右交疊，用葉片飛快地結出十字印：「砰——！」白煙猛然炸開。"
+    },
+    {
+      "type": "SUMMON",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "summon_2",
+      "skillId": "shadow_clone_jutsu",
+      "isNormalAttack": false,
+      "message": "同人的影分身 從白煙裡滾了出來。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 4547,
+      "actualDamage": 4547,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 深淵的克塔尼德，會心一擊！造成了 4547 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_fake",
+      "message": "黑章魚的身體被打散了，煙一樣的碎片又在原地聚了回來，連一道傷口都沒留下。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_predator",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 4333,
+      "actualDamage": 4333,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 的手臂化成史萊姆的膠質，張開一張大口咬向 深淵的克塔尼德，會心一擊！造成了 4333 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "mob_0_kutanid",
+      "skillId": "rimuru_predator",
+      "buffId": "rimuru_corrode",
+      "isNormalAttack": false,
+      "message": "深淵的克塔尼德 被咬下的地方冒著白煙，身體被腐食溶掉了一塊，防禦降低了！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 使出了 小黃金樹，金色的枝葉在隊伍頭頂伸展開來，暖光灑了下來——"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 236,
+      "message": "銀月露娜 恢復了 236 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 1632,
+      "message": "御坂美琴 恢復了 1632 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 1002,
+      "message": "利姆路·坦派斯特 恢復了 1002 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 206,
+      "message": "同人 恢復了 206 HP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 5890,
+      "actualDamage": 5890,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 5890 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_slam",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 2660,
+      "actualDamage": 2660,
+      "isCrit": true,
+      "blocked": false,
+      "message": "深淵的克塔尼德 舉起一根觸手，重重砸在 利姆路·坦派斯特 身上，會心一擊！對 利姆路·坦派斯特 造成了 2660 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_great_sage",
+      "isNormalAttack": false,
+      "message": "大賢者：「告。解析已完成，耐性已獲得。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 1776,
+      "actualDamage": 1776,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 1776 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_fake",
+      "message": "黑章魚的身體被打散了，煙一樣的碎片又在原地聚了回來，連一道傷口都沒留下。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_black_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 使出了 黑炎，黑色的火焰從腳下翻湧而出，捲向所有敵人——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_black_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 3741,
+      "actualDamage": 3741,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵的克塔尼德 造成了 3741 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_black_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "火勢又折了回來——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_black_flame",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 3380,
+      "actualDamage": 3380,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵的克塔尼德 造成了 3380 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 4491,
+      "actualDamage": 4491,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 深淵的克塔尼德，會心一擊！造成了 4491 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_clue",
+      "message": "調查判定：銀月露娜 調查（智力 1442＋技巧 794 → 154） + 骰出 25 = 179，門檻 60。",
+      "diceCheck": {
+        "kind": "threshold",
+        "dice": {
+          "min": 1,
+          "max": 100,
+          "base": 154,
+          "modifier": 0,
+          "baseText": "調查（智力 1442＋技巧 794 → 154）",
+          "roll": 25,
+          "total": 179
+        },
+        "dc": 60,
+        "critical": null,
+        "isSuccess": true
+      }
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_clue",
+      "message": "銀月露娜 撬開王座底下的石板，那裡嵌著一塊上下顛倒的要石，正好缺一顆寶石。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_clue",
+      "message": "銀月露娜 把王冠上的寶石按進了要石，王城整個翻了過來。",
+      "isNormalAttack": false,
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_phase",
+      "message": "天地倒轉，所有人跌進了一座圓形的競技場。原本的黑章魚像煙一樣散掉了。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_phase",
+      "message": "高空浮現一個巨大的八芒星法陣，正中央是一顆眼球，八條粗大的觸手從法陣裡垂了下來。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「展現吧，爾等所繼承的意志。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_gaze",
+      "message": "深淵的克塔尼德 一開口，像很多人同時在說話，聲音像生鏽的釘子混著泥漿刮過黑板。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「懷抱堅定不移之心前進吧，沒有到達不了的高處。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_bombard",
+      "message": "深淵的克塔尼德 的觸手從高空轟向地面——",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_bombard",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 246,
+      "actualDamage": 246,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 銀月露娜 造成了 246 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_bombard",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 1147,
+      "actualDamage": 1147,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 御坂美琴 造成了 1147 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_bombard",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 243,
+      "actualDamage": 243,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 利姆路·坦派斯特 造成了 243 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_bombard",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 203,
+      "actualDamage": 203,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 203 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_bombard",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_2",
+      "value": 969,
+      "actualDamage": 1,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 同人的影分身 造成了 969 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_2",
+      "message": "同人的影分身 倒下了！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "summon_9",
+      "targetId": "summon_9",
+      "opponentId": "6acb4c34f3b98cafba397d52",
+      "value": 379,
+      "actionCancelled": true,
+      "eventId": "purple_2",
+      "message": "觸手7 踩到香蕉皮摔倒受到 379 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_9",
+      "value": 5530,
+      "actualDamage": 5530,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 觸手7，會心一擊！對 觸手7 造成了 5530 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ult",
+      "message": "銀月露娜：「月（MOON）。」",
+      "isNormalAttack": false,
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ult",
+      "message": "一圈銀色的彎月光環在 銀月露娜 頭頂亮了起來。",
+      "isNormalAttack": false,
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ult",
+      "message": "冰鑄的月亮在她上方成形，吸進了身邊的 6 顆冰晶，朝所有敵人墜落。",
+      "isNormalAttack": false,
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "八芒星中心的眼球懸在半空，攻擊碰不到它。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_3",
+      "value": 7898,
+      "actualDamage": 6000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！觸手 受到了 7898 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_3",
+      "message": "觸手 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_4",
+      "value": 8779,
+      "actualDamage": 6000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！觸手2 受到了 8779 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_4",
+      "message": "觸手2 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_5",
+      "value": 8462,
+      "actualDamage": 6000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！觸手3 受到了 8462 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_5",
+      "message": "觸手3 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_6",
+      "value": 7854,
+      "actualDamage": 6000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！觸手4 受到了 7854 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_6",
+      "message": "觸手4 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_7",
+      "value": 1641,
+      "actualDamage": 1641,
+      "isCrit": false,
+      "blocked": false,
+      "message": "觸手5 受到了 1641 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_8",
+      "value": 8631,
+      "actualDamage": 6000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！觸手6 受到了 8631 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_8",
+      "message": "觸手6 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_9",
+      "value": 8402,
+      "actualDamage": 91,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！觸手7 受到了 8402 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_9",
+      "message": "觸手7 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_moon_fall",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_10",
+      "value": 9047,
+      "actualDamage": 6000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！觸手8 受到了 9047 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_10",
+      "message": "觸手8 倒下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ult",
+      "message": "墜落的冰月碎成了 3 顆冰晶，回到 銀月露娜 身邊。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_7",
+      "value": 684,
+      "actualDamage": 684,
+      "isCrit": false,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 觸手5，造成了 684 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 唱起了 千本櫻，節奏一下子快了起來，花瓣跟著拍子在隊伍四周捲起。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人：「♪ 此処は宴 鋼の檻」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "diceCheck": {
+        "kind": "threshold",
+        "dice": {
+          "min": 1,
+          "max": 100,
+          "base": 52,
+          "modifier": 0,
+          "baseText": "技巧（759 → 52）",
+          "roll": 93,
+          "total": 145
+        },
+        "dc": 60,
+        "critical": null,
+        "isSuccess": true
+      },
+      "isNormalAttack": false,
+      "message": "節奏判定：同人 技巧（759 → 52） + 骰出 93 = 145，門檻 COOL 90、FINE 60、SAFE 35、SAD 15。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 的歌聲每一拍都踩在正中間，整片歌聲壓向了敵人，COOL！",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "八芒星中心的眼球懸在半空，攻擊碰不到它。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_7",
+      "value": 1350,
+      "actualDamage": 1350,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 觸手5 造成了 1350 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "miku_sing",
+      "isNormalAttack": false,
+      "buffId": "miku_senbonzakura",
+      "message": "銀月露娜、御坂美琴、利姆路·坦派斯特、同人 被附加了 千本櫻 狀態，攻擊與智力提升了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_feather",
+      "message": "銀月露娜 低聲詠唱，多重的錐疊進了增幅裡，她背後張開一對冰翼。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_feather",
+      "message": "銀月露娜：「霜翎（RIME PLUME）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_feather",
+      "message": "銀月露娜 的冰翼吸進了身邊的 3 顆冰晶，羽毛一根根化成冰錐射向所有人。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_feather",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "八芒星中心的眼球懸在半空，攻擊碰不到它。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_feather",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "又一次落了空。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_feather",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_7",
+      "value": 2951,
+      "actualDamage": 2325,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 1 根冰羽，會心一擊！對 觸手5 造成了 2951 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_7",
+      "message": "觸手5 倒下了！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「尋得那個值得自己信任的自我吧。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_phase",
+      "message": "八芒星法陣折了起來，拼成一隻空心的章魚。每一根觸手的尖端，都托著一只不同顏色的聖杯。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_18",
+      "value": 3677,
+      "actualDamage": 3677,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 紫色聖杯，會心一擊！造成了 3677 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_18",
+      "value": 2169,
+      "actualDamage": 1323,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 道水刃，會心一擊！造成了 2169 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_18",
+      "message": "紫色聖杯 倒下了！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_18",
+      "skillId": "kutanid_cup",
+      "message": "紫色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 417,
+      "actualDamage": 417,
+      "isCrit": false,
+      "blocked": false,
+      "message": "深淵的克塔尼德 由法陣拼成的觸手掃過 御坂美琴，對 御坂美琴 造成了 417 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 1759,
+      "actualDamage": 1759,
+      "isCrit": true,
+      "blocked": false,
+      "message": "觸手折回來又掃了一次，會心一擊！對 御坂美琴 造成了 1759 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_11",
+      "value": 1096,
+      "actualDamage": 1096,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 紅色聖杯，對 紅色聖杯 造成了 1096 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_11",
+      "value": 3627,
+      "actualDamage": 3627,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 的旋風第 2 次捲過去，會心一擊！對 紅色聖杯 造成了 3627 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_15",
+      "value": 5377,
+      "actualDamage": 5000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 綠色聖杯，會心一擊！造成了 5377 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_15",
+      "message": "綠色聖杯 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_15",
+      "skillId": "kutanid_cup",
+      "message": "綠色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_17",
+      "skillId": "kutanid_cup",
+      "message": "靛色聖杯 亮起了靛色的光。靛色的光照下來，有人的力氣跑到了不該在的地方。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_indigo",
+      "message": "銀月露娜 的智力與攻擊對調了過來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_11",
+      "skillId": "kutanid_cup",
+      "message": "紅色聖杯 亮起了紅光。紅光貼著克塔尼德四周燒成一圈，靠近的東西都像被輕輕推了回去。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "summon_13",
+      "targetId": "summon_13",
+      "opponentId": "6acb4c34f3b98cafba397d52",
+      "value": 448,
+      "actionCancelled": true,
+      "eventId": "purple_2",
+      "message": "黃色聖杯 踩到香蕉皮摔倒受到 448 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_11",
+      "value": 5623,
+      "actualDamage": 277,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 紅色聖杯，會心一擊！造成了 5623 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_11",
+      "message": "紅色聖杯 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_11",
+      "skillId": "kutanid_cup",
+      "message": "紅色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_predator",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_14",
+      "value": 1129,
+      "actualDamage": 1129,
+      "isCrit": false,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 的手臂化成史萊姆的膠質，張開一張大口咬向 黃綠色聖杯，造成了 1129 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "summon_14",
+      "skillId": "rimuru_predator",
+      "buffId": "rimuru_corrode",
+      "isNormalAttack": false,
+      "message": "黃綠色聖杯 被咬下的地方冒著白煙，身體被腐食溶掉了一塊，防禦降低了！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kutanid",
+      "targetId": "mob_0_kutanid",
+      "opponentId": "6ab08d63da9c7ee989f18102",
+      "value": 243,
+      "actionCancelled": true,
+      "eventId": "red_3",
+      "message": "深淵的克塔尼德 踩到一塊樂高積木，造成 243 點傷害。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "summon_16",
+      "targetId": "summon_16",
+      "opponentId": "6ab08d63da9c7ee989f18102",
+      "value": 426,
+      "actionCancelled": true,
+      "eventId": "purple_2",
+      "message": "藍色聖杯 踩到香蕉皮摔倒受到 426 點傷害。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "summon_14",
+      "targetId": "summon_14",
+      "opponentId": "6aa7de14cc943baeed96be1f",
+      "value": 394,
+      "actionCancelled": true,
+      "eventId": "purple_1",
+      "message": "黃綠色聖杯 往後退後腦撞到樹受到 394 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_17",
+      "value": 711,
+      "actualDamage": 711,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 靛色聖杯，會心一擊！對 靛色聖杯 造成了 711 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ult",
+      "message": "銀月露娜 頭頂的彎月光環淡去了。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "targetId": "mob_0_kutanid",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kutanid_cup_sweep",
+      "value": 0,
+      "isCrit": false,
+      "message": "深淵的克塔尼德 由法陣拼成的觸手掃過 御坂美琴，但是遭御坂美琴反擊，反擊成功！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 1496,
+      "actualDamage": 1496,
+      "isCrit": true,
+      "blocked": false,
+      "message": "觸手折回來又掃了一次，會心一擊！對 御坂美琴 造成了 1496 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_great_sage",
+      "isNormalAttack": false,
+      "message": "大賢者：「告。解析已完成，耐性已獲得。」"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "PURPLE",
+      "actorId": "summon_17",
+      "targetId": "summon_17",
+      "opponentId": "6ab39f23def0c4254d4f959c",
+      "value": 406,
+      "actionCancelled": true,
+      "eventId": "purple_1",
+      "message": "靛色聖杯 往後退後腦撞到樹受到 406 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_12",
+      "value": 761,
+      "actualDamage": 761,
+      "isCrit": false,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 橙色聖杯，造成了 761 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_12",
+      "value": 2270,
+      "actualDamage": 2270,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 2 道水刃，會心一擊！造成了 2270 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_12",
+      "value": 1569,
+      "actualDamage": 1569,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 道水刃，會心一擊！造成了 1569 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_iron_sand_sword",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_13",
+      "value": 2423,
+      "actualDamage": 2423,
+      "isCrit": false,
+      "blocked": false,
+      "message": "御坂美琴 使出了 砂鐵劍，腳下的砂鐵捲成一把嗡嗡振動的黑劍，劈向 黃色聖杯，造成了 2423 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_iron_sand_whip",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "空殼章魚的身體只是一圈法陣，攻擊直接穿了過去。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_16",
+      "value": 950,
+      "actualDamage": 950,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 藍色聖杯，對 藍色聖杯 造成了 950 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_16",
+      "value": 3388,
+      "actualDamage": 3388,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 的旋風第 2 次捲過去，會心一擊！對 藍色聖杯 造成了 3388 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 1464,
+      "actualDamage": 1464,
+      "isCrit": true,
+      "blocked": false,
+      "message": "深淵的克塔尼德 由法陣拼成的觸手掃過 利姆路·坦派斯特，會心一擊！對 利姆路·坦派斯特 造成了 1464 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 324,
+      "actualDamage": 324,
+      "isCrit": false,
+      "blocked": false,
+      "message": "觸手折回來又掃了一次，對 利姆路·坦派斯特 造成了 324 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_13",
+      "value": 4501,
+      "actualDamage": 2129,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 黃色聖杯，會心一擊！造成了 4501 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_13",
+      "message": "黃色聖杯 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_13",
+      "skillId": "kutanid_cup",
+      "message": "黃色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_17",
+      "value": 1102,
+      "actualDamage": 1102,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 靛色聖杯，對 靛色聖杯 造成了 1102 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_17",
+      "value": 3208,
+      "actualDamage": 2781,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 的旋風第 2 次捲過去，會心一擊！對 靛色聖杯 造成了 3208 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_17",
+      "message": "靛色聖杯 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_17",
+      "skillId": "kutanid_cup",
+      "message": "靛色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_indigo",
+      "message": "銀月露娜 的能力換回了原本的樣子。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_16",
+      "value": 912,
+      "actualDamage": 236,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 藍色聖杯，對 藍色聖杯 造成了 912 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_16",
+      "message": "藍色聖杯 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_16",
+      "skillId": "kutanid_cup",
+      "message": "藍色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_12",
+      "skillId": "kutanid_cup",
+      "message": "橙色聖杯 亮起了橙光。橙光在外圍拉開一層光幕，遠處飛來的東西一進去就淡掉了。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "kutanid_swallowed",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "御坂美琴 的 攻擊 飛進橙光裡，消失得無影無蹤。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_swallowed",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "銀月露娜 的 攻擊 飛進橙光裡，消失得無影無蹤。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 使出了 小黃金樹，金色的枝葉在隊伍頭頂伸展開來，暖光灑了下來——"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 246,
+      "message": "銀月露娜 恢復了 246 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 2272,
+      "message": "御坂美琴 恢復了 2272 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 2272,
+      "message": "利姆路·坦派斯特 恢復了 2272 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 203,
+      "message": "同人 恢復了 203 HP！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "message": "深淵的克塔尼德 由法陣拼成的觸手掃過 御坂美琴，但是被 御坂美琴 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 336,
+      "actualDamage": 336,
+      "isCrit": false,
+      "blocked": false,
+      "message": "觸手折回來又掃了一次，對 御坂美琴 造成了 336 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "kutanid_swallowed",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "御坂美琴 的 雷擊之槍 飛進橙光裡，消失得無影無蹤。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "summon_12",
+      "targetId": "summon_12",
+      "opponentId": "6ab08d63da9c7ee989f18102",
+      "value": 812,
+      "actionCancelled": true,
+      "eventId": "red_5",
+      "message": "一顆雄三飛彈把 橙色聖杯 的頭頂當作降落點，造成 812 點傷害。"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_12",
+      "message": "橙色聖杯 倒下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "kutanid_swallowed",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 的 演唱 飛進橙光裡，消失得無影無蹤。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_12",
+      "skillId": "kutanid_cup",
+      "message": "橙色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "COUNTER",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "mob_0_kutanid",
+      "skillId": "basic_counter",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "incomingSkillId": "kutanid_cup_sweep",
+      "value": 0,
+      "isCrit": false,
+      "message": "深淵的克塔尼德 由法陣拼成的觸手掃過 利姆路·坦派斯特，但是遭利姆路·坦派斯特反擊，反擊成功！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_cup_sweep",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 357,
+      "actualDamage": 357,
+      "isCrit": false,
+      "blocked": false,
+      "message": "觸手折回來又掃了一次，對 利姆路·坦派斯特 造成了 357 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_14",
+      "value": 3352,
+      "actualDamage": 3352,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 黃綠色聖杯，會心一擊！造成了 3352 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_14",
+      "value": 2961,
+      "actualDamage": 125,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 黃綠色聖杯，會心一擊！造成了 2961 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_14",
+      "message": "黃綠色聖杯 倒下了！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_14",
+      "skillId": "kutanid_cup",
+      "message": "黃綠色聖杯 從觸手上掉下來，摔成了碎片。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_phase",
+      "message": "空心的章魚折疊、收縮，縮成了地上一團漆黑的球體。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「吾身無血肉。」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_encounter",
+      "message": "深淵四周亮起召喚的法陣，深淵魚人、盲眼深海鰻 從法陣裡爬了出來。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_19",
+      "value": 1916,
+      "actualDamage": 1916,
+      "isCrit": false,
+      "blocked": false,
+      "message": "銀月露娜 把佈滿冰刺的冰球砸向 深淵魚人，對 深淵魚人 造成了 1916 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball_splash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball_splash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_20",
+      "value": 1755,
+      "actualDamage": 1755,
+      "isCrit": true,
+      "blocked": false,
+      "message": "碎冰濺向 盲眼深海鰻，會心一擊！對 盲眼深海鰻 造成了 1755 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_19",
+      "value": 2325,
+      "actualDamage": 2084,
+      "isCrit": false,
+      "blocked": false,
+      "message": "銀月露娜 把佈滿冰刺的冰球砸向 深淵魚人，對 深淵魚人 造成了 2325 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_19",
+      "message": "深淵魚人 倒下了！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball_splash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball_splash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_20",
+      "value": 1981,
+      "actualDamage": 1981,
+      "isCrit": true,
+      "blocked": false,
+      "message": "碎冰濺向 盲眼深海鰻，會心一擊！對 盲眼深海鰻 造成了 1981 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_encounter",
+      "message": "深淵四周亮起召喚的法陣，鐵甲螯蝦、提燈鮟鱇、深海炸彈魚 從法陣裡爬了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_encounter",
+      "message": "深海炸彈魚的肚子鼓得像一顆氣球，表皮底下透出不穩定的光。漆黑的球體朝牠的方向，輕輕地吸了一口氣。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_22",
+      "value": 4966,
+      "actualDamage": 4000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 提燈鮟鱇，會心一擊！對 提燈鮟鱇 造成了 4966 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_22",
+      "message": "提燈鮟鱇 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_20",
+      "value": 3845,
+      "actualDamage": 264,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 盲眼深海鰻，會心一擊！造成了 3845 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_20",
+      "message": "盲眼深海鰻 倒下了！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_21",
+      "value": 5446,
+      "actualDamage": 4000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 鐵甲螯蝦，會心一擊！造成了 5446 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_21",
+      "message": "鐵甲螯蝦 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_23",
+      "value": 3769,
+      "actualDamage": 3769,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 深海炸彈魚，會心一擊！造成了 3769 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_23",
+      "value": 444,
+      "actualDamage": 444,
+      "isCrit": false,
+      "blocked": false,
+      "message": "第 2 道水刃，造成了 444 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_23",
+      "value": 1285,
+      "actualDamage": 1285,
+      "isCrit": true,
+      "blocked": false,
+      "message": "第 3 道水刃，會心一擊！造成了 1285 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_23",
+      "value": 6060,
+      "actualDamage": 2502,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 深海炸彈魚，會心一擊！對 深海炸彈魚 造成了 6060 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_23",
+      "message": "深海炸彈魚 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_23",
+      "skillId": "kutanid_bomb",
+      "message": "深海炸彈魚 的肚子一下子脹到極限，整隻炸了開來——",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_23",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_bomb",
+      "value": 2024,
+      "actualDamage": 2024,
+      "isNormalAttack": false,
+      "message": "爆炸的衝擊波掃過 銀月露娜，造成了 2024 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_23",
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "skillId": "kutanid_bomb",
+      "value": 2018,
+      "actualDamage": 2018,
+      "isNormalAttack": false,
+      "message": "爆炸的衝擊波掃過 御坂美琴，造成了 2018 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_23",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "kutanid_bomb",
+      "value": 2002,
+      "actualDamage": 2002,
+      "isNormalAttack": false,
+      "message": "爆炸的衝擊波掃過 利姆路·坦派斯特，造成了 2002 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_23",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "skillId": "kutanid_bomb",
+      "value": 2152,
+      "actualDamage": 2152,
+      "isNormalAttack": false,
+      "message": "爆炸的衝擊波掃過 同人，造成了 2152 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "message": "同人 使出了 小黃金樹，金色的枝葉在隊伍頭頂伸展開來，暖光灑了下來——"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 2024,
+      "message": "銀月露娜 恢復了 2024 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 2272,
+      "message": "御坂美琴 恢復了 2272 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 2272,
+      "message": "利姆路·坦派斯特 恢復了 2272 HP！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "minor_erdtree",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 2152,
+      "message": "同人 恢復了 2152 HP！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_encounter",
+      "message": "深淵四周亮起召喚的法陣，鋸齒海蛇、黑殼寄居蟹 從法陣裡爬了出來。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "summon_25",
+      "skillId": "kutanid_spawn_bite",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "message": "黑殼寄居蟹 撲向 銀月露娜，但是被 銀月露娜 躲開了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_24",
+      "value": 5289,
+      "actualDamage": 4000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 鋸齒海蛇，會心一擊！造成了 5289 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_24",
+      "message": "鋸齒海蛇 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_25",
+      "value": 3439,
+      "actualDamage": 3439,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 黑殼寄居蟹，會心一擊！造成了 3439 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_25",
+      "value": 881,
+      "actualDamage": 561,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 黑殼寄居蟹，對 黑殼寄居蟹 造成了 881 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_25",
+      "message": "黑殼寄居蟹 倒下了！"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kutanid",
+      "targetId": "mob_0_kutanid",
+      "opponentId": "6ab39f23def0c4254d4f959c",
+      "value": 349,
+      "actionCancelled": true,
+      "eventId": "red_2",
+      "message": "深淵的克塔尼德 走在路上被卡車以時速 150 公里正面撞飛，雖然沒有成功轉生但受到了 349 點傷害。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜 低聲詠唱，錐與球被雙重的增幅撐大了好幾倍。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜：「冰刺流星（GLACIAL METEOR）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜 吸進了身邊的 6 顆冰晶，把脹大的冰刺球拉上高空。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 唱起了 世界第一的公主殿下，她叉著腰點名身邊的每一個人，命令他們誰都不准倒下。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人：「♪ 世界で一番おひめさま」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "diceCheck": {
+        "kind": "threshold",
+        "dice": {
+          "min": 1,
+          "max": 100,
+          "base": 52,
+          "modifier": 0,
+          "baseText": "技巧（759 → 52）",
+          "roll": 58,
+          "total": 110
+        },
+        "dc": 60,
+        "critical": null,
+        "isSuccess": true
+      },
+      "isNormalAttack": false,
+      "message": "節奏判定：同人 技巧（759 → 52） + 骰出 58 = 110，門檻 COOL 90、FINE 60、SAFE 35、SAD 15。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 的歌聲每一拍都踩在正中間，整片歌聲壓向了敵人，COOL！",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 的 COMBO 來到了 2。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "miku_sing",
+      "isNormalAttack": false,
+      "buffId": "miku_world_is_mine",
+      "message": "銀月露娜、御坂美琴、利姆路·坦派斯特、同人 被附加了 世界第一的公主殿下 狀態，受到的傷害降低了！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_encounter",
+      "message": "深淵四周亮起召喚的法陣，深淵魚人、盲眼深海鰻 從法陣裡爬了出來。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_26",
+      "skillId": "kutanid_spawn_bite",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 286,
+      "actualDamage": 286,
+      "isCrit": false,
+      "blocked": false,
+      "message": "深淵魚人 撲向 御坂美琴，對 御坂美琴 造成了 286 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_great_sage",
+      "isNormalAttack": false,
+      "message": "大賢者：「告。解析已完成，耐性已獲得。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 唱起了 千本櫻，節奏一下子快了起來，花瓣跟著拍子在隊伍四周捲起。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人：「♪ 千本桜 夜ニ紛レ」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "diceCheck": {
+        "kind": "threshold",
+        "dice": {
+          "min": 1,
+          "max": 100,
+          "base": 52,
+          "modifier": 0,
+          "baseText": "技巧（759 → 52）",
+          "roll": 88,
+          "total": 140
+        },
+        "dc": 60,
+        "critical": null,
+        "isSuccess": true
+      },
+      "isNormalAttack": false,
+      "message": "節奏判定：同人 技巧（759 → 52） + 骰出 88 = 140，門檻 COOL 90、FINE 60、SAFE 35、SAD 15。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 的歌聲每一拍都踩在正中間，整片歌聲壓向了敵人，COOL！",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "message": "同人 的 COMBO 來到了 3。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_26",
+      "value": 249,
+      "actualDamage": 249,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 深淵魚人 造成了 249 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "miku_sing",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_27",
+      "value": 222,
+      "actualDamage": 222,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 盲眼深海鰻 造成了 222 點傷害！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "miku_sing",
+      "isNormalAttack": false,
+      "buffId": "miku_senbonzakura",
+      "message": "銀月露娜、御坂美琴、利姆路·坦派斯特、同人 被附加了 千本櫻 狀態，攻擊與智力提升了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_vending_kick",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_27",
+      "value": 137,
+      "actualDamage": 137,
+      "isCrit": false,
+      "blocked": false,
+      "message": "御坂美琴：「常盤台中學內流傳的老舊自販機的正確使用方式——」她一記迴旋踢掃向 盲眼深海鰻，造成了 137 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_vending_kick",
+      "isNormalAttack": false,
+      "message": "喀咚一聲，旁邊的自動販賣機掉出一罐果汁。御坂美琴 拉開拉環一口氣喝掉。"
+    },
+    {
+      "type": "SP_RECOVER",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_vending_kick",
+      "value": 6,
+      "isNormalAttack": false,
+      "message": "御坂美琴 回復了 6 點 SP！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_27",
+      "value": 13445,
+      "actualDamage": 3641,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 把佈滿冰刺的冰球砸向 盲眼深海鰻，會心一擊！對 盲眼深海鰻 造成了 13445 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_27",
+      "message": "盲眼深海鰻 倒下了！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball_splash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball_splash",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "summon_26",
+      "value": 2335,
+      "actualDamage": 2335,
+      "isCrit": true,
+      "blocked": false,
+      "message": "碎冰濺向 深淵魚人，會心一擊！對 深淵魚人 造成了 2335 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_26",
+      "skillId": "kutanid_spawn_bite",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 640,
+      "actualDamage": 640,
+      "isCrit": true,
+      "blocked": false,
+      "message": "深淵魚人 撲向 同人，會心一擊！對 同人 造成了 640 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_26",
+      "value": 1192,
+      "actualDamage": 1192,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 深淵魚人，對 深淵魚人 造成了 1192 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_26",
+      "value": 8299,
+      "actualDamage": 224,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 深淵魚人，會心一擊！對 深淵魚人 造成了 8299 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_26",
+      "message": "深淵魚人 倒下了！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_encounter",
+      "message": "深淵四周亮起召喚的法陣，鐵甲螯蝦、提燈鮟鱇 從法陣裡爬了出來。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "summon_29",
+      "skillId": "kutanid_spawn_bite",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 236,
+      "actualDamage": 236,
+      "isCrit": false,
+      "blocked": false,
+      "message": "提燈鮟鱇 撲向 同人，對 同人 造成了 236 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_28",
+      "value": 4810,
+      "actualDamage": 4000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 鐵甲螯蝦，會心一擊！造成了 4810 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_28",
+      "message": "鐵甲螯蝦 倒下了！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_29",
+      "value": 1200,
+      "actualDamage": 1200,
+      "isCrit": false,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 提燈鮟鱇，造成了 1200 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_29",
+      "value": 6147,
+      "actualDamage": 2800,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 提燈鮟鱇，會心一擊！對 提燈鮟鱇 造成了 6147 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_29",
+      "message": "提燈鮟鱇 倒下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜 低聲詠唱，錐與球被雙重的增幅撐大了好幾倍。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜：「冰刺流星（GLACIAL METEOR）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜 吸進了身邊的 6 顆冰晶，把脹大的冰刺球拉上高空。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_iron_sand_sword",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_iron_sand_whip",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "又一次落了空。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_black_lightning",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "MISS",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "message": "攻擊沉進了漆黑的深淵裡，沒有任何回應。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_phase",
+      "message": "漆黑的球體裂開，裡面站起來一個人形的魔神。骷髏般的臉，口邊垂著觸鬚，下半身是盤繞的觸手，背後浮著一圈寶玉。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「證明吧，生命的價值。」"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「鬥爭，正是生命的本質。」"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「Analysis」"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_analysis",
+      "message": "深淵的克塔尼德 背後的寶玉飛了出去，一顆一顆嵌進了 銀月露娜、御坂美琴、利姆路·坦派斯特、同人 的身上。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_analysis",
+      "message": "寶玉微微發著光，像是在讀著每個人揮出的每一招。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 1926,
+      "actualDamage": 1926,
+      "isCrit": false,
+      "blocked": false,
+      "message": "銀月露娜 把佈滿冰刺的冰球砸向 深淵的克塔尼德，對 深淵的克塔尼德 造成了 1926 點傷害！"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「Reflexus」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_reflexus",
+      "message": "深淵的克塔尼德 從胸前拔下一顆寶玉，捏成了 銀月露娜 慣用的武器，照著 銀月露娜 的動作使出了 冰刺球。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "imitated_luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 2254,
+      "actualDamage": 2254,
+      "isCrit": false,
+      "blocked": false,
+      "message": "深淵的克塔尼德 攻擊，對 御坂美琴 造成了 2254 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_biribiri",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 911,
+      "actualDamage": 911,
+      "isCrit": false,
+      "blocked": false,
+      "message": "御坂美琴 的瀏海劈啪冒出火花，一道電流竄向 深淵的克塔尼德，造成了 911 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 787,
+      "actualDamage": 787,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 深淵的克塔尼德，對 深淵的克塔尼德 造成了 787 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 3022,
+      "actualDamage": 3022,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 深淵的克塔尼德，會心一擊！造成了 3022 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 2465,
+      "actualDamage": 2465,
+      "isCrit": true,
+      "blocked": false,
+      "message": "深淵的克塔尼德 口邊的觸鬚猛地伸長，刺向 同人，會心一擊！對 同人 造成了 2465 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 540,
+      "actualDamage": 540,
+      "isCrit": false,
+      "blocked": false,
+      "message": "下半身的觸手跟著掃了過來，對 同人 造成了 540 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_strike",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 624,
+      "actualDamage": 624,
+      "isCrit": false,
+      "blocked": false,
+      "message": "最後一根觸手從頭頂劈下，對 同人 造成了 624 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 1100,
+      "actualDamage": 1100,
+      "isCrit": false,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 深淵的克塔尼德，對 深淵的克塔尼德 造成了 1100 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "message": "銀月露娜：「錐（SPIKE）、球（BALL）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_ball",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 2254,
+      "actualDamage": 2254,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 把佈滿冰刺的冰球砸向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 2254 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_armor",
+      "message": "深淵的克塔尼德 胸前的一層黑色甲殼裂開，剝落了下來。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 4490,
+      "actualDamage": 4490,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 4490 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_railgun",
+      "isNormalAttack": false,
+      "message": "御坂美琴 把一枚遊樂場代幣彈上半空，又穩穩接回拇指上。她周圍的空氣開始劈啪作響——"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_railgun",
+      "isNormalAttack": false,
+      "message": "御坂美琴 的手臂對準了 深淵的克塔尼德。",
+      "targetId": "mob_0_kutanid"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_railgun",
+      "isNormalAttack": false,
+      "message": "御坂美琴：「——給我躲開！」",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_railgun",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 5510,
+      "actualDamage": 5510,
+      "isCrit": true,
+      "blocked": false,
+      "message": "拇指一彈，代幣化成一道橘色光軌，以三倍音速貫穿了 深淵的克塔尼德，會心一擊！造成了 5510 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_armor",
+      "message": "又一層甲殼碎了，底下還有更深的黑色。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_iron_sand_sword",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 9377,
+      "actualDamage": 9377,
+      "isCrit": true,
+      "blocked": false,
+      "message": "御坂美琴 使出了 砂鐵劍，腳下的砂鐵捲成一把嗡嗡振動的黑劍，劈向 深淵的克塔尼德，會心一擊！造成了 9377 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 623,
+      "actualDamage": 623,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 623 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_armor",
+      "message": "甲殼一層層變薄，碎片落進了腳下的深淵。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜 低聲詠唱，錐與球被雙重的增幅撐大了好幾倍。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜：「冰刺流星（GLACIAL METEOR）。」",
+      "isNormalAttack": false
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "message": "銀月露娜 吸進了身邊的 6 顆冰晶，把脹大的冰刺球拉上高空。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_meteor",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 10000,
+      "actualDamage": 10000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "冰刺流星砸在 深淵的克塔尼德 身上，會心一擊！對 深淵的克塔尼德 造成了 10000 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_armor",
+      "message": "剩下的甲殼佈滿了裂痕，再一層就見底了。"
+    },
+    {
+      "type": "LUCK_EVENT",
+      "tier": "RED",
+      "actorId": "mob_0_kutanid",
+      "targetId": "mob_0_kutanid",
+      "opponentId": "6acb4c34f3b98cafba397d52",
+      "value": 333,
+      "actionCancelled": true,
+      "eventId": "red_2",
+      "message": "深淵的克塔尼德 走在路上被卡車以時速 150 公里正面撞飛，雖然沒有成功轉生但受到了 333 點傷害。"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 4071,
+      "actualDamage": 4071,
+      "isCrit": true,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 4071 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_vending_kick",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 97,
+      "actualDamage": 97,
+      "isCrit": false,
+      "blocked": false,
+      "message": "御坂美琴：「常盤台中學內流傳的老舊自販機的正確使用方式——」她一記迴旋踢掃向 深淵的克塔尼德，造成了 97 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_vending_kick",
+      "isNormalAttack": false,
+      "message": "喀咚一聲，旁邊的自動販賣機掉出一罐果汁。御坂美琴 拉開拉環一口氣喝掉。"
+    },
+    {
+      "type": "SP_RECOVER",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "skillId": "misaka_vending_kick",
+      "value": 6,
+      "isNormalAttack": false,
+      "message": "御坂美琴 回復了 6 點 SP！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 2936,
+      "actualDamage": 2936,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 深淵的克塔尼德，會心一擊！造成了 2936 點傷害！"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 776,
+      "actualDamage": 776,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 深淵的克塔尼德，對 深淵的克塔尼德 造成了 776 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_water_blade",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 1787,
+      "actualDamage": 1787,
+      "isCrit": true,
+      "blocked": false,
+      "message": "利姆路·坦派斯特 把體內的水壓成一道薄刃射向 深淵的克塔尼德，會心一擊！造成了 1787 點傷害！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_armor",
+      "message": "最後一層甲殼碎了，深淵的克塔尼德 的身體第一次露了出來。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_orbs",
+      "message": "嵌在挑戰者身上的寶玉被拉了回去，和 深淵的克塔尼德 背後的寶玉排成一圈，繞著他慢慢轉動。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_orbs",
+      "message": "寶玉護著他的身體，打上去的攻擊被分散了大半。他額頭正中央，還嵌著一顆更大的寶石。"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「Reflexus」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_reflexus",
+      "message": "深淵的克塔尼德 從胸前拔下一顆寶玉，捏成了 御坂美琴 慣用的武器，照著 御坂美琴 的動作使出了 超電磁砲。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "imitated_misaka_railgun",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 49563,
+      "actualDamage": 6255,
+      "isCrit": true,
+      "blocked": false,
+      "message": "深淵的克塔尼德 攻擊，會心一擊！對 同人 造成了 49563 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "message": "同人 倒下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_harvest",
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 看著倒在地上的 同人，好一陣子沒有說話。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特：「……我打算成為魔王。」",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 使出了 神之怒，臉上的笑容不見了，他展開雙翼升上高空，無數水滴在敵人頭頂排成一面又一面透鏡——",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 1115,
+      "actualDamage": 1115,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵的克塔尼德 造成了 1115 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_30",
+      "value": 762,
+      "actualDamage": 762,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 銀月露娜的寶玉 造成了 762 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_31",
+      "value": 3672,
+      "actualDamage": 3000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 御坂美琴的寶玉 造成了 3672 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_31",
+      "message": "御坂美琴的寶玉 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_32",
+      "value": 3850,
+      "actualDamage": 3000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 利姆路·坦派斯特的寶玉 造成了 3850 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_32",
+      "message": "利姆路·坦派斯特的寶玉 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_33",
+      "value": 4028,
+      "actualDamage": 3000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 同人的寶玉 造成了 4028 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_33",
+      "message": "同人的寶玉 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_34",
+      "value": 3616,
+      "actualDamage": 3000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵寶玉 造成了 3616 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_34",
+      "message": "深淵寶玉 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_35",
+      "value": 788,
+      "actualDamage": 788,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 深淵寶玉2 造成了 788 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_36",
+      "value": 789,
+      "actualDamage": 789,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 深淵寶玉3 造成了 789 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_37",
+      "value": 3743,
+      "actualDamage": 3000,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵寶玉4 造成了 3743 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_37",
+      "message": "深淵寶玉4 倒下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "水滴換了個角度，下一輪光束接著落下——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 1075,
+      "actualDamage": 1075,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵的克塔尼德 造成了 1075 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_30",
+      "value": 703,
+      "actualDamage": 703,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 銀月露娜的寶玉 造成了 703 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_35",
+      "value": 4226,
+      "actualDamage": 2212,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵寶玉2 造成了 4226 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_35",
+      "message": "深淵寶玉2 倒下了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_36",
+      "value": 729,
+      "actualDamage": 729,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 深淵寶玉3 造成了 729 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "message": "最後一輪光束無聲地貫穿了地面——"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "mob_0_kutanid",
+      "value": 240,
+      "actualDamage": 240,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 深淵的克塔尼德 造成了 240 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_30",
+      "value": 816,
+      "actualDamage": 816,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 銀月露娜的寶玉 造成了 816 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_megiddo",
+      "skillTier": "ultimate",
+      "isNormalAttack": false,
+      "targetId": "summon_36",
+      "value": 3667,
+      "actualDamage": 1482,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 深淵寶玉3 造成了 3667 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_36",
+      "message": "深淵寶玉3 倒下了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_harvest",
+      "isNormalAttack": false,
+      "message": "世界的聲音響起：「確認。個體名：利姆路·坦派斯特，開始進化為魔王。收穫祭開始。」利姆路·坦派斯特 縮回史萊姆的模樣，陷入了沉睡。"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_regen",
+      "value": 30,
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 的身體蠕動著把傷口補了起來，超速再生回復了 30 點生命！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_31",
+      "skillId": "kutanid_orb",
+      "message": "御坂美琴的寶玉 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "skillId": "kutanid_seal",
+      "message": "御坂美琴 的寶玉一碎，御坂美琴 手上的武器就失去了光澤，像被封住了一樣。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_32",
+      "skillId": "kutanid_orb",
+      "message": "利姆路·坦派斯特的寶玉 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "kutanid_seal",
+      "message": "利姆路·坦派斯特 的寶玉一碎，利姆路·坦派斯特 手上的武器就失去了光澤，像被封住了一樣。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_33",
+      "skillId": "kutanid_orb",
+      "message": "同人的寶玉 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_34",
+      "skillId": "kutanid_orb",
+      "message": "深淵寶玉 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_35",
+      "skillId": "kutanid_orb",
+      "message": "深淵寶玉2 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_36",
+      "skillId": "kutanid_orb",
+      "message": "深淵寶玉3 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_37",
+      "skillId": "kutanid_orb",
+      "message": "深淵寶玉4 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "kutanid_headbutt",
+      "message": "武器舉不起來，利姆路·坦派斯特 乾脆丟下它，整個人朝 深淵的克塔尼德 的額頭衝了過去。",
+      "isNormalAttack": false
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "kutanid_headbutt",
+      "message": "衝撞判定：利姆路·坦派斯特 衝撞（反應速度 281＋敏捷 291 → 39） + 骰出 13 = 52，深淵的克塔尼德 技巧（550 → 38） + 骰出 15 = 53。",
+      "targetId": "mob_0_kutanid",
+      "diceCheck": {
+        "kind": "opposed",
+        "left": {
+          "min": 1,
+          "max": 100,
+          "base": 39,
+          "modifier": 0,
+          "baseText": "衝撞（反應速度 281＋敏捷 291 → 39）",
+          "roll": 13,
+          "total": 52
+        },
+        "right": {
+          "min": 1,
+          "max": 100,
+          "base": 38,
+          "modifier": 0,
+          "baseText": "技巧（550 → 38）",
+          "roll": 15,
+          "total": 53
+        },
+        "winner": "RIGHT"
+      }
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "kutanid_headbutt",
+      "message": "深淵的克塔尼德 偏了偏頭，利姆路·坦派斯特 擦著他的臉摔了出去。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_harvest",
+      "isNormalAttack": false,
+      "message": "利姆路·坦派斯特 醒了過來。大賢者進化為智慧之王，捕食者進化為暴食之王——八星魔王，利姆路·坦派斯特在此誕生。"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_harvest",
+      "isNormalAttack": false,
+      "message": "智慧之王：「告。同人 的靈魂仍未散去，可以喚回。」利姆路·坦派斯特 把手放在 同人 的胸口——"
+    },
+    {
+      "type": "HEAL",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "skillId": "rimuru_harvest",
+      "value": 1614,
+      "isNormalAttack": false,
+      "message": "同人 睜開了眼睛，以 1614 點生命站了起來！"
+    },
+    {
+      "type": "BUFF_APPLY",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "skillId": "rimuru_harvest",
+      "buffId": "rimuru_blessing",
+      "isNormalAttack": false,
+      "message": "銀月露娜、御坂美琴、同人 分到了魔王的恩惠，攻擊與智力提升了！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "luna_spike",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "mob_0_kutanid",
+      "value": 1807,
+      "actualDamage": 1807,
+      "isCrit": true,
+      "blocked": false,
+      "message": "銀月露娜 指尖凝出一根冰錐射向 深淵的克塔尼德，會心一擊！對 深淵的克塔尼德 造成了 1807 點傷害！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_wave",
+      "message": "深淵的克塔尼德 張開雙臂，腳下的深淵翻湧上來，漆黑的浪掃過全場——",
+      "isNormalAttack": false
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 299,
+      "actualDamage": 299,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 銀月露娜 造成了 299 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 328,
+      "actualDamage": 328,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 御坂美琴 造成了 328 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab39f23def0c4254d4f959c",
+      "value": 1347,
+      "actualDamage": 1347,
+      "isCrit": true,
+      "blocked": false,
+      "message": "會心一擊！對 利姆路·坦派斯特 造成了 1347 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_wave",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "value": 250,
+      "actualDamage": 250,
+      "isCrit": false,
+      "blocked": false,
+      "message": "對 同人 造成了 250 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_giant",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 1487,
+      "actualDamage": 1487,
+      "isCrit": true,
+      "blocked": false,
+      "message": "寶玉碎掉的地方長出一根巨神觸手，朝 御坂美琴 拍了下去，會心一擊！對 御坂美琴 造成了 1487 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_giant",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6acb4c34f3b98cafba397d52",
+      "value": 377,
+      "actualDamage": 377,
+      "isCrit": false,
+      "blocked": false,
+      "message": "寶玉碎掉的地方長出一根巨神觸手，朝 御坂美琴 拍了下去，對 御坂美琴 造成了 377 點傷害！"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_giant",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6ab08d63da9c7ee989f18102",
+      "value": 1389,
+      "actualDamage": 1389,
+      "isCrit": true,
+      "blocked": false,
+      "message": "寶玉碎掉的地方長出一根巨神觸手，朝 銀月露娜 拍了下去，會心一擊！對 銀月露娜 造成了 1389 點傷害！"
+    },
+    {
+      "type": "MISS",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_giant",
+      "skillTier": "standard",
+      "isNormalAttack": false,
+      "targetId": "6aa7de14cc943baeed96be1f",
+      "message": "寶玉碎掉的地方長出一根巨神觸手，朝 同人 拍了下去，但是被 同人 躲開了！"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_great_sage",
+      "isNormalAttack": false,
+      "message": "智慧之王：「告。解析已完成，耐性已獲得。」"
+    },
+    {
+      "type": "SKILL_TEXT",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "skillId": "rimuru_great_sage",
+      "isNormalAttack": false,
+      "message": "智慧之王：「告。解析已完成，耐性已獲得。」"
+    },
+    {
+      "type": "DAMAGE",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "skillId": "sakura_windy",
+      "skillTier": "standard",
+      "isNormalAttack": true,
+      "targetId": "summon_30",
+      "value": 869,
+      "actualDamage": 719,
+      "isCrit": false,
+      "blocked": false,
+      "message": "同人 舉起法杖點向「風」，一陣旋風捲向 銀月露娜的寶玉，對 銀月露娜的寶玉 造成了 869 點傷害！"
+    },
+    {
+      "type": "DEATH",
+      "actorId": "summon_30",
+      "message": "銀月露娜的寶玉 倒下了！"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "summon_30",
+      "skillId": "kutanid_orb",
+      "message": "銀月露娜的寶玉 碎了。碎掉的地方，一根巨大的觸手扭動著長了出來。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "skillId": "kutanid_seal",
+      "message": "銀月露娜 的寶玉一碎，銀月露娜 手上的武器就失去了光澤，像被封住了一樣。"
+    },
+    {
+      "type": "TEXT",
+      "actorId": "mob_0_kutanid",
+      "skillId": "kutanid_collapse",
+      "message": "最後一顆寶玉碎掉，深淵的克塔尼德 的身體從腳開始崩解，化成黑色的水流回了深淵。",
+      "skillTier": "ultimate"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「生命的光輝，吾已確實見證。」"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「人啊，此地將再次沉入深淵……危機已近，切莫忘記。」"
+    },
+    {
+      "type": "BOSS_DIALOGUE",
+      "actorId": "mob_0_kutanid",
+      "message": "深淵的克塔尼德：「去吧，旅途仍將繼續……活在這個世界上的人啊，去找出巴哈姆特。」"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "value": 8432,
+      "maxHp": 10120,
+      "message": "銀月露娜 剩餘 8432 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "value": 2729,
+      "maxHp": 10090,
+      "message": "御坂美琴 剩餘 2729 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "value": 6697,
+      "maxHp": 10010,
+      "message": "利姆路·坦派斯特 剩餘 6697 HP"
+    },
+    {
+      "type": "HP_REMAINING",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "value": 1364,
+      "maxHp": 10760,
+      "message": "同人 剩餘 1364 HP"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6ab08d63da9c7ee989f18102",
+      "value": 0,
+      "message": "銀月露娜 獲得了 0 點經驗值"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6acb4c34f3b98cafba397d52",
+      "value": 0,
+      "message": "御坂美琴 獲得了 0 點經驗值"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6ab39f23def0c4254d4f959c",
+      "value": 0,
+      "message": "利姆路·坦派斯特 獲得了 0 點經驗值"
+    },
+    {
+      "type": "EXP_GAIN",
+      "actorId": "6aa7de14cc943baeed96be1f",
+      "value": 0,
+      "message": "同人 獲得了 0 點經驗值"
+    }
+  ],
+  "_mdbvMeta": {
+    "exportedAt": "2026-11-02T04:34:57.430Z",
+    "totalTurns": 113,
+    "frameCount": 437
+  }
+}

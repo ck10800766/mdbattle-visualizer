@@ -1289,17 +1289,20 @@ export async function renderFrame(frame, token) {
     }
 
     // 2. Animate dynamic summon spawn or voluntary despawn
-    if (frame.isSummonEvent && frame.summonedActorId) {
-        const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
-        if (summonedEl) {
-            summonedEl.classList.remove('unspawned', 'despawning', 'dead');
-            summonedEl.classList.add('spawning');
-            setTimeout(() => {
-                if (engineState.playbackToken === token && summonedEl.isConnected) {
-                    summonedEl.classList.remove('spawning');
-                }
-            }, 550 / getEffectiveSpeed());
-        }
+    if (frame.isSummonEvent && (frame.summonedActorIds?.length || frame.summonedActorId)) {
+        const summonIds = frame.summonedActorIds?.length ? frame.summonedActorIds : [frame.summonedActorId];
+        summonIds.forEach(id => {
+            const summonedEl = sr.getElementById(`actor-${id}`);
+            if (summonedEl) {
+                summonedEl.classList.remove('unspawned', 'despawning', 'dead');
+                summonedEl.classList.add('spawning');
+                setTimeout(() => {
+                    if (engineState.playbackToken === token && summonedEl.isConnected) {
+                        summonedEl.classList.remove('spawning');
+                    }
+                }, 550 / getEffectiveSpeed());
+            }
+        });
         const arena = sr.getElementById('arena');
         const leftTeam = arena?.querySelector('.left-team');
         const rightTeam = arena?.querySelector('.right-team');

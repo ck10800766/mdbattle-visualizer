@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MDBattle-Visualizer (Ultimate Edition V7.6)
 // @namespace    mydoujin-battle-vfx
-// @version      7.6.2
+// @version      7.6.3
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.6.2";
+  var APP_VERSION = "7.6.3";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -904,7 +904,15 @@
     }
     return { isTurnAction, turnActorId };
   }
-  function processSummonLifecycle(log, index, logs, frame, actorsDeathState, actorsSummonState, explicitlySummonedIds, despawnedActors, structuralDepartures) {
+  function processSummonLifecycle(log, index, logs, frame, actorsDeathState, actorsSummonState, explicitlySummonedIds, despawnedActors, structuralDepartures, structuralSpawns) {
+    const spawnedCandidateIds = [];
+    if (structuralSpawns) {
+      for (const [sId, spIdx] of structuralSpawns.entries()) {
+        if (spIdx === index && actorsSummonState.get(sId) === false && !actorsDeathState.get(sId) && !despawnedActors.has(sId)) {
+          spawnedCandidateIds.push(sId);
+        }
+      }
+    }
     if (log.type === "SUMMON" && log.targetId) {
       const owner = engineState.actors.get(log.actorId);
       const summonName = inferSummonName(logs, index, log.targetId, owner?.name || "");
@@ -928,17 +936,31 @@
       }
       despawnedActors.delete(log.targetId);
       actorsSummonState.set(log.targetId, true);
-      frame.isSummonEvent = true;
-      frame.summonedActorId = log.targetId;
+      if (!spawnedCandidateIds.includes(log.targetId)) {
+        spawnedCandidateIds.push(log.targetId);
+      }
     }
-    if (log.actorId && actorsSummonState.get(log.actorId) === false && !explicitlySummonedIds.has(log.actorId) && !despawnedActors.has(log.actorId) && !SUMMON_DESPAWN_REGEX.test(frame.message) && !["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(log.type)) {
-      const summonActor = engineState.actors.get(log.actorId);
-      if (summonActor && summonActor.isSummon) {
-        summonActor.currentHp = summonActor.maxHp;
-        actorsDeathState.set(log.actorId, false);
-        actorsSummonState.set(log.actorId, true);
-        frame.isSummonEvent = true;
-        frame.summonedActorId = log.actorId;
+    if (!["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(log.type) && !SUMMON_DESPAWN_REGEX.test(frame.message)) {
+      const candidateCombatIds = [log.actorId, log.targetId, log.opponentId].filter(Boolean);
+      candidateCombatIds.forEach((id) => {
+        const actor = engineState.actors.get(id);
+        if (actor && actor.isSummon && actorsSummonState.get(id) === false && !actorsDeathState.get(id) && !despawnedActors.has(id) && !spawnedCandidateIds.includes(id)) {
+          spawnedCandidateIds.push(id);
+        }
+      });
+    }
+    if (spawnedCandidateIds.length > 0) {
+      spawnedCandidateIds.forEach((id) => {
+        const summonActor = engineState.actors.get(id);
+        if (summonActor) summonActor.currentHp = summonActor.maxHp;
+        actorsDeathState.set(id, false);
+        actorsSummonState.set(id, true);
+        despawnedActors.delete(id);
+      });
+      frame.isSummonEvent = true;
+      frame.summonedActorId = spawnedCandidateIds[0];
+      if (spawnedCandidateIds.length > 1) {
+        frame.summonedActorIds = spawnedCandidateIds;
       }
     }
     const candidateIds = [];
@@ -1228,7 +1250,111 @@
     });
     return { statusIntervals, shieldIntervals };
   }
-  function computeStructuralSummonDepartures(logs, actorsMap) {
+  function computeStructuralSummonSpawns(logs, actorsMap) {
+    const spawns = /* @__PURE__ */ new Map();
+    const spawnedSummons = /* @__PURE__ */ new Set();
+    const deadSummons = /* @__PURE__ */ new Set();
+    const explicitlySummonedIds = /* @__PURE__ */ new Set();
+    const summonList = Array.from(actorsMap.values()).filter((a) => a.isSummon);
+    const groupTokensMap = /* @__PURE__ */ new Map();
+    summonList.forEach((a) => {
+      const tokens = [a.name];
+      const base = a.name.replace(/\d+$/, "");
+      if (base && base.length >= 2 && !tokens.includes(base)) {
+        tokens.push(base);
+      }
+      groupTokensMap.set(a.id, tokens);
+    });
+    for (let i = 0; i < summonList.length; i++) {
+      for (let j = i + 1; j < summonList.length; j++) {
+        const a = summonList[i];
+        const b = summonList[j];
+        if (a.ownerId && a.ownerId === b.ownerId) {
+          const nameA = a.name.replace(/\d+$/, "");
+          const nameB = b.name.replace(/\d+$/, "");
+          let sufLen = 0;
+          while (sufLen < nameA.length && sufLen < nameB.length && nameA[nameA.length - 1 - sufLen] === nameB[nameB.length - 1 - sufLen]) {
+            sufLen++;
+          }
+          if (sufLen >= 2) {
+            const fullSuffix = nameA.slice(nameA.length - sufLen);
+            for (let len = 2; len <= fullSuffix.length; len++) {
+              const sub = fullSuffix.slice(fullSuffix.length - len);
+              if (!groupTokensMap.get(a.id).includes(sub)) groupTokensMap.get(a.id).push(sub);
+              if (!groupTokensMap.get(b.id).includes(sub)) groupTokensMap.get(b.id).push(sub);
+            }
+          }
+        }
+      }
+    }
+    logs.forEach((l) => {
+      if (l && l.type === "SUMMON" && l.targetId) {
+        explicitlySummonedIds.add(l.targetId);
+      }
+    });
+    const firstCombatMap = /* @__PURE__ */ new Map();
+    summonList.forEach((actor) => {
+      for (let idx = 0; idx < logs.length; idx++) {
+        const l = logs[idx];
+        if (!l) continue;
+        if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(l.type)) continue;
+        if (l.actorId === actor.id || l.targetId === actor.id || l.opponentId === actor.id) {
+          firstCombatMap.set(actor.id, idx);
+          break;
+        }
+      }
+    });
+    logs.forEach((l, idx) => {
+      if (!l) return;
+      if (l.type === "SUMMON" && l.targetId) {
+        if (!spawnedSummons.has(l.targetId)) {
+          spawnedSummons.add(l.targetId);
+          spawns.set(l.targetId, idx);
+        }
+      }
+      if (l.type === "TEXT") {
+        const msg = l.message || "";
+        if (!SUMMON_DESPAWN_REGEX.test(msg)) {
+          const spawnedNamesInLog = /* @__PURE__ */ new Set();
+          summonList.forEach((a) => {
+            if (spawnedSummons.has(a.id) || deadSummons.has(a.id)) return;
+            if (explicitlySummonedIds.has(a.id)) return;
+            const firstCombat = firstCombatMap.get(a.id);
+            if (firstCombat != null && firstCombat < idx) return;
+            const tokens = groupTokensMap.get(a.id) || [a.name];
+            const matched = tokens.some((token) => token && msg.includes(token));
+            if (matched) {
+              if (msg.includes(a.name)) {
+                if (!spawnedNamesInLog.has(a.name)) {
+                  spawnedNamesInLog.add(a.name);
+                  spawnedSummons.add(a.id);
+                  spawns.set(a.id, idx);
+                }
+              } else {
+                spawnedSummons.add(a.id);
+                spawns.set(a.id, idx);
+              }
+            }
+          });
+        }
+      }
+      const combatIds = [l.actorId, l.targetId, l.opponentId].filter(Boolean);
+      combatIds.forEach((id) => {
+        const a = actorsMap.get(id);
+        if (a && a.isSummon && !spawnedSummons.has(id) && !deadSummons.has(id)) {
+          if (!["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT", "HP_REMAINING", "EXP_GAIN"].includes(l.type) && !SUMMON_DESPAWN_REGEX.test(l.message || "")) {
+            spawnedSummons.add(id);
+            spawns.set(id, idx);
+          }
+        }
+      });
+      if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(l.type) && l.actorId) {
+        deadSummons.add(l.actorId);
+      }
+    });
+    return spawns;
+  }
+  function computeStructuralSummonDepartures(logs, actorsMap, structuralSpawns) {
     const departures = /* @__PURE__ */ new Map();
     const summonIds = /* @__PURE__ */ new Set();
     const summonNames = /* @__PURE__ */ new Map();
@@ -1251,7 +1377,7 @@
     });
     summonIds.forEach((id) => {
       const name = summonNames.get(id);
-      const spawnIdx = summonSpawnIdx.get(id) ?? 0;
+      const spawnIdx = structuralSpawns?.get(id) ?? summonSpawnIdx.get(id) ?? 0;
       if (spawnIdx < 0) return;
       let lastCombatIdx = -1;
       let lastDeathIdx = -1;
@@ -1267,7 +1393,7 @@
         if (["DEATH", "PLAYER_DEATH", "PLAYER_DEFEAT"].includes(l.type) && (isActor || isTarget)) {
           lastDeathIdx = idx;
         }
-        if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL", "LUCK_EVENT", "BUFF_EFFECT"].includes(l.type)) {
+        if (["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL", "LUCK_EVENT", "BUFF_EFFECT", "BUFF_APPLY"].includes(l.type)) {
           if (isActor || isTarget || isOpponent) {
             lastCombatIdx = Math.max(lastCombatIdx, idx);
           }
@@ -1313,6 +1439,8 @@
       }
       if (candidateNarrativeIdx !== -1) {
         departures.set(id, candidateNarrativeIdx);
+      } else if (lastDeathIdx !== -1 && lastCombatIdx >= lastDeathIdx) {
+        departures.set(id, lastCombatIdx);
       }
     });
     return departures;
@@ -1332,6 +1460,35 @@
       const actorName = actor?.name;
       deathIndices.forEach((deathIdx, i) => {
         const nextDeathIdx = i + 1 < deathIndices.length ? deathIndices[i + 1] : logs.length;
+        if (actor?.isSummon) {
+          let lastPostDeathIdx = -1;
+          let hasLaterSummonOrRebirth = false;
+          let hasHpRemaining = false;
+          for (let k = deathIdx + 1; k < logs.length; k++) {
+            const l = logs[k];
+            if (!l) continue;
+            const isActor = l.actorId === actorId;
+            const isTarget = l.targetId === actorId;
+            const isOpponent = l.opponentId === actorId;
+            const nameMentioned = actorName && (l.message || "").includes(actorName);
+            if (isActor || isTarget || isOpponent || nameMentioned) {
+              lastPostDeathIdx = Math.max(lastPostDeathIdx, k);
+            }
+            if (l.type === "SUMMON" && l.targetId === actorId) {
+              hasLaterSummonOrRebirth = true;
+            }
+            if (["TEXT", "BOSS_DIALOGUE", "SKILL_TEXT"].includes(l.type) && REBIRTH_RULES.dialogueRegex.test(l.message || "") && (isActor || isTarget || nameMentioned)) {
+              hasLaterSummonOrRebirth = true;
+            }
+            if (l.type === "HP_REMAINING" && (isActor || isTarget)) {
+              hasHpRemaining = true;
+            }
+          }
+          const isOnlyImmediatePostDeath = lastPostDeathIdx === -1 || lastPostDeathIdx - deathIdx <= 15;
+          if (!hasLaterSummonOrRebirth && !hasHpRemaining && i === deathIndices.length - 1 && isOnlyImmediatePostDeath) {
+            return;
+          }
+        }
         let resumeCombatIdx = -1;
         for (let k = deathIdx + 1; k < nextDeathIdx; k++) {
           const l = logs[k];
@@ -1388,7 +1545,8 @@
     const contractCutInCount = /* @__PURE__ */ new Map();
     const despawnedActors = /* @__PURE__ */ new Set();
     const { statusIntervals, shieldIntervals } = computeActiveStatusAndShieldIntervals(logs);
-    const structuralDepartures = computeStructuralSummonDepartures(logs, engineState.actors);
+    const structuralSpawns = computeStructuralSummonSpawns(logs, engineState.actors);
+    const structuralDepartures = computeStructuralSummonDepartures(logs, engineState.actors, structuralSpawns);
     const structuralRevivals = computeStructuralRevivals(logs, engineState.actors);
     const explicitlySummonedIds = /* @__PURE__ */ new Set();
     logs.forEach((log) => {
@@ -1497,7 +1655,8 @@
         actorsSummonState,
         explicitlySummonedIds,
         despawnedActors,
-        structuralDepartures
+        structuralDepartures,
+        structuralSpawns
       );
       if (log.type === "BUFF_APPLY") {
         const attacker = engineState.actors.get(log.actorId);
@@ -1701,10 +1860,12 @@
         });
       }
       if (log.actorId && actorsDeathState.get(log.actorId) && ["DAMAGE", "MISS", "COUNTER", "HEAL"].includes(log.type)) {
-        actorsDeathState.set(log.actorId, false);
         const actingActor = engineState.actors.get(log.actorId);
-        if (actingActor && actingActor.currentHp <= 0) {
-          actingActor.currentHp = actingActor.maxHp;
+        if (actingActor && !actingActor.isSummon) {
+          actorsDeathState.set(log.actorId, false);
+          if (actingActor.currentHp <= 0) {
+            actingActor.currentHp = actingActor.maxHp;
+          }
         }
       }
       if (log.targetId && actorsDeathState.get(log.targetId) && ["DAMAGE", "BLOCK", "MISS", "COUNTER", "HEAL"].includes(log.type)) {
@@ -4858,13 +5019,14 @@
           title: `\u{1F48D} \u5951\u7D04\u7DE0\u7D50\uFF1A${actorName}${partnerName ? ` & ${partnerName}` : ""}`
         });
       }
-      if (f.isSummonEvent && f.summonedActorId) {
-        const summonName = engineState.actors.get(f.summonedActorId)?.name || f.summonedActorId;
+      if (f.isSummonEvent && (f.summonedActorIds?.length || f.summonedActorId)) {
+        const summonIds = f.summonedActorIds?.length ? f.summonedActorIds : [f.summonedActorId];
+        const summonNames = summonIds.map((id) => engineState.actors.get(id)?.name || id).join("\u3001");
         events.push({
           priority: 1,
           category: "summon",
           icon: "\u{1F300}",
-          title: `\u{1F300} \u53EC\u559A\u767B\u5834\uFF1A${summonName}`
+          title: `\u{1F300} \u53EC\u559A\u767B\u5834\uFF1A${summonNames}`
         });
       }
       if (events.length > 0) {
@@ -6036,17 +6198,20 @@
         dialog.scrollTop = dialog.scrollHeight;
       }
     }
-    if (frame.isSummonEvent && frame.summonedActorId) {
-      const summonedEl = sr.getElementById(`actor-${frame.summonedActorId}`);
-      if (summonedEl) {
-        summonedEl.classList.remove("unspawned", "despawning", "dead");
-        summonedEl.classList.add("spawning");
-        setTimeout(() => {
-          if (engineState.playbackToken === token && summonedEl.isConnected) {
-            summonedEl.classList.remove("spawning");
-          }
-        }, 550 / getEffectiveSpeed());
-      }
+    if (frame.isSummonEvent && (frame.summonedActorIds?.length || frame.summonedActorId)) {
+      const summonIds = frame.summonedActorIds?.length ? frame.summonedActorIds : [frame.summonedActorId];
+      summonIds.forEach((id) => {
+        const summonedEl = sr.getElementById(`actor-${id}`);
+        if (summonedEl) {
+          summonedEl.classList.remove("unspawned", "despawning", "dead");
+          summonedEl.classList.add("spawning");
+          setTimeout(() => {
+            if (engineState.playbackToken === token && summonedEl.isConnected) {
+              summonedEl.classList.remove("spawning");
+            }
+          }, 550 / getEffectiveSpeed());
+        }
+      });
       const arena2 = sr.getElementById("arena");
       const leftTeam = arena2?.querySelector(".left-team");
       const rightTeam = arena2?.querySelector(".right-team");
