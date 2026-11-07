@@ -30,6 +30,7 @@ import {
     playFatalitySequence,
     playUltimateCutIn,
     playContractCutIn,
+    playDiceCinematic,
     spawnRosarioCross,
     renderSpeechBubble,
     spawnStatusOrDiceBadge,
@@ -1013,7 +1014,10 @@ async function renderAOEWaveBatch(aoeBatch, token) {
                 syncActorStatusAndShieldDOM(sr, rf.actorsStatusState, rf.actorsShieldState, rf.actorsBondState);
                 spawnFloatingText(rf, sr, false, false);
             }
-            if (['DICE', 'STATUS', 'SKILL_TEXT', 'BUFF_APPLY', 'DEBUFF_APPLY'].includes(rf.type) || rf.diceRoll) {
+            if (rf.diceCheck) {
+                await playDiceCinematic(rf, sr, token);
+                if (engineState.playbackToken !== token) return;
+            } else if (['DICE', 'STATUS', 'SKILL_TEXT', 'BUFF_APPLY', 'DEBUFF_APPLY'].includes(rf.type) || rf.diceRoll) {
                 spawnStatusOrDiceBadge(rf, sr);
             }
 
@@ -1358,9 +1362,12 @@ export async function renderFrame(frame, token) {
         frameDuration = Math.max(frameDuration, 1100);
     }
 
-    // 4. Spawn overhead dice check or character flavor badges
-    if (
-        frame.diceCheck ||
+    // 4. Dice check BG3 cinematic inspection or overhead character flavor badges
+    if (frame.diceCheck) {
+        await playDiceCinematic(frame, sr, token);
+        if (engineState.playbackToken !== token) return;
+        frameDuration = Math.max(frameDuration, 300);
+    } else if (
         ['FATIGUE', 'FATIGUE_SKIP', 'SILENCED'].includes(frame.type) ||
         frame.type === 'SKILL_TEXT' ||
         frame.type === 'TEXT'

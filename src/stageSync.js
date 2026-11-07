@@ -676,7 +676,7 @@ export function syncStageToAbsoluteState(frameIndex, isInitialReset = false, sho
 
     // Remove all transient overlays, badges, and floating combat effects
     sr.querySelectorAll(
-        '.ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile, .arena-field-wave, .scene-narration-banner'
+        '.ultimate-overlay, .contract-cutin-overlay, .dice-cinematic-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile, .arena-field-wave, .scene-narration-banner'
     ).forEach(el => el.remove());
 
     // Cancel active Web Animations, restore accurate lastUltimateTurn up to frameIndex, and reset actor transforms
