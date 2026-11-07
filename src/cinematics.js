@@ -766,7 +766,450 @@ export function playEnvironmentalFieldPulse(frame, sr) {
 
 
 /**
- * Spawns an overhead pill badge for dice checks (threshold, opposed, roll) or status ailments.
+ * Parses raw base formula text (e.g. "智力（700 → 48）－序列 9（19）" or "防禦（506 → 35）")
+ * into discrete modifier tokens with signs, names, and numeric delta values.
+ * @param {string} baseText - Raw formula string.
+ * @returns {Array<{ sign: string, text: string, val: number, numericVal: number }>}
+ */
+export function parseDiceFormulaTokens(baseText) {
+    if (!baseText) return [];
+    const parts = [];
+    let current = '';
+    let depth = 0;
+    let sign = '+';
+
+    for (let i = 0; i < baseText.length; i++) {
+        const c = baseText[i];
+        if (c === '（' || c === '(') {
+            depth++;
+            current += c;
+        } else if (c === '）' || c === ')') {
+            depth = Math.max(0, depth - 1);
+            current += c;
+        } else if (depth === 0 && (c === '＋' || c === '+' || c === '－' || c === '-')) {
+            if (current.trim()) parts.push({ sign, text: current.trim() });
+            sign = (c === '－' || c === '-') ? '-' : '+';
+            current = '';
+        } else {
+            current += c;
+        }
+    }
+    if (current.trim()) parts.push({ sign, text: current.trim() });
+
+    return parts.map(p => {
+        const arrowMatch = p.text.match(/→\s*(\d+)/);
+        let val = 0;
+        if (arrowMatch) {
+            val = parseInt(arrowMatch[1], 10);
+        } else {
+            const parenMatch = p.text.match(/[（\(](\d+)[）\)]/);
+            if (parenMatch) {
+                val = parseInt(parenMatch[1], 10);
+            } else {
+                const numMatch = p.text.match(/(\d+)/);
+                if (numMatch) val = parseInt(numMatch[1], 10);
+            }
+        }
+        const numericVal = p.sign === '-' ? -val : val;
+        return {
+            sign: p.sign,
+            text: p.text,
+            val,
+            numericVal
+        };
+    });
+}
+
+/**
+ * Smoothly animates a dice counter element from start to end number.
+ * @param {HTMLElement} element - Target span or div element.
+ * @param {number} start - Starting number.
+ * @param {number} end - Ending target number.
+ * @param {number} duration - Animation duration in milliseconds.
+ * @returns {Promise<void>}
+ */
+export function animateDiceNumber(element, start, end, duration) {
+    return new Promise(resolve => {
+        if (!element || start === end || duration <= 0 || typeof requestAnimationFrame !== 'function') {
+            if (element) element.textContent = end;
+            resolve();
+            return;
+        }
+        const startTime = performance.now();
+        const diff = end - start;
+        function update(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 2);
+            element.textContent = Math.round(start + diff * ease);
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                element.textContent = end;
+                resolve();
+            }
+        }
+        requestAnimationFrame(update);
+    });
+}
+
+/**
+ * Plays a BG3-styled cinematic dice inspection animation for D100 checks.
+ * Features dynamic modifier addition, pre-displayed bonuses, critical failure negation,
+ * and minimalist Traditional Chinese verdict stamps.
+ * @param {object} frame - Current combat frame containing diceCheck.
+ * @param {ShadowRoot} sr - Stage ShadowRoot instance.
+ * @param {object} token - Playback token for interruption check.
+ * @returns {Promise<void>}
+ */
+export async function playDiceCinematic(frame, sr, token) {
+    const dc = frame.diceCheck;
+    if (!dc || engineState.playbackToken !== token) return;
+
+    const arena = sr.getElementById('arena');
+    if (!arena) return;
+
+    // Remove any lingering overlays first
+    arena.querySelectorAll('.dice-cinematic-overlay').forEach(el => el.remove());
+
+    const isOpposed = dc.kind === 'opposed';
+    const isThreshold = dc.kind === 'threshold' || dc.kind === 'roll';
+
+    // 1. Resolve title and badge
+    const titleMatch = (frame.message || '').match(/^([^：:]+?判定)[：:]/);
+    const checkTitle = titleMatch ? titleMatch[1] : (isOpposed ? '對抗檢定' : '能力檢定');
+    const headerBadgeText = isOpposed ? '對抗檢定' : `門檻 DC ${dc.dc ?? dc.dice?.dc ?? '--'}`;
+
+    // 2. Resolve left and right combatants / targets
+    let leftData = null;
+    let rightData = null;
+    let leftName = '';
+    let rightName = '';
+
+    if (isOpposed && dc.left && dc.right) {
+        leftData = { ...dc.left };
+        rightData = { ...dc.right, isTargetDC: false };
+
+        const matchOpposedNames = (frame.message || '').match(/^[^：:]+[：:]\s*([^\s]+)\s+.*?，\s*([^\s]+)\s+/);
+        if (matchOpposedNames) {
+            leftName = matchOpposedNames[1];
+            rightName = matchOpposedNames[2];
+        } else {
+            leftName = engineState.actors.get(frame.actorId)?.name || '我方';
+            rightName = engineState.actors.get(frame.targetId)?.name || '敵方';
+        }
+    } else if (dc.dice) {
+        leftData = { ...dc.dice };
+        const targetDCVal = dc.dc ?? 0;
+        rightData = { total: targetDCVal, isTargetDC: true };
+
+        const matchSingleName = (frame.message || '').match(/^[^：:]+[：:]\s*([^\s]+)\s+/);
+        leftName = matchSingleName ? matchSingleName[1] : (engineState.actors.get(frame.targetId || frame.actorId)?.name || '檢定者');
+        rightName = '目標門檻 (DC)';
+    } else {
+        return;
+    }
+
+    const leftTokens = parseDiceFormulaTokens(leftData.baseText);
+    const rightTokens = rightData.isTargetDC ? [] : parseDiceFormulaTokens(rightData.baseText);
+
+    // Build DOM structure
+    const overlay = document.createElement('div');
+    overlay.className = 'dice-cinematic-overlay';
+
+    overlay.innerHTML = `
+        <div class="dice-cinematic-backdrop"></div>
+        <div class="dice-cinematic-card">
+            <div class="dice-card-header">
+                <div class="dice-header-title">
+                    <div class="dice-header-gem"></div>
+                    <span>${escapeHtml(checkTitle)}</span>
+                </div>
+                <div class="dice-header-badge ${isOpposed ? 'opposed' : ''}">
+                    ${escapeHtml(headerBadgeText)}
+                </div>
+            </div>
+            <div class="dice-clash-stage ${isOpposed || isThreshold ? 'dual-mode' : ''}">
+                ${(isOpposed || isThreshold) ? `<div class="dice-vs-divider">VS</div>` : ''}
+                <div class="dice-actor-box" id="left-dice-box">
+                    <div class="dice-winner-halo" id="left-winner-halo"></div>
+                    <div class="dice-actor-name" title="${escapeHtml(leftName)}">${escapeHtml(leftName)}</div>
+                    <div class="dice-graphic-wrapper">
+                        <svg class="dice-rune-ring" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6"/>
+                            <circle cx="50" cy="50" r="39" fill="none" stroke="currentColor" stroke-width="0.75"/>
+                            <polygon points="50,6 88,72 12,72" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                            <polygon points="50,94 12,28 88,28" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                        </svg>
+                        <div class="dice-main-frame dice-rolling" id="left-dice-frame">
+                            <span class="dice-main-num" id="left-dice-num">--</span>
+                        </div>
+                        <div class="dice-shockwave" id="left-shockwave"></div>
+                    </div>
+                    <div class="dice-formula-list" id="left-formula-list"></div>
+                    <div class="dice-verdict-stamp" id="left-verdict-stamp"></div>
+                </div>
+                ${(isOpposed || isThreshold) ? `
+                    <div class="dice-actor-box" id="right-dice-box">
+                        <div class="dice-winner-halo" id="right-winner-halo"></div>
+                        <div class="dice-actor-name" title="${escapeHtml(rightName)}">${escapeHtml(rightName)}</div>
+                        <div class="dice-graphic-wrapper">
+                            <svg class="dice-rune-ring" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6"/>
+                                <circle cx="50" cy="50" r="39" fill="none" stroke="currentColor" stroke-width="0.75"/>
+                                <polygon points="50,6 88,72 12,72" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                                <polygon points="50,94 12,28 88,28" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                            </svg>
+                            <div class="dice-main-frame ${rightData.isTargetDC ? 'dc-frame' : 'dice-rolling'}" id="right-dice-frame">
+                                <span class="dice-main-num" id="right-dice-num">${rightData.isTargetDC ? rightData.total : '--'}</span>
+                            </div>
+                            <div class="dice-shockwave" id="right-shockwave"></div>
+                        </div>
+                        <div class="dice-formula-list" id="right-formula-list"></div>
+                        <div class="dice-verdict-stamp" id="right-verdict-stamp"></div>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+
+    arena.appendChild(overlay);
+
+    const leftFrame = overlay.querySelector('#left-dice-frame');
+    const leftNum = overlay.querySelector('#left-dice-num');
+    const leftFormulaList = overlay.querySelector('#left-formula-list');
+    const leftStamp = overlay.querySelector('#left-verdict-stamp');
+    const leftHalo = overlay.querySelector('#left-winner-halo');
+    const leftShockwave = overlay.querySelector('#left-shockwave');
+
+    const rightFrame = overlay.querySelector('#right-dice-frame');
+    const rightNum = overlay.querySelector('#right-dice-num');
+    const rightFormulaList = overlay.querySelector('#right-formula-list');
+    const rightStamp = overlay.querySelector('#right-verdict-stamp');
+    const rightHalo = overlay.querySelector('#right-winner-halo');
+    const rightShockwave = overlay.querySelector('#right-shockwave');
+
+    // Pre-render modifier chips on load
+    leftTokens.forEach((tok, idx) => {
+        const row = document.createElement('div');
+        row.id = `left-chip-${idx}`;
+        row.className = 'dice-chip';
+        const signStr = tok.sign === '-' ? '- ' : '+ ';
+        const valClass = tok.sign === '-' ? 'penalty' : 'bonus';
+        row.innerHTML = `
+            <span class="dice-chip-text">${escapeHtml(tok.text)}</span>
+            <span class="dice-chip-val ${valClass}">${signStr}${tok.val}</span>
+        `;
+        leftFormulaList.appendChild(row);
+    });
+
+    if (rightData.isTargetDC) {
+        if (rightFormulaList) {
+            rightFormulaList.innerHTML = `
+                <div class="dice-chip">
+                    <span class="dice-chip-text">目標判定難度 (DC)</span>
+                    <span class="dice-chip-val bonus">${rightData.total}</span>
+                </div>
+            `;
+        }
+    } else if (rightFormulaList) {
+        rightTokens.forEach((tok, idx) => {
+            const row = document.createElement('div');
+            row.id = `right-chip-${idx}`;
+            row.className = 'dice-chip';
+            const signStr = tok.sign === '-' ? '- ' : '+ ';
+            const valClass = tok.sign === '-' ? 'penalty' : 'bonus';
+            row.innerHTML = `
+                <span class="dice-chip-text">${escapeHtml(tok.text)}</span>
+                <span class="dice-chip-val ${valClass}">${signStr}${tok.val}</span>
+            `;
+            rightFormulaList.appendChild(row);
+        });
+    }
+
+    // Speed calculation
+    const speed = getEffectiveSpeed();
+    const durFactor = 1 / Math.max(0.2, speed);
+    const tRoll = Math.max(100, Math.round(320 * durFactor));
+    const tStepPause = Math.max(40, Math.round(130 * durFactor));
+    const tCountDuration = Math.max(50, Math.round(160 * durFactor));
+    const tHoldEnd = Math.max(220, Math.round(650 * durFactor));
+
+    // Cleanup helper
+    const cleanup = () => {
+        if (overlay.isConnected) overlay.remove();
+    };
+
+    // 2. Rolling number flutter
+    let rollTimer = setInterval(() => {
+        if (leftNum) leftNum.textContent = Math.floor(Math.random() * 100) + 1;
+        if (!rightData.isTargetDC && rightNum) rightNum.textContent = Math.floor(Math.random() * 100) + 1;
+    }, 35);
+
+    await new Promise(r => setTimeout(r, tRoll));
+    clearInterval(rollTimer);
+
+    if (engineState.playbackToken !== token) {
+        cleanup();
+        return;
+    }
+
+    // 3. Slam lock on RAW ROLL first
+    leftFrame.classList.remove('dice-rolling');
+    leftFrame.classList.add('dice-locked');
+    leftNum.textContent = leftData.roll;
+
+    const isLeftCritSuccess = dc.critical === 'success' || leftData.critical === 'success';
+    const isLeftCritFailure = dc.critical === 'failure' || leftData.critical === 'failure';
+
+    if (isLeftCritSuccess) {
+        leftFrame.style.borderColor = '#fbbf24';
+    } else if (isLeftCritFailure) {
+        leftFrame.style.borderColor = '#ef4444';
+    }
+
+    if (!rightData.isTargetDC && rightFrame) {
+        rightFrame.classList.remove('dice-rolling');
+        rightFrame.classList.add('dice-locked');
+        rightNum.textContent = rightData.roll;
+        if (rightData.critical === 'success') {
+            rightFrame.style.borderColor = '#fbbf24';
+        } else if (rightData.critical === 'failure') {
+            rightFrame.style.borderColor = '#ef4444';
+        }
+    }
+
+    // 4. Critical Failure immediate rule:
+    // If critical failure, negate all modifiers, skip addition, slam failure stamp immediately
+    if (isLeftCritFailure) {
+        leftTokens.forEach((_, idx) => {
+            const chip = overlay.querySelector(`#left-chip-${idx}`);
+            if (chip) chip.classList.add('chip-negated');
+        });
+
+        await new Promise(r => setTimeout(r, tStepPause * 1.5));
+        if (engineState.playbackToken !== token) {
+            cleanup();
+            return;
+        }
+
+        leftStamp.className = 'dice-verdict-stamp stamp-burst stamp-crit-failure';
+        leftStamp.textContent = '大失敗';
+        if (leftShockwave) {
+            leftShockwave.className = 'dice-shockwave crimson';
+        }
+
+        await new Promise(r => setTimeout(r, tHoldEnd));
+        if (engineState.playbackToken !== token) {
+            cleanup();
+            return;
+        }
+
+        overlay.style.opacity = '0';
+        await new Promise(r => setTimeout(r, Math.max(100, Math.round(200 * durFactor))));
+        cleanup();
+        return;
+    }
+
+    // 5. Sequential Modifiers FLY UP to Dice
+    await new Promise(r => setTimeout(r, tStepPause));
+    if (engineState.playbackToken !== token) {
+        cleanup();
+        return;
+    }
+
+    let leftRunningVal = leftData.roll;
+    let rightRunningVal = rightData.isTargetDC ? rightData.total : rightData.roll;
+    const maxSteps = Math.max(leftTokens.length, rightTokens.length);
+
+    for (let step = 0; step < maxSteps; step++) {
+        const lTok = leftTokens[step];
+        const rTok = rightTokens[step];
+
+        if (lTok) {
+            const lNextVal = leftRunningVal + lTok.numericVal;
+            const chipEl = overlay.querySelector(`#left-chip-${step}`);
+            if (chipEl) chipEl.classList.add('chip-flying');
+
+            leftFrame.classList.remove('dice-locked', 'dice-add-pulse');
+            void leftFrame.offsetWidth;
+            leftFrame.classList.add('dice-add-pulse');
+
+            animateDiceNumber(leftNum, leftRunningVal, lNextVal, tCountDuration);
+            leftRunningVal = lNextVal;
+        }
+
+        if (rTok && !rightData.isTargetDC) {
+            const rNextVal = rightRunningVal + rTok.numericVal;
+            const chipEl = overlay.querySelector(`#right-chip-${step}`);
+            if (chipEl) chipEl.classList.add('chip-flying');
+
+            rightFrame.classList.remove('dice-locked', 'dice-add-pulse');
+            void rightFrame.offsetWidth;
+            rightFrame.classList.add('dice-add-pulse');
+
+            animateDiceNumber(rightNum, rightRunningVal, rNextVal, tCountDuration);
+            rightRunningVal = rNextVal;
+        }
+
+        await new Promise(r => setTimeout(r, tCountDuration + tStepPause));
+        if (engineState.playbackToken !== token) {
+            cleanup();
+            return;
+        }
+    }
+
+    leftNum.textContent = leftData.total;
+    if (!rightData.isTargetDC && rightNum) {
+        rightNum.textContent = rightData.total;
+    }
+
+    // 6. Verdict Stamps & Halos
+    if (isLeftCritSuccess) {
+        leftStamp.className = 'dice-verdict-stamp stamp-burst stamp-crit-success';
+        leftStamp.textContent = '大成功';
+        if (leftShockwave) leftShockwave.className = 'dice-shockwave gold';
+        if (leftHalo) leftHalo.classList.add('active');
+    } else if (isOpposed) {
+        const leftWon = dc.winner === 'LEFT';
+        const rightWon = dc.winner === 'RIGHT';
+
+        leftStamp.className = `dice-verdict-stamp stamp-burst ${leftWon ? 'stamp-win' : 'stamp-lose'}`;
+        leftStamp.textContent = leftWon ? '勝出' : '落敗';
+
+        if (rightStamp) {
+            rightStamp.className = `dice-verdict-stamp stamp-burst ${rightWon ? 'stamp-win' : 'stamp-lose'}`;
+            rightStamp.textContent = rightWon ? '勝出' : '落敗';
+        }
+
+        if (leftWon && leftHalo) leftHalo.classList.add('active');
+        if (rightWon && rightHalo) rightHalo.classList.add('active');
+    } else {
+        // Threshold check
+        const passed = !!dc.isSuccess;
+        if (passed) {
+            leftStamp.className = 'dice-verdict-stamp stamp-burst stamp-pass';
+            leftStamp.textContent = '判定通過';
+            if (leftHalo) leftHalo.classList.add('active');
+        } else {
+            leftStamp.className = 'dice-verdict-stamp stamp-burst stamp-fail';
+            leftStamp.textContent = '判定未通過';
+        }
+    }
+
+    await new Promise(r => setTimeout(r, tHoldEnd));
+    if (engineState.playbackToken !== token) {
+        cleanup();
+        return;
+    }
+
+    overlay.style.opacity = '0';
+    await new Promise(r => setTimeout(r, Math.max(100, Math.round(200 * durFactor))));
+    cleanup();
+}
+
+/**
+ * Spawns an overhead pill badge for status ailments.
  * @param {object} frame - Current combat frame.
  * @param {ShadowRoot} sr - Stage ShadowRoot instance.
  */
@@ -774,33 +1217,6 @@ export function spawnStatusOrDiceBadge(frame, sr) {
     const targetId = frame.targetId || frame.actorId;
     const actorEl = sr.getElementById(`actor-${targetId}`);
     if (!actorEl) return;
-
-    const dc = frame.diceCheck;
-    if (dc) {
-        const badge = document.createElement('div');
-        badge.className = 'dice-badge';
-
-        if (dc.kind === 'threshold' && dc.dice) {
-            const passed = !!dc.isSuccess;
-            badge.classList.add(passed ? 'dice-pass' : 'dice-fail');
-            badge.textContent = `🎲 ${dc.dice.total} / DC ${dc.dc} (${passed ? 'PASS' : 'FAIL'})`;
-        } else if (dc.kind === 'opposed' && dc.left && dc.right) {
-            const leftWon = dc.winner === 'LEFT';
-            badge.classList.add(leftWon ? 'dice-pass' : 'dice-fail');
-            badge.textContent = `⚖️ ${dc.left.total} vs ${dc.right.total}`;
-        } else if (dc.kind === 'roll' && dc.dice) {
-            badge.classList.add('dice-roll');
-            badge.textContent = `🎲 檢定 ${dc.dice.total}`;
-        } else {
-            return;
-        }
-
-        actorEl.appendChild(badge);
-        setTimeout(() => {
-            if (badge.isConnected) badge.remove();
-        }, 1400 / getEffectiveSpeed());
-        return;
-    }
 
     if (frame.type === 'FATIGUE' || frame.type === 'FATIGUE_SKIP' || frame.type === 'SILENCED') {
         const badge = document.createElement('div');

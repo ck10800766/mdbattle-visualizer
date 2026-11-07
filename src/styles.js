@@ -167,6 +167,67 @@ export const STAGE_STYLES = `
     .dice-roll { background: rgba(43, 108, 176, 0.95); border: 1px solid #63b3ed; }
     .dice-warn { background: rgba(183, 121, 31, 0.95); border: 1px solid #f6e05e; }
 
+    /* BG3-Authentic Cinematic Dice Inspection Overlay */
+    .dice-cinematic-overlay { position: absolute; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: auto; user-select: none; transition: opacity 0.3s ease; }
+    .dice-cinematic-backdrop { position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(30, 41, 59, 0.88) 0%, rgba(10, 15, 29, 0.98) 100%); pointer-events: none; }
+    .dice-cinematic-card { position: relative; z-index: 20; width: min(640px, 92vw); background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
+    .dice-card-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(51, 65, 85, 0.8); padding-bottom: 12px; margin-bottom: 16px; }
+    .dice-header-title { display: flex; align-items: center; gap: 8px; font-family: "Yu Mincho", "Noto Serif TC", serif; font-size: 15px; font-weight: 700; color: #f1f5f9; letter-spacing: 0.5px; }
+    .dice-header-gem { width: 10px; height: 10px; border-radius: 2px; background: #fbbf24; box-shadow: 0 0 8px rgba(251, 191, 36, 0.6); }
+    .dice-header-badge { font-size: 12px; font-family: monospace; font-weight: 600; padding: 2px 10px; border-radius: 6px; border: 1px solid rgba(251, 191, 36, 0.4); background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+    .dice-header-badge.opposed { border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+
+    .dice-clash-stage { display: grid; grid-template-columns: 1fr; gap: 16px; position: relative; }
+    .dice-clash-stage.dual-mode { grid-template-columns: 1fr 1fr; }
+    .dice-vs-divider { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); z-index: 30; width: 36px; height: 36px; border-radius: 50%; background: #020617; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; font-family: "Yu Mincho", serif; font-size: 12px; font-weight: 900; color: #94a3b8; box-shadow: 0 4px 12px rgba(0,0,0,0.8); }
+
+    .dice-actor-box { display: flex; flex-direction: column; items-center: center; text-align: center; padding: 14px; border-radius: 12px; background: rgba(2, 6, 23, 0.7); border: 1px solid rgba(51, 65, 85, 0.8); position: relative; overflow: hidden; }
+    .dice-winner-halo { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+    .dice-winner-halo.active { opacity: 1; background: rgba(245, 158, 11, 0.12); }
+    .dice-actor-name { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+
+    .dice-graphic-wrapper { position: relative; width: 110px; height: 110px; margin: 6px auto; display: flex; align-items: center; justify-content: center; }
+    .dice-rune-ring { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.4; color: #475569; animation: runeRotate 35s linear infinite; pointer-events: none; }
+    .dice-main-frame { width: 76px; height: 76px; border-radius: 16px; background: linear-gradient(180deg, #1e293b 0%, #020617 100%); border: 2px solid #475569; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.7); transition: transform 0.2s ease, border-color 0.2s ease; }
+    .dice-main-num { font-size: 30px; font-family: "Yu Mincho", "Noto Serif TC", serif; font-weight: 900; letter-spacing: -0.5px; color: #fbbf24; }
+    .dice-main-frame.dc-frame { border-color: #334155; }
+    .dice-main-frame.dc-frame .dice-main-num { color: #cbd5e1; font-size: 28px; }
+
+    .dice-rolling { animation: diceShake 0.12s ease-in-out infinite; }
+    .dice-locked { animation: slamLock 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .dice-add-pulse { animation: dicePulseAdd 0.25s ease-out forwards; }
+
+    .dice-formula-list { width: 100%; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; text-align: left; }
+    .dice-chip { padding: 6px 10px; border-radius: 8px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(51, 65, 85, 0.8); display: flex; justify-content: space-between; align-items: center; color: #cbd5e1; transition: all 0.3s ease; }
+    .dice-chip-text { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+    .dice-chip-val { font-family: monospace; font-size: 12px; font-weight: 700; color: #94a3b8; }
+    .dice-chip-val.bonus { color: #fbbf24; }
+    .dice-chip-val.penalty { color: #f87171; }
+    .dice-chip.chip-flying { animation: chipFlyUp 0.35s ease-out forwards; }
+    .dice-chip.chip-negated { opacity: 0.35; text-decoration: line-through; border-color: rgba(159, 18, 57, 0.4); background: rgba(76, 5, 25, 0.2); color: #64748b; }
+
+    .dice-shockwave { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0; }
+    .dice-shockwave.gold { animation: goldShockwave 0.5s ease-out forwards; }
+    .dice-shockwave.crimson { animation: crimsonShockwave 0.5s ease-out forwards; }
+
+    .dice-verdict-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; opacity: 0; z-index: 35; white-space: nowrap; font-family: "Yu Mincho", "Noto Serif TC", serif; }
+    .dice-verdict-stamp.stamp-burst { animation: stampDrop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards; }
+    .stamp-crit-success { padding: 8px 20px; border-radius: 10px; border: 2px solid #fbbf24; background: rgba(2, 6, 23, 0.95); color: #fde047; font-weight: 900; font-size: 18px; letter-spacing: 2px; box-shadow: 0 0 28px rgba(245, 158, 11, 0.6); }
+    .stamp-crit-failure { padding: 8px 20px; border-radius: 10px; border: 2px solid #e11d48; background: rgba(2, 6, 23, 0.95); color: #fb7185; font-weight: 900; font-size: 18px; letter-spacing: 2px; box-shadow: 0 0 28px rgba(225, 29, 72, 0.6); }
+    .stamp-pass { padding: 6px 16px; border-radius: 8px; border: 2px solid #10b981; background: rgba(2, 6, 23, 0.95); color: #6ee7b7; font-weight: 800; font-size: 16px; letter-spacing: 1px; box-shadow: 0 0 16px rgba(16, 185, 129, 0.4); }
+    .stamp-fail { padding: 6px 16px; border-radius: 8px; border: 2px solid #64748b; background: rgba(2, 6, 23, 0.95); color: #94a3b8; font-weight: 800; font-size: 16px; letter-spacing: 1px; }
+    .stamp-win { padding: 6px 16px; border-radius: 8px; border: 2px solid #fbbf24; background: rgba(2, 6, 23, 0.95); color: #fde047; font-weight: 900; font-size: 16px; letter-spacing: 1px; box-shadow: 0 0 18px rgba(245, 158, 11, 0.5); }
+    .stamp-lose { padding: 5px 14px; border-radius: 6px; border: 1px solid #475569; background: rgba(2, 6, 23, 0.95); color: #64748b; font-weight: 600; font-size: 13px; letter-spacing: 1px; }
+
+    @keyframes runeRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes diceShake { 0%, 100% { transform: scale(1) rotate(0deg); } 20% { transform: scale(1.08) rotate(-4deg); } 40% { transform: scale(0.94) rotate(3deg); } 60% { transform: scale(1.06) rotate(-3deg); } 80% { transform: scale(0.96) rotate(2deg); } }
+    @keyframes slamLock { 0% { transform: scale(1.4); opacity: 0.7; filter: brightness(2.2); } 60% { transform: scale(0.92); } 100% { transform: scale(1); opacity: 1; filter: brightness(1); } }
+    @keyframes chipFlyUp { 0% { transform: translateY(0) scale(1); border-color: rgba(71, 85, 105, 0.4); } 40% { transform: translateY(-10px) scale(1.03); border-color: #fbbf24; background: rgba(245, 158, 11, 0.25); box-shadow: 0 0 18px rgba(245, 158, 11, 0.5); } 100% { transform: translateY(0) scale(1); border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1); } }
+    @keyframes dicePulseAdd { 0% { transform: scale(1); } 50% { transform: scale(1.14); filter: brightness(1.6); } 100% { transform: scale(1); filter: brightness(1); } }
+    @keyframes goldShockwave { 0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.8); } 100% { transform: scale(1.35); opacity: 0; box-shadow: 0 0 60px 40px rgba(234, 179, 8, 0); } }
+    @keyframes crimsonShockwave { 0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.8); } 100% { transform: scale(1.35); opacity: 0; box-shadow: 0 0 60px 40px rgba(220, 38, 38, 0); } }
+    @keyframes stampDrop { 0% { transform: translate(-50%, -50%) scale(2.4) rotate(-6deg); opacity: 0; } 70% { transform: translate(-50%, -50%) scale(0.9) rotate(1deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } }
+
     /* Combat Log Dialog Box */
     .dialog-box { height: clamp(95px, 16vh, 160px); background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 8px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: clamp(12px, 1.2vw, 14px); overflow-y: auto; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; cursor: pointer; transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; user-select: text; border-left: 3px solid transparent; }

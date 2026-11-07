@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博德之門 3 風格擲骰檢定演出預覽 (BG3 Dice Cinematic Preview)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes runeRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes diceShake {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      20% { transform: scale(1.08) rotate(-4deg); }
+      40% { transform: scale(0.94) rotate(3deg); }
+      60% { transform: scale(1.06) rotate(-3deg); }
+      80% { transform: scale(0.96) rotate(2deg); }
+    }
+    @keyframes slamLock {
+      0% { transform: scale(1.4); opacity: 0.7; filter: brightness(2.2); }
+      60% { transform: scale(0.92); }
+      100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+    }
+    @keyframes chipFlyUp {
+      0% { transform: translateY(0) scale(1); border-color: rgba(71, 85, 105, 0.4); box-shadow: none; }
+      40% { transform: translateY(-10px) scale(1.03); border-color: #fbbf24; background: rgba(245, 158, 11, 0.25); box-shadow: 0 0 18px rgba(245, 158, 11, 0.5); }
+      100% { transform: translateY(0) scale(1); border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1); }
+    }
+    @keyframes dicePulseAdd {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.14); filter: brightness(1.6); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+    @keyframes goldShockwave {
+      0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.8); }
+      100% { transform: scale(1.35); opacity: 0; box-shadow: 0 0 60px 40px rgba(234, 179, 8, 0); }
+    }
+    @keyframes crimsonShockwave {
+      0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.8); }
+      100% { transform: scale(1.35); opacity: 0; box-shadow: 0 0 60px 40px rgba(220, 38, 38, 0); }
+    }
+    @keyframes stampDrop {
+      0% { transform: scale(2.4) rotate(-6deg); opacity: 0; }
+      70% { transform: scale(0.9) rotate(1deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .bg-vignette {
+      background: radial-gradient(circle at center, rgba(30, 41, 59, 0.88) 0%, rgba(10, 15, 29, 0.98) 100%);
+    }
+    .rune-ring {
+      animation: runeRotate 35s linear infinite;
+    }
+    .dice-rolling {
+      animation: diceShake 0.12s ease-in-out infinite;
+    }
+    .dice-locked {
+      animation: slamLock 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    .chip-flying {
+      animation: chipFlyUp 0.35s ease-out forwards;
+    }
+    .dice-add-pulse {
+      animation: dicePulseAdd 0.25s ease-out forwards;
+    }
+    .stamp-burst {
+      animation: stampDrop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8 flex flex-col items-center">
+
+  <header class="w-full max-w-4xl mb-6 text-center">
+    <div class="inline-block text-xs uppercase tracking-widest px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded mb-2">
+      Baldur's Gate 3 Style Dice Inspector
+    </div>
+    <h1 class="text-2xl md:text-3xl font-serif font-bold text-slate-100 tracking-wide">
+      博德之門 3 風格擲骰檢定預覽 (單一語言精簡版)
+    </h1>
+    <p class="text-sm text-slate-400 mt-1">
+      純粹俐落：檢定結果單純顯示單一語言，告別中英混雜堆疊
+    </p>
+  </header>
+
+  <!-- Interactive Controls Bar -->
+  <section class="w-full max-w-4xl bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-xl mb-6 flex flex-wrap gap-2 items-center justify-between">
+    <div class="flex flex-wrap gap-2 items-center">
+      <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider mr-1">情境範例：</span>
+      <button onclick="playScenario('crit_success')" class="px-3 py-1.5 text-xs font-medium rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 transition">
+        大成功 (再封印判定)
+      </button>
+      <button onclick="playScenario('crit_failure')" class="px-3 py-1.5 text-xs font-medium rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 transition">
+        大失敗 (極限判定)
+      </button>
+      <button onclick="playScenario('opposed_win')" class="px-3 py-1.5 text-xs font-medium rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 hover:bg-sky-500/30 transition">
+        對抗：玩家勝 (占卜判定)
+      </button>
+      <button onclick="playScenario('opposed_lose')" class="px-3 py-1.5 text-xs font-medium rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 hover:bg-indigo-500/30 transition">
+        對抗：敵方勝 (絕劍判定)
+      </button>
+      <button onclick="playScenario('threshold_pass')" class="px-3 py-1.5 text-xs font-medium rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition">
+        門檻通過 (盾牆判定)
+      </button>
+      <button onclick="playScenario('threshold_fail')" class="px-3 py-1.5 text-xs font-medium rounded bg-zinc-700/50 text-zinc-300 border border-zinc-600 hover:bg-zinc-700 transition">
+        門檻失敗 (盾牆判定)
+      </button>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Language Mode Switcher -->
+      <div class="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded border border-slate-800 text-xs text-slate-300">
+        <span>語言：</span>
+        <button id="lang-zh" onclick="setLanguage('zh')" class="px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 font-bold">繁中</button>
+        <button id="lang-en" onclick="setLanguage('en')" class="px-1.5 py-0.5 rounded hover:bg-slate-800 text-slate-400">EN</button>
+      </div>
+
+      <!-- Playback Speed Switcher -->
+      <div class="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded border border-slate-800 text-xs text-slate-300">
+        <span>倍速：</span>
+        <button id="spd-1" onclick="setSpeed(1)" class="px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 font-bold">1x</button>
+        <button id="spd-2" onclick="setSpeed(2)" class="px-1.5 py-0.5 rounded hover:bg-slate-800 text-slate-400">2x</button>
+        <button id="spd-4" onclick="setSpeed(4)" class="px-1.5 py-0.5 rounded hover:bg-slate-800 text-slate-400">4x</button>
+      </div>
+      <button onclick="replayCurrent()" class="px-3 py-1 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-slate-200 transition">
+        重播
+      </button>
+    </div>
+  </section>
+
+  <!-- Stage Arena Mock Container -->
+  <main class="w-full max-w-4xl relative aspect-video min-h-[440px] bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center p-6 select-none">
+    
+    <!-- Background Grid -->
+    <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#475569_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+
+    <!-- Background Characters Simulation -->
+    <div id="mock-combatants" class="absolute inset-0 flex justify-between items-center px-12 transition-opacity duration-300 pointer-events-none">
+      <div class="flex flex-col items-center gap-2 opacity-30">
+        <div class="w-16 h-16 rounded-full border-2 border-slate-600 bg-slate-800 flex items-center justify-center text-xs text-slate-400 font-mono">
+          CHALLENGER
+        </div>
+        <div class="h-2 w-24 bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-full bg-emerald-500 w-3/4"></div>
+        </div>
+      </div>
+      <div class="flex flex-col items-center gap-2 opacity-30">
+        <div class="w-16 h-16 rounded-full border-2 border-slate-600 bg-slate-800 flex items-center justify-center text-xs text-slate-400 font-mono">
+          DEFENDER
+        </div>
+        <div class="h-2 w-24 bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-full bg-rose-500 w-1/2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cinematic Backdrop Vignette Overlay -->
+    <div id="dice-backdrop" class="absolute inset-0 bg-vignette opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+
+    <!-- Active Dice Cinematic Card (Center Stage) -->
+    <div id="dice-card" class="relative z-20 w-full max-w-2xl bg-slate-900/95 border border-slate-700/80 rounded-2xl p-6 shadow-2xl backdrop-blur-md transition-all duration-300">
+      
+      <!-- Card Header: Check Category Title -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-5">
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-sm bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"></div>
+          <span id="check-title" class="font-serif text-sm tracking-wider font-semibold text-slate-200">
+            再封印判定
+          </span>
+        </div>
+        <div id="check-badge-top" class="text-xs px-2.5 py-0.5 rounded font-mono font-medium border">
+          門檻 DC 45
+        </div>
+      </div>
+
+      <!-- Main Dual / Solo Clash Area -->
+      <div id="clash-stage" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start relative">
+        
+        <!-- Center VS Divider -->
+        <div id="vs-divider" class="hidden md:flex absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 z-30 flex-col items-center justify-center">
+          <div class="w-9 h-9 rounded-full bg-slate-950 border border-slate-700 flex items-center justify-center text-xs font-serif font-black text-slate-400 shadow-lg">
+            VS
+          </div>
+        </div>
+
+        <!-- Left Actor / Main Roll Box -->
+        <div id="left-box" class="flex flex-col items-center text-center p-4 rounded-xl bg-slate-950/70 border border-slate-800 relative overflow-hidden transition-all duration-300">
+          <div id="left-winner-halo" class="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500"></div>
+
+          <div class="text-sm font-semibold text-slate-300 mb-2 truncate max-w-[200px]" id="left-name">
+            寶月夜宵
+          </div>
+
+          <!-- Dice Graphic Container with Arcane Rings -->
+          <div class="relative w-28 h-28 my-2 flex items-center justify-center">
+            <!-- Concentric Rune Rings (SVG) -->
+            <svg class="absolute inset-0 w-full h-full rune-ring opacity-40 text-slate-600" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6"/>
+              <circle cx="50" cy="50" r="39" fill="none" stroke="currentColor" stroke-width="0.75"/>
+              <polygon points="50,6 88,72 12,72" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+              <polygon points="50,94 12,28 88,28" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+            </svg>
+
+            <!-- Dice Frame (Clean, zero clutter, focal point) -->
+            <div id="left-dice-frame" class="w-20 h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-950 border-2 border-slate-600 flex items-center justify-center shadow-lg transition-transform">
+              <span id="left-dice-num" class="text-3xl font-serif font-black tracking-tight text-amber-400">
+                --
+              </span>
+            </div>
+
+            <!-- Impact Burst Shockwave Container -->
+            <div id="left-shockwave" class="absolute inset-0 rounded-full pointer-events-none opacity-0"></div>
+          </div>
+
+          <!-- Modifiers List (Pre-displayed on load) -->
+          <div class="w-full mt-3 flex flex-col gap-1.5 text-xs text-left" id="left-formula-list">
+            <!-- Populated immediately upon opening -->
+          </div>
+
+          <!-- Single-Language Result Stamp Banner -->
+          <div id="left-stamp" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 z-30 whitespace-nowrap">
+          </div>
+        </div>
+
+        <!-- Right Actor Box (Opposed Opponent OR Target DC) -->
+        <div id="right-box" class="flex flex-col items-center text-center p-4 rounded-xl bg-slate-950/70 border border-slate-800 relative overflow-hidden transition-all duration-300">
+          <div id="right-winner-halo" class="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500"></div>
+
+          <div class="text-sm font-semibold text-slate-300 mb-2 truncate max-w-[200px]" id="right-name">
+            目標門檻
+          </div>
+
+          <!-- Dice Graphic Container -->
+          <div class="relative w-28 h-28 my-2 flex items-center justify-center">
+            <svg class="absolute inset-0 w-full h-full rune-ring opacity-40 text-slate-600" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6"/>
+              <circle cx="50" cy="50" r="39" fill="none" stroke="currentColor" stroke-width="0.75"/>
+              <polygon points="50,6 88,72 12,72" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+              <polygon points="50,94 12,28 88,28" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+            </svg>
+
+            <div id="right-dice-frame" class="w-20 h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-950 border-2 border-slate-600 flex items-center justify-center shadow-lg transition-transform">
+              <span id="right-dice-num" class="text-3xl font-serif font-black tracking-tight text-slate-300">
+                45
+              </span>
+            </div>
+
+            <div id="right-shockwave" class="absolute inset-0 rounded-full pointer-events-none opacity-0"></div>
+          </div>
+
+          <!-- Pre-displayed Modifiers List -->
+          <div class="w-full mt-3 flex flex-col gap-1.5 text-xs text-left" id="right-formula-list">
+            <!-- Populated immediately upon opening -->
+          </div>
+
+          <!-- Single-Language Result Stamp Banner -->
+          <div id="right-stamp" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 z-30 whitespace-nowrap">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    let speed = 1;
+    let lang = 'zh'; // 'zh' or 'en'
+    let animTimers = [];
+    let currentScenarioKey = 'crit_success';
+
+    const SCENARIOS = {
+      crit_success: {
+        titleZh: '再封印判定',
+        titleEn: 'RESEAL CHECK',
+        badgeZh: '門檻 DC 45',
+        badgeEn: 'THRESHOLD DC 45',
+        kind: 'threshold',
+        dc: 45,
+        left: {
+          name: '寶月夜宵',
+          baseText: '智力（1176 → 81）＋重瞳（8）',
+          roll: 96,
+          total: 185,
+          critical: 'success'
+        },
+        right: {
+          nameZh: '封印門檻 (DC)',
+          nameEn: 'DC THRESHOLD',
+          isTargetDC: true,
+          total: 45
+        },
+        result: 'CRITICAL_SUCCESS'
+      },
+      crit_failure: {
+        titleZh: '極限突圍判定',
+        titleEn: 'BREAKTHROUGH CHECK',
+        badgeZh: '門檻 DC 80',
+        badgeEn: 'THRESHOLD DC 80',
+        kind: 'threshold',
+        dc: 80,
+        left: {
+          name: '閃耀魔眼',
+          baseText: '技巧（300 → 21）＋重力扭曲（10）',
+          roll: 1,
+          total: 1,
+          critical: 'failure'
+        },
+        right: {
+          nameZh: '突破門檻 (DC)',
+          nameEn: 'DC THRESHOLD',
+          isTargetDC: true,
+          total: 80
+        },
+        result: 'CRITICAL_FAILURE'
+      },
+      opposed_win: {
+        titleZh: '占卜判定',
+        titleEn: 'DIVINATION CHECK',
+        badgeZh: '對抗檢定',
+        badgeEn: 'OPPOSED CONTEST',
+        kind: 'opposed',
+        winner: 'RIGHT',
+        left: {
+          name: '克萊恩·莫雷蒂',
+          baseText: '智力（700 → 48）－序列 9（19）',
+          roll: 29,
+          total: 58
+        },
+        right: {
+          nameZh: '同人',
+          nameEn: 'Doujin',
+          baseText: '幸運（293 → 20）',
+          roll: 84,
+          total: 104
+        },
+        result: 'OPPOSED_RESULT'
+      },
+      opposed_lose: {
+        titleZh: '絕劍判定',
+        titleEn: 'ABSOLUTE SWORD CHECK',
+        badgeZh: '對抗檢定',
+        badgeEn: 'OPPOSED CONTEST',
+        kind: 'opposed',
+        winner: 'LEFT',
+        left: {
+          name: '牙紀',
+          baseText: '技巧（369 → 25）',
+          roll: 72,
+          total: 97
+        },
+        right: {
+          nameZh: '武士領主卡嘉奇',
+          nameEn: 'Samurai Lord Kagachi',
+          baseText: '技巧（205 → 14）',
+          roll: 9,
+          total: 23
+        },
+        result: 'OPPOSED_RESULT'
+      },
+      threshold_pass: {
+        titleZh: '盾牆判定',
+        titleEn: 'SHIELD WALL CHECK',
+        badgeZh: '門檻 DC 95',
+        badgeEn: 'THRESHOLD DC 95',
+        kind: 'threshold',
+        dc: 95,
+        left: {
+          name: '木之本櫻',
+          baseText: '防禦（426 → 29）',
+          roll: 83,
+          total: 112,
+          isSuccess: true
+        },
+        right: {
+          nameZh: '阻擋門檻 (DC)',
+          nameEn: 'DC THRESHOLD',
+          isTargetDC: true,
+          total: 95
+        },
+        result: 'SUCCESS'
+      },
+      threshold_fail: {
+        titleZh: '盾牆判定',
+        titleEn: 'SHIELD WALL CHECK',
+        badgeZh: '門檻 DC 95',
+        badgeEn: 'THRESHOLD DC 95',
+        kind: 'threshold',
+        dc: 95,
+        left: {
+          name: '潘南君',
+          baseText: '防禦（484 → 33）',
+          roll: 55,
+          total: 88,
+          isSuccess: false
+        },
+        right: {
+          nameZh: '阻擋門檻 (DC)',
+          nameEn: 'DC THRESHOLD',
+          isTargetDC: true,
+          total: 95
+        },
+        result: 'FAILURE'
+      }
+    };
+
+    function parseFormulaTokensWithValues(baseText) {
+      if (!baseText) return [];
+      const parts = [];
+      let current = '';
+      let depth = 0;
+      let sign = '+';
+
+      for (let i = 0; i < baseText.length; i++) {
+        const c = baseText[i];
+        if (c === '（' || c === '(') { depth++; current += c; }
+        else if (c === '）' || c === ')') { depth = Math.max(0, depth - 1); current += c; }
+        else if (depth === 0 && (c === '＋' || c === '+' || c === '－' || c === '-')) {
+          if (current.trim()) parts.push({ sign, text: current.trim() });
+          sign = (c === '－' || c === '-') ? '-' : '+';
+          current = '';
+        } else {
+          current += c;
+        }
+      }
+      if (current.trim()) parts.push({ sign, text: current.trim() });
+
+      return parts.map(p => {
+        const arrowMatch = p.text.match(/→\s*(\d+)/);
+        let val = 0;
+        if (arrowMatch) {
+          val = parseInt(arrowMatch[1], 10);
+        } else {
+          const parenMatch = p.text.match(/[（\(](\d+)[）\)]/);
+          if (parenMatch) val = parseInt(parenMatch[1], 10);
+        }
+        const numericVal = p.sign === '-' ? -val : val;
+        return {
+          sign: p.sign,
+          text: p.text,
+          val,
+          numericVal
+        };
+      });
+    }
+
+    function clearTimers() {
+      animTimers.forEach(t => clearTimeout(t));
+      animTimers = [];
+    }
+
+    function setSpeed(s) {
+      speed = s;
+      document.querySelectorAll('[id^="spd-"]').forEach(el => {
+        el.className = 'px-1.5 py-0.5 rounded hover:bg-slate-800 text-slate-400';
+      });
+      document.getElementById('spd-' + s).className = 'px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 font-bold';
+      replayCurrent();
+    }
+
+    function setLanguage(l) {
+      lang = l;
+      document.querySelectorAll('[id^="lang-"]').forEach(el => {
+        el.className = 'px-1.5 py-0.5 rounded hover:bg-slate-800 text-slate-400';
+      });
+      document.getElementById('lang-' + l).className = 'px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 font-bold';
+      replayCurrent();
+    }
+
+    function playScenario(key) {
+      currentScenarioKey = key;
+      replayCurrent();
+    }
+
+    function animateDiceNumber(element, start, end, duration) {
+      return new Promise(resolve => {
+        if (start === end || duration <= 0) {
+          element.textContent = end;
+          resolve();
+          return;
+        }
+        const startTime = performance.now();
+        const diff = end - start;
+        function update(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 2);
+          element.textContent = Math.round(start + diff * ease);
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            element.textContent = end;
+            resolve();
+          }
+        }
+        requestAnimationFrame(update);
+      });
+    }
+
+    function preRenderModifiers(container, tokens, prefix) {
+      container.innerHTML = '';
+      tokens.forEach((tok, idx) => {
+        const row = document.createElement('div');
+        row.id = `${prefix}-chip-${idx}`;
+        row.className = 'px-2.5 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800/80 flex justify-between items-center text-slate-300 transition-all duration-300';
+        const signStr = tok.sign === '-' ? '- ' : '+ ';
+        row.innerHTML = `
+          <span class="truncate max-w-[150px] font-medium">${tok.text}</span>
+          <span class="font-mono text-xs font-semibold ${tok.sign === '-' ? 'text-rose-400' : 'text-slate-400'}">${signStr}${tok.val}</span>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    async function replayCurrent() {
+      clearTimers();
+      const sc = SCENARIOS[currentScenarioKey];
+      if (!sc) return;
+
+      const durFactor = 1 / speed;
+      const tRoll = 350 * durFactor;
+      const tStepPause = 140 * durFactor;
+      const tCountDuration = 180 * durFactor;
+
+      // 1. Reset UI (Single Language applied)
+      document.getElementById('dice-backdrop').style.opacity = '1';
+      document.getElementById('check-title').textContent = (lang === 'zh') ? sc.titleZh : sc.titleEn;
+      document.getElementById('check-badge-top').textContent = (lang === 'zh') ? sc.badgeZh : sc.badgeEn;
+
+      const topBadge = document.getElementById('check-badge-top');
+      topBadge.className = 'text-xs px-2.5 py-0.5 rounded font-mono font-medium border ' + 
+        (sc.kind === 'opposed' ? 'border-sky-500/40 text-sky-400 bg-sky-500/10' : 'border-amber-500/40 text-amber-400 bg-amber-500/10');
+
+      document.getElementById('left-name').textContent = sc.left.name;
+      document.getElementById('right-name').textContent = (lang === 'zh') ? (sc.right.nameZh || sc.right.name) : (sc.right.nameEn || sc.right.name);
+
+      const leftFormula = document.getElementById('left-formula-list');
+      const rightFormula = document.getElementById('right-formula-list');
+
+      document.getElementById('left-stamp').style.opacity = '0';
+      document.getElementById('right-stamp').style.opacity = '0';
+      document.getElementById('left-winner-halo').style.opacity = '0';
+      document.getElementById('right-winner-halo').style.opacity = '0';
+
+      const lFrame = document.getElementById('left-dice-frame');
+      const rFrame = document.getElementById('right-dice-frame');
+      lFrame.className = 'w-20 h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-950 border-2 border-slate-600 flex items-center justify-center shadow-lg dice-rolling';
+      rFrame.className = 'w-20 h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-950 border-2 border-slate-600 flex items-center justify-center shadow-lg ' + (sc.right.isTargetDC ? '' : 'dice-rolling');
+
+      const leftTokens = parseFormulaTokensWithValues(sc.left.baseText);
+      preRenderModifiers(leftFormula, leftTokens, 'left');
+
+      const rightTokens = !sc.right.isTargetDC ? parseFormulaTokensWithValues(sc.right.baseText) : [];
+      if (!sc.right.isTargetDC) {
+        preRenderModifiers(rightFormula, rightTokens, 'right');
+      } else {
+        document.getElementById('right-dice-num').textContent = sc.right.total;
+        rightFormula.innerHTML = `
+          <div class="px-2.5 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800/80 text-slate-400 flex justify-between items-center">
+            <span>${lang === 'zh' ? '目標判定難度 (DC)' : 'Target DC'}</span>
+            <span class="font-mono text-sm text-slate-200 font-bold">${sc.right.total}</span>
+          </div>
+        `;
+      }
+
+      // 2. Rapid Jumping Roll Numbers
+      let rollInterval = setInterval(() => {
+        document.getElementById('left-dice-num').textContent = Math.floor(Math.random() * 100) + 1;
+        if (!sc.right.isTargetDC) {
+          document.getElementById('right-dice-num').textContent = Math.floor(Math.random() * 100) + 1;
+        }
+      }, 35);
+
+      // 3. Slam Lock-In on RAW ROLL FIRST
+      await new Promise(r => {
+        const t = setTimeout(r, tRoll);
+        animTimers.push(t);
+      });
+      clearInterval(rollInterval);
+
+      // Left locks on RAW ROLL
+      lFrame.classList.remove('dice-rolling');
+      lFrame.classList.add('dice-locked');
+      const leftRollEl = document.getElementById('left-dice-num');
+      leftRollEl.textContent = sc.left.roll;
+      lFrame.style.borderColor = (sc.left.critical === 'success') ? '#fbbf24' : (sc.left.critical === 'failure' ? '#ef4444' : '#94a3b8');
+
+      if (!sc.right.isTargetDC) {
+        rFrame.classList.remove('dice-rolling');
+        rFrame.classList.add('dice-locked');
+        const rightRollEl = document.getElementById('right-dice-num');
+        rightRollEl.textContent = sc.right.roll;
+        rFrame.style.borderColor = (sc.right.critical === 'success') ? '#fbbf24' : (sc.right.critical === 'failure' ? '#ef4444' : '#94a3b8');
+      }
+
+      // 4. CRITICAL FAILURE CHECK
+      if (sc.result === 'CRITICAL_FAILURE' || sc.left.critical === 'failure') {
+        leftTokens.forEach((_, idx) => {
+          const chip = document.getElementById(`left-chip-${idx}`);
+          if (chip) {
+            chip.className = 'px-2.5 py-1.5 rounded-lg bg-rose-950/20 border border-rose-900/40 flex justify-between items-center text-slate-500 line-through opacity-40 transition-all duration-300';
+          }
+        });
+
+        await new Promise(r => {
+          const t = setTimeout(r, tStepPause * 1.5);
+          animTimers.push(t);
+        });
+
+        applyFinalVerdict(sc);
+        return;
+      }
+
+      // 5. Sequential Modifiers FLY UP to Dice
+      await new Promise(r => {
+        const t = setTimeout(r, tStepPause);
+        animTimers.push(t);
+      });
+
+      let leftRunningVal = sc.left.roll;
+      let rightRunningVal = !sc.right.isTargetDC ? sc.right.roll : sc.right.total;
+      const maxSteps = Math.max(leftTokens.length, rightTokens.length);
+
+      for (let step = 0; step < maxSteps; step++) {
+        const lTok = leftTokens[step];
+        const rTok = rightTokens[step];
+
+        if (lTok) {
+          const lNextVal = leftRunningVal + lTok.numericVal;
+          const chipEl = document.getElementById(`left-chip-${step}`);
+          if (chipEl) {
+            chipEl.classList.add('chip-flying');
+            chipEl.querySelector('.font-mono').className = `font-mono text-xs font-bold ${lTok.sign === '-' ? 'text-rose-400' : 'text-amber-400'}`;
+          }
+
+          lFrame.classList.remove('dice-locked', 'dice-add-pulse');
+          void lFrame.offsetWidth;
+          lFrame.classList.add('dice-add-pulse');
+
+          animateDiceNumber(leftRollEl, leftRunningVal, lNextVal, tCountDuration);
+          leftRunningVal = lNextVal;
+        }
+
+        if (rTok) {
+          const rNextVal = rightRunningVal + rTok.numericVal;
+          const chipEl = document.getElementById(`right-chip-${step}`);
+          if (chipEl) {
+            chipEl.classList.add('chip-flying');
+            chipEl.querySelector('.font-mono').className = `font-mono text-xs font-bold ${rTok.sign === '-' ? 'text-rose-400' : 'text-sky-400'}`;
+          }
+
+          rFrame.classList.remove('dice-locked', 'dice-add-pulse');
+          void rFrame.offsetWidth;
+          rFrame.classList.add('dice-add-pulse');
+
+          animateDiceNumber(document.getElementById('right-dice-num'), rightRunningVal, rNextVal, tCountDuration);
+          rightRunningVal = rNextVal;
+        }
+
+        await new Promise(r => {
+          const t = setTimeout(r, tCountDuration + tStepPause);
+          animTimers.push(t);
+        });
+      }
+
+      leftRollEl.textContent = sc.left.total;
+      if (!sc.right.isTargetDC) {
+        document.getElementById('right-dice-num').textContent = sc.right.total;
+      }
+
+      // 6. Final Verdict Stamp & Shockwave (Single Language)
+      applyFinalVerdict(sc);
+    }
+
+    /**
+     * Applies purely single-language verdict stamp.
+     */
+    function applyFinalVerdict(sc) {
+      const lStamp = document.getElementById('left-stamp');
+      const rStamp = document.getElementById('right-stamp');
+      const isZh = (lang === 'zh');
+
+      if (sc.result === 'CRITICAL_SUCCESS') {
+        lStamp.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 stamp-burst z-30 px-5 py-2 rounded-lg border-2 border-amber-400 bg-slate-950/95 text-amber-300 font-serif font-black tracking-widest text-lg shadow-[0_0_25px_rgba(245,158,11,0.6)]';
+        lStamp.textContent = isZh ? '大成功' : 'CRITICAL SUCCESS';
+        triggerShockwave('left', 'gold');
+        document.getElementById('left-winner-halo').className = 'absolute inset-0 pointer-events-none bg-amber-500/10 transition-opacity duration-500 opacity-100';
+      } else if (sc.result === 'CRITICAL_FAILURE') {
+        lStamp.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 stamp-burst z-30 px-5 py-2 rounded-lg border-2 border-rose-600 bg-slate-950/95 text-rose-400 font-serif font-black tracking-widest text-lg shadow-[0_0_25px_rgba(225,29,72,0.6)]';
+        lStamp.textContent = isZh ? '大失敗' : 'CRITICAL FAILURE';
+        triggerShockwave('left', 'crimson');
+        document.getElementById('left-winner-halo').className = 'absolute inset-0 pointer-events-none bg-rose-600/15 transition-opacity duration-500 opacity-100';
+      } else if (sc.result === 'SUCCESS') {
+        lStamp.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 stamp-burst z-30 px-4 py-1.5 rounded border-2 border-emerald-500 bg-slate-950/95 text-emerald-300 font-serif font-bold text-base tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.4)]';
+        lStamp.textContent = isZh ? '判定通過' : 'SUCCESS';
+        document.getElementById('left-winner-halo').className = 'absolute inset-0 pointer-events-none bg-emerald-500/10 transition-opacity duration-500 opacity-100';
+      } else if (sc.result === 'FAILURE') {
+        lStamp.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 stamp-burst z-30 px-4 py-1.5 rounded border-2 border-slate-600 bg-slate-950/95 text-slate-400 font-serif font-bold text-base tracking-wider';
+        lStamp.textContent = isZh ? '判定未通過' : 'FAILURE';
+      } else if (sc.kind === 'opposed') {
+        const leftWon = sc.winner === 'LEFT';
+        const winStamp = 'px-4 py-1.5 rounded border-2 border-amber-400 bg-slate-950/95 text-amber-300 font-serif font-black text-base tracking-wider shadow-[0_0_15px_rgba(245,158,11,0.4)]';
+        const loseStamp = 'px-3 py-1 rounded border border-slate-700 bg-slate-950/95 text-slate-500 font-serif font-medium text-xs tracking-wider';
+
+        lStamp.className = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 stamp-burst z-30 ${leftWon ? winStamp : loseStamp}`;
+        lStamp.textContent = leftWon ? (isZh ? '勝出' : 'VICTORY') : (isZh ? '落敗' : 'DEFEAT');
+
+        rStamp.className = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 stamp-burst z-30 ${!leftWon ? winStamp : loseStamp}`;
+        rStamp.textContent = !leftWon ? (isZh ? '勝出' : 'VICTORY') : (isZh ? '落敗' : 'DEFEAT');
+
+        document.getElementById(leftWon ? 'left-winner-halo' : 'right-winner-halo').className = 'absolute inset-0 pointer-events-none bg-amber-500/10 transition-opacity duration-500 opacity-100';
+      }
+    }
+
+    function triggerShockwave(side, type) {
+      const sw = document.getElementById(side + '-shockwave');
+      sw.style.animation = (type === 'gold' ? 'goldShockwave' : 'crimsonShockwave') + ' 0.5s ease-out forwards';
+    }
+
+    window.onload = () => {
+      replayCurrent();
+    };
+  </script>
+</body>
+</html>

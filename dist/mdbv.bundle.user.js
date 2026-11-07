@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         MDBattle-Visualizer (Ultimate Edition V7.6)
+// @name         MDBattle-Visualizer (Ultimate Edition V7.7)
 // @namespace    mydoujin-battle-vfx
-// @version      7.6.3
+// @version      7.7.0
 // @description  True ATB Timeline, live battle interception, anti-spoiler guard, and refined combat mechanics.
 // @match        https://mydoujin.online/*
 // @run-at       document-start
@@ -19,7 +19,7 @@
   var HOST_CONTENT_SELECTOR = ".css-1svsvwq";
   var PLAYBACK_SPEEDS = Object.freeze([0.5, 1, 2, 4]);
   var SPEED_STORAGE_KEY = "mdbv_playback_speed";
-  var APP_VERSION = "7.6.3";
+  var APP_VERSION = "7.7.0";
 
   // src/state.js
   function loadSavedPlaybackSpeed() {
@@ -2120,6 +2120,67 @@
     .dice-roll { background: rgba(43, 108, 176, 0.95); border: 1px solid #63b3ed; }
     .dice-warn { background: rgba(183, 121, 31, 0.95); border: 1px solid #f6e05e; }
 
+    /* BG3-Authentic Cinematic Dice Inspection Overlay */
+    .dice-cinematic-overlay { position: absolute; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: auto; user-select: none; transition: opacity 0.3s ease; }
+    .dice-cinematic-backdrop { position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(30, 41, 59, 0.88) 0%, rgba(10, 15, 29, 0.98) 100%); pointer-events: none; }
+    .dice-cinematic-card { position: relative; z-index: 20; width: min(640px, 92vw); background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
+    .dice-card-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(51, 65, 85, 0.8); padding-bottom: 12px; margin-bottom: 16px; }
+    .dice-header-title { display: flex; align-items: center; gap: 8px; font-family: "Yu Mincho", "Noto Serif TC", serif; font-size: 15px; font-weight: 700; color: #f1f5f9; letter-spacing: 0.5px; }
+    .dice-header-gem { width: 10px; height: 10px; border-radius: 2px; background: #fbbf24; box-shadow: 0 0 8px rgba(251, 191, 36, 0.6); }
+    .dice-header-badge { font-size: 12px; font-family: monospace; font-weight: 600; padding: 2px 10px; border-radius: 6px; border: 1px solid rgba(251, 191, 36, 0.4); background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+    .dice-header-badge.opposed { border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+
+    .dice-clash-stage { display: grid; grid-template-columns: 1fr; gap: 16px; position: relative; }
+    .dice-clash-stage.dual-mode { grid-template-columns: 1fr 1fr; }
+    .dice-vs-divider { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); z-index: 30; width: 36px; height: 36px; border-radius: 50%; background: #020617; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; font-family: "Yu Mincho", serif; font-size: 12px; font-weight: 900; color: #94a3b8; box-shadow: 0 4px 12px rgba(0,0,0,0.8); }
+
+    .dice-actor-box { display: flex; flex-direction: column; items-center: center; text-align: center; padding: 14px; border-radius: 12px; background: rgba(2, 6, 23, 0.7); border: 1px solid rgba(51, 65, 85, 0.8); position: relative; overflow: hidden; }
+    .dice-winner-halo { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+    .dice-winner-halo.active { opacity: 1; background: rgba(245, 158, 11, 0.12); }
+    .dice-actor-name { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+
+    .dice-graphic-wrapper { position: relative; width: 110px; height: 110px; margin: 6px auto; display: flex; align-items: center; justify-content: center; }
+    .dice-rune-ring { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.4; color: #475569; animation: runeRotate 35s linear infinite; pointer-events: none; }
+    .dice-main-frame { width: 76px; height: 76px; border-radius: 16px; background: linear-gradient(180deg, #1e293b 0%, #020617 100%); border: 2px solid #475569; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.7); transition: transform 0.2s ease, border-color 0.2s ease; }
+    .dice-main-num { font-size: 30px; font-family: "Yu Mincho", "Noto Serif TC", serif; font-weight: 900; letter-spacing: -0.5px; color: #fbbf24; }
+    .dice-main-frame.dc-frame { border-color: #334155; }
+    .dice-main-frame.dc-frame .dice-main-num { color: #cbd5e1; font-size: 28px; }
+
+    .dice-rolling { animation: diceShake 0.12s ease-in-out infinite; }
+    .dice-locked { animation: slamLock 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .dice-add-pulse { animation: dicePulseAdd 0.25s ease-out forwards; }
+
+    .dice-formula-list { width: 100%; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; text-align: left; }
+    .dice-chip { padding: 6px 10px; border-radius: 8px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(51, 65, 85, 0.8); display: flex; justify-content: space-between; align-items: center; color: #cbd5e1; transition: all 0.3s ease; }
+    .dice-chip-text { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+    .dice-chip-val { font-family: monospace; font-size: 12px; font-weight: 700; color: #94a3b8; }
+    .dice-chip-val.bonus { color: #fbbf24; }
+    .dice-chip-val.penalty { color: #f87171; }
+    .dice-chip.chip-flying { animation: chipFlyUp 0.35s ease-out forwards; }
+    .dice-chip.chip-negated { opacity: 0.35; text-decoration: line-through; border-color: rgba(159, 18, 57, 0.4); background: rgba(76, 5, 25, 0.2); color: #64748b; }
+
+    .dice-shockwave { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0; }
+    .dice-shockwave.gold { animation: goldShockwave 0.5s ease-out forwards; }
+    .dice-shockwave.crimson { animation: crimsonShockwave 0.5s ease-out forwards; }
+
+    .dice-verdict-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; opacity: 0; z-index: 35; white-space: nowrap; font-family: "Yu Mincho", "Noto Serif TC", serif; }
+    .dice-verdict-stamp.stamp-burst { animation: stampDrop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards; }
+    .stamp-crit-success { padding: 8px 20px; border-radius: 10px; border: 2px solid #fbbf24; background: rgba(2, 6, 23, 0.95); color: #fde047; font-weight: 900; font-size: 18px; letter-spacing: 2px; box-shadow: 0 0 28px rgba(245, 158, 11, 0.6); }
+    .stamp-crit-failure { padding: 8px 20px; border-radius: 10px; border: 2px solid #e11d48; background: rgba(2, 6, 23, 0.95); color: #fb7185; font-weight: 900; font-size: 18px; letter-spacing: 2px; box-shadow: 0 0 28px rgba(225, 29, 72, 0.6); }
+    .stamp-pass { padding: 6px 16px; border-radius: 8px; border: 2px solid #10b981; background: rgba(2, 6, 23, 0.95); color: #6ee7b7; font-weight: 800; font-size: 16px; letter-spacing: 1px; box-shadow: 0 0 16px rgba(16, 185, 129, 0.4); }
+    .stamp-fail { padding: 6px 16px; border-radius: 8px; border: 2px solid #64748b; background: rgba(2, 6, 23, 0.95); color: #94a3b8; font-weight: 800; font-size: 16px; letter-spacing: 1px; }
+    .stamp-win { padding: 6px 16px; border-radius: 8px; border: 2px solid #fbbf24; background: rgba(2, 6, 23, 0.95); color: #fde047; font-weight: 900; font-size: 16px; letter-spacing: 1px; box-shadow: 0 0 18px rgba(245, 158, 11, 0.5); }
+    .stamp-lose { padding: 5px 14px; border-radius: 6px; border: 1px solid #475569; background: rgba(2, 6, 23, 0.95); color: #64748b; font-weight: 600; font-size: 13px; letter-spacing: 1px; }
+
+    @keyframes runeRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes diceShake { 0%, 100% { transform: scale(1) rotate(0deg); } 20% { transform: scale(1.08) rotate(-4deg); } 40% { transform: scale(0.94) rotate(3deg); } 60% { transform: scale(1.06) rotate(-3deg); } 80% { transform: scale(0.96) rotate(2deg); } }
+    @keyframes slamLock { 0% { transform: scale(1.4); opacity: 0.7; filter: brightness(2.2); } 60% { transform: scale(0.92); } 100% { transform: scale(1); opacity: 1; filter: brightness(1); } }
+    @keyframes chipFlyUp { 0% { transform: translateY(0) scale(1); border-color: rgba(71, 85, 105, 0.4); } 40% { transform: translateY(-10px) scale(1.03); border-color: #fbbf24; background: rgba(245, 158, 11, 0.25); box-shadow: 0 0 18px rgba(245, 158, 11, 0.5); } 100% { transform: translateY(0) scale(1); border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1); } }
+    @keyframes dicePulseAdd { 0% { transform: scale(1); } 50% { transform: scale(1.14); filter: brightness(1.6); } 100% { transform: scale(1); filter: brightness(1); } }
+    @keyframes goldShockwave { 0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.8); } 100% { transform: scale(1.35); opacity: 0; box-shadow: 0 0 60px 40px rgba(234, 179, 8, 0); } }
+    @keyframes crimsonShockwave { 0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.8); } 100% { transform: scale(1.35); opacity: 0; box-shadow: 0 0 60px 40px rgba(220, 38, 38, 0); } }
+    @keyframes stampDrop { 0% { transform: translate(-50%, -50%) scale(2.4) rotate(-6deg); opacity: 0; } 70% { transform: translate(-50%, -50%) scale(0.9) rotate(1deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } }
+
     /* Combat Log Dialog Box */
     .dialog-box { height: clamp(95px, 16vh, 160px); background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%); border-top: 2px solid #4fd1c5; padding: 8px 15px; color: #cbd5e1; font-family: "Segoe UI", Roboto, Helvetica, sans-serif; font-size: clamp(12px, 1.2vw, 14px); overflow-y: auto; box-shadow: inset 0 4px 6px rgba(0,0,0,0.5); }
     .log-line { margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; animation: slideInUp 0.2s ease-out forwards; opacity: 0; line-height: 1.5; cursor: pointer; transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; user-select: text; border-left: 3px solid transparent; }
@@ -2803,34 +2864,364 @@
       if (wave.isConnected) wave.remove();
     }, 950 / speed);
   }
+  function parseDiceFormulaTokens(baseText) {
+    if (!baseText) return [];
+    const parts = [];
+    let current = "";
+    let depth = 0;
+    let sign = "+";
+    for (let i = 0; i < baseText.length; i++) {
+      const c = baseText[i];
+      if (c === "\uFF08" || c === "(") {
+        depth++;
+        current += c;
+      } else if (c === "\uFF09" || c === ")") {
+        depth = Math.max(0, depth - 1);
+        current += c;
+      } else if (depth === 0 && (c === "\uFF0B" || c === "+" || c === "\uFF0D" || c === "-")) {
+        if (current.trim()) parts.push({ sign, text: current.trim() });
+        sign = c === "\uFF0D" || c === "-" ? "-" : "+";
+        current = "";
+      } else {
+        current += c;
+      }
+    }
+    if (current.trim()) parts.push({ sign, text: current.trim() });
+    return parts.map((p) => {
+      const arrowMatch = p.text.match(/→\s*(\d+)/);
+      let val = 0;
+      if (arrowMatch) {
+        val = parseInt(arrowMatch[1], 10);
+      } else {
+        const parenMatch = p.text.match(/[（\(](\d+)[）\)]/);
+        if (parenMatch) {
+          val = parseInt(parenMatch[1], 10);
+        } else {
+          const numMatch = p.text.match(/(\d+)/);
+          if (numMatch) val = parseInt(numMatch[1], 10);
+        }
+      }
+      const numericVal = p.sign === "-" ? -val : val;
+      return {
+        sign: p.sign,
+        text: p.text,
+        val,
+        numericVal
+      };
+    });
+  }
+  function animateDiceNumber(element, start, end, duration) {
+    return new Promise((resolve) => {
+      if (!element || start === end || duration <= 0 || typeof requestAnimationFrame !== "function") {
+        if (element) element.textContent = end;
+        resolve();
+        return;
+      }
+      const startTime = performance.now();
+      const diff = end - start;
+      function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 2);
+        element.textContent = Math.round(start + diff * ease);
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.textContent = end;
+          resolve();
+        }
+      }
+      requestAnimationFrame(update);
+    });
+  }
+  async function playDiceCinematic(frame, sr, token) {
+    const dc = frame.diceCheck;
+    if (!dc || engineState.playbackToken !== token) return;
+    const arena = sr.getElementById("arena");
+    if (!arena) return;
+    arena.querySelectorAll(".dice-cinematic-overlay").forEach((el) => el.remove());
+    const isOpposed = dc.kind === "opposed";
+    const isThreshold = dc.kind === "threshold" || dc.kind === "roll";
+    const titleMatch = (frame.message || "").match(/^([^：:]+?判定)[：:]/);
+    const checkTitle = titleMatch ? titleMatch[1] : isOpposed ? "\u5C0D\u6297\u6AA2\u5B9A" : "\u80FD\u529B\u6AA2\u5B9A";
+    const headerBadgeText = isOpposed ? "\u5C0D\u6297\u6AA2\u5B9A" : `\u9580\u6ABB DC ${dc.dc ?? dc.dice?.dc ?? "--"}`;
+    let leftData = null;
+    let rightData = null;
+    let leftName = "";
+    let rightName = "";
+    if (isOpposed && dc.left && dc.right) {
+      leftData = { ...dc.left };
+      rightData = { ...dc.right, isTargetDC: false };
+      const matchOpposedNames = (frame.message || "").match(/^[^：:]+[：:]\s*([^\s]+)\s+.*?，\s*([^\s]+)\s+/);
+      if (matchOpposedNames) {
+        leftName = matchOpposedNames[1];
+        rightName = matchOpposedNames[2];
+      } else {
+        leftName = engineState.actors.get(frame.actorId)?.name || "\u6211\u65B9";
+        rightName = engineState.actors.get(frame.targetId)?.name || "\u6575\u65B9";
+      }
+    } else if (dc.dice) {
+      leftData = { ...dc.dice };
+      const targetDCVal = dc.dc ?? 0;
+      rightData = { total: targetDCVal, isTargetDC: true };
+      const matchSingleName = (frame.message || "").match(/^[^：:]+[：:]\s*([^\s]+)\s+/);
+      leftName = matchSingleName ? matchSingleName[1] : engineState.actors.get(frame.targetId || frame.actorId)?.name || "\u6AA2\u5B9A\u8005";
+      rightName = "\u76EE\u6A19\u9580\u6ABB (DC)";
+    } else {
+      return;
+    }
+    const leftTokens = parseDiceFormulaTokens(leftData.baseText);
+    const rightTokens = rightData.isTargetDC ? [] : parseDiceFormulaTokens(rightData.baseText);
+    const overlay = document.createElement("div");
+    overlay.className = "dice-cinematic-overlay";
+    overlay.innerHTML = `
+        <div class="dice-cinematic-backdrop"></div>
+        <div class="dice-cinematic-card">
+            <div class="dice-card-header">
+                <div class="dice-header-title">
+                    <div class="dice-header-gem"></div>
+                    <span>${escapeHtml(checkTitle)}</span>
+                </div>
+                <div class="dice-header-badge ${isOpposed ? "opposed" : ""}">
+                    ${escapeHtml(headerBadgeText)}
+                </div>
+            </div>
+            <div class="dice-clash-stage ${isOpposed || isThreshold ? "dual-mode" : ""}">
+                ${isOpposed || isThreshold ? `<div class="dice-vs-divider">VS</div>` : ""}
+                <div class="dice-actor-box" id="left-dice-box">
+                    <div class="dice-winner-halo" id="left-winner-halo"></div>
+                    <div class="dice-actor-name" title="${escapeHtml(leftName)}">${escapeHtml(leftName)}</div>
+                    <div class="dice-graphic-wrapper">
+                        <svg class="dice-rune-ring" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6"/>
+                            <circle cx="50" cy="50" r="39" fill="none" stroke="currentColor" stroke-width="0.75"/>
+                            <polygon points="50,6 88,72 12,72" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                            <polygon points="50,94 12,28 88,28" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                        </svg>
+                        <div class="dice-main-frame dice-rolling" id="left-dice-frame">
+                            <span class="dice-main-num" id="left-dice-num">--</span>
+                        </div>
+                        <div class="dice-shockwave" id="left-shockwave"></div>
+                    </div>
+                    <div class="dice-formula-list" id="left-formula-list"></div>
+                    <div class="dice-verdict-stamp" id="left-verdict-stamp"></div>
+                </div>
+                ${isOpposed || isThreshold ? `
+                    <div class="dice-actor-box" id="right-dice-box">
+                        <div class="dice-winner-halo" id="right-winner-halo"></div>
+                        <div class="dice-actor-name" title="${escapeHtml(rightName)}">${escapeHtml(rightName)}</div>
+                        <div class="dice-graphic-wrapper">
+                            <svg class="dice-rune-ring" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6"/>
+                                <circle cx="50" cy="50" r="39" fill="none" stroke="currentColor" stroke-width="0.75"/>
+                                <polygon points="50,6 88,72 12,72" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                                <polygon points="50,94 12,28 88,28" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.6"/>
+                            </svg>
+                            <div class="dice-main-frame ${rightData.isTargetDC ? "dc-frame" : "dice-rolling"}" id="right-dice-frame">
+                                <span class="dice-main-num" id="right-dice-num">${rightData.isTargetDC ? rightData.total : "--"}</span>
+                            </div>
+                            <div class="dice-shockwave" id="right-shockwave"></div>
+                        </div>
+                        <div class="dice-formula-list" id="right-formula-list"></div>
+                        <div class="dice-verdict-stamp" id="right-verdict-stamp"></div>
+                    </div>
+                ` : ""}
+            </div>
+        </div>
+    `;
+    arena.appendChild(overlay);
+    const leftFrame = overlay.querySelector("#left-dice-frame");
+    const leftNum = overlay.querySelector("#left-dice-num");
+    const leftFormulaList = overlay.querySelector("#left-formula-list");
+    const leftStamp = overlay.querySelector("#left-verdict-stamp");
+    const leftHalo = overlay.querySelector("#left-winner-halo");
+    const leftShockwave = overlay.querySelector("#left-shockwave");
+    const rightFrame = overlay.querySelector("#right-dice-frame");
+    const rightNum = overlay.querySelector("#right-dice-num");
+    const rightFormulaList = overlay.querySelector("#right-formula-list");
+    const rightStamp = overlay.querySelector("#right-verdict-stamp");
+    const rightHalo = overlay.querySelector("#right-winner-halo");
+    const rightShockwave = overlay.querySelector("#right-shockwave");
+    leftTokens.forEach((tok, idx) => {
+      const row = document.createElement("div");
+      row.id = `left-chip-${idx}`;
+      row.className = "dice-chip";
+      const signStr = tok.sign === "-" ? "- " : "+ ";
+      const valClass = tok.sign === "-" ? "penalty" : "bonus";
+      row.innerHTML = `
+            <span class="dice-chip-text">${escapeHtml(tok.text)}</span>
+            <span class="dice-chip-val ${valClass}">${signStr}${tok.val}</span>
+        `;
+      leftFormulaList.appendChild(row);
+    });
+    if (rightData.isTargetDC) {
+      if (rightFormulaList) {
+        rightFormulaList.innerHTML = `
+                <div class="dice-chip">
+                    <span class="dice-chip-text">\u76EE\u6A19\u5224\u5B9A\u96E3\u5EA6 (DC)</span>
+                    <span class="dice-chip-val bonus">${rightData.total}</span>
+                </div>
+            `;
+      }
+    } else if (rightFormulaList) {
+      rightTokens.forEach((tok, idx) => {
+        const row = document.createElement("div");
+        row.id = `right-chip-${idx}`;
+        row.className = "dice-chip";
+        const signStr = tok.sign === "-" ? "- " : "+ ";
+        const valClass = tok.sign === "-" ? "penalty" : "bonus";
+        row.innerHTML = `
+                <span class="dice-chip-text">${escapeHtml(tok.text)}</span>
+                <span class="dice-chip-val ${valClass}">${signStr}${tok.val}</span>
+            `;
+        rightFormulaList.appendChild(row);
+      });
+    }
+    const speed = getEffectiveSpeed();
+    const durFactor = 1 / Math.max(0.2, speed);
+    const tRoll = Math.max(100, Math.round(320 * durFactor));
+    const tStepPause = Math.max(40, Math.round(130 * durFactor));
+    const tCountDuration = Math.max(50, Math.round(160 * durFactor));
+    const tHoldEnd = Math.max(220, Math.round(650 * durFactor));
+    const cleanup = () => {
+      if (overlay.isConnected) overlay.remove();
+    };
+    let rollTimer = setInterval(() => {
+      if (leftNum) leftNum.textContent = Math.floor(Math.random() * 100) + 1;
+      if (!rightData.isTargetDC && rightNum) rightNum.textContent = Math.floor(Math.random() * 100) + 1;
+    }, 35);
+    await new Promise((r) => setTimeout(r, tRoll));
+    clearInterval(rollTimer);
+    if (engineState.playbackToken !== token) {
+      cleanup();
+      return;
+    }
+    leftFrame.classList.remove("dice-rolling");
+    leftFrame.classList.add("dice-locked");
+    leftNum.textContent = leftData.roll;
+    const isLeftCritSuccess = dc.critical === "success" || leftData.critical === "success";
+    const isLeftCritFailure = dc.critical === "failure" || leftData.critical === "failure";
+    if (isLeftCritSuccess) {
+      leftFrame.style.borderColor = "#fbbf24";
+    } else if (isLeftCritFailure) {
+      leftFrame.style.borderColor = "#ef4444";
+    }
+    if (!rightData.isTargetDC && rightFrame) {
+      rightFrame.classList.remove("dice-rolling");
+      rightFrame.classList.add("dice-locked");
+      rightNum.textContent = rightData.roll;
+      if (rightData.critical === "success") {
+        rightFrame.style.borderColor = "#fbbf24";
+      } else if (rightData.critical === "failure") {
+        rightFrame.style.borderColor = "#ef4444";
+      }
+    }
+    if (isLeftCritFailure) {
+      leftTokens.forEach((_, idx) => {
+        const chip = overlay.querySelector(`#left-chip-${idx}`);
+        if (chip) chip.classList.add("chip-negated");
+      });
+      await new Promise((r) => setTimeout(r, tStepPause * 1.5));
+      if (engineState.playbackToken !== token) {
+        cleanup();
+        return;
+      }
+      leftStamp.className = "dice-verdict-stamp stamp-burst stamp-crit-failure";
+      leftStamp.textContent = "\u5927\u5931\u6557";
+      if (leftShockwave) {
+        leftShockwave.className = "dice-shockwave crimson";
+      }
+      await new Promise((r) => setTimeout(r, tHoldEnd));
+      if (engineState.playbackToken !== token) {
+        cleanup();
+        return;
+      }
+      overlay.style.opacity = "0";
+      await new Promise((r) => setTimeout(r, Math.max(100, Math.round(200 * durFactor))));
+      cleanup();
+      return;
+    }
+    await new Promise((r) => setTimeout(r, tStepPause));
+    if (engineState.playbackToken !== token) {
+      cleanup();
+      return;
+    }
+    let leftRunningVal = leftData.roll;
+    let rightRunningVal = rightData.isTargetDC ? rightData.total : rightData.roll;
+    const maxSteps = Math.max(leftTokens.length, rightTokens.length);
+    for (let step = 0; step < maxSteps; step++) {
+      const lTok = leftTokens[step];
+      const rTok = rightTokens[step];
+      if (lTok) {
+        const lNextVal = leftRunningVal + lTok.numericVal;
+        const chipEl = overlay.querySelector(`#left-chip-${step}`);
+        if (chipEl) chipEl.classList.add("chip-flying");
+        leftFrame.classList.remove("dice-locked", "dice-add-pulse");
+        void leftFrame.offsetWidth;
+        leftFrame.classList.add("dice-add-pulse");
+        animateDiceNumber(leftNum, leftRunningVal, lNextVal, tCountDuration);
+        leftRunningVal = lNextVal;
+      }
+      if (rTok && !rightData.isTargetDC) {
+        const rNextVal = rightRunningVal + rTok.numericVal;
+        const chipEl = overlay.querySelector(`#right-chip-${step}`);
+        if (chipEl) chipEl.classList.add("chip-flying");
+        rightFrame.classList.remove("dice-locked", "dice-add-pulse");
+        void rightFrame.offsetWidth;
+        rightFrame.classList.add("dice-add-pulse");
+        animateDiceNumber(rightNum, rightRunningVal, rNextVal, tCountDuration);
+        rightRunningVal = rNextVal;
+      }
+      await new Promise((r) => setTimeout(r, tCountDuration + tStepPause));
+      if (engineState.playbackToken !== token) {
+        cleanup();
+        return;
+      }
+    }
+    leftNum.textContent = leftData.total;
+    if (!rightData.isTargetDC && rightNum) {
+      rightNum.textContent = rightData.total;
+    }
+    if (isLeftCritSuccess) {
+      leftStamp.className = "dice-verdict-stamp stamp-burst stamp-crit-success";
+      leftStamp.textContent = "\u5927\u6210\u529F";
+      if (leftShockwave) leftShockwave.className = "dice-shockwave gold";
+      if (leftHalo) leftHalo.classList.add("active");
+    } else if (isOpposed) {
+      const leftWon = dc.winner === "LEFT";
+      const rightWon = dc.winner === "RIGHT";
+      leftStamp.className = `dice-verdict-stamp stamp-burst ${leftWon ? "stamp-win" : "stamp-lose"}`;
+      leftStamp.textContent = leftWon ? "\u52DD\u51FA" : "\u843D\u6557";
+      if (rightStamp) {
+        rightStamp.className = `dice-verdict-stamp stamp-burst ${rightWon ? "stamp-win" : "stamp-lose"}`;
+        rightStamp.textContent = rightWon ? "\u52DD\u51FA" : "\u843D\u6557";
+      }
+      if (leftWon && leftHalo) leftHalo.classList.add("active");
+      if (rightWon && rightHalo) rightHalo.classList.add("active");
+    } else {
+      const passed = !!dc.isSuccess;
+      if (passed) {
+        leftStamp.className = "dice-verdict-stamp stamp-burst stamp-pass";
+        leftStamp.textContent = "\u5224\u5B9A\u901A\u904E";
+        if (leftHalo) leftHalo.classList.add("active");
+      } else {
+        leftStamp.className = "dice-verdict-stamp stamp-burst stamp-fail";
+        leftStamp.textContent = "\u5224\u5B9A\u672A\u901A\u904E";
+      }
+    }
+    await new Promise((r) => setTimeout(r, tHoldEnd));
+    if (engineState.playbackToken !== token) {
+      cleanup();
+      return;
+    }
+    overlay.style.opacity = "0";
+    await new Promise((r) => setTimeout(r, Math.max(100, Math.round(200 * durFactor))));
+    cleanup();
+  }
   function spawnStatusOrDiceBadge(frame, sr) {
     const targetId = frame.targetId || frame.actorId;
     const actorEl = sr.getElementById(`actor-${targetId}`);
     if (!actorEl) return;
-    const dc = frame.diceCheck;
-    if (dc) {
-      const badge = document.createElement("div");
-      badge.className = "dice-badge";
-      if (dc.kind === "threshold" && dc.dice) {
-        const passed = !!dc.isSuccess;
-        badge.classList.add(passed ? "dice-pass" : "dice-fail");
-        badge.textContent = `\u{1F3B2} ${dc.dice.total} / DC ${dc.dc} (${passed ? "PASS" : "FAIL"})`;
-      } else if (dc.kind === "opposed" && dc.left && dc.right) {
-        const leftWon = dc.winner === "LEFT";
-        badge.classList.add(leftWon ? "dice-pass" : "dice-fail");
-        badge.textContent = `\u2696\uFE0F ${dc.left.total} vs ${dc.right.total}`;
-      } else if (dc.kind === "roll" && dc.dice) {
-        badge.classList.add("dice-roll");
-        badge.textContent = `\u{1F3B2} \u6AA2\u5B9A ${dc.dice.total}`;
-      } else {
-        return;
-      }
-      actorEl.appendChild(badge);
-      setTimeout(() => {
-        if (badge.isConnected) badge.remove();
-      }, 1400 / getEffectiveSpeed());
-      return;
-    }
     if (frame.type === "FATIGUE" || frame.type === "FATIGUE_SKIP" || frame.type === "SILENCED") {
       const badge = document.createElement("div");
       badge.className = "dice-badge dice-warn";
@@ -4880,7 +5271,7 @@
     const fatalityOverlay = sr.getElementById("fatality-overlay");
     if (fatalityOverlay) fatalityOverlay.classList.remove("active");
     sr.querySelectorAll(
-      ".ultimate-overlay, .contract-cutin-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile, .arena-field-wave, .scene-narration-banner"
+      ".ultimate-overlay, .contract-cutin-overlay, .dice-cinematic-overlay, .rosario-cross-mark, .bridal-cover-shield, .speech-bubble, .dice-badge, .floating-text, .combo-text, .luck-drop, .break-stamp, .fatality-slash, .fatality-text, .seek-situation-banner, .aoe-fan-wave, .aoe-projectile, .arena-field-wave, .scene-narration-banner"
     ).forEach((el) => el.remove());
     engineState.actors.forEach((actor) => {
       actor.lastUltimateTurn = null;
@@ -5998,7 +6389,10 @@
           syncActorStatusAndShieldDOM(sr, rf.actorsStatusState, rf.actorsShieldState, rf.actorsBondState);
           spawnFloatingText(rf, sr, false, false);
         }
-        if (["DICE", "STATUS", "SKILL_TEXT", "BUFF_APPLY", "DEBUFF_APPLY"].includes(rf.type) || rf.diceRoll) {
+        if (rf.diceCheck) {
+          await playDiceCinematic(rf, sr, token);
+          if (engineState.playbackToken !== token) return;
+        } else if (["DICE", "STATUS", "SKILL_TEXT", "BUFF_APPLY", "DEBUFF_APPLY"].includes(rf.type) || rf.diceRoll) {
           spawnStatusOrDiceBadge(rf, sr);
         }
         const speaker = resolveDialogueSpeaker(rf);
@@ -6258,7 +6652,11 @@
       playEnvironmentalFieldPulse(frame, sr);
       frameDuration = Math.max(frameDuration, 1100);
     }
-    if (frame.diceCheck || ["FATIGUE", "FATIGUE_SKIP", "SILENCED"].includes(frame.type) || frame.type === "SKILL_TEXT" || frame.type === "TEXT") {
+    if (frame.diceCheck) {
+      await playDiceCinematic(frame, sr, token);
+      if (engineState.playbackToken !== token) return;
+      frameDuration = Math.max(frameDuration, 300);
+    } else if (["FATIGUE", "FATIGUE_SKIP", "SILENCED"].includes(frame.type) || frame.type === "SKILL_TEXT" || frame.type === "TEXT") {
       spawnStatusOrDiceBadge(frame, sr);
     }
     updateATBUI(frame.turnNumber, false, frame.actorsSummonState);
